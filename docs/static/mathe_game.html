@@ -9,7 +9,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
 <script>
 window.MathJax = {
-  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]'], ['$$','$$']] },
   options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] },
   startup: { typeset: false }
 };
@@ -168,15 +168,16 @@ const { useState, useEffect, useCallback, useMemo, useRef } = React;
 // MathText Component for MathJax rendering
 // ============================================================
 
-function MathText({ children, block }) {
+function MathText({ children, text, block }) {
   const ref = useRef(null);
+  const content = text || children;
   useEffect(() => {
     if (ref.current && window.MathJax && window.MathJax.typesetPromise) {
       window.MathJax.typesetPromise([ref.current]).catch(() => {});
     }
   });
-  if (block) return <div ref={ref} className="math-block">{children}</div>;
-  return <span ref={ref}>{children}</span>;
+  if (block) return <div ref={ref} className="math-block">{content}</div>;
+  return <span ref={ref}>{content}</span>;
 }
 
 // ============================================================
@@ -2252,6 +2253,224 @@ const EXERCISE_GENERATORS = Object.fromEntries(
 );
 
 // ============================================================
+// WORLD INTROS – Lernkarten vor den Übungen
+// ============================================================
+
+const WORLD_INTROS = {
+  1: [
+    { title: "Was ist ein Erwartungswert?",
+      content: "Der Erwartungswert \\(E(X)\\) einer Zufallsvariable \\(X\\) ist ihr ‚langfristiger Durchschnitt': Würde man das Zufallsexperiment unendlich oft wiederholen, wäre der Mittelwert aller Ergebnisse gleich \\(E(X)\\).",
+      example: "Wenn ein fairer Würfel geworfen wird, ist \\(E(X) = \\frac{1+2+3+4+5+6}{6} = 3{,}5\\). Kein einzelner Wurf ergibt 3,5 – aber im Mittel über viele Würfe nähert sich der Durchschnitt diesem Wert an.",
+      key: "Intuition" },
+    { title: "Definition",
+      content: "Formal ist der Erwartungswert definiert als:",
+      formula: "\\[E(X) := \\sum_{x} x \\cdot P(X = x)\\]",
+      content2: "Jeder mögliche Wert \\(x\\) wird mit seiner Wahrscheinlichkeit gewichtet und aufsummiert.",
+      key: "Definition" },
+    { title: "Regel (i): Erwartungswert einer Konstanten",
+      content: "Wenn \\(X\\) gar keine Zufallsvariable ist, sondern eine feste Zahl \\(\\alpha\\), dann gilt:",
+      formula: "\\[E(\\alpha) = \\alpha\\]",
+      content2: "Eine Konstante ‚streut' nicht – ihr Erwartungswert ist sie selbst.",
+      example: "Wenn alle Studierenden auf einem Item die gleiche Punktzahl 5 erhalten, dann ist \\(E(X) = 5\\). Es gibt keinen Zufall.",
+      key: "E1" },
+    { title: "Regel (ii): Linearität",
+      content: "Die wichtigste Eigenschaft des Erwartungswerts ist seine Linearität:",
+      formula: "\\[E(\\alpha X + \\beta Y) = \\alpha\\, E(X) + \\beta\\, E(Y)\\]",
+      content2: "Man darf also den Erwartungswert ‚in die Summe hineinziehen' und Faktoren herausziehen.",
+      example: "Ein Gesamtscore \\(S = X_{1} + X_{2}\\) aus zwei Subtests hat \\(E(S) = E(X_{1}) + E(X_{2})\\). Wenn \\(E(X_{1}) = 50\\) und \\(E(X_{2}) = 30\\), dann \\(E(S) = 80\\).",
+      key: "E2" },
+    { title: "Warum ist das wichtig?",
+      content: "In der Psychologie arbeiten wir ständig mit Summenscores und gewichteten Kombinationen. Die Linearität des Erwartungswerts erlaubt es uns, den erwarteten Gesamtwert direkt aus den Einzelteilen zu berechnen – ohne die gemeinsame Verteilung kennen zu müssen.",
+      key: "Anwendung" },
+  ],
+  2: [
+    { title: "Was ist die Varianz?",
+      content: "Die Varianz \\(\\text{Var}(X)\\) misst, wie stark die Werte einer Zufallsvariable um ihren Erwartungswert streuen. Je größer die Varianz, desto weiter liegen die Werte typischerweise vom Mittelwert entfernt.",
+      example: "Zwei Tests mit \\(E(X) = 100\\): Test A hat \\(\\text{Var}(X) = 25\\) (die meisten Werte liegen zwischen 95 und 105), Test B hat \\(\\text{Var}(X) = 225\\) (Werte zwischen 85 und 115). Test B streut viel stärker.",
+      key: "Intuition" },
+    { title: "Definition",
+      content: "Die Varianz ist der erwartete quadratische Abstand vom Mittelwert:",
+      formula: "\\[\\text{Var}(X) := E\\bigl[(X - E(X))^{2}\\bigr]\\]",
+      content2: "Die Standardabweichung ist ihre Wurzel: \\(\\text{Std}(X) = \\sqrt{\\text{Var}(X)}\\) und hat dieselbe Einheit wie \\(X\\).",
+      key: "Definition" },
+    { title: "Regel (iii): Verschiebungssatz",
+      content: "In der Praxis berechnet man die Varianz oft mit dem Verschiebungssatz:",
+      formula: "\\[\\text{Var}(X) = E(X^{2}) - [E(X)]^{2}\\]",
+      content2: "Dazu braucht man nur \\(E(X)\\) und \\(E(X^{2})\\) – keine einzelnen Abweichungen.",
+      example: "Wenn \\(E(X) = 4\\) und \\(E(X^{2}) = 20\\), dann \\(\\text{Var}(X) = 20 - 16 = 4\\).",
+      key: "V1" },
+    { title: "Regeln (iv)–(viii): Rechenregeln",
+      content: "Die wichtigsten Varianzregeln im Überblick: Eine Konstante hat keine Streuung: \\(\\text{Var}(\\alpha) = 0\\). Skalierung geht quadratisch ein: \\(\\text{Var}(\\alpha X) = \\alpha^{2} \\text{Var}(X)\\). Addition einer Konstante ändert nichts: \\(\\text{Var}(\\alpha + X) = \\text{Var}(X)\\). Und für Summen gilt: \\(\\text{Var}(X + Y) = \\text{Var}(X) + \\text{Var}(Y) + 2\\,\\text{Cov}(X,Y)\\).",
+      example: "Wenn man alle Testwerte mit 2 multipliziert, vervierfacht sich die Varianz. Wenn man 50 addiert (z.\u00A0B. T-Werte), ändert sich die Varianz nicht.",
+      key: "V2–V5" },
+    { title: "Warum ist das wichtig?",
+      content: "Die Varianz ist die Grundlage fast aller psychologischen Methoden: ANOVA zerlegt Varianzen, Reliabilität ist ein Varianzanteil, Effektstärken sind Varianzverhältnisse. Wer Varianzregeln beherrscht, versteht die mathematische Logik hinter diesen Verfahren.",
+      key: "Anwendung" },
+  ],
+  3: [
+    { title: "Was ist die Kovarianz?",
+      content: "Die Kovarianz \\(\\text{Cov}(X,Y)\\) misst den linearen Zusammenhang zweier Zufallsvariablen: Wenn hohe X-Werte tendenziell mit hohen Y-Werten auftreten, ist \\(\\text{Cov}(X,Y) > 0\\). Wenn hohe X-Werte mit niedrigen Y-Werten auftreten, ist \\(\\text{Cov}(X,Y) < 0\\).",
+      key: "Intuition" },
+    { title: "Definition",
+      content: "Die Kovarianz ist definiert als:",
+      formula: "\\[\\text{Cov}(X,Y) := E\\bigl[(X - E(X))(Y - E(Y))\\bigr]\\]",
+      content2: "In der Praxis rechnet man oft mit dem Verschiebungssatz: \\(\\text{Cov}(X,Y) = E(XY) - E(X)\\,E(Y)\\).",
+      key: "Definition" },
+    { title: "Rechenregeln für die Kovarianz",
+      content: "Die Kovarianz hat Eigenschaften, die den Varianzregeln ähneln: Eine Konstante kovariiert mit nichts: \\(\\text{Cov}(\\alpha, Y) = 0\\). Skalierung: \\(\\text{Cov}(\\alpha X, \\beta Y) = \\alpha\\beta\\,\\text{Cov}(X,Y)\\). Verschiebung: \\(\\text{Cov}(\\alpha + X, \\beta + Y) = \\text{Cov}(X,Y)\\). Und die Bilinearität: Die Kovarianz zweier Linearkombinationen zerlegt sich in alle paarweisen Kovarianzen.",
+      key: "C1–C5" },
+    { title: "Was ist die Korrelation?",
+      content: "Die Korrelation ist die standardisierte Kovarianz:",
+      formula: "\\[\\text{Kor}(X,Y) := \\frac{\\text{Cov}(X,Y)}{\\text{Std}(X) \\cdot \\text{Std}(Y)}\\]",
+      content2: "Durch die Division durch die Standardabweichungen wird sie dimensionslos und liegt immer im Intervall \\([-1, +1]\\).",
+      example: "\\(\\text{Kor} = 0{,}50\\) zwischen IQ und Schulnoten bedeutet: Es gibt einen positiven linearen Zusammenhang, aber er ist nicht perfekt.",
+      key: "DEF_Kor" },
+    { title: "Eigenschaften der Korrelation",
+      content: "\\(\\text{Kor}(X,Y) = \\pm 1\\) gilt genau dann, wenn \\(Y = a + bX\\) (perfekter linearer Zusammenhang). Wichtig: Die Korrelation ist invariant unter positiver linearer Transformation: \\(\\text{Kor}(aX+b, cY+d) = \\text{sign}(ac) \\cdot \\text{Kor}(X,Y)\\). Ob man Rohwerte, z-Werte oder T-Werte verwendet – die Korrelation bleibt gleich.",
+      key: "KOR1–KOR3" },
+    { title: "Achtung: Korrelation ≠ Zusammenhang",
+      content: "Eine Korrelation von null bedeutet nicht ‚kein Zusammenhang', sondern nur ‚kein linearer Zusammenhang'. Es kann durchaus ein starker nichtlinearer Zusammenhang bestehen (z.\u00A0B. U-förmig). Deshalb: Immer auch Streudiagramme inspizieren!",
+      example: "Der Zusammenhang zwischen Arousal und Leistung (Yerkes-Dodson-Gesetz) ist umgekehrt U-förmig. Die Korrelation kann null sein, obwohl der Zusammenhang sehr stark ist.",
+      key: "KOR4" },
+  ],
+  4: [
+    { title: "Was ist eine Regression?",
+      content: "Eine Regression beschreibt, wie der Erwartungswert einer Variable \\(Y\\) von einer anderen Variable \\(X\\) abhängt. Die zentrale Idee: \\(E(Y|X)\\) – der bedingte Erwartungswert von \\(Y\\), gegeben \\(X\\).",
+      example: "Wenn wir wissen, dass jemand 12 Jahre Schulbildung hat (\\(X = 12\\)), welches Einkommen erwarten wir dann im Mittel? Das ist \\(E(Y|X = 12)\\).",
+      key: "Intuition" },
+    { title: "Lineare Regression",
+      content: "In der linearen Regression nimmt man an, dass \\(E(Y|X)\\) eine lineare Funktion von \\(X\\) ist:",
+      formula: "\\[E(Y|X) = \\alpha + \\beta X\\]",
+      content2: "Dabei ist \\(\\alpha\\) der Intercept (Erwartungswert von \\(Y\\) wenn \\(X = 0\\)) und \\(\\beta\\) die Steigung (um wie viel sich \\(E(Y)\\) ändert, wenn \\(X\\) um 1 steigt).",
+      key: "DEF_LinReg" },
+    { title: "Residuum und Varianzzerlegung",
+      content: "Das Residuum \\(\\varepsilon := Y - E(Y|X)\\) ist der Vorhersagefehler. Es hat wichtige Eigenschaften: \\(E(\\varepsilon) = 0\\) (im Mittel kein Fehler) und \\(\\text{Cov}(\\varepsilon, X) = 0\\) (der Fehler hängt nicht vom Prädiktor ab). Die Varianz zerlegt sich:",
+      formula: "\\[\\text{Var}(Y) = \\text{Var}\\bigl[E(Y|X)\\bigr] + \\text{Var}(\\varepsilon)\\]",
+      key: "Residuum" },
+    { title: "R² – erklärte Varianz",
+      content: "Der Determinationskoeffizient \\(R^{2}\\) gibt an, welcher Anteil der Varianz von \\(Y\\) durch \\(X\\) erklärt wird:",
+      formula: "\\[R^{2} := \\frac{\\text{Var}[E(Y|X)]}{\\text{Var}(Y)} = 1 - \\frac{\\text{Var}(\\varepsilon)}{\\text{Var}(Y)}\\]",
+      content2: "Bei einfacher linearer Regression gilt: \\(R^{2} = \\text{Kor}(X,Y)^{2}\\).",
+      example: "\\(R^{2} = 0{,}36\\) bedeutet: 36\\,% der Varianz im Kriterium werden durch den Prädiktor erklärt. Bei einfacher Regression entspricht das \\(r = 0{,}60\\).",
+      key: "DEF_R2" },
+  ],
+  5: [
+    { title: "Die bedingte Erwartung als allgemeine Regression",
+      content: "In der Schreibweise von Steyer & Eid ist die Regression \\(E(Y|X)\\) nicht auf lineare Zusammenhänge beschränkt – sie gibt für jeden Wert von \\(X\\) den besten (mittleren) Vorhersagewert an. Die lineare Parametrisierung \\(\\alpha + \\beta X\\) ist nur ein Spezialfall.",
+      key: "Intuition" },
+    { title: "Rechenregeln für E(Y|X)",
+      content: "Der bedingte Erwartungswert hat ähnliche Regeln wie der unbedingte: Eine Konstante bleibt Konstante: \\(E(\\alpha|X) = \\alpha\\). Linearität: \\(E(\\alpha Y_{1} + \\beta Y_{2}|X) = \\alpha\\,E(Y_{1}|X) + \\beta\\,E(Y_{2}|X)\\). Die Turmregel: \\(E[E(Y|X)] = E(Y)\\) – der Erwartungswert der bedingten Erwartung ist der unbedingte Erwartungswert.",
+      key: "R1–R3" },
+    { title: "Bekannte Faktoren herausziehen",
+      content: "Wenn eine Variable eine Funktion von \\(X\\) ist, verhält sie sich ‚unter Bedingung auf \\(X\\)' wie eine Konstante:",
+      formula: "\\[E\\bigl[f(X) \\cdot Y \\mid X\\bigr] = f(X) \\cdot E(Y|X)\\]",
+      content2: "Außerdem: \\(E[f(X)|X] = f(X)\\) – wenn man \\(X\\) kennt, kennt man auch jede Funktion von \\(X\\).",
+      example: "Wenn man den IQ (\\(X\\)) kennt, kennt man auch \\(X^{2}\\). Daher kann man \\(X^{2}\\) bei \\(E(\\ldots|X)\\) wie eine Konstante behandeln.",
+      key: "R4–R6" },
+  ],
+  6: [
+    { title: "Eigenschaften des Residuums",
+      content: "Das Residuum \\(\\varepsilon = Y - E(Y|X)\\) hat bemerkenswerte Eigenschaften, die alle aus der Definition folgen: \\(E(\\varepsilon) = 0\\), \\(E(\\varepsilon|X) = 0\\), und sogar \\(\\text{Cov}[\\varepsilon, f(X)] = 0\\) für jede Funktion \\(f\\). Das Residuum ist also nicht nur im Mittel null, sondern auch mit dem Prädiktor und allen seinen Transformationen unkorreliert.",
+      key: "Res1–Res6" },
+    { title: "Varianzzerlegung",
+      content: "Aus den Residuumeigenschaften folgt eine fundamentale Zerlegung:",
+      formula: "\\[\\text{Var}(Y) = \\text{Var}\\bigl[E(Y|X)\\bigr] + \\text{Var}(\\varepsilon)\\]",
+      content2: "Die Gesamtvarianz zerlegt sich in ‚erklärte Varianz' (durch die Regression) und ‚Residualvarianz' (Vorhersagefehler). Der Quotient \\(R^{2} = \\text{Var}[E(Y|X)] / \\text{Var}(Y)\\) ist das Bestimmtheitsmaß.",
+      key: "Res3" },
+    { title: "Regressive Unabhängigkeit",
+      content: "Eine besondere Situation: Wenn \\(E(Y|X)\\) nicht von \\(X\\) abhängt, also \\(E(Y|X) = E(Y)\\) für alle \\(X\\), dann spricht man von regressiver Unabhängigkeit. In diesem Fall ist \\(R^{2} = 0\\) und \\(\\text{Cov}(X,Y) = 0\\). Wissen über \\(X\\) hilft dann nicht bei der Vorhersage von \\(Y\\).",
+      key: "DEF_RegUnabh" },
+  ],
+  7: [
+    { title: "Grundidee der Klassischen Testtheorie",
+      content: "Die KTT geht davon aus, dass jeder beobachtete Testwert \\(Y\\) aus zwei Teilen besteht – einem wahren Wert \\(\\tau\\) und einem Messfehler \\(\\varepsilon\\):",
+      formula: "\\[Y_{i} = \\tau_{i} + \\varepsilon_{i}\\]",
+      content2: "Der wahre Wert \\(\\tau_{i} := E(Y_{i}|p_{U})\\) ist der Erwartungswert des Testwerts einer Person \\(p_{U}\\) – der Wert, den man im Mittel über viele Messungen erhalten würde.",
+      key: "K1" },
+    { title: "Was folgt aus der Definition?",
+      content: "Aus der Definition \\(\\tau_{i} = E(Y_{i}|p_{U})\\) folgen direkt zwei Eigenschaften:",
+      formula: "\\[E(\\varepsilon_{i}) = 0 \\qquad \\text{und} \\qquad \\text{Cov}(\\varepsilon_{i}, \\tau_{i}) = 0\\]",
+      content2: "Der Messfehler ist im Mittel null, und er hängt nicht mit dem wahren Wert zusammen. Diese Eigenschaften muss man nicht annehmen – sie ergeben sich mathematisch aus der Definition!",
+      example: "Das ist genau wie bei der Regression: \\(\\tau\\) entspricht \\(E(Y|X)\\) und \\(\\varepsilon\\) dem Residuum. Deshalb gelten dieselben Regeln.",
+      key: "K2, K3" },
+    { title: "Zusätzliche Annahme: Unkorreliertheit zwischen Tests",
+      content: "Dass \\(\\text{Cov}(\\varepsilon_{i}, \\tau_{j}) = 0\\) auch für \\(i \\neq j\\) gilt – also dass der Messfehler von Test \\(i\\) nicht mit dem wahren Wert eines anderen Tests \\(j\\) zusammenhängt – das folgt nicht aus der Definition, sondern ist eine zusätzliche Annahme der KTT.",
+      key: "Annahme" },
+    { title: "Varianzzerlegung und Reliabilität",
+      content: "Aus K1–K3 folgt die Varianzzerlegung und die Definition der Reliabilität:",
+      formula: "\\[\\text{Var}(Y_{i}) = \\text{Var}(\\tau_{i}) + \\text{Var}(\\varepsilon_{i}) \\qquad \\text{Rel}(Y_{i}) = \\frac{\\text{Var}(\\tau_{i})}{\\text{Var}(Y_{i})}\\]",
+      content2: "Je näher Rel an 1, desto genauer misst der Test.",
+      example: "Ein Test mit \\(\\text{Rel} = 0{,}90\\) bedeutet: 90\\,% der Testscore-Varianz sind ‚echte' Unterschiede, nur 10\\,% sind Messfehler.",
+      key: "K4, K5" },
+    { title: "Der Standardmessfehler",
+      content: "Aus der Reliabilität kann man den Standardmessfehler berechnen:",
+      formula: "\\[\\text{SE} = \\text{SD}(Y) \\cdot \\sqrt{1 - \\text{Rel}(Y)}\\]",
+      content2: "Der SE gibt an, wie stark Messwerte um den wahren Wert streuen, und wird für Konfidenzintervalle um individuelle Testergebnisse verwendet.",
+      example: "IQ-Test: \\(\\text{SD} = 15\\), \\(\\text{Rel} = 0{,}90\\) → \\(\\text{SE} = 15 \\cdot \\sqrt{0{,}10} \\approx 4{,}7\\). Ein IQ von 112 hat ein 95\\,%-Konfidenzintervall von ca. [103, 121].",
+      key: "K5a" },
+  ],
+  8: [
+    { title: "KTT-Modelle: Ein Überblick",
+      content: "Die KTT kennt verschiedene Modelle, die sich darin unterscheiden, wie ähnlich mehrere Tests sein müssen. Die Modelle bilden eine Hierarchie vom allgemeinsten (τ-kongenerisch) zum strengsten (parallel). Jedes strengere Modell fügt Restriktionen hinzu.",
+      key: "Überblick" },
+    { title: "τ-kongenerisch: Das allgemeinste Modell",
+      content: "Im τ-kongenerischen Modell messen alle Tests dasselbe Konstrukt \\(\\eta\\), aber auf unterschiedliche Weise:",
+      formula: "\\[\\tau_{i} = \\alpha_{i} + \\beta_{i}\\,\\eta\\]",
+      content2: "Jedes Item hat seinen eigenen Intercept \\(\\alpha_{i}\\) (Schwierigkeit) und seine eigene Ladung \\(\\beta_{i}\\) (Trennschärfe). Dieses Modell ist identisch mit dem Ein-Faktor-Modell der CFA.",
+      key: "K8" },
+    { title: "Essentiell τ-äquivalent: Gleiche Ladungen",
+      content: "Wenn alle Items gleich stark auf das Konstrukt laden (\\(\\beta_{i} = 1\\) für alle \\(i\\)), erhält man das essentiell τ-äquivalente Modell:",
+      formula: "\\[\\tau_{i} = \\alpha_{i} + \\eta\\]",
+      content2: "Die Items dürfen sich nur noch in der Schwierigkeit (\\(\\alpha_{i}\\)) und der Fehlerstreuung unterscheiden. Unter diesem Modell ist Cronbachs \\(\\alpha\\) ein exakter Reliabilitätsschätzer.",
+      key: "K7" },
+    { title: "τ-äquivalent und parallel",
+      content: "τ-äquivalent: Zusätzlich sind die Intercepts gleich (\\(\\alpha_{i} = \\alpha\\)), sodass \\(\\tau_{i} = \\tau_{j}\\) – alle Items haben denselben wahren Wert. Parallel: Außerdem sind die Fehlervarianzen gleich (\\(\\text{Var}(\\varepsilon_{1}) = \\text{Var}(\\varepsilon_{2}) = \\ldots\\)). Im parallelen Modell gilt: \\(\\text{Kor}(Y_{i}, Y_{j}) = \\text{Rel}(Y)\\).",
+      key: "K6" },
+    { title: "Die Hierarchie",
+      content: "Vom allgemeinsten zum strengsten: τ-kongenerisch (freie \\(\\alpha_{i}, \\beta_{i}\\)) → ess. τ-äquivalent (\\(\\beta_{i} = 1\\)) → τ-äquivalent (+ gleiche \\(\\alpha_{i}\\)) → parallel (+ gleiche Fehlervarianzen). Jede Stufe entspricht SEM-Restriktionen: gleiche Ladungen → gleiche Intercepts → gleiche Residualvarianzen.",
+      key: "Zusammenfassung" },
+  ],
+  9: [
+    { title: "Von Gleichungen zu Pfaddiagrammen",
+      content: "Strukturgleichungsmodelle (SEM) werden oft als Pfaddiagramme dargestellt. Ein gerichteter Pfeil (→) von \\(X\\) nach \\(Y\\) bedeutet: \\(Y\\) wird durch \\(X\\) beeinflusst, d.\\,h. \\(X\\) taucht als Prädiktor in der Gleichung für \\(Y\\) auf. Ein Doppelpfeil (↔) bedeutet Kovarianz.",
+      key: "Intuition" },
+    { title: "Pfaddiagramm lesen",
+      content: "Latente Variablen werden als Kreise/Ovale dargestellt, beobachtete als Rechtecke. Fehlervariablen (\\(\\varepsilon\\)) zeigen auf die beobachteten Variablen. Aus dem Pfaddiagramm liest man direkt die Modellgleichungen ab: \\(Y_{i} = \\alpha_{i} + \\beta_{i}\\,\\eta + \\varepsilon_{i}\\).",
+      example: "Ein Ein-Faktor-CFA-Modell mit 3 Items hat: einen Kreis (\\(\\eta\\)), drei Rechtecke (\\(Y_{1}, Y_{2}, Y_{3}\\)), drei Pfeile von \\(\\eta\\) zu den \\(Y\\)'s (mit Ladungen \\(\\beta_{i}\\)) und drei Fehlerpfeile.",
+      key: "Grundlagen" },
+  ],
+  10: [
+    { title: "Was ist die modellimplizierte Kovarianzmatrix?",
+      content: "Gegeben ein SEM mit bestimmten Parametern (Ladungen, Varianzen, etc.) kann man berechnen, welche Kovarianzen zwischen den beobachteten Variablen das Modell vorhersagt. Diese Vorhersagen bilden die modellimplizierte Kovarianzmatrix \\(\\Sigma(\\theta)\\).",
+      key: "Intuition" },
+    { title: "Berechnung aus dem Modell",
+      content: "Für ein Ein-Faktor-Modell \\(Y_{i} = \\alpha_{i} + \\beta_{i}\\eta + \\varepsilon_{i}\\) folgt mit den Kovarianzregeln:",
+      formula: "\\[\\text{Cov}(Y_{i}, Y_{j}) = \\beta_{i}\\,\\beta_{j}\\,\\text{Var}(\\eta) \\quad (i \\neq j) \\qquad \\text{Var}(Y_{i}) = \\beta_{i}^{2}\\,\\text{Var}(\\eta) + \\text{Var}(\\varepsilon_{i})\\]",
+      content2: "Die Bilinearität der Kovarianz (Regel C5) ist der Schlüssel!",
+      example: "Mit \\(\\beta_{1} = 0{,}8\\), \\(\\beta_{2} = 0{,}6\\), \\(\\text{Var}(\\eta) = 1\\): \\(\\text{Cov}(Y_{1}, Y_{2}) = 0{,}8 \\cdot 0{,}6 \\cdot 1 = 0{,}48\\).",
+      key: "Berechnung" },
+    { title: "Modellfit",
+      content: "Die Idee der SEM-Schätzung: Finde Parameter \\(\\theta\\), sodass \\(\\Sigma(\\theta)\\) möglichst gut zur beobachteten Kovarianzmatrix \\(S\\) passt. Wenn das Modell gut passt, sind die Abweichungen zwischen \\(\\Sigma(\\theta)\\) und \\(S\\) klein.",
+      key: "Fit" },
+  ],
+  11: [
+    { title: "Konfirmatorische Faktorenanalyse (CFA)",
+      content: "Die CFA ist ein SEM-Spezialfall, bei dem latente Faktoren die beobachteten Variablen erklären:",
+      formula: "\\[Y_{i} = \\alpha_{i} + \\beta_{i}\\,\\eta + \\varepsilon_{i}\\]",
+      content2: "Man legt vorab fest, welche Items auf welchen Faktor laden – im Gegensatz zur explorativen Faktorenanalyse (EFA), bei der die Zuordnung aus den Daten geschätzt wird.",
+      key: "CFA vs. EFA" },
+    { title: "CFA und KTT-Modelle",
+      content: "Das Ein-Faktor-CFA-Modell ist das τ-kongenerische KTT-Modell. Durch zusätzliche Restriktionen testet man strengere KTT-Modelle: Gleiche Ladungen testen → ess. τ-Äquivalenz → Cronbachs \\(\\alpha\\) gerechtfertigt? Zusätzlich gleiche Intercepts → τ-Äquivalenz. Zusätzlich gleiche Fehlervarianzen → Parallelität.",
+      key: "KTT-Verbindung" },
+    { title: "Reliabilität in der CFA",
+      content: "In der CFA wird die Reliabilität aus den geschätzten Parametern berechnet:",
+      formula: "\\[\\text{Rel}(Y_{i}) = \\frac{\\beta_{i}^{2}\\,\\text{Var}(\\eta)}{\\text{Var}(Y_{i})}\\]",
+      content2: "McDonalds \\(\\omega\\) nutzt die individuellen Ladungen und ist unter dem τ-kongenerischen Modell korrekt – im Gegensatz zu Cronbachs \\(\\alpha\\), das gleiche Ladungen voraussetzt.",
+      key: "Reliabilität" },
+  ],
+};
+
+// ============================================================
 // COMPONENTS
 // ============================================================
 
@@ -2308,6 +2527,157 @@ function RuleCard({ rule }) {
           )}
         </div>
       )}
+    </div>
+  );
+}
+
+// ============================================================
+// WORLD INTRO COMPONENT
+// ============================================================
+
+function WorldIntro({ worldId, onStart, onBack }) {
+  const [cardIdx, setCardIdx] = useState(0);
+  const cards = WORLD_INTROS[worldId] || [];
+  const world = WORLDS.find(w => w.id === worldId);
+
+  useEffect(() => {
+    if (!cards.length) onStart();
+  }, [cards.length, onStart]);
+
+  if (!cards.length) return null;
+
+  const card = cards[cardIdx];
+  const isLast = cardIdx >= cards.length - 1;
+
+  return (
+    <div style={{ maxWidth: 560, margin: '0 auto', padding: '16px 16px 80px' }}>
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+        <button onClick={onBack} style={{
+          background: 'none', border: 'none', color: 'var(--text-dim)',
+          fontSize: '1.3em', padding: 4, cursor: 'pointer',
+        }}>✕</button>
+        <div style={{ flex: 1 }}>
+          <div style={{
+            width: '100%', height: 12, background: 'var(--bg-light)',
+            borderRadius: 6, overflow: 'hidden',
+          }}>
+            <div style={{
+              width: `${((cardIdx + 1) / cards.length) * 100}%`, height: '100%',
+              background: world?.color || 'var(--blue)', borderRadius: 6,
+              transition: 'width 0.3s ease',
+            }} />
+          </div>
+        </div>
+        <span style={{ fontSize: '0.85em', color: 'var(--text-dim)', fontWeight: 600, minWidth: 40, textAlign: 'right' }}>
+          {cardIdx + 1}/{cards.length}
+        </span>
+      </div>
+
+      {/* World title */}
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16,
+        color: world?.color || 'var(--text)', fontWeight: 700, fontSize: '0.9em',
+      }}>
+        <span>{world?.icon}</span>
+        <span>{world?.name}</span>
+        <span style={{ color: 'var(--text-dim)', fontWeight: 400 }}>— Einführung</span>
+      </div>
+
+      {/* Card */}
+      <div style={{
+        background: 'var(--bg-light)', borderRadius: 16, padding: '24px 20px',
+        marginBottom: 20, borderLeft: `4px solid ${world?.color || 'var(--blue)'}`,
+      }}>
+        {/* Card key badge */}
+        {card.key && (
+          <span style={{
+            display: 'inline-block', background: world?.color || 'var(--blue)',
+            color: '#fff', fontSize: '0.75em', fontWeight: 700, padding: '2px 10px',
+            borderRadius: 12, marginBottom: 10, opacity: 0.85,
+          }}>{card.key}</span>
+        )}
+
+        {/* Title */}
+        <h3 style={{ fontSize: '1.15em', fontWeight: 800, marginBottom: 12, marginTop: 0 }}>
+          {card.title}
+        </h3>
+
+        {/* Content */}
+        <div style={{ fontSize: '1em', lineHeight: 1.7, marginBottom: card.example ? 16 : 0 }}>
+          <MathText text={card.content} />
+          {card.formula && (
+            <div style={{ margin: '12px 0', padding: '10px 16px', background: 'rgba(0,0,0,0.03)', borderRadius: 8, overflowX: 'auto' }}>
+              <MathText text={card.formula} block />
+            </div>
+          )}
+          {card.content2 && (
+            <div style={{ marginTop: 8 }}>
+              <MathText text={card.content2} />
+            </div>
+          )}
+        </div>
+
+        {/* Example box */}
+        {card.example && (
+          <div style={{
+            background: 'rgba(88,204,2,0.08)', border: '1px solid rgba(88,204,2,0.25)',
+            borderRadius: 10, padding: '12px 14px', marginTop: 8,
+          }}>
+            <div style={{ fontWeight: 700, fontSize: '0.8em', color: 'var(--green)', marginBottom: 4 }}>
+              Beispiel
+            </div>
+            <div style={{ fontSize: '0.95em', lineHeight: 1.6 }}>
+              <MathText text={card.example} />
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Navigation buttons */}
+      <div style={{ display: 'flex', gap: 12, justifyContent: 'space-between' }}>
+        <button
+          onClick={() => setCardIdx(i => i - 1)}
+          disabled={cardIdx === 0}
+          style={{
+            padding: '12px 20px', borderRadius: 12, border: 'none',
+            background: 'var(--bg-light)', color: cardIdx === 0 ? 'var(--text-dim)' : 'var(--text)',
+            fontWeight: 700, fontSize: '1em', cursor: cardIdx === 0 ? 'default' : 'pointer',
+            opacity: cardIdx === 0 ? 0.4 : 1,
+          }}
+        >
+          ← Zurück
+        </button>
+
+        {isLast ? (
+          <button onClick={onStart} style={{
+            padding: '12px 24px', borderRadius: 12, border: 'none',
+            background: world?.color || 'var(--green)', color: '#fff',
+            fontWeight: 700, fontSize: '1em', cursor: 'pointer',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+          }}>
+            Jetzt üben! →
+          </button>
+        ) : (
+          <button onClick={() => setCardIdx(i => i + 1)} style={{
+            padding: '12px 24px', borderRadius: 12, border: 'none',
+            background: world?.color || 'var(--blue)', color: '#fff',
+            fontWeight: 700, fontSize: '1em', cursor: 'pointer',
+          }}>
+            Weiter →
+          </button>
+        )}
+      </div>
+
+      {/* Skip link */}
+      <div style={{ textAlign: 'center', marginTop: 16 }}>
+        <button onClick={onStart} style={{
+          background: 'none', border: 'none', color: 'var(--text-dim)',
+          fontSize: '0.85em', cursor: 'pointer', textDecoration: 'underline',
+        }}>
+          Einführung überspringen – direkt zu den Übungen
+        </button>
+      </div>
     </div>
   );
 }
@@ -2665,6 +3035,8 @@ function RuleDisplay({ worldId, currentRule, ruleMode, setRuleMode }) {
 }
 
 function LevelSession({ worldId, onBack, progress, setProgress }) {
+  const hasIntro = WORLD_INTROS[worldId] && WORLD_INTROS[worldId].length > 0;
+  const [showIntro, setShowIntro] = useState(hasIntro);
   const [exercises, setExercises] = useState([]);
   const [currentIdx, setCurrentIdx] = useState(0);
   const [lives, setLives] = useState(3);
@@ -2710,6 +3082,11 @@ function LevelSession({ worldId, onBack, progress, setProgress }) {
 
   const world = WORLDS.find(w => w.id === worldId);
   if (!world) return <div>Loading...</div>;
+
+  // Show intro first (after all hooks)
+  if (showIntro) {
+    return <WorldIntro worldId={worldId} onStart={() => setShowIntro(false)} onBack={onBack} />;
+  }
 
   if (!exercises.length) return <div>Generating exercises...</div>;
 
