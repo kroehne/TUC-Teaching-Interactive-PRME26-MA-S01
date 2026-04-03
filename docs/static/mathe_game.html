@@ -186,14 +186,48 @@ function MathText({ children, block }) {
 const WORLDS = [
   { id: 1, name: "Erwartungswert", icon: "🎯", color: "#58cc02", desc: "E(·) – Rechenregeln für Erwartungswerte" },
   { id: 2, name: "Varianz", icon: "📊", color: "#1cb0f6", desc: "Var(·) – Streuungsmaße beherrschen" },
-  { id: 3, name: "Kovarianz", icon: "🔗", color: "#ce82ff", desc: "Cov(·,·) – Zusammenhänge berechnen" },
-  { id: 4, name: "Regression", icon: "📈", color: "#ff9600", desc: "E(Y|X), Residuen und R²" },
-  { id: 5, name: "KTT Grundlagen", icon: "🧱", color: "#ff4b4b", desc: "Y = τ + ε – Klassische Testtheorie" },
-  { id: 6, name: "KTT-Modelle", icon: "🏗️", color: "#ffc800", desc: "Parallel, ess. τ-äquivalent, τ-kongenerisch" },
-  { id: 7, name: "Pfaddiagramme", icon: "🔀", color: "#58cc02", desc: "Pfaddiagramme → Gleichungen" },
-  { id: 8, name: "Impl. Kovarianzmatrix", icon: "🧮", color: "#1cb0f6", desc: "Modellimpliierte Σ berechnen" },
-  { id: 9, name: "CFA", icon: "🔬", color: "#ce82ff", desc: "Konfirmatorische Faktorenanalyse" },
+  { id: 3, name: "Kovarianz & Korrelation", icon: "🔗", color: "#ce82ff", desc: "Cov(·,·) und Kor(·,·) – Zusammenhänge berechnen" },
+  { id: 4, name: "Regression Grundlagen", icon: "📈", color: "#ff9600", desc: "Lineare und multiple Regression" },
+  { id: 5, name: "Bedingte Erwartung", icon: "🔮", color: "#ff9600", desc: "E(Y|X) – Regression als bedingte Erwartung" },
+  { id: 6, name: "Rechenregeln Regression", icon: "📐", color: "#ff9600", desc: "Eigenschaften von E(Y|X) und ε" },
+  { id: 7, name: "KTT Grundlagen", icon: "🧱", color: "#ff4b4b", desc: "Y = τ + ε – Klassische Testtheorie" },
+  { id: 8, name: "KTT-Modelle", icon: "🏗️", color: "#ffc800", desc: "Parallel, ess. τ-äquivalent, τ-kongenerisch" },
+  { id: 9, name: "Pfaddiagramme", icon: "🔀", color: "#58cc02", desc: "Pfaddiagramme → Gleichungen" },
+  { id: 10, name: "Impl. Kovarianzmatrix", icon: "🧮", color: "#1cb0f6", desc: "Modellimpliierte Σ berechnen" },
+  { id: 11, name: "CFA", icon: "🔬", color: "#ce82ff", desc: "Konfirmatorische Faktorenanalyse" },
 ];
+
+// Definition rules (Box F.1 Definitionen + Box G.1 Definitionen)
+const DEF_RULES = {
+  // Box F definitions
+  DEF_E: { id: "DEF_E", label: "Def. E(X)", text: "\\(E(X) := \\sum_{i=1}^{n} x_i \\cdot P(X = x_i)\\)", desc: "Der Erwartungswert ist der gewichtete Durchschnitt aller möglichen Werte, gewichtet mit ihren Wahrscheinlichkeiten.",
+    psychologie: "Der Erwartungswert ist das zentrale Maß für die ‚typische' Ausprägung eines Merkmals. In der Diagnostik ist er der Populationsmittelwert eines Tests – z.\u00A0B. der mittlere IQ von 100. In der klinischen Forschung vergleicht man Erwartungswerte zwischen Gruppen (z.\u00A0B. Therapie- vs. Kontrollgruppe), um Behandlungseffekte nachzuweisen. Ohne den Erwartungswert gibt es kein Maß für den ‚durchschnittlichen' Therapieeffekt." },
+  DEF_Cov: { id: "DEF_Cov", label: "Def. Cov", text: "\\(\\text{Cov}(X,Y) := E\\bigl[(X - E(X))(Y - E(Y))\\bigr]\\)", desc: "Die Kovarianz misst den linearen Zusammenhang zweier Zufallsvariablen.",
+    psychologie: "Die Kovarianz quantifiziert, ob zwei psychologische Merkmale systematisch zusammenhängen. Positive Kovarianz zwischen Intelligenz und Schulleistung bedeutet: Personen mit überdurchschnittlicher Intelligenz zeigen tendenziell überdurchschnittliche Schulleistung. Die Kovarianz ist die Grundlage für Korrelation, Regression und Faktorenanalyse – praktisch alle multivariaten Methoden der Psychologie bauen darauf auf." },
+  DEF_Var: { id: "DEF_Var", label: "Def. Var", text: "\\(\\text{Var}(X) := E\\bigl[(X - E(X))^{2}\\bigr] = \\text{Cov}(X,X)\\)", desc: "Die Varianz misst die Streuung einer Zufallsvariablen um ihren Erwartungswert.",
+    psychologie: "Die Varianz zeigt, wie stark sich Personen in einem Merkmal unterscheiden. Ohne interindividuelle Unterschiede (Varianz = 0) kann man weder Zusammenhänge finden noch Vorhersagen machen. In der Diagnostik bestimmt die Varianz, ob ein Test überhaupt zwischen Personen differenziert. In der Forschungsmethodik ist die Varianzzerlegung (erklärt vs. nicht erklärt) das Kernprinzip der ANOVA und der Regression." },
+  DEF_Std: { id: "DEF_Std", label: "Def. Std", text: "\\(\\text{Std}(X) := +\\bigl[\\text{Var}(X)\\bigr]^{1/2}\\)", desc: "Die Standardabweichung ist die positive Quadratwurzel der Varianz.",
+    psychologie: "Die Standardabweichung hat gegenüber der Varianz den Vorteil, dass sie in derselben Einheit wie der Messwert angegeben wird. Der IQ hat SD = 15, T-Werte haben SD = 10. In der Diagnostik wird die SD benötigt, um z-Werte zu berechnen (\\(z = (X - M)/SD\\)), Konfidenzintervalle zu bilden und Effektstärken (Cohens d) zu interpretieren. Ein Therapieeffekt von d = 0.5 bedeutet eine Verbesserung um eine halbe Standardabweichung." },
+  DEF_Kor: { id: "DEF_Kor", label: "Def. Kor", text: "\\(\\text{Kor}(X,Y) := \\frac{\\text{Cov}(X,Y)}{\\text{Std}(X) \\cdot \\text{Std}(Y)}\\)", desc: "Die Korrelation ist die standardisierte Kovarianz, sie liegt zwischen \\(-1\\) und \\(+1\\).",
+    psychologie: "Die Korrelation ist das am häufigsten berichtete Zusammenhangsmaß in der Psychologie. r = 0.30 zwischen Gewissenhaftigkeit und Arbeitszufriedenheit ist ein ‚typischer' psychologischer Effekt. Der entscheidende Vorteil: Die Korrelation ist skalierungsinvariant – ob man Intelligenz in IQ-Punkten oder Rohwerten misst, die Korrelation mit Schulleistung bleibt gleich. Das macht Ergebnisse über Studien hinweg vergleichbar." },
+  // Box G definitions
+  DEF_BedE: { id: "DEF_BedE", label: "Def. E(Y|X=x)", text: "\\(E(Y \\mid X = x) := \\sum_{i=1}^{n} y_i \\cdot P(Y = y_i \\mid X = x)\\)", desc: "Der bedingte Erwartungswert von \\(Y\\) gegeben \\(X = x\\) ist der gewichtete Durchschnitt der \\(Y\\)-Werte unter der Bedingung \\(X = x\\).",
+    psychologie: "Bedingte Erwartungswerte sind das Herzstück jeder Vorhersage in der Psychologie: Was erwarten wir für den Therapieerfolg (Y), wenn der Schweregrad (X) bekannt ist? Für Personen mit Schweregrad 7 ist der bedingte Erwartungswert z.\u00A0B. eine Symptomreduktion von 12 Punkten. Jede klinische Prognose, jede Schuleignungsempfehlung basiert auf einem bedingten Erwartungswert." },
+  DEF_Reg: { id: "DEF_Reg", label: "Def. E(Y|X)", text: "\\(E(Y \\mid X)\\) ist eine Zufallsvariable (Funktion von \\(X\\)), deren Werte die bedingten Erwartungswerte \\(E(Y \\mid X = x)\\) sind.", desc: "\\(Y\\) heißt Regressand, \\(X\\) heißt Regressor. Die Regression ist die bestmögliche Vorhersage von \\(Y\\) durch \\(X\\).",
+    psychologie: "Die Regression als Zufallsvariable zu verstehen ist ein Schlüsselkonzept: Die Vorhersagefunktion E(Y|X) ändert sich mit jedem neuen Patienten (weil X variiert). In der Diagnostik produziert jede Testung einen individuellen vorhergesagten Wert – die Gesamtheit aller möglichen Vorhersagen bildet die Zufallsvariable E(Y|X). Ihre Varianz ist die erklärte Varianz, und ihr Anteil an der Gesamtvarianz ist R²." },
+  DEF_Res: { id: "DEF_Res", label: "Def. Residuum", text: "\\(\\varepsilon := Y - E(Y \\mid X)\\)", desc: "Das Residuum ist die nicht durch die Regression \\(E(Y \\mid X)\\) determinierte Komponente von \\(Y\\).",
+    psychologie: "Das Residuum ist der Vorhersagefehler – die Differenz zwischen tatsächlichem und vorhergesagtem Wert. In der klinischen Diagnostik: Wenn der Therapieerfolg auf 60 Punkte vorhergesagt wird, aber 72 erreicht werden, ist ε = +12. Große Residuen identifizieren Personen, bei denen das Vorhersagemodell schlecht funktioniert – klinisch oft die interessantesten Fälle, die weitere Untersuchung erfordern." },
+  DEF_R2: { id: "DEF_R2", label: "Def. R²", text: "\\(R^{2}_{Y|X} := \\frac{\\text{Var}\\bigl[E(Y \\mid X)\\bigr]}{\\text{Var}(Y)}\\)", desc: "Der Determinationskoeffizient gibt den durch die Regression erklärten Varianzanteil von \\(Y\\) an. Er misst die Stärke der regressiven Abhängigkeit.",
+    psychologie: "R² ist die Standardkennzahl für Vorhersagequalität in der Psychologie. R² = 0.25 bedeutet: 25 % der Unterschiede im Kriterium werden durch den Prädiktor erklärt. In der Personalauswahl gilt R² = 0.10 als praktisch bedeutsam, in der kognitiven Psychologie erwartet man oft R² > 0.50. Das Verständnis von R² schützt vor Fehlinterpretationen: Ein ‚signifikanter' Prädiktor mit R² = 0.01 erklärt praktisch nichts." },
+  DEF_RegUnabh: { id: "DEF_RegUnabh", label: "Def. Reg. Unabh.", text: "\\(E(Y \\mid X) = E(Y)\\)", desc: "Regressive Unabhängigkeit: Die Vorhersage von \\(Y\\) durch \\(X\\) ist für alle \\(X\\)-Werte gleich dem unbedingten Erwartungswert. Dann ist \\(R^{2}_{Y|X} = 0\\).",
+    psychologie: "Wenn ein Prädiktor regressiv unabhängig vom Kriterium ist, liefert er keine Vorhersagekraft – die beste Prognose ist für alle Personen gleich (der Gesamtmittelwert). In der Personalauswahl: Wenn der Einstellungstest regressiv unabhängig von der Arbeitsleistung ist, kann man sich die Testung sparen. Regressive Unabhängigkeit ist auch das Nullmodell, gegen das jede Regression getestet wird." },
+  DEF_LinReg: { id: "DEF_LinReg", label: "Def. Lin. Reg.", text: "\\(E(Y \\mid X) = \\alpha + \\beta X\\)", desc: "Lineare Regression: Die bedingte Erwartung ist eine lineare Funktion von \\(X\\). \\(\\alpha\\) ist der Intercept (\\(= E(Y|X=0)\\)), \\(\\beta\\) ist der Slope (Steigung).",
+    psychologie: "Die lineare Regression ist das Arbeitspferd der psychologischen Forschung. β gibt an, um wie viele Einheiten sich Y ändert, wenn X um eine Einheit steigt – z.\u00A0B. ‚Pro IQ-Punkt steigt die Schulnote um 0.02 Punkte'. α ist der Achsenabschnitt: die Vorhersage bei X = 0. Die korrekte Interpretation dieser Parameter ist essentiell für evidenzbasierte Entscheidungen in Klinik und Beratung." },
+  DEF_MultReg: { id: "DEF_MultReg", label: "Def. Mult. Reg.", text: "\\(E(Y \\mid X_1, X_2) = \\beta_0 + \\beta_1 X_1 + \\beta_2 X_2\\)", desc: "Multiple Regression: \\(\\beta_j\\) ist der Partialeffekt von \\(X_j\\) bei Kontrolle der anderen Regressoren.",
+    psychologie: "In der Psychologie wirken fast immer mehrere Faktoren zusammen. Die multiple Regression erlaubt es, den ‚bereinigten' Effekt jedes Prädiktors zu bestimmen: Wie stark wirkt Motivation auf Schulleistung, wenn man Intelligenz kontrolliert? Partialeffekte sind die Grundlage für die Kontrolle von Confoundern und damit für kausale Schlussfolgerungen in nicht-experimentellen Designs." },
+  DEF_OLS: { id: "DEF_OLS", label: "Def. OLS", text: "OLS minimiert \\(\\sum_{i=1}^{n}(Y_i - \\hat{Y}_i)^{2}\\)", desc: "Ordinary Least Squares: Die Schätzung der Regressionsparameter durch Minimierung der Summe der quadrierten Residuen.",
+    psychologie: "OLS ist das Standardverfahren zur Schätzung von Regressionsmodellen in der Psychologie. Die Idee ist intuitiv: Finde die Gerade, die die quadrierten Vorhersagefehler minimiert. Jedes Mal, wenn in SPSS, R oder Mplus ein Regressionsmodell geschätzt wird, arbeitet im Hintergrund (oder eine Verallgemeinerung von) OLS. Das Verständnis von OLS hilft, die Grenzen der Methode zu erkennen: Sie ist empfindlich gegenüber Ausreißern und setzt Linearität voraus." },
+};
 
 // Rule cards (Box F.1 from Steyer & Eid)
 const RULES = {
@@ -221,6 +255,15 @@ const RULES = {
     psychologie: "Ob man die Depressionsskala bei 0 oder bei 50 beginnen lässt – der Zusammenhang mit anderen Variablen ändert sich nicht. Diese Translationsinvarianz der Kovarianz ist wichtig für die Forschungspraxis: Zentrierung von Variablen (z.\u00A0B. um Mittelwert 0) verändert keine Korrelationen und keinen Zusammenhang, was bei der Interpretation von Interaktionseffekten in der Regression relevant ist." },
   C5: { id: "C5", label: "(xii)", text: "\\(\\text{Cov}(\\alpha_{1} X_{1} + \\alpha_{2} X_{2},\\; \\beta_{1} Y_{1} + \\beta_{2} Y_{2}) = \\alpha_{1}\\beta_{1}\\text{Cov}(X_{1},Y_{1}) + \\alpha_{1}\\beta_{2}\\text{Cov}(X_{1},Y_{2}) + \\alpha_{2}\\beta_{1}\\text{Cov}(X_{2},Y_{1}) + \\alpha_{2}\\beta_{2}\\text{Cov}(X_{2},Y_{2})\\)", desc: "Bilinearität der Kovarianz.",
     psychologie: "Diese allgemeine Regel ist der Schlüssel zur Strukturgleichungsmodellierung (SEM): Wenn man wissen will, wie zwei Skalenwerte (jeweils Summen mehrerer Items) zusammenhängen, braucht man alle paarweisen Item-Kovarianzen. In der konfirmatorischen Faktorenanalyse (CFA) wird genau diese Regel benutzt, um aus Faktorladungen und Faktorvarianzen die erwarteten Kovarianzen zwischen beobachteten Variablen abzuleiten – das ist die modellimplizierte Kovarianzmatrix Σ(θ)." },
+  // Korrelations-Regeln
+  KOR1: { id: "KOR1", label: "(xiii)", text: "\\(-1 \\leq \\text{Kor}(X,Y) \\leq 1\\)", desc: "Die Korrelation ist auf das Intervall [−1, +1] beschränkt.",
+    psychologie: "In der Psychologie ist die Korrelation das meistverwendete Zusammenhangsmaß. Durch die Normierung auf [−1, +1] sind Korrelationen direkt interpretierbar und studienübergreifend vergleichbar: r = 0.30 ist in der Persönlichkeitsforschung ein mittlerer Effekt, unabhängig davon, ob man Extraversion auf einer 5er- oder 7er-Skala gemessen hat." },
+  KOR2: { id: "KOR2", label: "(xiv)", text: "\\(\\text{Kor}(X,Y) = \\pm 1 \\Leftrightarrow Y = a + bX\\) mit \\(b \\neq 0\\)", desc: "Die Korrelation ist genau dann ±1, wenn ein perfekter linearer Zusammenhang besteht.",
+    psychologie: "In der Diagnostik kommt eine perfekte Korrelation praktisch nie vor – sie wäre ein Indiz für redundante Messungen. Aber die Regel erklärt, warum hohe Korrelationen auf einen ‚fast linearen' Zusammenhang hinweisen. In der Testkonstruktion nutzt man das: Items mit sehr hohen Inter-Item-Korrelationen (r > 0.90) messen vermutlich dasselbe und können entfernt werden." },
+  KOR3: { id: "KOR3", label: "(xv)", text: "\\(\\text{Kor}(aX + b,\\; cY + d) = \\text{sign}(ac) \\cdot \\text{Kor}(X,Y)\\)", desc: "Lineare Transformation: Die Korrelation ändert sich nur im Vorzeichen (wenn a oder c negativ).",
+    psychologie: "Diese Invarianz ist fundamental für die Vergleichbarkeit von Studienergebnissen: Egal ob Extraversion auf einer Skala von 1–5 oder 10–50 gemessen wird, egal ob man Rohwerte oder z-Werte verwendet – die Korrelation mit Lebenszufriedenheit bleibt dieselbe. Nur das Vorzeichen kann sich umdrehen, z.\u00A0B. wenn man Items umpolt." },
+  KOR4: { id: "KOR4", label: "(xvi)", text: "\\(\\text{Kor}(X,Y) = 0 \\;\\not\\!\\!\\Rightarrow\\; X, Y \\text{ unabhängig}\\)", desc: "Unkorreliertheit impliziert nicht Unabhängigkeit. Es kann nichtlineare Zusammenhänge geben.",
+    psychologie: "Eine häufige Fehlinterpretation in der psychologischen Forschung: ‚Die Korrelation ist null, also gibt es keinen Zusammenhang.' Aber die Korrelation erfasst nur lineare Zusammenhänge. Beispiel: Der Zusammenhang zwischen Erregung (Arousal) und Leistung ist umgekehrt U-förmig (Yerkes-Dodson-Gesetz) – die Korrelation kann null sein, obwohl ein starker Zusammenhang besteht." },
 };
 
 // Regression rules (Box G.1 from Steyer & Eid)
@@ -262,11 +305,13 @@ const KTT_RULES = {
   K4: { id: "K4", label: "KTT-4", text: "\\(\\text{Var}(Y_{i}) = \\text{Var}(\\tau_{i}) + \\text{Var}(\\varepsilon_{i})\\)", desc: "Varianzzerlegung in wahre Varianz und Fehlervarianz.",
     psychologie: "Die beobachteten Unterschiede zwischen Personen in einem Test bestehen teils aus echten Unterschieden (wahre Varianz) und teils aus Messrauschen (Fehlervarianz). Die zentrale Frage der Diagnostik ist: Wie groß ist der Anteil wahrer Varianz? Je größer dieser Anteil, desto besser differenziert der Test zwischen Personen – desto reliabler ist er." },
   K5: { id: "K5", label: "KTT-5", text: "\\(\\text{Rel}(Y_{i}) = \\frac{\\text{Var}(\\tau_{i})}{\\text{Var}(Y_{i})}\\)", desc: "Reliabilität als Anteil wahrer Varianz.",
-    psychologie: "Die Reliabilität ist das wichtigste Gütekriterium in der psychologischen Diagnostik. Sie gibt an, welcher Anteil der Testvarianz auf echte Merkmalsunterschiede zurückgeht. Ein Test mit Rel = 0.90 bedeutet: 90 % der Varianz ist ‚echt', nur 10 % ist Messfehler. Klinisch relevante Entscheidungen (z.\u00A0B. Diagnose einer Lernbehinderung) erfordern typischerweise Rel ≥ 0.90. Die Reliabilität bestimmt auch die Breite des Konfidenzintervalls um einen individuellen Messwert: SE = SD · √(1 − Rel)." },
+    psychologie: "Die Reliabilität ist das wichtigste Gütekriterium in der psychologischen Diagnostik. Sie gibt an, welcher Anteil der Testvarianz auf echte Merkmalsunterschiede zurückgeht. Ein Test mit Rel = 0.90 bedeutet: 90 % der Varianz ist ‚echt', nur 10 % ist Messfehler. Klinisch relevante Entscheidungen (z.\u00A0B. Diagnose einer Lernbehinderung) erfordern typischerweise Rel ≥ 0.90." },
+  K5a: { id: "K5a", label: "Standardmessfehler", text: "\\(\\text{SE}(Y_{i}) = \\text{SD}(Y_{i}) \\cdot \\sqrt{1 - \\text{Rel}(Y_{i})}\\)", desc: "Der Standardmessfehler gibt die Streuung der Messfehler an. Er folgt aus Rel = 1 − Var(ε)/Var(Y).",
+    psychologie: "Der Standardmessfehler (SE) ist die zentrale Kenngröße für die Genauigkeit eines individuellen Testergebnisses. In der psychologischen Diagnostik wird er verwendet, um Konfidenzintervalle um einen Testwert zu bilden (z.\u00A0B. IQ = 112 ± 1.96·SE). Je höher die Reliabilität, desto kleiner der SE und desto genauer die Messung. Klinische Entscheidungen (z.\u00A0B. ‚liegt eine Hochbegabung vor?') hängen direkt davon ab, ob der kritische Wert innerhalb oder außerhalb des Konfidenzintervalls liegt." },
   K6: { id: "K6", label: "Parallel", text: "\\(\\text{Var}(\\varepsilon_{1}) = \\text{Var}(\\varepsilon_{2}) = \\ldots\\) und \\(\\tau_{1} = \\tau_{2} = \\ldots\\)", desc: "Parallele Messungen: gleiche wahre Werte und gleiche Fehlervarianzen.",
     psychologie: "Paralleltest-Reliabilität ist der klassische Reliabilitätskoeffizient: Man gibt zwei parallele Testformen vor und korreliert die Ergebnisse. In der Praxis ist diese Anforderung sehr streng – zwei Tests müssen exakt das Gleiche messen mit gleicher Genauigkeit. Deshalb wird Paralleltest-Reliabilität selten direkt bestimmt, aber das Modell ist die theoretische Grundlage für die Retest-Reliabilität und für die Erkenntnis, dass Cronbachs α die Reliabilität unterschätzt, wenn Tests nicht parallel sind." },
-  K7: { id: "K7", label: "Ess. τ-äquiv.", text: "\\(\\tau_{i} = \\eta + \\lambda_{i}\\) mit \\(\\lambda_{i}\\) Konstanten", desc: "Ess. τ-äquivalent: Die wahren Werte sind Translationen eines gemeinsamen η. Daraus folgt \\(\\text{Cov}(Y_{i},Y_{j}) = \\text{Var}(\\eta)\\) für \\(i \\neq j\\).",
-    psychologie: "Essentiell τ-äquivalente Items messen dasselbe Merkmal η, dürfen aber unterschiedliche Schwierigkeiten (λᵢ) und unterschiedliche Fehlervarianzen haben. Das ist das Modell, unter dem Cronbachs α als Reliabilitätsschätzer exakt gilt. In der Testkonstruktion heißt das: Alle Items einer Skala sollen dasselbe Konstrukt messen, dürfen sich aber in der Schwierigkeit unterscheiden – eine realistische und häufig geprüfte Annahme. Wenn diese Annahme verletzt ist (z.\u00A0B. bei heterogenen Skalen), unterschätzt α die Reliabilität." },
+  K7: { id: "K7", label: "Ess. τ-äquiv.", text: "\\(\\tau_{i} = \\alpha_{i} + \\eta\\) mit \\(\\alpha_{i}\\) Konstanten", desc: "Ess. τ-äquivalent: Spezialfall von K8 mit \\(\\beta_{i} = 1\\). Die wahren Werte sind Translationen eines gemeinsamen η. Daraus folgt \\(\\text{Cov}(Y_{i},Y_{j}) = \\text{Var}(\\eta)\\) für \\(i \\neq j\\).",
+    psychologie: "Essentiell τ-äquivalente Items messen dasselbe Merkmal η, dürfen aber unterschiedliche Schwierigkeiten (αᵢ) und unterschiedliche Fehlervarianzen haben. Das ist das Modell, unter dem Cronbachs α als Reliabilitätsschätzer exakt gilt. In der Testkonstruktion heißt das: Alle Items einer Skala sollen dasselbe Konstrukt messen, dürfen sich aber in der Schwierigkeit unterscheiden – eine realistische und häufig geprüfte Annahme. Wenn diese Annahme verletzt ist (z.\u00A0B. bei heterogenen Skalen), unterschätzt α die Reliabilität." },
   K8: { id: "K8", label: "τ-kongenerisch", text: "\\(\\tau_{i} = \\alpha_{i} + \\beta_{i} \\eta\\) mit \\(\\alpha_{i}, \\beta_{i}\\) Konstanten", desc: "τ-kongenerisch: Die wahren Werte sind lineare Funktionen eines gemeinsamen η. Daraus folgt \\(\\text{Cov}(Y_{i},Y_{j}) = \\beta_{i}\\beta_{j}\\text{Var}(\\eta)\\) für \\(i \\neq j\\).",
     psychologie: "Das τ-kongenerische Modell ist das realistischste und zugleich das allgemeinste KTT-Modell: Items dürfen unterschiedlich stark auf das Konstrukt laden (βᵢ ≠ βⱼ). Es ist mathematisch identisch mit dem Ein-Faktor-Modell der konfirmatorischen Faktorenanalyse. Cronbachs α ist unter diesem Modell nur eine Untergrenze der Reliabilität – besser wäre McDonalds ω, das die unterschiedlichen Ladungen berücksichtigt. In der modernen Diagnostik wird deshalb zunehmend ω statt α berichtet." },
 };
@@ -309,6 +354,61 @@ function shuffleMC(options, correctIndex) {
 function generateW1Exercises() {
   const exercises = [];
 
+  // Definition: E(X) = Σ x_i · P(X = x_i) für diskretes X
+  // Aufgabe 1: Einfacher Erwartungswert mit Gleichverteilung
+  exercises.push({
+    type: "fillblank",
+    question: "Ein fairer Würfel hat die Werte \\(1, 2, 3, 4, 5, 6\\), jeweils mit \\(P = \\frac{1}{6}\\). Berechne \\(E(X)\\):",
+    prompt: "\\(E(X) = 1 \\cdot \\tfrac{1}{6} + 2 \\cdot \\tfrac{1}{6} + 3 \\cdot \\tfrac{1}{6} + 4 \\cdot \\tfrac{1}{6} + 5 \\cdot \\tfrac{1}{6} + 6 \\cdot \\tfrac{1}{6} = ?\\)",
+    answer: "3.5",
+    hint: "\\(E(X) = \\frac{1+2+3+4+5+6}{6} = \\frac{21}{6} = 3{,}5\\)",
+    rule: "DEF_E",
+    level: 1,
+  });
+
+  // Aufgabe 2: Erwartungswert mit ungleichen Wahrscheinlichkeiten
+  const d2_x1 = randInt(1, 3), d2_x2 = randInt(5, 8);
+  const d2_p1_num = randInt(2, 4);
+  // P(X=x1) = d2_p1_num/10, P(X=x2) = 1 - d2_p1_num/10
+  const d2_p1 = d2_p1_num / 10;
+  const d2_p2 = 1 - d2_p1;
+  const d2_ev = d2_x1 * d2_p1 + d2_x2 * d2_p2;
+  exercises.push({
+    type: "fillblank",
+    question: `\\(X\\) nimmt die Werte \\(${d2_x1}\\) und \\(${d2_x2}\\) an mit \\(P(X = ${d2_x1}) = ${d2_p1}\\) und \\(P(X = ${d2_x2}) = ${d2_p2}\\). Berechne \\(E(X)\\):`,
+    prompt: `\\(E(X) = ${d2_x1} \\cdot ${d2_p1} + ${d2_x2} \\cdot ${d2_p2} = ?\\)`,
+    answer: `${d2_ev}`,
+    hint: `\\(E(X) = ${d2_x1} \\cdot ${d2_p1} + ${d2_x2} \\cdot ${d2_p2} = ${d2_x1 * d2_p1} + ${d2_x2 * d2_p2} = ${d2_ev}\\)`,
+    rule: "DEF_E",
+    level: 1,
+  });
+
+  // Aufgabe 3: MC — Konzeptverständnis
+  exercises.push({
+    type: "multiplechoice",
+    question: "Was berechnet die Formel \\(E(X) = \\sum_{i=1}^{n} x_i \\cdot P(X = x_i)\\)?",
+    options: [
+      "Den mit Wahrscheinlichkeiten gewichteten Durchschnitt aller möglichen Werte von \\(X\\)",
+      "Den häufigsten Wert von \\(X\\) (Modus)",
+      "Die Varianz von \\(X\\)",
+      "Den Median von \\(X\\)"
+    ],
+    correct: 0,
+    rule: "DEF_E",
+    level: 1,
+  });
+
+  // Aufgabe 4: Drei Werte mit gegebenen Wahrscheinlichkeiten
+  exercises.push({
+    type: "fillblank",
+    question: "Ein Test ergibt die Punktzahlen \\(0, 5, 10\\) mit \\(P(X=0) = 0{,}2\\), \\(P(X=5) = 0{,}5\\), \\(P(X=10) = 0{,}3\\). Berechne \\(E(X)\\):",
+    prompt: "\\(E(X) = 0 \\cdot 0{,}2 + 5 \\cdot 0{,}5 + 10 \\cdot 0{,}3 = ?\\)",
+    answer: "5.5",
+    hint: "\\(E(X) = 0 + 2{,}5 + 3 = 5{,}5\\)",
+    rule: "DEF_E",
+    level: 1,
+  });
+
   // Level 1: E(α) = α
   exercises.push({
     type: "fillblank",
@@ -340,37 +440,80 @@ function generateW1Exercises() {
     level: 1,
   });
 
-  // Level 2: Linearität E(αX + βY)
-  const a = randInt(2, 5), b = randInt(2, 5);
-  const ex = randInt(1, 10), ey = randInt(1, 10);
-  exercises.push({
-    type: "fillblank",
-    question: `Gegeben: \\(E(X)\\) = ${ex}, \\(E(Y)\\) = ${ey}. Berechne:`,
-    prompt: `\\(E(${a}X + ${b}Y) = \\;?\\)`,
-    answer: `${a * ex + b * ey}`,
-    hint: `Regel (ii): \\(E(${a}X + ${b}Y) = ${a} \\cdot E(X) + ${b} \\cdot E(Y) = ${a} \\cdot ${ex} + ${b} \\cdot ${ey}\\)`,
-    rule: "E2",
-    level: 2,
-  });
-
+  // Level 2: Einfache Skalierung E(αX) — Brücke zwischen E1 und vollständiger Linearität
   exercises.push({
     type: "multiplechoice",
     question: `Gegeben \\(E(X) = 4\\). Was ist \\(E(3X)\\)?`,
     options: ["12", "7", "3", "4"],
     correct: 0,
+    hint: "Setze in Regel (ii) \\(\\alpha = 3\\) und \\(\\beta = 0\\): \\(E(3X) = 3 \\cdot E(X) = 3 \\cdot 4 = 12\\)",
     rule: "E2",
     level: 2,
   });
 
+  const s1 = randInt(2, 5), ex_s1 = randInt(2, 8);
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(E(X) = ${ex_s1}\\). Berechne:`,
+    prompt: `\\(E(${s1}X) = ?\\)`,
+    answer: `${s1 * ex_s1}`,
+    hint: `Regel (ii) mit \\(\\beta = 0\\): \\(E(${s1}X) = ${s1} \\cdot E(X) = ${s1} \\cdot ${ex_s1} = ${s1 * ex_s1}\\)`,
+    rule: "E2",
+    level: 2,
+  });
+
+  // Level 2b: Verschiebung E(X + β) — Kombination mit Konstantenregel
   const a2 = randInt(2, 4), c2 = randInt(1, 5), ex2 = randInt(2, 8);
   exercises.push({
     type: "fillblank",
     question: `Gegeben: \\(E(X) = ${ex2}\\). Berechne:`,
     prompt: `\\(E(${a2}X + ${c2}) = ?\\)`,
     answer: `${a2 * ex2 + c2}`,
-    hint: `\\(E(${a2}X + ${c2}) = ${a2}\\cdot E(X) + E(${c2}) = ${a2}\\cdot${ex2} + ${c2}\\)`,
+    hint: `Regel (ii): \\(E(${a2}X + ${c2}) = ${a2}\\cdot E(X) + E(${c2}) = ${a2}\\cdot${ex2} + ${c2} = ${a2 * ex2 + c2}\\)`,
     rule: "E2",
     level: 2,
+  });
+
+  // Level 3: Volle Linearität E(αX + βY)
+  const a = randInt(2, 5), b = randInt(2, 5);
+  const ex = randInt(1, 10), ey = randInt(1, 10);
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(E(X) = ${ex}\\), \\(E(Y) = ${ey}\\). Berechne:`,
+    prompt: `\\(E(${a}X + ${b}Y) = \\;?\\)`,
+    answer: `${a * ex + b * ey}`,
+    hint: `Regel (ii): \\(E(${a}X + ${b}Y) = ${a} \\cdot E(X) + ${b} \\cdot E(Y) = ${a} \\cdot ${ex} + ${b} \\cdot ${ey} = ${a * ex + b * ey}\\)`,
+    rule: "E2",
+    level: 3,
+  });
+
+  // Level 3: Konzeptfrage — warum gilt Linearität?
+  exercises.push({
+    type: "multiplechoice",
+    question: "Die Linearität des Erwartungswerts \\(E(\\alpha X + \\beta Y) = \\alpha E(X) + \\beta E(Y)\\) gilt:",
+    options: [
+      "Immer, unabhängig davon ob \\(X\\) und \\(Y\\) unkorreliert sind",
+      "Nur, wenn \\(X\\) und \\(Y\\) unkorreliert sind",
+      "Nur, wenn \\(X\\) und \\(Y\\) unabhängig sind",
+      "Nur bei normalverteilten Zufallsvariablen"
+    ],
+    correct: 0,
+    hint: "Die Linearität des Erwartungswerts gilt universell – im Gegensatz zur Varianz-Regel, bei der die Kovarianz eine Rolle spielt.",
+    rule: "E2",
+    level: 3,
+  });
+
+  // Level 3: Kombination aller Regeln
+  const a3 = randInt(2, 4), b3 = randInt(2, 4), c3 = randInt(1, 6);
+  const ex3 = randInt(2, 8), ey3 = randInt(2, 8);
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(E(X) = ${ex3}\\), \\(E(Y) = ${ey3}\\). Berechne:`,
+    prompt: `\\(E(${a3}X + ${b3}Y + ${c3}) = ?\\)`,
+    answer: `${a3 * ex3 + b3 * ey3 + c3}`,
+    hint: `\\(E(${a3}X + ${b3}Y + ${c3}) = ${a3}\\cdot E(X) + ${b3}\\cdot E(Y) + ${c3} = ${a3}\\cdot${ex3} + ${b3}\\cdot${ey3} + ${c3} = ${a3 * ex3 + b3 * ey3 + c3}\\)`,
+    rule: "E2",
+    level: 3,
   });
 
   return exercises;
@@ -379,6 +522,101 @@ function generateW1Exercises() {
 // World 2: Varianz
 function generateW2Exercises() {
   const exercises = [];
+
+  // --- Definitions- und Konzeptfragen ---
+
+  // MC: Was misst die Varianz?
+  exercises.push({
+    type: "multiplechoice",
+    question: "Was misst die Varianz \\(\\text{Var}(X) = E\\bigl[(X - E(X))^{2}\\bigr]\\)?",
+    options: [
+      "Die mittlere quadratische Abweichung der Werte vom Erwartungswert",
+      "Den häufigsten Wert der Verteilung",
+      "Den Zusammenhang zwischen zwei Variablen",
+      "Den Mittelwert der Verteilung"
+    ],
+    correct: 0,
+    hint: "Die Varianz berechnet den Erwartungswert der quadrierten Abweichungen vom Mittelwert – sie misst also die Streuung.",
+    rule: "DEF_Var",
+    level: 1,
+  });
+
+  // MC: Warum quadrieren?
+  exercises.push({
+    type: "multiplechoice",
+    question: "Warum werden in der Varianz-Definition die Abweichungen \\((X - E(X))\\) quadriert?",
+    options: [
+      "Damit sich positive und negative Abweichungen nicht gegenseitig aufheben",
+      "Weil nur positive Abweichungen interessant sind",
+      "Um den Erwartungswert zu berechnen",
+      "Weil die Standardabweichung sonst negativ wäre"
+    ],
+    correct: 0,
+    hint: "Ohne Quadrierung wäre \\(E(X - E(X)) = E(X) - E(X) = 0\\) – die Abweichungen heben sich immer auf. Durch das Quadrieren werden alle Abweichungen positiv.",
+    rule: "DEF_Var",
+    level: 1,
+  });
+
+  // MC: Varianz als Spezialfall der Kovarianz
+  exercises.push({
+    type: "multiplechoice",
+    question: "Die Definition zeigt: \\(\\text{Var}(X) = \\text{Cov}(X,X)\\). Was bedeutet das?",
+    options: [
+      "Die Varianz ist ein Spezialfall der Kovarianz – die Kovarianz einer Variable mit sich selbst",
+      "Varianz und Kovarianz sind das Gleiche",
+      "Die Varianz ist immer größer als die Kovarianz",
+      "Man braucht zwei verschiedene Variablen, um die Varianz zu berechnen"
+    ],
+    correct: 0,
+    hint: "\\(\\text{Cov}(X,X) = E[(X-E(X))(X-E(X))] = E[(X-E(X))^{2}] = \\text{Var}(X)\\). Die Varianz ist also die Kovarianz von X mit sich selbst.",
+    rule: "DEF_Var",
+    level: 1,
+  });
+
+  // Fillblank: Varianz direkt aus Definition berechnen
+  exercises.push({
+    type: "fillblank",
+    question: "\\(X\\) nimmt die Werte 2 und 6 an, jeweils mit \\(P = 0{,}5\\). Der Erwartungswert ist \\(E(X) = 4\\). Berechne \\(\\text{Var}(X)\\) direkt aus der Definition:",
+    prompt: "\\(\\text{Var}(X) = (2-4)^{2} \\cdot 0{,}5 + (6-4)^{2} \\cdot 0{,}5 = ?\\)",
+    answer: "4",
+    hint: "\\((-2)^{2} \\cdot 0{,}5 + 2^{2} \\cdot 0{,}5 = 4 \\cdot 0{,}5 + 4 \\cdot 0{,}5 = 2 + 2 = 4\\)",
+    rule: "DEF_Var",
+    level: 1,
+  });
+
+  // MC: Was ist die Standardabweichung?
+  exercises.push({
+    type: "multiplechoice",
+    question: "Wie hängen Varianz und Standardabweichung zusammen?",
+    options: [
+      "\\(\\text{Std}(X) = \\sqrt{\\text{Var}(X)}\\) – die Standardabweichung ist die Wurzel der Varianz",
+      "\\(\\text{Std}(X) = \\text{Var}(X)^{2}\\)",
+      "\\(\\text{Std}(X) = \\text{Var}(X) / 2\\)",
+      "Es gibt keinen festen Zusammenhang"
+    ],
+    correct: 0,
+    hint: "Die Standardabweichung hat den Vorteil, dass sie in derselben Einheit wie der Messwert angegeben wird (z.\\,B. IQ-Punkte), während die Varianz in quadrierten Einheiten vorliegt.",
+    rule: "DEF_Std",
+    level: 1,
+  });
+
+  // MC: Kann die Varianz negativ sein?
+  exercises.push({
+    type: "multiplechoice",
+    question: "Kann die Varianz negativ sein?",
+    options: [
+      "Nein – die Varianz ist immer \\(\\geq 0\\), da quadrierte Abweichungen nie negativ sind",
+      "Ja, wenn die Werte negativ sind",
+      "Ja, bei negativer Kovarianz",
+      "Nur bei normalverteilten Variablen ist sie immer positiv"
+    ],
+    correct: 0,
+    hint: "\\(\\text{Var}(X) = E[(X - E(X))^{2}] \\geq 0\\), da der Erwartungswert eines nicht-negativen Terms nicht negativ sein kann. \\(\\text{Var}(X) = 0\\) nur wenn \\(X\\) eine Konstante ist.",
+    rule: "DEF_Var",
+    level: 1,
+  });
+
+  // --- Rechenregeln ---
 
   // V1: Verschiebungssatz
   exercises.push({
@@ -510,11 +748,402 @@ function generateW3Exercises() {
     level: 2,
   });
 
+  // ===================================================================
+  // Level 2: Korrelation – Definition und Berechnung
+  // ===================================================================
+
+  // Definition der Korrelation erinnern
+  exercises.push({
+    type: "multiplechoice",
+    question: "Die Korrelation \\(\\text{Kor}(X,Y)\\) ist definiert als:",
+    options: [
+      "\\(\\frac{\\text{Cov}(X,Y)}{\\text{Std}(X) \\cdot \\text{Std}(Y)}\\) – die standardisierte Kovarianz",
+      "\\(\\frac{\\text{Cov}(X,Y)}{\\text{Var}(X) \\cdot \\text{Var}(Y)}\\)",
+      "\\(\\text{Cov}(X,Y) - \\text{Std}(X) \\cdot \\text{Std}(Y)\\)",
+      "\\(\\frac{E(XY)}{E(X) \\cdot E(Y)}\\)"
+    ],
+    correct: 0,
+    hint: "Die Korrelation entsteht durch Division der Kovarianz durch das Produkt der Standardabweichungen. Dadurch wird sie dimensionslos und liegt im Intervall [−1, +1].",
+    rule: "DEF_Kor",
+    level: 2,
+  });
+
+  // Korrelation berechnen
+  const kor_cov = randInt(3, 12);
+  const kor_sdx = randInt(2, 5);
+  const kor_sdy = randInt(2, 6);
+  const kor_val = (kor_cov / (kor_sdx * kor_sdy)).toFixed(2);
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(\\text{Cov}(X,Y) = ${kor_cov}\\), \\(\\text{Std}(X) = ${kor_sdx}\\), \\(\\text{Std}(Y) = ${kor_sdy}\\). Berechne \\(\\text{Kor}(X,Y)\\):`,
+    prompt: `\\(\\text{Kor}(X,Y) = \\frac{${kor_cov}}{${kor_sdx} \\cdot ${kor_sdy}} = \\frac{${kor_cov}}{${kor_sdx * kor_sdy}} = ?\\)`,
+    answer: `${kor_val}`,
+    hint: `\\(\\text{Kor}(X,Y) = \\frac{${kor_cov}}{${kor_sdx * kor_sdy}} = ${kor_val}\\)`,
+    rule: "DEF_Kor",
+    level: 2,
+  });
+
+  // Wertebereich
+  exercises.push({
+    type: "multiplechoice",
+    question: "Welche der folgenden Korrelationswerte ist unmöglich?",
+    options: [
+      "\\(\\text{Kor}(X,Y) = 1{,}20\\)",
+      "\\(\\text{Kor}(X,Y) = -0{,}95\\)",
+      "\\(\\text{Kor}(X,Y) = 0\\)",
+      "\\(\\text{Kor}(X,Y) = 1\\)"
+    ],
+    correct: 0,
+    hint: "Die Korrelation liegt immer im Intervall \\([-1, +1]\\). Ein Wert von 1,20 ist mathematisch unmöglich – wenn man ihn erhält, liegt ein Berechnungsfehler vor.",
+    rule: "KOR1",
+    level: 2,
+  });
+
+  // Perfekter linearer Zusammenhang
+  exercises.push({
+    type: "multiplechoice",
+    question: "Wann gilt \\(\\text{Kor}(X,Y) = -1\\)?",
+    options: [
+      "Genau dann, wenn \\(Y = a + bX\\) mit \\(b < 0\\) – ein perfekter fallender linearer Zusammenhang",
+      "Wenn \\(X\\) und \\(Y\\) unabhängig sind",
+      "Wenn \\(Y = a + bX\\) mit \\(b > 0\\)",
+      "Wenn \\(\\text{Var}(X) = \\text{Var}(Y)\\)"
+    ],
+    correct: 0,
+    hint: "\\(\\text{Kor}(X,Y) = -1\\) bedeutet: Alle Datenpunkte liegen exakt auf einer Geraden mit negativer Steigung. In der Psychologie praktisch nie erreicht, aber als Grenzfall wichtig für die Interpretation.",
+    rule: "KOR2",
+    level: 2,
+  });
+
+  // ===================================================================
+  // Level 2: Korrelation – Transformationsinvarianz
+  // ===================================================================
+
+  // Skalierung ändert Korrelation nicht
+  exercises.push({
+    type: "multiplechoice",
+    question: "Ein Depressions-Fragebogen (Skala 0–60) wird in T-Werte transformiert: \\(T = 10 \\cdot z + 50\\). Was passiert mit der Korrelation zwischen Depression und Lebenszufriedenheit?",
+    options: [
+      "Sie bleibt gleich – die Korrelation ist invariant unter positiver linearer Transformation",
+      "Sie wird 10-mal so groß",
+      "Sie wird kleiner",
+      "Das Vorzeichen kehrt sich um"
+    ],
+    correct: 0,
+    hint: "\\(\\text{Kor}(aX+b, Y) = \\text{sign}(a) \\cdot \\text{Kor}(X,Y)\\). Da \\(a = 10 > 0\\), bleibt die Korrelation identisch. Das ist ein großer Vorteil der Korrelation: Sie ist unabhängig von der gewählten Skala.",
+    rule: "KOR3",
+    level: 2,
+  });
+
+  // Umpolung
+  exercises.push({
+    type: "fillblank",
+    question: "Ein Item wird umgepolt: \\(X^{*} = 6 - X\\) (d.\\,h. \\(a = -1\\), \\(b = 6\\)). Wenn \\(\\text{Kor}(X,Y) = 0{,}40\\), wie groß ist \\(\\text{Kor}(X^{*}, Y)\\)?",
+    prompt: "\\(\\text{Kor}(X^{*}, Y) = \\text{sign}(-1) \\cdot 0{,}40 = ?\\)",
+    answer: "-0.40",
+    hint: "\\(\\text{Kor}(aX + b, Y) = \\text{sign}(a) \\cdot \\text{Kor}(X,Y)\\). Da \\(a = -1\\) (negativ), kehrt sich das Vorzeichen um: \\(-0{,}40\\). Deshalb muss man bei umgepolten Items in der Testkonstruktion aufpassen!",
+    rule: "KOR3",
+    level: 2,
+  });
+
+  // ===================================================================
+  // Level 3: Unkorreliertheit vs. Unabhängigkeit und Anwendung
+  // ===================================================================
+
+  // Unkorreliertheit ≠ Unabhängigkeit
+  exercises.push({
+    type: "multiplechoice",
+    question: "Der Zusammenhang zwischen Arousal und Leistung ist umgekehrt U-förmig (Yerkes-Dodson). Was folgt daraus für die Korrelation?",
+    options: [
+      "\\(\\text{Kor} \\approx 0\\), obwohl ein starker (nichtlinearer) Zusammenhang besteht",
+      "\\(\\text{Kor} = 1\\), weil ein perfekter Zusammenhang besteht",
+      "\\(\\text{Kor} = -1\\), weil zu viel Arousal schadet",
+      "Die Korrelation ist nicht berechenbar"
+    ],
+    correct: 0,
+    hint: "Die Korrelation misst nur den linearen Zusammenhang. Bei einem symmetrisch U-förmigen Zusammenhang heben sich die positiven und negativen Abweichungen auf, sodass Cov(X,Y) ≈ 0 – trotz starker Abhängigkeit. Deshalb: Kor = 0 bedeutet nicht ‚kein Zusammenhang'!",
+    rule: "KOR4",
+    level: 3,
+  });
+
+  // Korrelation aus Kovarianz und Varianzen
+  const kor2_cov = randInt(4, 15);
+  const kor2_varx = randInt(4, 16);
+  const kor2_vary = randInt(4, 16);
+  const kor2_sdx = Math.sqrt(kor2_varx);
+  const kor2_sdy = Math.sqrt(kor2_vary);
+  const kor2_val = (kor2_cov / (kor2_sdx * kor2_sdy)).toFixed(2);
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(\\text{Cov}(X,Y) = ${kor2_cov}\\), \\(\\text{Var}(X) = ${kor2_varx}\\), \\(\\text{Var}(Y) = ${kor2_vary}\\). Berechne \\(\\text{Kor}(X,Y)\\):`,
+    prompt: `\\(\\text{Kor}(X,Y) = \\frac{\\text{Cov}(X,Y)}{\\sqrt{\\text{Var}(X)} \\cdot \\sqrt{\\text{Var}(Y)}} = \\frac{${kor2_cov}}{\\sqrt{${kor2_varx}} \\cdot \\sqrt{${kor2_vary}}} = \\frac{${kor2_cov}}{${kor2_sdx.toFixed(2)} \\cdot ${kor2_sdy.toFixed(2)}} = ?\\)`,
+    answer: `${kor2_val}`,
+    hint: `\\(\\frac{${kor2_cov}}{${(kor2_sdx * kor2_sdy).toFixed(2)}} \\approx ${kor2_val}\\). Beachte: \\(\\text{Std}(X) = \\sqrt{\\text{Var}(X)}\\).`,
+    rule: "DEF_Kor",
+    level: 3,
+  });
+
+  // Bilinearität + Korrelation: Cov aus Linearkombination berechnen
+  const c5b_a = randInt(2, 4);
+  const c5b_cov = randInt(3, 8);
+  const c5b_varx = randInt(4, 12);
+  const c5b_vary = randInt(4, 12);
+  const c5b_newcov = c5b_a * c5b_cov;
+  const c5b_newvar = c5b_a * c5b_a * c5b_varx;
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(\\text{Cov}(X,Y) = ${c5b_cov}\\), \\(\\text{Var}(X) = ${c5b_varx}\\). Ein neuer Score ist \\(U = ${c5b_a}X\\). Berechne \\(\\text{Cov}(U, Y)\\):`,
+    prompt: `\\(\\text{Cov}(${c5b_a}X, Y) = ${c5b_a} \\cdot \\text{Cov}(X,Y) = ${c5b_a} \\cdot ${c5b_cov} = ?\\)`,
+    answer: `${c5b_newcov}`,
+    hint: `\\(${c5b_a} \\cdot ${c5b_cov} = ${c5b_newcov}\\). Die Kovarianz skaliert linear, aber die Korrelation bleibt gleich (da sich auch Std(U) ändert).`,
+    rule: "C3",
+    level: 3,
+  });
+
+  // Vorausblick: Kor² = R² bei einfacher Regression
+  exercises.push({
+    type: "multiplechoice",
+    question: "In der einfachen linearen Regression \\(E(Y|X) = \\alpha + \\beta X\\) gilt ein wichtiger Zusammenhang zwischen Korrelation und Determinationskoeffizient. Welcher?",
+    options: [
+      "\\(R^{2} = \\text{Kor}(X,Y)^{2}\\) – das Quadrat der Korrelation ist die erklärte Varianz",
+      "\\(R^{2} = \\text{Kor}(X,Y)\\)",
+      "\\(R^{2} = 1 - \\text{Kor}(X,Y)\\)",
+      "\\(R^{2} = \\text{Kor}(X,Y) + 1\\)"
+    ],
+    correct: 0,
+    hint: "Bei einfacher Regression ist \\(R^{2} = r^{2}\\). Eine Korrelation von \\(r = 0{,}50\\) bedeutet also \\(R^{2} = 0{,}25\\) – nur 25 % erklärte Varianz. Das zeigt, warum selbst ‚mittlere' Korrelationen oft wenig Vorhersagekraft bedeuten.",
+    rule: "DEF_Kor",
+    psychologie: "In der psychologischen Forschung werden Korrelationen oft überinterpretiert. Die Quadrierung zeigt das Problem: Eine Korrelation von r = 0,30 (‚mittlerer Effekt' nach Cohen) entspricht nur R² = 0,09 – gerade einmal 9 % erklärte Varianz. Das hilft bei der realistischen Einschätzung von Forschungsbefunden.",
+    level: 3,
+  });
+
+  // Zusammenfassung: Was kann die Korrelation, was nicht?
+  exercises.push({
+    type: "multiplechoice",
+    question: "Welche Aussage über die Korrelation ist korrekt?",
+    options: [
+      "Die Korrelation erfasst nur lineare Zusammenhänge – nichtlineare Zusammenhänge können bei Kor = 0 bestehen",
+      "Kor = 0 bedeutet, dass keinerlei Zusammenhang zwischen den Variablen besteht",
+      "Die Korrelation verändert sich, wenn man die Variablen z-standardisiert",
+      "Die Korrelation kann nur für normalverteilte Variablen berechnet werden"
+    ],
+    correct: 0,
+    hint: "Das ist eine der wichtigsten Einschränkungen der Korrelation: Sie ist blind für nichtlineare Zusammenhänge. In der Forschungspraxis sollte man deshalb immer auch Streudiagramme inspizieren.",
+    rule: "KOR4",
+    level: 3,
+  });
+
   return exercises;
 }
 
-// World 4: Regression
+// World 4: Regression Grundlagen
 function generateW4Exercises() {
+  const exercises = [];
+
+  // MC: What is the intercept α in Y = α + βX + ε?
+  exercises.push({
+    type: "multiplechoice",
+    question: "Was ist der Intercept \\(\\alpha\\) in der Regressionsgleichung \\(Y = \\alpha + \\beta X + \\varepsilon\\)?",
+    options: [
+      "Der Achsenabschnitt: der Y-Wert, wenn \\(X = 0\\)",
+      "Die Steigung der Regressionsgerade",
+      "Die Varianz des Fehlers",
+      "Die Korrelation zwischen \\(X\\) und \\(Y\\)"
+    ],
+    correct: 0,
+    rule: "DEF_LinReg",
+    psychologie: "Der Intercept ist fundamental für die Vorhersage: Er gibt den erwarteten Testwert an, wenn kein Prädiktor vorhanden ist (oder alle Prädiktoren = 0). In der klinischen Diagnostik ist das z.B. die erwartete Symptomstärke ohne Behandlung. Die korrekte Interpretation von α unterscheidet sichere von unsicheren Vorhersagen.",
+    level: 1,
+  });
+
+  // MC: What does OLS regression minimize?
+  exercises.push({
+    type: "multiplechoice",
+    question: "Was minimiert die OLS-Regression (Ordinary Least Squares)?",
+    options: [
+      "Die Summe der quadrierten Residuen \\(\\sum \\varepsilon_{i}^{2}\\)",
+      "Die Anzahl der Residuen",
+      "Die Varianz von \\(X\\)",
+      "Die Varianz von \\(Y\\)"
+    ],
+    correct: 0,
+    rule: "DEF_OLS",
+    psychologie: "OLS findet die beste Vorhersagegerade, indem Vorhersagefehler minimiert werden. Das ist das zentrale Optimierungsprinzip in der psychologischen Forschung und Diagnostik – ob bei der Therapieplanung oder bei der Prognose von Schulleistung. Wer OLS nicht versteht, versteht Regression nicht.",
+    level: 1,
+  });
+
+  // Fillblank: Given α and β, compute Ŷ for a given X value
+  const w4fb1_alpha = randInt(2, 8);
+  const w4fb1_beta = randInt(1, 4);
+  const w4fb1_x = randInt(3, 10);
+  const w4fb1_y = w4fb1_alpha + w4fb1_beta * w4fb1_x;
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(\\alpha = ${w4fb1_alpha}\\) (Intercept), \\(\\beta = ${w4fb1_beta}\\) (Slope). Berechne die Vorhersage \\(\\hat{Y}\\) für \\(X = ${w4fb1_x}\\):`,
+    prompt: `\\(\\hat{Y} = ${w4fb1_alpha} + ${w4fb1_beta} \\cdot ${w4fb1_x} = ?\\)`,
+    answer: `${w4fb1_y}`,
+    hint: `\\(\\hat{Y} = ${w4fb1_alpha} + ${w4fb1_beta * w4fb1_x} = ${w4fb1_y}\\)`,
+    rule: "DEF_LinReg",
+    psychologie: "Die Vorhersage mit einer Regressionsgleichung ist eine der wichtigsten praktischen Anwendungen: Diagnostiker müssen schnell vom Prädiktoren zum erwarteten Kriteriumswert übergehen können. Mit α = 5 und β = 2 sagt man für Extraversion = 6 einen Leistungswert von 17 vorher.",
+    level: 2,
+  });
+
+  // MC: In multiple regression Y = β₀ + β₁X₁ + β₂X₂ + ε, what does β₁ represent?
+  exercises.push({
+    type: "multiplechoice",
+    question: "In der multiplen Regression \\(Y = \\beta_{0} + \\beta_{1}X_{1} + \\beta_{2}X_{2} + \\varepsilon\\), was repräsentiert \\(\\beta_{1}\\)?",
+    options: [
+      "Der Partialeffekt von \\(X_{1}\\) unter Kontrolle von \\(X_{2}\\): wie \\(Y\\) sich ändert, wenn \\(X_{1}\\) um 1 Einheit steigt (bei konstantem \\(X_{2}\\))",
+      "Der Gesamteffekt von \\(X_{1}\\) auf \\(Y\\) (ohne Kontrolle anderer Variablen)",
+      "Die Korrelation zwischen \\(X_{1}\\) und \\(Y\\)",
+      "Die Varianz von \\(X_{1}\\)"
+    ],
+    correct: 0,
+    rule: "DEF_MultReg",
+    psychologie: "Partialeffekte sind zentral für die Kontrolle von Störvariablen in der Forschung. Wenn man die Intelligenz kontrolliert, kann man den bereinigten Effekt von Motivation auf Schulleistung ablesen. Das ist die Logik hinter Confounding-Kontrolle in psychologischen Studien.",
+    level: 2,
+  });
+
+  // Fillblank: Given Var(Y)=20 and R²=0.60, compute explained variance Var(Ŷ)
+  const w4fb2_varY = randInt(15, 30);
+  const w4fb2_r2_num = randInt(40, 80);
+  const w4fb2_r2 = w4fb2_r2_num / 100;
+  const w4fb2_varYhat = (w4fb2_r2 * w4fb2_varY).toFixed(1);
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(\\text{Var}(Y) = ${w4fb2_varY}\\) und \\(R^{2} = ${w4fb2_r2}\\). Berechne die erklärte Varianz \\(\\text{Var}(\\hat{Y})\\):`,
+    prompt: `\\(\\text{Var}(\\hat{Y}) = R^{2} \\cdot \\text{Var}(Y) = ${w4fb2_r2} \\cdot ${w4fb2_varY} = ?\\)`,
+    answer: `${w4fb2_varYhat}`,
+    hint: `\\(\\text{Var}(\\hat{Y}) = ${w4fb2_r2} \\cdot ${w4fb2_varY} = ${w4fb2_varYhat}\\)`,
+    rule: "DEF_R2",
+    psychologie: "R² zeigt, wie viel Prozent der Unterschiede im Kriterium der Prädiktor erklärt. In der Psychologie bedeutet R² = 0.36, dass 36% der Varianz in Schulleistung durch Motivation erklärt wird – ein großer Effekt nach psychologischen Standards. Die restlichen 64% sind ungeklärte Varianz (fehlerhafte Messung, nicht berücksichtigte Variablen, echte Zufälligkeit).",
+    level: 2,
+  });
+
+  // MC: What does R²=0 mean?
+  exercises.push({
+    type: "multiplechoice",
+    question: "Was bedeutet \\(R^{2} = 0\\)?",
+    options: [
+      "Der Prädiktor erklärt keinen Teil der Varianz des Kriteriums: \\(X\\) und \\(Y\\) sind regressiv unabhängig",
+      "Perfekte Vorhersage: \\(\\varepsilon = 0\\) für alle Beobachtungen",
+      "\\(X\\) und \\(Y\\) sind identisch",
+      "Das Modell ist völlig falsch und sollte verworfen werden"
+    ],
+    correct: 0,
+    rule: "DEF_RegUnabh",
+    psychologie: "Ein R² nahe 0 bedeutet nicht automatisch, dass die Hypothese falsch ist. Ein schwacher Effekt (z.B. R² = 0.04) kann in der Psychologie trotzdem praktisch relevant oder statistisch signifikant sein – insbesondere in Feldstudien, wo viele unkontrollierbare Faktoren wirken. Umgekehrt können starke Effekte statistische Artefakte sein (z.B. durch Selektionsbias).",
+    level: 1,
+  });
+
+  return exercises;
+}
+
+// World 5: Bedingte Erwartung / Parametrisierung
+function generateW5Exercises() {
+  const exercises = [];
+
+  // MC: What is E(Y|X)?
+  exercises.push({
+    type: "multiplechoice",
+    question: "Was ist \\(E(Y|X)\\)?",
+    options: [
+      "Eine Zufallsvariable, deren Werte die bedingten Mittelwerte \\(E(Y|X=x)\\) sind",
+      "Eine Konstante",
+      "Das Residuum",
+      "Die Varianz von \\(Y\\)"
+    ],
+    correct: 0,
+    rule: "DEF_Reg",
+    psychologie: "E(Y|X) ist die zentrale Konzeption in modernen statistischen Methoden: Es ist nicht ein einzelner Wert, sondern eine Funktion des Prädiktors. In der Psychologie: Wenn der Therapeut den Schweregrad kennt, kann er eine spezifische Vorhersage über den Therapieerfolg machen – aber diese Vorhersage ändert sich mit dem Schweregrad. Das ist E(Y|X) in Aktion.",
+    level: 1,
+  });
+
+  // MC: In E(Y|X) = α + βX, what is α?
+  exercises.push({
+    type: "multiplechoice",
+    question: "In der Regressionsgleichung \\(E(Y|X) = \\alpha + \\beta X\\), was ist \\(\\alpha\\)?",
+    options: [
+      "\\(E(Y|X=0)\\) – der bedingte Mittelwert von \\(Y\\) wenn \\(X=0\\)",
+      "Der unbedingte Erwartungswert \\(E(Y)\\)",
+      "Die Steigung (Slope)",
+      "Die Varianz von \\(X\\)"
+    ],
+    correct: 0,
+    rule: "DEF_LinReg",
+    psychologie: "Wenn man den Intercept interpretiert, muss man klar machen, dass es ein bedingter Erwartungswert ist: der erwartete \\(Y\\)-Wert bei \\(X=0\\). Oft machen Forscher den Fehler, α mit dem Gesamtdurchschnitt zu verwechseln. In der Diagnostik: Wenn α = 5, bedeutet das nicht, dass der durchschnittliche Testwert 5 ist, sondern dass die Vorhersage 5 ist wenn der Prädiktor = 0.",
+    level: 1,
+  });
+
+  // MC: The residual ε := Y - E(Y|X) represents
+  exercises.push({
+    type: "multiplechoice",
+    question: "Das Residuum \\(\\varepsilon := Y - E(Y|X)\\) repräsentiert:",
+    options: [
+      "Den Teil von \\(Y\\), der nicht durch \\(X\\) vorhergesagt wird",
+      "Den vorhergesagten Wert \\(\\hat{Y}\\)",
+      "Den Mittelwert von \\(Y\\)",
+      "Die Varianz von \\(Y\\)"
+    ],
+    correct: 0,
+    rule: "DEF_Res",
+    psychologie: "Das Residuum ist der ‚echte' Vorhersagefehler. In der Diagnostik: Wenn der Patient einen erwarteten Therapieerfolg von 60 hat, aber tatsächlich 65 erreicht, ist das Residuum +5. Große Residuen deuten auf Personen hin, bei denen das Vorhersagemodell schlecht funktioniert – diese sind oft wissenschaftlich interessant und erfordern weitere Untersuchung.",
+    level: 1,
+  });
+
+  // Fillblank: Given E(Y|X) = 3 + 2X, what is E(Y|X=4)?
+  const w5fb1_intercept = randInt(1, 5);
+  const w5fb1_slope = randInt(1, 4);
+  const w5fb1_x = randInt(2, 8);
+  const w5fb1_result = w5fb1_intercept + w5fb1_slope * w5fb1_x;
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(E(Y|X) = ${w5fb1_intercept} + ${w5fb1_slope}X\\). Was ist \\(E(Y|X=${w5fb1_x})\\)?`,
+    prompt: `\\(E(Y|X=${w5fb1_x}) = ${w5fb1_intercept} + ${w5fb1_slope} \\cdot ${w5fb1_x} = ?\\)`,
+    answer: `${w5fb1_result}`,
+    hint: `\\(E(Y|X=${w5fb1_x}) = ${w5fb1_intercept} + ${w5fb1_slope * w5fb1_x} = ${w5fb1_result}\\)`,
+    rule: "DEF_LinReg",
+    psychologie: "Das ist die praktische Anwendung der Regressionsgleichung. Ein Psychologe mit \\(E(Y|X) = 10 + 0.5 \\cdot \\text{IQ}\\) kann sofort für einen Klienten mit IQ = 120 die erwartete Schulleistung ausrechnen: 10 + 0.5 · 120 = 70.",
+    level: 2,
+  });
+
+  // MC: What is the difference between E(Y|X=x) and E(Y|X)?
+  exercises.push({
+    type: "multiplechoice",
+    question: "Was ist der Unterschied zwischen \\(E(Y|X=x)\\) und \\(E(Y|X)\\)?",
+    options: [
+      "\\(E(Y|X=x)\\) ist eine Zahl (für einen spezifischen Wert x), \\(E(Y|X)\\) ist eine Zufallsvariable / Funktion von X",
+      "\\(E(Y|X=x)\\) ist eine Zufallsvariable, \\(E(Y|X)\\) ist eine Konstante",
+      "Es gibt keinen Unterschied",
+      "\\(E(Y|X)\\) ist immer größer als \\(E(Y|X=x)\\)"
+    ],
+    correct: 0,
+    rule: "DEF_Reg",
+    psychologie: "Dies ist eine Unterscheidung, die viele Studierende übersehen: \\(E(Y|X=100)\\) ist eine konkrete Vorhersage (z.B. \\(= 75\\) für einen IQ von 100), während \\(E(Y|X)\\) die gesamte Vorhersagefunktion ist. In R: \\(E(Y|X=100)\\) ist ein skalarer Wert, \\(E(Y|X)\\) ist die predict()-Funktion selbst.",
+    level: 2,
+  });
+
+  // MC: R²_{Y|X} = Var[E(Y|X)] / Var(Y). If E(Y|X) = E(Y), what is R²?
+  exercises.push({
+    type: "multiplechoice",
+    question: "Wenn \\(E(Y|X) = E(Y)\\) (der Prädiktor ändert nichts), was ist \\(R^{2}_{Y|X} = \\frac{\\text{Var}[E(Y|X)]}{\\text{Var}(Y)}\\)?",
+    options: [
+      "0 – Der Prädiktor erklärt keine Varianz",
+      "1 – Perfekte Vorhersage",
+      "Undefiniert",
+      "0.5"
+    ],
+    correct: 0,
+    rule: "DEF_RegUnabh",
+    psychologie: "Wenn \\(E(Y|X) = E(Y)\\), dann ist die Vorhersage für alle \\(X\\)-Werte gleich dem Gesamtmittelwert – also gar keine echte Vorhersage. Das ist der Extremfall regressiver Unabhängigkeit. In der Praxis: Wenn ein Test nicht mit dem Kriterium korreliert, ist R² = 0 und der Test ist für Vorhersagen wertlos.",
+    level: 2,
+  });
+
+  return exercises;
+}
+
+// World 6: Rechenregeln Regression (alte World 4)
+function generateW6Exercises() {
   const exercises = [];
 
   // --- Rechenregeln für bedingte Erwartungen ---
@@ -637,7 +1266,7 @@ function generateW4Exercises() {
     prompt: `\\(E(Y \\mid X = ${w4_y}) = ${w4_x} + ${w4_beta} \\cdot ${w4_y} = ?\\)`,
     answer: `${w4_x + w4_beta * w4_y}`,
     hint: `\\(E(Y \\mid X = ${w4_y}) = ${w4_x} + ${w4_beta * w4_y} = ${w4_x + w4_beta * w4_y}\\)`,
-    rule: "R1",
+    rule: "DEF_LinReg",
     level: 2,
   });
 
@@ -689,7 +1318,7 @@ function generateW4Exercises() {
     prompt: `\\(R^{2}_{Y|X} = \\frac{\\text{Var}[E(Y \\mid X)]}{\\text{Var}(Y)} = \\frac{${r2_varReg2}}{${r2_varY}} = ?\\)`,
     answer: `${r2_val}`,
     hint: `\\(R^{2}_{Y|X} = \\frac{${r2_varReg2}}{${r2_varY}} = ${r2_val}\\)`,
-    rule: "Res3",
+    rule: "DEF_R2",
     level: 2,
   });
 
@@ -730,17 +1359,21 @@ function generateW4Exercises() {
       "\\(Y\\) und \\(X\\) sind stochastisch unabhängig"
     ],
     correct: 0,
-    rule: null,
+    rule: "DEF_RegUnabh",
+    psychologie: "Regressive Unabhängigkeit bedeutet: Egal welchen Wert der Prädiktor hat, die Vorhersage bleibt gleich dem Gesamtmittelwert. In der Diagnostik: Wenn ein Eignungstest regressiv unabhängig von der Arbeitsleistung ist, liefert er keinen Mehrwert über den Populationsdurchschnitt hinaus. Das ist das Nullmodell, gegen das jede prädiktive Validierung eines Tests geprüft wird.",
     level: 1,
   });
 
   return exercises;
 }
 
-// World 5: KTT Grundlagen
-function generateW5Exercises() {
+// World 7: KTT Grundlagen
+function generateW7Exercises() {
   const exercises = [];
 
+  // === Level 1: Grundlegende Zerlegung und Definition ===
+
+  // K1: Was ist die KTT-Zerlegung?
   exercises.push({
     type: "multiplechoice",
     question: "In der KTT: \\(Y_{i} = \\tau_{i} + \\varepsilon_{i}\\) – was ist \\(\\tau_{i}\\)?",
@@ -750,6 +1383,41 @@ function generateW5Exercises() {
     level: 1,
   });
 
+  // K1: Definition des wahren Werts
+  exercises.push({
+    type: "multiplechoice",
+    question: "Wie ist der wahre Wert \\(\\tau_{i}\\) in der KTT definiert?",
+    options: [
+      "\\(\\tau_{i} := E(Y_{i} \\mid p_{U})\\) – der Erwartungswert des Testwerts über alle Messwiederholungen an derselben Person",
+      "\\(\\tau_{i}\\) ist der Median aller Messwerte",
+      "\\(\\tau_{i}\\) ist der kleinste beobachtete Messwert",
+      "\\(\\tau_{i} := \\text{Var}(Y_{i})\\)"
+    ],
+    correct: 0,
+    hint: "Der wahre Wert ist als bedingter Erwartungswert definiert: Man denkt sich unendlich viele Messungen derselben Person unter identischen Bedingungen – der Durchschnitt all dieser Messwerte ist \\(\\tau_{i}\\).",
+    rule: "K1",
+    level: 1,
+  });
+
+  // K1: Was ist εᵢ?
+  exercises.push({
+    type: "multiplechoice",
+    question: "Was repräsentiert \\(\\varepsilon_{i}\\) in \\(Y_{i} = \\tau_{i} + \\varepsilon_{i}\\)?",
+    options: [
+      "Den unsystematischen Messfehler (Tagesform, Raten, Ablenkung)",
+      "Den systematischen Fehler (z.\\,B. kulturelle Verzerrung)",
+      "Die wahre Ausprägung des Merkmals",
+      "Die Reliabilität des Tests"
+    ],
+    correct: 0,
+    hint: "Der Messfehler \\(\\varepsilon_{i}\\) erfasst alle zufälligen Einflüsse, die den beobachteten Wert vom wahren Wert abweichen lassen. Systematische Fehler (Bias) sind kein Messfehler im Sinne der KTT.",
+    rule: "K1",
+    level: 1,
+  });
+
+  // === Level 1: Annahmen der KTT ===
+
+  // K2: E(εᵢ) = 0
   exercises.push({
     type: "multiplechoice",
     question: "Welche Annahme der KTT besagt, dass Messfehler im Mittel null sind?",
@@ -759,84 +1427,593 @@ function generateW5Exercises() {
     level: 1,
   });
 
-  const k5_1_tau_var = randInt(4, 10);
-  const k5_1_eps_var = randInt(1, 5);
+  // K2: Konzeptverständnis
   exercises.push({
-    type: "fillblank",
-    question: `Gegeben: \\(\\text{Var}(\\tau) = ${k5_1_tau_var}\\), \\(\\text{Var}(\\varepsilon) = ${k5_1_eps_var}\\). Berechne \\(\\text{Var}(Y)\\):`,
-    prompt: `\\(\\text{Var}(Y) = \\text{Var}(\\tau) + \\text{Var}(\\varepsilon) = ${k5_1_tau_var} + ${k5_1_eps_var} = ?\\)`,
-    answer: `${k5_1_tau_var + k5_1_eps_var}`,
-    hint: `\\(\\text{Var}(Y) = ${k5_1_tau_var} + ${k5_1_eps_var} = ${k5_1_tau_var + k5_1_eps_var}\\)`,
+    type: "multiplechoice",
+    question: "\\(E(\\varepsilon_{i}) = 0\\) bedeutet praktisch:",
+    options: [
+      "Bei unendlich vielen Messungen derselben Person heben sich die Messfehler im Durchschnitt auf",
+      "Jede einzelne Messung ist fehlerfrei",
+      "Der Messfehler ist immer genau null",
+      "Der wahre Wert ist null"
+    ],
+    correct: 0,
+    hint: "Die Annahme sagt nicht, dass einzelne Messungen fehlerfrei sind – nur dass Messfehler unsystematisch sind: Manchmal misst der Test zu hoch, manchmal zu niedrig, im Mittel aber korrekt.",
+    rule: "K2",
+    level: 1,
+  });
+
+  // K2: Was folgt aus der Definition?
+  exercises.push({
+    type: "multiplechoice",
+    question: "Folgt \\(E(\\varepsilon_{i}) = 0\\) direkt aus der Definition \\(\\tau_{i} := E(Y_{i} \\mid p_{U})\\)?",
+    options: [
+      "Ja – denn \\(E(\\varepsilon_{i}) = E(Y_{i} - \\tau_{i}) = E(Y_{i}) - \\tau_{i} = \\tau_{i} - \\tau_{i} = 0\\)",
+      "Nein – es ist eine zusätzliche Annahme",
+      "Nur wenn der Test reliabel ist",
+      "Nur bei normalverteilten Messfehlern"
+    ],
+    correct: 0,
+    hint: "Da \\(\\tau_{i} := E(Y_{i} \\mid p_{U})\\), folgt \\(E(\\varepsilon_{i}) = E(Y_{i} - \\tau_{i}) = E(Y_{i}) - \\tau_{i} = 0\\). Diese Eigenschaft ist eine direkte Konsequenz der Definition – keine zusätzliche Annahme!",
+    rule: "K2",
+    level: 1,
+  });
+
+  // K3: Unkorreliertheit von Messfehler und wahrem Wert
+  exercises.push({
+    type: "multiplechoice",
+    question: "Was besagt die Eigenschaft \\(\\text{Cov}(\\varepsilon_{i}, \\tau_{j}) = 0\\)?",
+    options: [
+      "Messfehler und wahre Werte sind unkorreliert – die Fehlergröße hängt nicht von der wahren Merkmalsausprägung ab",
+      "Messfehler sind immer gleich groß",
+      "Der wahre Wert ist immer null",
+      "Messfehler verschiedener Tests korrelieren"
+    ],
+    correct: 0,
+    rule: "K3",
+    level: 1,
+  });
+
+  // K3: Folgt aus Definition oder ist es eine Annahme?
+  exercises.push({
+    type: "multiplechoice",
+    question: "Folgt \\(\\text{Cov}(\\varepsilon_{i}, \\tau_{j}) = 0\\) aus der Definition des wahren Werts?",
+    options: [
+      "Ja, für \\(i = j\\) folgt es aus der Definition \\(\\tau_{i} = E(Y_{i}|p_{U})\\); für \\(i \\neq j\\) ist es eine zusätzliche Annahme",
+      "Ja, es folgt immer aus der Definition",
+      "Nein, es ist immer eine zusätzliche Annahme",
+      "Es folgt nur bei parallelen Tests"
+    ],
+    correct: 0,
+    hint: "Für \\(i = j\\): Da \\(\\tau_{i} = E(Y_{i}|p_{U})\\), ist \\(\\varepsilon_{i}\\) das Residuum der Regression von \\(Y_{i}\\) auf \\(p_{U}\\), und Residuen sind per Definition unkorreliert mit der Vorhersage. Für \\(i \\neq j\\) (verschiedene Tests) muss man zusätzlich annehmen, dass der Messfehler des einen Tests nicht mit dem wahren Wert eines anderen Tests zusammenhängt.",
+    rule: "K3",
+    level: 2,
+  });
+
+  // K3: Praktische Bedeutung
+  exercises.push({
+    type: "multiplechoice",
+    question: "Was bedeutet \\(\\text{Cov}(\\varepsilon_{i}, \\tau_{i}) = 0\\) für die Diagnostik?",
+    options: [
+      "Der Standardmessfehler ist für alle Personen gleich groß – ob hochbegabt oder durchschnittlich",
+      "Hochbegabte Personen werden zuverlässiger gemessen",
+      "Der Messfehler wird mit zunehmendem wahren Wert größer",
+      "Man kann den Messfehler nur bei Personen mit durchschnittlichen Werten schätzen"
+    ],
+    correct: 0,
+    hint: "Wenn \\(\\text{Cov}(\\varepsilon_{i}, \\tau_{i}) = 0\\), dann variiert die Messgenauigkeit nicht systematisch mit der Merkmalsausprägung. In der Item-Response-Theorie (IRT) wird diese Annahme allerdings aufgeweicht – dort kann die Messgenauigkeit vom Fähigkeitsniveau abhängen.",
+    rule: "K3",
+    level: 1,
+  });
+
+  // === Level 2: Varianzzerlegung und Reliabilität ===
+
+  // K4: Konzeptfrage vor der Berechnung
+  exercises.push({
+    type: "multiplechoice",
+    question: "In der KTT gilt \\(\\text{Var}(Y) = \\text{Var}(\\tau) + \\text{Var}(\\varepsilon)\\). Warum fehlt der Kovarianz-Term \\(2\\cdot\\text{Cov}(\\tau, \\varepsilon)\\)?",
+    options: [
+      "Weil \\(\\text{Cov}(\\tau, \\varepsilon) = 0\\) – wahre Werte und Messfehler sind unkorreliert",
+      "Weil die Varianz immer additiv ist",
+      "Weil \\(\\tau\\) eine Konstante ist",
+      "Weil \\(\\varepsilon\\) immer null ist"
+    ],
+    correct: 0,
+    hint: "Die allgemeine Regel lautet \\(\\text{Var}(X+Y) = \\text{Var}(X) + \\text{Var}(Y) + 2\\text{Cov}(X,Y)\\). Da in der KTT \\(\\text{Cov}(\\tau, \\varepsilon) = 0\\) gilt (KTT-3), fällt der Kovarianz-Term weg.",
     rule: "K4",
     level: 2,
   });
 
-  const k5_2_tau = randInt(6, 12);
-  const k5_2_y = randInt(10, 20);
+  // K4: Berechnung Var(Y)
+  const k4_tau_var = randInt(4, 10);
+  const k4_eps_var = randInt(1, 5);
   exercises.push({
     type: "fillblank",
-    question: `Gegeben: \\(\\text{Var}(\\tau) = ${k5_2_tau}\\), \\(\\text{Var}(Y) = ${k5_2_y}\\). Berechne die Reliabilität \\(\\text{Rel}(Y)\\):`,
-    prompt: `\\(\\text{Rel}(Y) = \\frac{\\text{Var}(\\tau)}{\\text{Var}(Y)} = \\frac{${k5_2_tau}}{${k5_2_y}} = ?\\)`,
-    answer: `${(k5_2_tau / k5_2_y).toFixed(2)}`,
-    hint: `\\(\\text{Rel}(Y) = \\frac{${k5_2_tau}}{${k5_2_y}} \\approx ${(k5_2_tau / k5_2_y).toFixed(2)}\\)`,
+    question: `Gegeben: \\(\\text{Var}(\\tau) = ${k4_tau_var}\\), \\(\\text{Var}(\\varepsilon) = ${k4_eps_var}\\). Berechne \\(\\text{Var}(Y)\\):`,
+    prompt: `\\(\\text{Var}(Y) = \\text{Var}(\\tau) + \\text{Var}(\\varepsilon) = ${k4_tau_var} + ${k4_eps_var} = ?\\)`,
+    answer: `${k4_tau_var + k4_eps_var}`,
+    hint: `\\(\\text{Var}(Y) = ${k4_tau_var} + ${k4_eps_var} = ${k4_tau_var + k4_eps_var}\\)`,
+    rule: "K4",
+    level: 2,
+  });
+
+  // K4: Berechnung Var(ε) — umgekehrt
+  const k4b_varY = randInt(10, 20);
+  const k4b_varTau = randInt(5, k4b_varY - 2);
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(\\text{Var}(Y) = ${k4b_varY}\\), \\(\\text{Var}(\\tau) = ${k4b_varTau}\\). Berechne die Fehlervarianz \\(\\text{Var}(\\varepsilon)\\):`,
+    prompt: `\\(\\text{Var}(\\varepsilon) = \\text{Var}(Y) - \\text{Var}(\\tau) = ${k4b_varY} - ${k4b_varTau} = ?\\)`,
+    answer: `${k4b_varY - k4b_varTau}`,
+    hint: `\\(\\text{Var}(\\varepsilon) = ${k4b_varY} - ${k4b_varTau} = ${k4b_varY - k4b_varTau}\\)`,
+    rule: "K4",
+    level: 2,
+  });
+
+  // K5: Was ist Reliabilität konzeptuell?
+  exercises.push({
+    type: "multiplechoice",
+    question: "Was gibt die Reliabilität \\(\\text{Rel}(Y) = \\frac{\\text{Var}(\\tau)}{\\text{Var}(Y)}\\) an?",
+    options: [
+      "Den Anteil der wahren Varianz an der Gesamtvarianz – wie viel der beobachteten Unterschiede ‚echt' sind",
+      "Die mittlere Korrelation zwischen allen Items",
+      "Den Anteil korrekt beantworteter Items",
+      "Die Validität des Tests"
+    ],
+    correct: 0,
+    hint: "Reliabilität = Var(τ)/Var(Y) beschreibt, welcher Anteil der beobachteten Testscore-Varianz auf echte Merkmalsunterschiede zurückgeht. Der Rest ist Messfehler.",
     rule: "K5",
     level: 2,
   });
 
-  return exercises;
-}
-
-// World 6: KTT-Modelle
-function generateW6Exercises() {
-  const exercises = [];
-
+  // K5: Berechnung Reliabilität
+  const k5_tau = randInt(6, 12);
+  const k5_y = randInt(10, 20);
   exercises.push({
-    type: "multiplechoice",
-    question: "Im ess. τ-äquivalenten Modell: Wie können sich Items unterscheiden?",
-    options: ["In Schwierigkeit (\\(\\lambda_{i}\\)) und Fehlervarianzen", "In den wahren Werten", "Gar nicht – sie sind identisch", "Nur in den Fehlervarianzen"],
-    correct: 0,
-    rule: "K7",
-    level: 1,
-  });
-
-  exercises.push({
-    type: "multiplechoice",
-    question: "Das τ-kongenerische Modell ist identisch mit:",
-    options: ["Ein-Faktor-Modell der CFA", "Multifaktorielles Modell", "Klassikal parallelem Modell", "Faktorenanalyse ohne Einschränkungen"],
-    correct: 0,
-    rule: "K8",
+    type: "fillblank",
+    question: `Gegeben: \\(\\text{Var}(\\tau) = ${k5_tau}\\), \\(\\text{Var}(Y) = ${k5_y}\\). Berechne die Reliabilität \\(\\text{Rel}(Y)\\):`,
+    prompt: `\\(\\text{Rel}(Y) = \\frac{\\text{Var}(\\tau)}{\\text{Var}(Y)} = \\frac{${k5_tau}}{${k5_y}} = ?\\)`,
+    answer: `${(k5_tau / k5_y).toFixed(2)}`,
+    hint: `\\(\\text{Rel}(Y) = \\frac{${k5_tau}}{${k5_y}} \\approx ${(k5_tau / k5_y).toFixed(2)}\\)`,
+    rule: "K5",
     level: 2,
   });
 
-  const k6_1_eta_var = randInt(2, 5);
+  // K5: Interpretation Rel = 1 und Rel = 0
   exercises.push({
-    type: "fillblank",
-    question: `Ess. τ-äquivalent mit \\(\\tau_{1} = \\eta + 2\\), \\(\\tau_{2} = \\eta + 1\\), \\(\\text{Var}(\\eta) = ${k6_1_eta_var}\\), gleiche Fehlervarianzen. \\(\\text{Cov}(Y_{1}, Y_{2}) = ?\\)`,
-    prompt: `\\(\\text{Cov}(Y_{1}, Y_{2}) = \\text{Var}(\\eta) = ?\\)`,
-    answer: `${k6_1_eta_var}`,
-    hint: `Im ess. τ-äquivalenten Modell: \\(\\text{Cov}(Y_{i},Y_{j}) = \\text{Var}(\\eta) = ${k6_1_eta_var}\\)`,
-    rule: "K7",
+    type: "multiplechoice",
+    question: "Was bedeutet \\(\\text{Rel}(Y) = 1\\)?",
+    options: [
+      "Es gibt keinen Messfehler: \\(\\text{Var}(\\varepsilon) = 0\\), der Test misst perfekt",
+      "Alle Personen haben denselben Testwert",
+      "Der wahre Wert ist null",
+      "Der Test hat maximale Fehlervarianz"
+    ],
+    correct: 0,
+    hint: "Bei Rel = 1 gilt Var(ε) = 0, d.\\,h. jede beobachtete Variation ist ‚echt'. Das ist ein theoretisches Ideal – in der Praxis gilt Rel < 1.",
+    rule: "K5",
     level: 2,
   });
 
-  const b1 = randInt(1, 3);
-  const b2 = randInt(1, 3);
-  const varEta2 = randInt(3, 8);
+  exercises.push({
+    type: "multiplechoice",
+    question: "Was bedeutet \\(\\text{Rel}(Y) = 0\\)?",
+    options: [
+      "Die gesamte Varianz ist Messfehler: \\(\\text{Var}(\\tau) = 0\\), der Test differenziert nicht zwischen Personen",
+      "Der Test ist perfekt reliabel",
+      "Alle Messfehler sind null",
+      "Der Test misst genau das, was er messen soll"
+    ],
+    correct: 0,
+    hint: "Bei Rel = 0 ist Var(τ) = 0, d.\\,h. alle beobachteten Unterschiede sind reines Messrauschen. Der Test enthält keine Information über individuelle Unterschiede.",
+    rule: "K5",
+    level: 2,
+  });
+
+  // === Level 3: Standardmessfehler und Anwendung ===
+
+  // Standardmessfehler berechnen
+  const k5c_sd = randInt(10, 20);
+  const k5c_rel_num = randInt(70, 95);
+  const k5c_rel = k5c_rel_num / 100;
+  const k5c_sem = (k5c_sd * Math.sqrt(1 - k5c_rel)).toFixed(1);
   exercises.push({
     type: "fillblank",
-    question: `τ-kongenerisch: \\(\\tau_{1} = ${b1}\\eta\\), \\(\\tau_{2} = ${b2}\\eta\\), \\(\\text{Var}(\\eta) = ${varEta2}\\). Berechne \\(\\text{Cov}(\\tau_{1}, \\tau_{2})\\):`,
-    prompt: `\\(\\text{Cov}(\\tau_{1}, \\tau_{2}) = ${b1} \\cdot ${b2} \\cdot \\text{Var}(\\eta) = ?\\)`,
-    answer: `${b1 * b2 * varEta2}`,
-    hint: `\\(\\text{Cov}(\\tau_{1},\\tau_{2}) = \\text{Cov}(${b1}\\eta, ${b2}\\eta) = ${b1}\\cdot${b2}\\cdot\\text{Var}(\\eta) = ${b1 * b2 * varEta2}\\)`,
-    rule: "K8",
+    question: `Ein IQ-Test hat \\(\\text{SD}(Y) = ${k5c_sd}\\) und \\(\\text{Rel}(Y) = ${k5c_rel}\\). Berechne den Standardmessfehler \\(\\text{SE} = \\text{SD}(Y) \\cdot \\sqrt{1 - \\text{Rel}(Y)}\\):`,
+    prompt: `\\(\\text{SE} = ${k5c_sd} \\cdot \\sqrt{1 - ${k5c_rel}} = ${k5c_sd} \\cdot \\sqrt{${(1 - k5c_rel).toFixed(2)}} = ?\\)`,
+    answer: `${k5c_sem}`,
+    hint: `\\(\\text{SE} = ${k5c_sd} \\cdot \\sqrt{${(1 - k5c_rel).toFixed(2)}} = ${k5c_sd} \\cdot ${Math.sqrt(1 - k5c_rel).toFixed(3)} \\approx ${k5c_sem}\\)`,
+    rule: "K5a",
+    level: 3,
+  });
+
+  // Zusammenfassung: Definition vs. Annahme
+  exercises.push({
+    type: "multiplechoice",
+    question: "Welche der folgenden KTT-Eigenschaften folgt NICHT aus der Definition \\(\\tau_{i} := E(Y_{i}|p_{U})\\), sondern ist eine zusätzliche Annahme?",
+    options: [
+      "\\(\\text{Cov}(\\varepsilon_{i}, \\tau_{j}) = 0\\) für \\(i \\neq j\\) (Messfehler von Test \\(i\\) unkorreliert mit wahrem Wert von Test \\(j\\))",
+      "\\(E(\\varepsilon_{i}) = 0\\) (Messfehler hat Erwartungswert null)",
+      "\\(\\text{Cov}(\\varepsilon_{i}, \\tau_{i}) = 0\\) (eigener Messfehler unkorreliert mit eigenem wahren Wert)",
+      "\\(Y_{i} = \\tau_{i} + \\varepsilon_{i}\\) (Zerlegung in wahren Wert und Fehler)"
+    ],
+    correct: 0,
+    hint: "\\(E(\\varepsilon_{i}) = 0\\) und \\(\\text{Cov}(\\varepsilon_{i}, \\tau_{i}) = 0\\) folgen beide aus der Definition von \\(\\tau_{i}\\) als bedingten Erwartungswert. Aber dass der Messfehler von Test \\(i\\) auch mit dem wahren Wert eines anderen Tests \\(j\\) unkorreliert ist – das muss man zusätzlich annehmen.",
+    rule: "K3",
     level: 3,
   });
 
   return exercises;
 }
 
-// World 7: Pfaddiagramme → Gleichungen
-function generateW7Exercises() {
+// World 8: KTT-Modelle
+function generateW8Exercises() {
+  const exercises = [];
+
+  // ===================================================================
+  // Level 1: Das allgemeinste Modell — τ-kongenerisch
+  // ===================================================================
+
+  // Konzept: Was ist das τ-kongenerische Modell?
+  exercises.push({
+    type: "multiplechoice",
+    question: "Das allgemeinste KTT-Modell ist das τ-kongenerische Modell. Welche Gleichung beschreibt es?",
+    options: [
+      "\\(\\tau_{i} = \\alpha_{i} + \\beta_{i}\\,\\eta\\) – jedes Item hat eigenen Intercept und eigene Ladung",
+      "\\(\\tau_{i} = \\alpha_{i} + \\eta\\) – alle Items haben Ladung 1",
+      "\\(\\tau_{i} = \\eta\\) – alle Items haben identische wahre Werte",
+      "\\(\\tau_{i} = \\beta_{i}\\,\\eta\\) – kein Intercept erlaubt"
+    ],
+    correct: 0,
+    hint: "Im τ-kongenerischen Modell darf jedes Item eine eigene Ladung \\(\\beta_{i}\\) und einen eigenen Intercept \\(\\alpha_{i}\\) haben. Das ist das allgemeinste Ein-Faktor-Modell.",
+    rule: "K8",
+    level: 1,
+  });
+
+  // Was bedeuten die Parameter?
+  exercises.push({
+    type: "multiplechoice",
+    question: "Im τ-kongenerischen Modell \\(\\tau_{i} = \\alpha_{i} + \\beta_{i}\\,\\eta\\): Was repräsentiert \\(\\beta_{i}\\)?",
+    options: [
+      "Die Ladung (Trennschärfe): Wie stark Item \\(i\\) auf das gemeinsame Merkmal \\(\\eta\\) anspricht",
+      "Die Itemschwierigkeit",
+      "Die Fehlervarianz von Item \\(i\\)",
+      "Die Reliabilität von Item \\(i\\)"
+    ],
+    correct: 0,
+    hint: "\\(\\beta_{i}\\) gibt an, um wie viele Einheiten sich der wahre Wert \\(\\tau_{i}\\) ändert, wenn das latente Merkmal \\(\\eta\\) um eine Einheit steigt. Ein höheres \\(\\beta_{i}\\) bedeutet: Das Item reagiert stärker auf Unterschiede im Konstrukt.",
+    rule: "K8",
+    level: 1,
+  });
+
+  exercises.push({
+    type: "multiplechoice",
+    question: "Im τ-kongenerischen Modell \\(\\tau_{i} = \\alpha_{i} + \\beta_{i}\\,\\eta\\): Was repräsentiert \\(\\alpha_{i}\\)?",
+    options: [
+      "Den Intercept (Schwierigkeitsparameter): Der wahre Wert, wenn \\(\\eta = 0\\)",
+      "Die Ladung auf den Faktor",
+      "Die Fehlervarianz",
+      "Die Korrelation zwischen Item und Faktor"
+    ],
+    correct: 0,
+    hint: "\\(\\alpha_{i}\\) ist das Niveau des Items: Bei einer Person mit \\(\\eta = 0\\) wäre der wahre Wert genau \\(\\alpha_{i}\\). Verschiedene Items können unterschiedlich schwer sein (verschiedene \\(\\alpha_{i}\\)).",
+    rule: "K8",
+    level: 1,
+  });
+
+  // Verbindung zur CFA
+  exercises.push({
+    type: "multiplechoice",
+    question: "Das τ-kongenerische Modell ist mathematisch identisch mit:",
+    options: [
+      "Dem Ein-Faktor-Modell der konfirmatorischen Faktorenanalyse (CFA)",
+      "Einem Modell mit beliebig vielen Faktoren",
+      "Dem parallelen Modell",
+      "Der exploratorischen Faktorenanalyse (EFA)"
+    ],
+    correct: 0,
+    hint: "\\(Y_{i} = \\alpha_{i} + \\beta_{i}\\eta + \\varepsilon_{i}\\) ist genau die CFA-Gleichung. Das τ-kongenerische KTT-Modell und das Ein-Faktor-CFA-Modell sind dasselbe Modell.",
+    rule: "K8",
+    level: 1,
+  });
+
+  // Kovarianzimplikation τ-kongenerisch
+  const tk_b1 = randInt(1, 3);
+  const tk_b2 = randInt(1, 3);
+  const tk_varEta = randInt(3, 8);
+  exercises.push({
+    type: "fillblank",
+    question: `τ-kongenerisch: \\(\\beta_{1} = ${tk_b1}\\), \\(\\beta_{2} = ${tk_b2}\\), \\(\\text{Var}(\\eta) = ${tk_varEta}\\). Berechne \\(\\text{Cov}(Y_{1}, Y_{2})\\):`,
+    prompt: `\\(\\text{Cov}(Y_{1}, Y_{2}) = \\beta_{1}\\cdot\\beta_{2}\\cdot\\text{Var}(\\eta) = ${tk_b1}\\cdot${tk_b2}\\cdot${tk_varEta} = ?\\)`,
+    answer: `${tk_b1 * tk_b2 * tk_varEta}`,
+    hint: `\\(\\text{Cov}(Y_{1},Y_{2}) = ${tk_b1}\\cdot${tk_b2}\\cdot${tk_varEta} = ${tk_b1 * tk_b2 * tk_varEta}\\). Die Kovarianz hängt von beiden Ladungen ab – unterschiedliche Ladungen führen zu unterschiedlichen Kovarianzen.`,
+    rule: "K8",
+    level: 2,
+  });
+
+  // ===================================================================
+  // Level 2: Ess. τ-äquivalent — Einschränkung der Ladungen
+  // ===================================================================
+
+  // Was ist die zentrale Einschränkung?
+  exercises.push({
+    type: "multiplechoice",
+    question: "Das essentiell τ-äquivalente Modell \\(\\tau_{i} = \\alpha_{i} + \\eta\\) entsteht aus dem τ-kongenerischen Modell durch welche Einschränkung?",
+    options: [
+      "Alle Ladungen sind gleich: \\(\\beta_{1} = \\beta_{2} = \\ldots = 1\\) (nur die Intercepts \\(\\alpha_{i}\\) dürfen variieren)",
+      "Alle Intercepts sind gleich",
+      "Alle Fehlervarianzen sind gleich",
+      "Es gibt keine Einschränkungen"
+    ],
+    correct: 0,
+    hint: "Im ess. τ-äquivalenten Modell laden alle Items gleich stark auf den Faktor (\\(\\beta_{i} = 1\\) für alle \\(i\\)). Die wahren Werte unterscheiden sich nur noch durch additive Konstanten \\(\\alpha_{i}\\), die man als Schwierigkeitsparameter interpretieren kann.",
+    rule: "K7",
+    level: 2,
+  });
+
+  // Konsequenz für Kovarianzen
+  exercises.push({
+    type: "multiplechoice",
+    question: "Im ess. τ-äquivalenten Modell (\\(\\tau_{i} = \\alpha_{i} + \\eta\\)) gilt für die Kovarianz \\(\\text{Cov}(Y_{i}, Y_{j})\\) mit \\(i \\neq j\\):",
+    options: [
+      "\\(\\text{Cov}(Y_{i}, Y_{j}) = \\text{Var}(\\eta)\\) – alle Kovarianzen sind gleich",
+      "\\(\\text{Cov}(Y_{i}, Y_{j}) = \\beta_{i}\\beta_{j}\\text{Var}(\\eta)\\) – abhängig von den Ladungen",
+      "\\(\\text{Cov}(Y_{i}, Y_{j}) = 0\\)",
+      "\\(\\text{Cov}(Y_{i}, Y_{j}) = \\text{Var}(Y_{i})\\)"
+    ],
+    correct: 0,
+    hint: "Da alle \\(\\beta_{i} = 1\\), wird \\(\\text{Cov}(Y_{i}, Y_{j}) = 1 \\cdot 1 \\cdot \\text{Var}(\\eta) = \\text{Var}(\\eta)\\). Alle paarweisen Kovarianzen sind identisch – eine starke und testbare Vorhersage!",
+    rule: "K7",
+    level: 2,
+  });
+
+  // Berechnung
+  const te_eta_var = randInt(2, 6);
+  exercises.push({
+    type: "fillblank",
+    question: `Ess. τ-äquivalent: \\(\\tau_{1} = \\eta + 3\\), \\(\\tau_{2} = \\eta + 1\\), \\(\\text{Var}(\\eta) = ${te_eta_var}\\). Berechne \\(\\text{Cov}(Y_{1}, Y_{2})\\):`,
+    prompt: `\\(\\text{Cov}(Y_{1}, Y_{2}) = \\text{Var}(\\eta) = ?\\)`,
+    answer: `${te_eta_var}`,
+    hint: `Da beide Ladungen = 1: \\(\\text{Cov}(Y_{1}, Y_{2}) = 1 \\cdot 1 \\cdot \\text{Var}(\\eta) = ${te_eta_var}\\)`,
+    rule: "K7",
+    level: 2,
+  });
+
+  // Cronbachs α
+  exercises.push({
+    type: "multiplechoice",
+    question: "Unter welchem KTT-Modell ist Cronbachs \\(\\alpha\\) ein exakter (nicht nur unterer) Schätzer der Reliabilität?",
+    options: [
+      "Dem essentiell τ-äquivalenten Modell (gleiche Ladungen, verschiedene Intercepts und Fehlervarianzen erlaubt)",
+      "Dem τ-kongenerischen Modell (verschiedene Ladungen erlaubt)",
+      "Dem parallelen Modell",
+      "\\(\\alpha\\) ist unter allen Modellen exakt"
+    ],
+    correct: 0,
+    hint: "Cronbachs \\(\\alpha\\) setzt gleiche Ladungen voraus (ess. τ-Äquivalenz). Wenn die Ladungen unterschiedlich sind (τ-kongenerisch), unterschätzt \\(\\alpha\\) die Reliabilität systematisch. Dann ist McDonalds \\(\\omega\\) der bessere Schätzer.",
+    rule: "K7",
+    level: 2,
+  });
+
+  // ===================================================================
+  // Level 2b: τ-äquivalent — zusätzlich gleiche Intercepts
+  // ===================================================================
+
+  exercises.push({
+    type: "multiplechoice",
+    question: "Das τ-äquivalente Modell entsteht aus dem ess. τ-äquivalenten durch welche zusätzliche Einschränkung?",
+    options: [
+      "Alle Intercepts sind gleich: \\(\\alpha_{i} = \\alpha\\) für alle \\(i\\), d.\\,h. \\(\\tau_{1} = \\tau_{2} = \\ldots = \\alpha + \\eta\\)",
+      "Alle Fehlervarianzen sind gleich",
+      "Alle Ladungen sind verschieden",
+      "Der Erwartungswert von \\(\\eta\\) ist null"
+    ],
+    correct: 0,
+    hint: "τ-äquivalent bedeutet: Alle Items haben denselben wahren Wert (\\(\\tau_{i} = \\tau_{j}\\)). In CFA-Sprache: gleiche Ladungen UND gleiche Intercepts. Im Gegensatz zum ess. τ-äquivalenten Modell, wo nur die Ladungen gleich sein müssen.",
+    rule: "K7",
+    level: 2,
+  });
+
+  // Was bedeutet τ-Äquivalenz praktisch?
+  exercises.push({
+    type: "multiplechoice",
+    question: "Wenn zwei Items τ-äquivalent sind (\\(\\tau_{1} = \\tau_{2}\\)), was bedeutet das inhaltlich?",
+    options: [
+      "Beide Items haben für jede Person denselben wahren Wert – sie messen dasselbe auf derselben Skala",
+      "Beide Items haben dieselbe Fehlervarianz",
+      "Beide Items haben denselben beobachteten Wert",
+      "Beide Items korrelieren perfekt"
+    ],
+    correct: 0,
+    hint: "τ-Äquivalenz ist eine starke Annahme: Nicht nur laden die Items gleich, sondern sie haben auch das gleiche Niveau. In der CFA heißt das: gleiche Faktorladungen UND gleiche Intercepts.",
+    rule: "K7",
+    level: 2,
+  });
+
+  // ===================================================================
+  // Level 2c: Paralleles Modell — die stärkste Annahme
+  // ===================================================================
+
+  exercises.push({
+    type: "multiplechoice",
+    question: "Was fordert das parallele Modell zusätzlich zum τ-äquivalenten Modell?",
+    options: [
+      "Gleiche Fehlervarianzen: \\(\\text{Var}(\\varepsilon_{1}) = \\text{Var}(\\varepsilon_{2}) = \\ldots\\)",
+      "Unterschiedliche Ladungen",
+      "Verschiedene wahre Werte",
+      "Korrelierte Messfehler"
+    ],
+    correct: 0,
+    hint: "Parallele Items haben alles gleich: gleiche Ladungen (= 1), gleiche Intercepts, UND gleiche Fehlervarianzen. Das ist das restriktivste KTT-Modell.",
+    rule: "K6",
+    level: 2,
+  });
+
+  // Konsequenz für Varianzen und Kovarianzen
+  exercises.push({
+    type: "multiplechoice",
+    question: "Im parallelen Modell (\\(\\tau_{1} = \\tau_{2}\\), \\(\\text{Var}(\\varepsilon_{1}) = \\text{Var}(\\varepsilon_{2})\\)) gilt:",
+    options: [
+      "Alle beobachteten Varianzen sind gleich UND alle Kovarianzen sind gleich: \\(\\text{Var}(Y_{i}) = \\text{Var}(Y_{j})\\) und \\(\\text{Cov}(Y_{i},Y_{j}) = \\text{Var}(\\eta)\\)",
+      "Nur die Kovarianzen sind gleich, die Varianzen können verschieden sein",
+      "Nur die Varianzen sind gleich, die Kovarianzen können verschieden sein",
+      "Varianzen und Kovarianzen sind alle verschieden"
+    ],
+    correct: 0,
+    hint: "Da \\(\\text{Var}(Y_{i}) = \\text{Var}(\\eta) + \\text{Var}(\\varepsilon_{i})\\) und die Fehlervarianzen gleich sind, sind auch die beobachteten Varianzen gleich. Die Kovarianzen sind ebenfalls alle gleich (= Var(η)). Die Kovarianzmatrix hat ein sehr einfaches Muster.",
+    rule: "K6",
+    level: 2,
+  });
+
+  // ===================================================================
+  // Level 3: Modellhierarchie und SEM-Verknüpfung
+  // ===================================================================
+
+  // Die Hierarchie
+  exercises.push({
+    type: "multiplechoice",
+    question: "Ordne die KTT-Modelle vom allgemeinsten (wenigste Restriktionen) zum strengsten:",
+    options: [
+      "τ-kongenerisch → ess. τ-äquivalent → τ-äquivalent → parallel",
+      "parallel → τ-äquivalent → ess. τ-äquivalent → τ-kongenerisch",
+      "ess. τ-äquivalent → τ-kongenerisch → parallel → τ-äquivalent",
+      "Alle Modelle sind gleich restriktiv"
+    ],
+    correct: 0,
+    hint: "Jede Stufe fügt Restriktionen hinzu: τ-kongenerisch (freie \\(\\alpha_{i}, \\beta_{i}\\)) → ess. τ-äquiv. (gleiche \\(\\beta_{i}\\)) → τ-äquiv. (+ gleiche \\(\\alpha_{i}\\)) → parallel (+ gleiche Fehlervarianzen).",
+    rule: "K8",
+    level: 3,
+  });
+
+  // SEM-Restriktionen Zuordnung
+  exercises.push({
+    type: "multiplechoice",
+    question: "In der KTT gilt \\(\\tau_{i} = \\alpha_{i} + \\beta_{i}\\,\\eta\\). Welche Restriktion führt zum ess. τ-äquivalenten Modell?",
+    options: [
+      "Ladungen gleichsetzen: \\(\\beta_{1} = \\beta_{2} = \\ldots = 1\\)",
+      "Intercepts gleichsetzen: \\(\\alpha_{1} = \\alpha_{2} = \\ldots\\)",
+      "Fehlervarianzen gleichsetzen: \\(\\text{Var}(\\varepsilon_{1}) = \\text{Var}(\\varepsilon_{2}) = \\ldots\\)",
+      "Faktorvarianz auf 1 fixieren"
+    ],
+    correct: 0,
+    hint: "Der Schritt τ-kongenerisch → ess. τ-äquivalent bedeutet: Alle Ladungen \\(\\beta_{i}\\) werden auf 1 gesetzt. Es bleibt \\(\\tau_{i} = \\alpha_{i} + \\eta\\). Die Intercepts \\(\\alpha_{i}\\) dürfen weiterhin verschieden sein.",
+    rule: "K7",
+    level: 3,
+  });
+
+  exercises.push({
+    type: "multiplechoice",
+    question: "Was muss in der CFA zusätzlich restringiert werden, um vom ess. τ-äquivalenten zum τ-äquivalenten Modell zu kommen?",
+    options: [
+      "Die Intercepts gleichsetzen: \\(\\alpha_{1} = \\alpha_{2} = \\ldots\\)",
+      "Die Faktorladungen gleichsetzen",
+      "Die Fehlervarianzen gleichsetzen",
+      "Korrelierte Fehler zulassen"
+    ],
+    correct: 0,
+    hint: "Ess. τ-äquivalent hat bereits gleiche Ladungen (\\(\\beta_{i} = 1\\)). Der nächste Schritt (τ-äquivalent) erfordert zusätzlich gleiche Intercepts (\\(\\alpha_{i} = \\alpha\\)). Dann gilt \\(\\tau_{i} = \\alpha + \\eta\\) für alle Items – alle haben denselben wahren Wert.",
+    rule: "K7",
+    level: 3,
+  });
+
+  exercises.push({
+    type: "multiplechoice",
+    question: "Welche zusätzliche Restriktion führt vom τ-äquivalenten zum parallelen Modell in der CFA?",
+    options: [
+      "Fehlervarianzen gleichsetzen: \\(\\text{Var}(\\varepsilon_{1}) = \\text{Var}(\\varepsilon_{2}) = \\ldots\\)",
+      "Ladungen gleichsetzen",
+      "Intercepts gleichsetzen",
+      "Faktorvarianz auf null setzen"
+    ],
+    correct: 0,
+    hint: "Das parallele Modell hat gleiche Ladungen, gleiche Intercepts UND gleiche Fehlervarianzen – das ist die stärkste Forderung. In lavaan restringiert man zusätzlich die Residualvarianzen.",
+    rule: "K6",
+    level: 3,
+  });
+
+  // Zusammenfassungstabelle als MC
+  exercises.push({
+    type: "multiplechoice",
+    question: "Welches Modell erlaubt verschiedene Ladungen (\\(\\beta_{i} \\neq \\beta_{j}\\)), verschiedene Intercepts UND verschiedene Fehlervarianzen?",
+    options: [
+      "Nur das τ-kongenerische Modell",
+      "Das ess. τ-äquivalente Modell",
+      "Das parallele Modell",
+      "Alle KTT-Modelle"
+    ],
+    correct: 0,
+    hint: "Nur im τ-kongenerischen Modell sind Ladungen, Intercepts und Fehlervarianzen alle frei. Jede Spezialisierung schränkt mindestens einen Parameter ein.",
+    rule: "K8",
+    level: 3,
+  });
+
+  // Reliabilitätsschätzer und Modellwahl
+  exercises.push({
+    type: "multiplechoice",
+    question: "Warum wird in der modernen Diagnostik McDonalds \\(\\omega\\) gegenüber Cronbachs \\(\\alpha\\) empfohlen?",
+    options: [
+      "Weil \\(\\omega\\) auch bei unterschiedlichen Ladungen (τ-kongenerisches Modell) korrekt ist, während \\(\\alpha\\) gleiche Ladungen voraussetzt",
+      "Weil \\(\\omega\\) einfacher zu berechnen ist",
+      "Weil \\(\\alpha\\) immer die Reliabilität überschätzt",
+      "Weil \\(\\omega\\) keine Annahmen macht"
+    ],
+    correct: 0,
+    hint: "Cronbachs \\(\\alpha\\) ist nur unter ess. τ-Äquivalenz (gleiche Ladungen) ein korrekter Schätzer. Bei verschiedenen Ladungen (τ-kongenerisch) unterschätzt \\(\\alpha\\) die Reliabilität systematisch. McDonalds \\(\\omega\\) berücksichtigt die unterschiedlichen Ladungen und ist daher allgemeiner gültig.",
+    rule: "K8",
+    level: 3,
+  });
+
+  // Rechenaufgabe: τ-kongenerisch Kovarianz
+  const tk2_b1 = randInt(2, 4);
+  const tk2_b2 = randInt(1, 3);
+  const tk2_varEta = randInt(2, 6);
+  const tk2_varE1 = randInt(1, 4);
+  exercises.push({
+    type: "fillblank",
+    question: `τ-kongenerisch: \\(\\beta_{1}=${tk2_b1}\\), \\(\\beta_{2}=${tk2_b2}\\), \\(\\text{Var}(\\eta)=${tk2_varEta}\\), \\(\\text{Var}(\\varepsilon_{1})=${tk2_varE1}\\). Berechne \\(\\text{Var}(Y_{1})\\):`,
+    prompt: `\\(\\text{Var}(Y_{1}) = \\beta_{1}^{2}\\cdot\\text{Var}(\\eta) + \\text{Var}(\\varepsilon_{1}) = ${tk2_b1}^{2}\\cdot${tk2_varEta} + ${tk2_varE1} = ?\\)`,
+    answer: `${tk2_b1*tk2_b1*tk2_varEta + tk2_varE1}`,
+    hint: `\\(${tk2_b1*tk2_b1}\\cdot${tk2_varEta} + ${tk2_varE1} = ${tk2_b1*tk2_b1*tk2_varEta} + ${tk2_varE1} = ${tk2_b1*tk2_b1*tk2_varEta + tk2_varE1}\\)`,
+    rule: "K8",
+    level: 2,
+  });
+
+  // Rechenaufgabe: Paralleles Modell – Korrelation berechnen
+  const par_varEta = randInt(4, 8);
+  const par_varEps = randInt(1, 4);
+  const par_varY = par_varEta + par_varEps;
+  const par_corr = (par_varEta / par_varY).toFixed(2);
+  exercises.push({
+    type: "fillblank",
+    question: `Paralleles Modell: \\(\\text{Var}(\\eta)=${par_varEta}\\), \\(\\text{Var}(\\varepsilon)=${par_varEps}\\) (gleich für alle Items). Berechne die Korrelation zwischen zwei parallelen Items \\(\\text{Kor}(Y_{1},Y_{2})\\):`,
+    prompt: `\\(\\text{Kor}(Y_{1},Y_{2}) = \\frac{\\text{Cov}(Y_{1},Y_{2})}{\\text{Var}(Y)} = \\frac{\\text{Var}(\\eta)}{\\text{Var}(\\eta)+\\text{Var}(\\varepsilon)} = \\frac{${par_varEta}}{${par_varY}} = ?\\)`,
+    answer: `${par_corr}`,
+    hint: `\\(\\frac{${par_varEta}}{${par_varY}} = ${par_corr}\\). Im parallelen Modell ist die Korrelation zweier Items gleich der Reliabilität!`,
+    rule: "K6",
+    level: 3,
+  });
+
+  // Schlüsselerkenntnis: Korrelation = Reliabilität
+  exercises.push({
+    type: "multiplechoice",
+    question: "Im parallelen Modell gilt: Die Korrelation zweier Items \\(\\text{Kor}(Y_{1},Y_{2})\\) ist gleich:",
+    options: [
+      "Der Reliabilität \\(\\text{Rel}(Y)\\) – das ist die theoretische Grundlage der Paralleltest-Reliabilität",
+      "Der Validität",
+      "Null",
+      "Der Fehlervarianz"
+    ],
+    correct: 0,
+    hint: "\\(\\text{Kor}(Y_{1},Y_{2}) = \\frac{\\text{Var}(\\eta)}{\\text{Var}(\\eta)+\\text{Var}(\\varepsilon)} = \\frac{\\text{Var}(\\tau)}{\\text{Var}(Y)} = \\text{Rel}(Y)\\). Das ist die Begründung, warum man aus der Korrelation paralleler Tests die Reliabilität schätzen kann.",
+    rule: "K6",
+    level: 3,
+  });
+
+  return exercises;
+}
+
+// World 9: Pfaddiagramme → Gleichungen
+function generateW9Exercises() {
   const exercises = [];
 
   exercises.push({
@@ -909,8 +2086,8 @@ function generateW7Exercises() {
   return exercises;
 }
 
-// World 8: Implizierte Kovarianzmatrix
-function generateW8Exercises() {
+// World 10: Implizierte Kovarianzmatrix
+function generateW10Exercises() {
   const exercises = [];
 
   const b1 = 2, b2 = 3, ve = 5, ve1 = 2, ve2 = 3;
@@ -969,8 +2146,8 @@ function generateW8Exercises() {
   return exercises;
 }
 
-// World 9: CFA
-function generateW9Exercises() {
+// World 11: CFA
+function generateW11Exercises() {
   const exercises = [];
 
   exercises.push({
@@ -1057,6 +2234,8 @@ const RAW_GENERATORS = {
   7: generateW7Exercises,
   8: generateW8Exercises,
   9: generateW9Exercises,
+  10: generateW10Exercises,
+  11: generateW11Exercises,
 };
 
 // Wrap generators to auto-shuffle MC options
@@ -1079,7 +2258,7 @@ const EXERCISE_GENERATORS = Object.fromEntries(
 function RuleCard({ rule }) {
   const [showPsych, setShowPsych] = useState(false);
   if (!rule) return null;
-  const r = RULES[rule] || REG_RULES[rule] || KTT_RULES[rule];
+  const r = DEF_RULES[rule] || RULES[rule] || REG_RULES[rule] || KTT_RULES[rule];
   if (!r) return null;
   return (
     <div style={{
@@ -1170,7 +2349,7 @@ function PsychRelevance({ exercise }) {
   // Get psychologie text: either directly from exercise, or from linked rule
   let text = exercise.psychologie;
   if (!text && exercise.rule) {
-    const r = RULES[exercise.rule] || REG_RULES[exercise.rule] || KTT_RULES[exercise.rule];
+    const r = DEF_RULES[exercise.rule] || RULES[exercise.rule] || REG_RULES[exercise.rule] || KTT_RULES[exercise.rule];
     if (r) text = r.psychologie;
   }
   if (!text) return null;
@@ -1361,7 +2540,7 @@ function FeedbackBanner({ correct, explanation }) {
       <span style={{ fontSize: '1.5em' }}>{correct ? '✅' : '❌'}</span>
       <span>{correct ? 'Richtig!' : 'Leider falsch.'}</span>
       {!correct && explanation && (
-        <span style={{ fontWeight: 400, fontSize: '0.9em', marginLeft: 8 }}>{explanation}</span>
+        <span style={{ fontWeight: 400, fontSize: '0.9em', marginLeft: 8 }}><MathText text={explanation} /></span>
       )}
     </div>
   );
@@ -1436,12 +2615,15 @@ function WorldMap({ onSelectWorld, progress }) {
 }
 
 function getRulesForWorld(worldId) {
-  if (worldId <= 1) return [RULES.E1, RULES.E2];
-  if (worldId === 2) return [RULES.V1, RULES.V2, RULES.V3, RULES.V4, RULES.V5];
-  if (worldId === 3) return [RULES.C1, RULES.C2, RULES.C3, RULES.C4, RULES.C5];
-  if (worldId === 4) return [...Object.values(REG_RULES)];
-  if (worldId <= 6) return [...Object.values(RULES), ...Object.values(REG_RULES), ...Object.values(KTT_RULES)];
-  return [...Object.values(RULES), ...Object.values(REG_RULES), ...Object.values(KTT_RULES)];
+  if (worldId <= 1) return [DEF_RULES.DEF_E, RULES.E1, RULES.E2];
+  if (worldId === 2) return [DEF_RULES.DEF_Var, DEF_RULES.DEF_Std, RULES.V1, RULES.V2, RULES.V3, RULES.V4, RULES.V5];
+  if (worldId === 3) return [DEF_RULES.DEF_Cov, DEF_RULES.DEF_Kor, RULES.C1, RULES.C2, RULES.C3, RULES.C4, RULES.C5, RULES.KOR1, RULES.KOR2, RULES.KOR3, RULES.KOR4];
+  if (worldId === 4) return [DEF_RULES.DEF_LinReg, DEF_RULES.DEF_MultReg, DEF_RULES.DEF_OLS, DEF_RULES.DEF_R2, DEF_RULES.DEF_RegUnabh];
+  if (worldId === 5) return [DEF_RULES.DEF_BedE, DEF_RULES.DEF_Reg, DEF_RULES.DEF_Res, DEF_RULES.DEF_R2, DEF_RULES.DEF_RegUnabh, DEF_RULES.DEF_LinReg];
+  if (worldId === 6) return [...Object.values(REG_RULES), DEF_RULES.DEF_LinReg, DEF_RULES.DEF_R2, DEF_RULES.DEF_RegUnabh];
+  if (worldId === 7) return [KTT_RULES.K1, KTT_RULES.K2, KTT_RULES.K3, KTT_RULES.K4, KTT_RULES.K5, KTT_RULES.K5a];
+  if (worldId === 8) return [KTT_RULES.K5, KTT_RULES.K6, KTT_RULES.K7, KTT_RULES.K8];
+  return [...Object.values(DEF_RULES), ...Object.values(RULES), ...Object.values(REG_RULES), ...Object.values(KTT_RULES)];
 }
 
 function RuleDisplay({ worldId, currentRule, ruleMode, setRuleMode }) {

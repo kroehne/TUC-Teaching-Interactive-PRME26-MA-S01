@@ -11,7 +11,7 @@ lang: de
 
 {{< include _extensions/r-wasm/live/_knitr.qmd >}}
  
-Anhang F (S. 339-350) und G (S. 351-366)
+Anhang F (S. 339-350) und G (S. 351-366) aus: 
 
 * Steyer, R., & Eid, M. (2001). Messen und Testen (2., korrigierte Aufl). Springer.
 
