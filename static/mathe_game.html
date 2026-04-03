@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MathE – Erwartungswerte, Varianzen & Kovarianzen</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] },
+  startup: { typeset: false }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js" async></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* === Theme: shared accent colors === */
+:root {
+  --green: #58cc02;
+  --green-dark: #46a302;
+  --blue: #1cb0f6;
+  --blue-dark: #0095d9;
+  --red: #ff4b4b;
+  --orange: #ff9600;
+  --purple: #ce82ff;
+  --gold: #ffc800;
+  --gray-light: #e5e5e5;
+  --gray: #afafaf;
+  --gray-dark: #777;
+}
+
+/* === Light mode (default) === */
+:root, [data-theme="light"] {
+  --bg: #f8f9fa;
+  --bg-card: #ffffff;
+  --bg-light: #e9ecef;
+  --text: #212529;
+  --text-dim: #6c757d;
+  --card-border: #dee2e6;
+  --input-bg: #ffffff;
+  --input-border: #ced4da;
+  --rule-bg-from: #e8f4f8;
+  --rule-bg-to: #f0f7fa;
+  --rule-border: #c8dce4;
+  --math-block-bg: #f0f2f5;
+  --feedback-correct-bg: rgba(88,204,2,0.92);
+  --feedback-wrong-bg: rgba(255,75,75,0.92);
+  --psych-bg: rgba(206, 130, 255, 0.08);
+  --psych-border: rgba(206, 130, 255, 0.25);
+  --hint-bg: rgba(255,150,0,0.08);
+  --hint-border: rgba(255,150,0,0.25);
+  --scrollbar-track: #f0f0f0;
+  --scrollbar-thumb: #ccc;
+}
+
+/* === Dark mode === */
+[data-theme="dark"] {
+  --bg: #131f24;
+  --bg-card: #1a2b33;
+  --bg-light: #233a44;
+  --text: #ffffff;
+  --text-dim: #a0b4bc;
+  --card-border: #2a4a5a;
+  --input-bg: #131f24;
+  --input-border: #233a44;
+  --rule-bg-from: #1a3a4a;
+  --rule-bg-to: #1a2b33;
+  --rule-border: #2a4a5a;
+  --math-block-bg: #131f24;
+  --feedback-correct-bg: rgba(88,204,2,0.95);
+  --feedback-wrong-bg: rgba(255,75,75,0.95);
+  --psych-bg: rgba(206, 130, 255, 0.08);
+  --psych-border: rgba(206, 130, 255, 0.2);
+  --hint-bg: rgba(255,150,0,0.1);
+  --hint-border: rgba(255,150,0,0.3);
+  --scrollbar-track: #131f24;
+  --scrollbar-thumb: #233a44;
+}
+
+/* Auto-detect system preference */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131f24;
+    --bg-card: #1a2b33;
+    --bg-light: #233a44;
+    --text: #ffffff;
+    --text-dim: #a0b4bc;
+    --card-border: #2a4a5a;
+    --input-bg: #131f24;
+    --input-border: #233a44;
+    --rule-bg-from: #1a3a4a;
+    --rule-bg-to: #1a2b33;
+    --rule-border: #2a4a5a;
+    --math-block-bg: #131f24;
+    --feedback-correct-bg: rgba(88,204,2,0.95);
+    --feedback-wrong-bg: rgba(255,75,75,0.95);
+    --psych-bg: rgba(206, 130, 255, 0.08);
+    --psych-border: rgba(206, 130, 255, 0.2);
+    --hint-bg: rgba(255,150,0,0.1);
+    --hint-border: rgba(255,150,0,0.3);
+    --scrollbar-track: #131f24;
+    --scrollbar-thumb: #233a44;
+  }
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+button { font-family: 'Nunito', sans-serif; cursor: pointer; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+
+/* Math block rendering */
+.math-block {
+  font-family: 'Cambria Math', 'Latin Modern Math', 'STIX Two Math', Georgia, serif;
+  font-size: 1.2em;
+  text-align: center;
+  padding: 12px;
+  background: var(--math-block-bg);
+  border-radius: 8px;
+  margin: 8px 0;
+  line-height: 1.8;
+}
+.rule-tag {
+  display: inline-block;
+  font-size: 0.65em;
+  background: var(--blue);
+  color: #fff;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-style: normal;
+  font-family: 'Nunito', sans-serif;
+  vertical-align: super;
+  margin-left: 4px;
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useCallback, useMemo, useRef } = React;
+
+// ============================================================
+// MathText Component for MathJax rendering
+// ============================================================
+
+function MathText({ children, block }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    if (ref.current && window.MathJax && window.MathJax.typesetPromise) {
+      window.MathJax.typesetPromise([ref.current]).catch(() => {});
+    }
+  });
+  if (block) return <div ref={ref} className="math-block">{children}</div>;
+  return <span ref={ref}>{children}</span>;
+}
+
+// ============================================================
+// DATA: Worlds, Levels, Exercises
+// ============================================================
+
+const WORLDS = [
+  { id: 1, name: "Erwartungswert", icon: "🎯", color: "#58cc02", desc: "E(·) – Rechenregeln für Erwartungswerte" },
+  { id: 2, name: "Varianz", icon: "📊", color: "#1cb0f6", desc: "Var(·) – Streuungsmaße beherrschen" },
+  { id: 3, name: "Kovarianz", icon: "🔗", color: "#ce82ff", desc: "Cov(·,·) – Zusammenhänge berechnen" },
+  { id: 4, name: "Regression", icon: "📈", color: "#ff9600", desc: "Bedingte Erwartung E(Y|X)" },
+  { id: 5, name: "KTT Grundlagen", icon: "🧱", color: "#ff4b4b", desc: "Y = τ + ε – Klassische Testtheorie" },
+  { id: 6, name: "KTT-Modelle", icon: "🏗️", color: "#ffc800", desc: "Parallel, ess. τ-äquivalent, τ-kongenerisch" },
+  { id: 7, name: "Pfaddiagramme", icon: "🔀", color: "#58cc02", desc: "Pfaddiagramme → Gleichungen" },
+  { id: 8, name: "Impl. Kovarianzmatrix", icon: "🧮", color: "#1cb0f6", desc: "Modellimpliierte Σ berechnen" },
+  { id: 9, name: "CFA", icon: "🔬", color: "#ce82ff", desc: "Konfirmatorische Faktorenanalyse" },
+];
+
+// Rule cards (Box F.1 from Steyer & Eid)
+const RULES = {
+  E1: { id: "E1", label: "(i)", text: "\\(E(\\alpha) = \\alpha\\)", desc: "Der Erwartungswert einer Konstanten ist die Konstante selbst.",
+    psychologie: "In der Diagnostik werden häufig Konstanten zu Testwerten addiert (z.\u00A0B. ein Schwierigkeitsparameter oder ein fester Zuschlag bei der Normierung). Um den erwarteten Gesamtwert eines Tests zu berechnen, muss man wissen, dass sich der Erwartungswert einer Konstanten nicht verändert – sie geht einfach als fester Wert in die Berechnung ein. Das ist auch die Grundlage dafür, Intercepts in Regressionsmodellen korrekt zu interpretieren." },
+  E2: { id: "E2", label: "(ii)", text: "\\(E(\\alpha X + \\beta Y) = \\alpha E(X) + \\beta E(Y)\\)", desc: "Der Erwartungswert ist linear.",
+    psychologie: "In der Psychologie bildet man ständig gewichtete Summen: Skalenwerte als Summe von Items, Composite-Scores aus Subtests, oder gewichtete Prädiktoren in der Regressionsdiagnostik. Die Linearität des Erwartungswerts erlaubt es, den erwarteten Gesamtwert direkt aus den Erwartungswerten der Einzelteile zu berechnen – z.\u00A0B. den erwarteten IQ-Gesamtwert aus den mittleren Subtestwerten. Ohne diese Regel wäre die Interpretation zusammengesetzter Scores nicht möglich." },
+  V1: { id: "V1", label: "(iii)", text: "\\(\\text{Var}(X) = E(X^2) - [E(X)]^2\\)", desc: "Verschiebungssatz der Varianz.",
+    psychologie: "Der Verschiebungssatz ist die rechnerische Grundlage, um aus Rohdaten (Summen und Quadratsummen) die Varianz zu bestimmen. In der Forschungsmethodik wird er benötigt, um Streuungsmaße effizient zu berechnen – etwa bei der Varianzanalyse (ANOVA) oder bei der Bestimmung von Effektstärken. In der Diagnostik ist die Varianz die Basis für Reliabilität und Standardmessfehler." },
+  V2: { id: "V2", label: "(iv)", text: "\\(\\text{Var}(X) = 0\\), falls \\(X = \\alpha\\) (Konstante)", desc: "Eine Konstante hat keine Streuung.",
+    psychologie: "Wenn ein Testwert bei allen Personen identisch ausfällt (z.\u00A0B. ein Item, das jeder richtig löst), hat er keine Varianz und trägt weder zur Reliabilität noch zur Validität bei. Diese Regel erklärt, warum Items mit extremer Schwierigkeit (p ≈ 0 oder p ≈ 1) bei der Testkonstruktion eliminiert werden: Sie liefern keine Information über interindividuelle Unterschiede." },
+  V3: { id: "V3", label: "(v)", text: "\\(\\text{Var}(\\alpha X) = \\alpha^2 \\, \\text{Var}(X)\\)", desc: "Skalierung geht quadratisch in die Varianz ein.",
+    psychologie: "Wenn man Testwerte umrechnet (z.\u00A0B. von Rohwerten in IQ-Punkte durch Multiplikation mit einem Faktor), verändert sich die Varianz quadratisch. Das ist entscheidend für die z-Standardisierung: Teilt man durch die Standardabweichung (σ), wird Var(X/σ) = Var(X)/σ² = 1. Auch bei der Gewichtung von Subtests in Testbatterien muss man wissen, dass ein doppeltes Gewicht die Varianz vervierfacht, nicht verdoppelt." },
+  V4: { id: "V4", label: "(vi)", text: "\\(\\text{Var}(\\alpha + X) = \\text{Var}(X)\\)", desc: "Verschiebung ändert die Varianz nicht.",
+    psychologie: "Ob man zu jedem IQ-Wert 100 addiert oder nicht – die Streuung bleibt gleich. Diese Translationsinvarianz ist grundlegend für die Normierung: Man kann Skalenmittelwerte beliebig verschieben (z.\u00A0B. auf M = 100 oder M = 50), ohne die Reliabilität oder die Differenzierungsfähigkeit des Tests zu verändern. Auch bei der Zentrierung von Prädiktoren in der Regression bleibt die Varianz erhalten." },
+  V5: { id: "V5", label: "(vii)", text: "\\(\\text{Var}(\\alpha X + \\beta Y) = \\alpha^2\\text{Var}(X) + \\beta^2\\text{Var}(Y) + 2\\alpha\\beta\\text{Cov}(X,Y)\\)", desc: "Varianz einer Linearkombination zweier Zufallsvariablen.",
+    psychologie: "Dies ist die zentrale Formel für die Diagnostik: Die Varianz eines Gesamttestwertes (Summe aus Subtests) hängt nicht nur von den Einzelvarianzen ab, sondern auch von den Kovarianzen zwischen den Subtests. Deshalb sind hoch korrelierende Items in einer Skala wünschenswert – sie erhöhen die Gesamtvarianz und damit die Reliabilität. In Strukturgleichungsmodellen wird diese Regel verwendet, um die modellimplizierte Kovarianzmatrix abzuleiten." },
+  C1: { id: "C1", label: "(viii)", text: "\\(\\text{Cov}(X,Y) = E(XY) - E(X)\\,E(Y)\\)", desc: "Verschiebungssatz der Kovarianz.",
+    psychologie: "Die Kovarianz ist das Fundament der Korrelation und damit der gesamten korrelativen Forschung in der Psychologie. Ob Zusammenhang zwischen Intelligenz und Schulleistung, zwischen Therapiedauer und Symptomreduktion, oder zwischen zwei Testitems – stets wird die Kovarianz benötigt. Der Verschiebungssatz ermöglicht die effiziente Berechnung aus Rohdaten (Produktsummen und Einzelsummen)." },
+  C2: { id: "C2", label: "(ix)", text: "\\(\\text{Cov}(X,Y) = 0\\), falls \\(X = \\alpha\\) (Konstante)", desc: "Eine Konstante kovariiert mit nichts.",
+    psychologie: "Ein Merkmal ohne Variation kann mit nichts zusammenhängen. In der Diagnostik bedeutet das: Ein Item, das alle Personen gleich beantworten, korreliert mit keinem Kriterium und ist für die Vorhersage nutzlos. In der Forschungsmethodik erklärt dies, warum Kovariaten in experimentellen Designs Varianz aufweisen müssen, um als Kontrollvariablen wirksam zu sein." },
+  C3: { id: "C3", label: "(x)", text: "\\(\\text{Cov}(\\alpha X, \\beta Y) = \\alpha\\beta \\, \\text{Cov}(X,Y)\\)", desc: "Skalierungsfaktoren werden herausgezogen.",
+    psychologie: "Wenn man Testwerte umskaliert (z.\u00A0B. Rohwerte in T-Werte), verändern sich Kovarianzen und Korrelationen vorhersagbar. Diese Regel erklärt, warum die Korrelation (als standardisierte Kovarianz) skalierungsinvariant ist – ein entscheidender Vorteil für den Vergleich von Zusammenhängen über verschiedene Studien hinweg. In der CFA steckt diese Regel in der Beziehung zwischen Faktorladungen und beobachteten Kovarianzen." },
+  C4: { id: "C4", label: "(xi)", text: "\\(\\text{Cov}(\\alpha+X,\\, \\beta+Y) = \\text{Cov}(X,Y)\\)", desc: "Verschiebungen ändern die Kovarianz nicht.",
+    psychologie: "Ob man die Depressionsskala bei 0 oder bei 50 beginnen lässt – der Zusammenhang mit anderen Variablen ändert sich nicht. Diese Translationsinvarianz der Kovarianz ist wichtig für die Forschungspraxis: Zentrierung von Variablen (z.\u00A0B. um Mittelwert 0) verändert keine Korrelationen und keinen Zusammenhang, was bei der Interpretation von Interaktionseffekten in der Regression relevant ist." },
+  C5: { id: "C5", label: "(xii)", text: "\\(\\text{Cov}(\\alpha_{1} X_{1} + \\alpha_{2} X_{2},\\; \\beta_{1} Y_{1} + \\beta_{2} Y_{2}) = \\alpha_{1}\\beta_{1}\\text{Cov}(X_{1},Y_{1}) + \\alpha_{1}\\beta_{2}\\text{Cov}(X_{1},Y_{2}) + \\alpha_{2}\\beta_{1}\\text{Cov}(X_{2},Y_{1}) + \\alpha_{2}\\beta_{2}\\text{Cov}(X_{2},Y_{2})\\)", desc: "Bilinearität der Kovarianz.",
+    psychologie: "Diese allgemeine Regel ist der Schlüssel zur Strukturgleichungsmodellierung (SEM): Wenn man wissen will, wie zwei Skalenwerte (jeweils Summen mehrerer Items) zusammenhängen, braucht man alle paarweisen Item-Kovarianzen. In der konfirmatorischen Faktorenanalyse (CFA) wird genau diese Regel benutzt, um aus Faktorladungen und Faktorvarianzen die erwarteten Kovarianzen zwischen beobachteten Variablen abzuleiten – das ist die modellimplizierte Kovarianzmatrix Σ(θ)." },
+};
+
+// KTT rules
+const KTT_RULES = {
+  K1: { id: "K1", label: "KTT-1", text: "\\(Y_{i} = \\tau_{i} + \\varepsilon_{i}\\)", desc: "Zerlegung in wahren Wert und Messfehler, wobei \\(\\tau_{i} := E(Y_{i} | p_{U})\\)",
+    psychologie: "Jedes diagnostische Testergebnis enthält Messungenauigkeit. Ein IQ-Wert von 112 bedeutet nicht, dass die ‚wahre' Intelligenz exakt 112 ist – ein Teil ist Messfehler (Tagesform, Rateeffekte, Ablenkung). Die KTT-Zerlegung ist das mathematische Fundament, um Messfehler zu quantifizieren und Konfidenzintervalle um Testwerte zu bilden, wie sie in jedem Befundbericht gefordert werden." },
+  K2: { id: "K2", label: "KTT-2", text: "\\(E(\\varepsilon_{i}) = 0\\)", desc: "Der Messfehler hat Erwartungswert 0.",
+    psychologie: "Im Mittel misst ein Test korrekt – Messfehler sind unsystematisch. Das bedeutet: Würde man denselben IQ-Test einer Person unendlich oft vorgeben, wäre der Durchschnitt aller Messwerte gleich dem wahren Wert. Systematische Verzerrungen (z.\u00A0B. kulturelle Bias) sind dagegen kein Messfehler im Sinne der KTT, sondern ein Validitätsproblem." },
+  K3: { id: "K3", label: "KTT-3", text: "\\(\\text{Cov}(\\varepsilon_{i}, \\tau_{j}) = 0\\)", desc: "Messfehler und wahrer Wert sind unkorreliert.",
+    psychologie: "Ob jemand tatsächlich hoch oder niedrig auf einem Merkmal steht, sagt nichts über die Größe des Messfehlers. Für die Diagnostik heißt das: Der Standardmessfehler gilt für alle Personen gleichermaßen – ob hochbegabt oder durchschnittlich. (Achtung: In der Item-Response-Theorie wird diese Annahme aufgeweicht, dort variiert die Messgenauigkeit mit dem Fähigkeitsniveau.)" },
+  K4: { id: "K4", label: "KTT-4", text: "\\(\\text{Var}(Y_{i}) = \\text{Var}(\\tau_{i}) + \\text{Var}(\\varepsilon_{i})\\)", desc: "Varianzzerlegung in wahre Varianz und Fehlervarianz.",
+    psychologie: "Die beobachteten Unterschiede zwischen Personen in einem Test bestehen teils aus echten Unterschieden (wahre Varianz) und teils aus Messrauschen (Fehlervarianz). Die zentrale Frage der Diagnostik ist: Wie groß ist der Anteil wahrer Varianz? Je größer dieser Anteil, desto besser differenziert der Test zwischen Personen – desto reliabler ist er." },
+  K5: { id: "K5", label: "KTT-5", text: "\\(\\text{Rel}(Y_{i}) = \\frac{\\text{Var}(\\tau_{i})}{\\text{Var}(Y_{i})}\\)", desc: "Reliabilität als Anteil wahrer Varianz.",
+    psychologie: "Die Reliabilität ist das wichtigste Gütekriterium in der psychologischen Diagnostik. Sie gibt an, welcher Anteil der Testvarianz auf echte Merkmalsunterschiede zurückgeht. Ein Test mit Rel = 0.90 bedeutet: 90 % der Varianz ist ‚echt', nur 10 % ist Messfehler. Klinisch relevante Entscheidungen (z.\u00A0B. Diagnose einer Lernbehinderung) erfordern typischerweise Rel ≥ 0.90. Die Reliabilität bestimmt auch die Breite des Konfidenzintervalls um einen individuellen Messwert: SE = SD · √(1 − Rel)." },
+  K6: { id: "K6", label: "Parallel", text: "\\(\\text{Var}(\\varepsilon_{1}) = \\text{Var}(\\varepsilon_{2}) = \\ldots\\) und \\(\\tau_{1} = \\tau_{2} = \\ldots\\)", desc: "Parallele Messungen: gleiche wahre Werte und gleiche Fehlervarianzen.",
+    psychologie: "Paralleltest-Reliabilität ist der klassische Reliabilitätskoeffizient: Man gibt zwei parallele Testformen vor und korreliert die Ergebnisse. In der Praxis ist diese Anforderung sehr streng – zwei Tests müssen exakt das Gleiche messen mit gleicher Genauigkeit. Deshalb wird Paralleltest-Reliabilität selten direkt bestimmt, aber das Modell ist die theoretische Grundlage für die Retest-Reliabilität und für die Erkenntnis, dass Cronbachs α die Reliabilität unterschätzt, wenn Tests nicht parallel sind." },
+  K7: { id: "K7", label: "Ess. τ-äquiv.", text: "\\(\\tau_{i} = \\eta + \\lambda_{i}\\) mit \\(\\lambda_{i}\\) Konstanten", desc: "Ess. τ-äquivalent: Die wahren Werte sind Translationen eines gemeinsamen η. Daraus folgt \\(\\text{Cov}(Y_{i},Y_{j}) = \\text{Var}(\\eta)\\) für \\(i \\neq j\\).",
+    psychologie: "Essentiell τ-äquivalente Items messen dasselbe Merkmal η, dürfen aber unterschiedliche Schwierigkeiten (λᵢ) und unterschiedliche Fehlervarianzen haben. Das ist das Modell, unter dem Cronbachs α als Reliabilitätsschätzer exakt gilt. In der Testkonstruktion heißt das: Alle Items einer Skala sollen dasselbe Konstrukt messen, dürfen sich aber in der Schwierigkeit unterscheiden – eine realistische und häufig geprüfte Annahme. Wenn diese Annahme verletzt ist (z.\u00A0B. bei heterogenen Skalen), unterschätzt α die Reliabilität." },
+  K8: { id: "K8", label: "τ-kongenerisch", text: "\\(\\tau_{i} = \\alpha_{i} + \\beta_{i} \\eta\\) mit \\(\\alpha_{i}, \\beta_{i}\\) Konstanten", desc: "τ-kongenerisch: Die wahren Werte sind lineare Funktionen eines gemeinsamen η. Daraus folgt \\(\\text{Cov}(Y_{i},Y_{j}) = \\beta_{i}\\beta_{j}\\text{Var}(\\eta)\\) für \\(i \\neq j\\).",
+    psychologie: "Das τ-kongenerische Modell ist das realistischste und zugleich das allgemeinste KTT-Modell: Items dürfen unterschiedlich stark auf das Konstrukt laden (βᵢ ≠ βⱼ). Es ist mathematisch identisch mit dem Ein-Faktor-Modell der konfirmatorischen Faktorenanalyse. Cronbachs α ist unter diesem Modell nur eine Untergrenze der Reliabilität – besser wäre McDonalds ω, das die unterschiedlichen Ladungen berücksichtigt. In der modernen Diagnostik wird deshalb zunehmend ω statt α berichtet." },
+};
+
+// ============================================================
+// EXERCISE GENERATORS
+// ============================================================
+
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function pickRandom(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function randInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// Shuffle multiple-choice options and update correct index
+function shuffleMC(options, correctIndex) {
+  const indexed = options.map((opt, i) => ({ opt, isCorrect: i === correctIndex }));
+  for (let i = indexed.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indexed[i], indexed[j]] = [indexed[j], indexed[i]];
+  }
+  return {
+    options: indexed.map(x => x.opt),
+    correct: indexed.findIndex(x => x.isCorrect),
+  };
+}
+
+// World 1: Erwartungswert
+function generateW1Exercises() {
+  const exercises = [];
+
+  // Level 1: E(α) = α
+  exercises.push({
+    type: "fillblank",
+    question: "Sei \\(\\alpha = 5\\) eine Konstante. Berechne:",
+    prompt: "\\(E(5) = ?\\)",
+    answer: "5",
+    hint: "Regel (i): \\(E(\\alpha) = \\alpha\\)",
+    rule: "E1",
+    level: 1,
+  });
+
+  exercises.push({
+    type: "multiplechoice",
+    question: "Welche Regel wird angewendet, um \\(E(7)\\) zu berechnen?",
+    options: ["\\(E(\\alpha) = \\alpha\\)", "\\(E(\\alpha X) = \\alpha E(X)\\)", "\\(E(X+Y) = E(X)+E(Y)\\)", "\\(\\text{Var}(\\alpha) = 0\\)"],
+    correct: 0,
+    rule: "E1",
+    level: 1,
+  });
+
+  const c1 = randInt(2, 9);
+  exercises.push({
+    type: "fillblank",
+    question: `Sei \\(\\alpha = ${c1}\\) eine Konstante.`,
+    prompt: `\\(E(${c1}) = ?\\)`,
+    answer: `${c1}`,
+    hint: "Regel (i): Der Erwartungswert einer Konstanten ist die Konstante selbst.",
+    rule: "E1",
+    level: 1,
+  });
+
+  // Level 2: Linearität E(αX + βY)
+  const a = randInt(2, 5), b = randInt(2, 5);
+  const ex = randInt(1, 10), ey = randInt(1, 10);
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(E(X)\\) = ${ex}, \\(E(Y)\\) = ${ey}. Berechne:`,
+    prompt: `\\(E(${a}X + ${b}Y) = \\;?\\)`,
+    answer: `${a * ex + b * ey}`,
+    hint: `Regel (ii): \\(E(${a}X + ${b}Y) = ${a} \\cdot E(X) + ${b} \\cdot E(Y) = ${a} \\cdot ${ex} + ${b} \\cdot ${ey}\\)`,
+    rule: "E2",
+    level: 2,
+  });
+
+  exercises.push({
+    type: "multiplechoice",
+    question: `Gegeben \\(E(X) = 4\\). Was ist \\(E(3X)\\)?`,
+    options: ["12", "7", "3", "4"],
+    correct: 0,
+    rule: "E2",
+    level: 2,
+  });
+
+  const a2 = randInt(2, 4), c2 = randInt(1, 5), ex2 = randInt(2, 8);
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(E(X) = ${ex2}\\). Berechne:`,
+    prompt: `\\(E(${a2}X + ${c2}) = ?\\)`,
+    answer: `${a2 * ex2 + c2}`,
+    hint: `\\(E(${a2}X + ${c2}) = ${a2}\\cdot E(X) + E(${c2}) = ${a2}\\cdot${ex2} + ${c2}\\)`,
+    rule: "E2",
+    level: 2,
+  });
+
+  return exercises;
+}
+
+// World 2: Varianz
+function generateW2Exercises() {
+  const exercises = [];
+
+  // V1: Verschiebungssatz
+  exercises.push({
+    type: "fillblank",
+    question: "Gegeben \\(E(X) = 3\\), \\(E(X^2) = 12\\). Berechne \\(\\text{Var}(X)\\):",
+    prompt: "\\(\\text{Var}(X) = E(X^2) - [E(X)]^2 = 12 - 9 = ?\\)",
+    answer: "3",
+    hint: "\\(\\text{Var}(X) = E(X^2) - [E(X)]^2 = 12 - 3^2 = 3\\)",
+    rule: "V1",
+    level: 1,
+  });
+
+  // V2: Konstante
+  exercises.push({
+    type: "fillblank",
+    question: "Wenn X = 7 (Konstante), berechne \\(\\text{Var}(X)\\):",
+    prompt: "\\(\\text{Var}(X) = ?\\)",
+    answer: "0",
+    hint: "Eine Konstante hat keine Streuung: \\(\\text{Var}(\\alpha) = 0\\)",
+    rule: "V2",
+    level: 1,
+  });
+
+  // V3: Skalierung
+  const v3_a = randInt(2, 5);
+  const v3_var = randInt(2, 8);
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(\\text{Var}(X) = ${v3_var}\\). Berechne \\(\\text{Var}(${v3_a}X)\\):`,
+    prompt: `\\(\\text{Var}(${v3_a}X) = ${v3_a}^2 \\cdot \\text{Var}(X) = ?\\)`,
+    answer: `${v3_a * v3_a * v3_var}`,
+    hint: `\\(\\text{Var}(${v3_a}X) = ${v3_a}^2 \\cdot ${v3_var} = ${v3_a * v3_a} \\cdot ${v3_var} = ${v3_a * v3_a * v3_var}\\)`,
+    rule: "V3",
+    level: 2,
+  });
+
+  // V4: Verschiebung
+  exercises.push({
+    type: "fillblank",
+    question: "Gegeben: \\(\\text{Var}(X) = 5\\). Was ist \\(\\text{Var}(X + 10)\\)?",
+    prompt: "\\(\\text{Var}(X + 10) = ?\\)",
+    answer: "5",
+    hint: "\\(\\text{Var}(\\alpha + X) = \\text{Var}(X)\\) – Verschiebungen ändern die Varianz nicht.",
+    rule: "V4",
+    level: 1,
+  });
+
+  // V5: Linearkombination
+  const v5_a = randInt(2, 4);
+  const v5_b = randInt(2, 4);
+  const v5_vx = randInt(2, 6);
+  const v5_vy = randInt(2, 6);
+  const v5_cov = randInt(1, 4);
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(\\text{Var}(X) = ${v5_vx}\\), \\(\\text{Var}(Y) = ${v5_vy}\\), \\(\\text{Cov}(X,Y) = ${v5_cov}\\). Berechne \\(\\text{Var}(${v5_a}X + ${v5_b}Y)\\):`,
+    prompt: `\\(\\text{Var}(${v5_a}X + ${v5_b}Y) = ${v5_a}^2\\cdot${v5_vx} + ${v5_b}^2\\cdot${v5_vy} + 2\\cdot${v5_a}\\cdot${v5_b}\\cdot${v5_cov} = ?\\)`,
+    answer: `${v5_a*v5_a*v5_vx + v5_b*v5_b*v5_vy + 2*v5_a*v5_b*v5_cov}`,
+    hint: `\\(${v5_a*v5_a}\\cdot${v5_vx} + ${v5_b*v5_b}\\cdot${v5_vy} + 2\\cdot${v5_a*v5_b}\\cdot${v5_cov} = ${v5_a*v5_a*v5_vx} + ${v5_b*v5_b*v5_vy} + ${2*v5_a*v5_b*v5_cov}\\)`,
+    rule: "V5",
+    level: 3,
+  });
+
+  return exercises;
+}
+
+// World 3: Kovarianz
+function generateW3Exercises() {
+  const exercises = [];
+
+  // C1: Verschiebungssatz
+  exercises.push({
+    type: "fillblank",
+    question: "Gegeben \\(E(XY) = 20\\), \\(E(X) = 2\\), \\(E(Y) = 5\\). Berechne Cov(X,Y):",
+    prompt: "\\(\\text{Cov}(X,Y) = E(XY) - E(X)E(Y) = 20 - 10 = ?\\)",
+    answer: "10",
+    hint: "\\(\\text{Cov}(X,Y) = E(XY) - E(X)E(Y) = 20 - 2 \\cdot 5 = 10\\)",
+    rule: "C1",
+    level: 1,
+  });
+
+  // C2: Mit Konstante
+  exercises.push({
+    type: "fillblank",
+    question: "Wenn X = 3 (Konstante), berechne \\(\\text{Cov}(X, Y)\\):",
+    prompt: "\\(\\text{Cov}(X, Y) = ?\\)",
+    answer: "0",
+    hint: "Eine Konstante kovariiert mit nichts: \\(\\text{Cov}(\\alpha, Y) = 0\\)",
+    rule: "C2",
+    level: 1,
+  });
+
+  // C3: Skalierung
+  const c3_a = randInt(2, 4);
+  const c3_b = randInt(2, 4);
+  const c3_cov = randInt(2, 6);
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(\\text{Cov}(X,Y) = ${c3_cov}\\). Berechne \\(\\text{Cov}(${c3_a}X, ${c3_b}Y)\\):`,
+    prompt: `\\(\\text{Cov}(${c3_a}X, ${c3_b}Y) = ${c3_a}\\cdot${c3_b}\\cdot\\text{Cov}(X,Y) = ?\\)`,
+    answer: `${c3_a * c3_b * c3_cov}`,
+    hint: `\\(${c3_a}\\cdot${c3_b}\\cdot${c3_cov} = ${c3_a * c3_b * c3_cov}\\)`,
+    rule: "C3",
+    level: 2,
+  });
+
+  // C4: Verschiebung
+  exercises.push({
+    type: "fillblank",
+    question: "Gegeben: \\(\\text{Cov}(X,Y) = 6\\). Was ist \\(\\text{Cov}(X+5, Y+10)\\)?",
+    prompt: "\\(\\text{Cov}(X+5, Y+10) = ?\\)",
+    answer: "6",
+    hint: "\\(\\text{Cov}(\\alpha+X, \\beta+Y) = \\text{Cov}(X,Y)\\) – Verschiebungen ändern die Kovarianz nicht.",
+    rule: "C4",
+    level: 1,
+  });
+
+  // C5: Bilinearität
+  const c5_a1 = randInt(1, 3);
+  const c5_a2 = randInt(1, 3);
+  const c5_b1 = randInt(1, 3);
+  const c5_b2 = randInt(1, 3);
+  exercises.push({
+    type: "multiplechoice",
+    question: `Gegeben zwei Linearkombinationen \\(U = ${c5_a1}X_{1} + ${c5_a2}X_{2}\\) und \\(V = ${c5_b1}Y_{1} + ${c5_b2}Y_{2}\\). Wieviele paarweise Kovarianzen benötigt man, um \\(\\text{Cov}(U,V)\\) zu berechnen?`,
+    options: ["4 (jede Kombination von \\(X_{i}\\) und \\(Y_{j}\\))", "2", "1", "6"],
+    correct: 0,
+    rule: "C5",
+    level: 2,
+  });
+
+  return exercises;
+}
+
+// World 4: Regression
+function generateW4Exercises() {
+  const exercises = [];
+
+  exercises.push({
+    type: "multiplechoice",
+    question: "In der linearen Regression \\(Y = \\alpha + \\beta X + \\varepsilon\\): Was ist \\(\\alpha\\)?",
+    options: ["Intercept (Schnittpunkt mit der y-Achse)", "Regressionsgradient", "Fehlervarianz", "Korrelation"],
+    correct: 0,
+    rule: null,
+    psychologie: "Der Intercept ist der vorhergesagte Y-Wert, wenn X = 0. In der Diagnostik ist das relevant: z. B. wenn X = Trainingsintensität und Y = Leistung, gibt der Intercept die Baseline-Leistung ohne Training an. Ein negativer Intercept kann inhaltlich bedeutungslos sein und ist ein Grund, die Zentrierung von X zu erwägen.",
+    level: 1,
+  });
+
+  exercises.push({
+    type: "multiplechoice",
+    question: "Die Regressionsgerade minimiert:",
+    options: ["Die Summe der quadrierten Residuen", "Die Anzahl der Residuen", "Die Varianz von X", "Die Varianz von Y"],
+    correct: 0,
+    rule: null,
+    psychologie: "Kleinste-Quadrate-Schätzung (OLS) ist die Standard-Regressionsmethod, weil sie die Vorhersagefehler (ε) minimiert. Das ist optimal, wenn die Fehler normalverteilt und homoskedastisch sind – Annahmen, die regelmäßig überprüft werden sollten.",
+    level: 1,
+  });
+
+  const w4_x = randInt(2, 5);
+  const w4_y = randInt(3, 8);
+  const w4_beta = randInt(1, 3);
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(\\alpha = ${w4_x}\\) (Intercept), \\(\\beta = ${w4_beta}\\) (Gradient). Berechne die Vorhersage für \\(X = ${w4_y}\\):`,
+    prompt: `\\(\\hat{Y} = ${w4_x} + ${w4_beta} \\cdot ${w4_y} = ?\\)`,
+    answer: `${w4_x + w4_beta * w4_y}`,
+    hint: `\\(\\hat{Y} = ${w4_x} + ${w4_beta * w4_y} = ${w4_x + w4_beta * w4_y}\\)`,
+    rule: null,
+    level: 2,
+  });
+
+  return exercises;
+}
+
+// World 5: KTT Grundlagen
+function generateW5Exercises() {
+  const exercises = [];
+
+  exercises.push({
+    type: "multiplechoice",
+    question: "In der KTT: \\(Y_{i} = \\tau_{i} + \\varepsilon_{i}\\) – was ist \\(\\tau_{i}\\)?",
+    options: ["Der wahre Wert (True Score)", "Der beobachtete Messwert", "Der Messfehler", "Die Fehlervarianz"],
+    correct: 0,
+    rule: "K1",
+    level: 1,
+  });
+
+  exercises.push({
+    type: "multiplechoice",
+    question: "Welche Annahme der KTT besagt, dass Messfehler im Mittel null sind?",
+    options: ["\\(E(\\varepsilon_{i}) = 0\\)", "\\(\\text{Cov}(\\varepsilon_{i}, \\tau_{j}) = 0\\)", "\\(\\text{Var}(\\varepsilon_{i}) = \\text{Var}(\\varepsilon_{j})\\)", "\\(\\tau_{i} = \\tau_{j}\\)"],
+    correct: 0,
+    rule: "K2",
+    level: 1,
+  });
+
+  const k5_1_tau_var = randInt(4, 10);
+  const k5_1_eps_var = randInt(1, 5);
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(\\text{Var}(\\tau) = ${k5_1_tau_var}\\), \\(\\text{Var}(\\varepsilon) = ${k5_1_eps_var}\\). Berechne \\(\\text{Var}(Y)\\):`,
+    prompt: `\\(\\text{Var}(Y) = \\text{Var}(\\tau) + \\text{Var}(\\varepsilon) = ${k5_1_tau_var} + ${k5_1_eps_var} = ?\\)`,
+    answer: `${k5_1_tau_var + k5_1_eps_var}`,
+    hint: `\\(\\text{Var}(Y) = ${k5_1_tau_var} + ${k5_1_eps_var} = ${k5_1_tau_var + k5_1_eps_var}\\)`,
+    rule: "K4",
+    level: 2,
+  });
+
+  const k5_2_tau = randInt(6, 12);
+  const k5_2_y = randInt(10, 20);
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(\\text{Var}(\\tau) = ${k5_2_tau}\\), \\(\\text{Var}(Y) = ${k5_2_y}\\). Berechne die Reliabilität \\(\\text{Rel}(Y)\\):`,
+    prompt: `\\(\\text{Rel}(Y) = \\frac{\\text{Var}(\\tau)}{\\text{Var}(Y)} = \\frac{${k5_2_tau}}{${k5_2_y}} = ?\\)`,
+    answer: `${(k5_2_tau / k5_2_y).toFixed(2)}`,
+    hint: `\\(\\text{Rel}(Y) = \\frac{${k5_2_tau}}{${k5_2_y}} \\approx ${(k5_2_tau / k5_2_y).toFixed(2)}\\)`,
+    rule: "K5",
+    level: 2,
+  });
+
+  return exercises;
+}
+
+// World 6: KTT-Modelle
+function generateW6Exercises() {
+  const exercises = [];
+
+  exercises.push({
+    type: "multiplechoice",
+    question: "Im ess. τ-äquivalenten Modell: Wie können sich Items unterscheiden?",
+    options: ["In Schwierigkeit (\\(\\lambda_{i}\\)) und Fehlervarianzen", "In den wahren Werten", "Gar nicht – sie sind identisch", "Nur in den Fehlervarianzen"],
+    correct: 0,
+    rule: "K7",
+    level: 1,
+  });
+
+  exercises.push({
+    type: "multiplechoice",
+    question: "Das τ-kongenerische Modell ist identisch mit:",
+    options: ["Ein-Faktor-Modell der CFA", "Multifaktorielles Modell", "Klassikal parallelem Modell", "Faktorenanalyse ohne Einschränkungen"],
+    correct: 0,
+    rule: "K8",
+    level: 2,
+  });
+
+  const k6_1_eta_var = randInt(2, 5);
+  exercises.push({
+    type: "fillblank",
+    question: `Ess. τ-äquivalent mit \\(\\tau_{1} = \\eta + 2\\), \\(\\tau_{2} = \\eta + 1\\), \\(\\text{Var}(\\eta) = ${k6_1_eta_var}\\), gleiche Fehlervarianzen. \\(\\text{Cov}(Y_{1}, Y_{2}) = ?\\)`,
+    prompt: `\\(\\text{Cov}(Y_{1}, Y_{2}) = \\text{Var}(\\eta) = ?\\)`,
+    answer: `${k6_1_eta_var}`,
+    hint: `Im ess. τ-äquivalenten Modell: \\(\\text{Cov}(Y_{i},Y_{j}) = \\text{Var}(\\eta) = ${k6_1_eta_var}\\)`,
+    rule: "K7",
+    level: 2,
+  });
+
+  const b1 = randInt(1, 3);
+  const b2 = randInt(1, 3);
+  const varEta2 = randInt(3, 8);
+  exercises.push({
+    type: "fillblank",
+    question: `τ-kongenerisch: \\(\\tau_{1} = ${b1}\\eta\\), \\(\\tau_{2} = ${b2}\\eta\\), \\(\\text{Var}(\\eta) = ${varEta2}\\). Berechne \\(\\text{Cov}(\\tau_{1}, \\tau_{2})\\):`,
+    prompt: `\\(\\text{Cov}(\\tau_{1}, \\tau_{2}) = ${b1} \\cdot ${b2} \\cdot \\text{Var}(\\eta) = ?\\)`,
+    answer: `${b1 * b2 * varEta2}`,
+    hint: `\\(\\text{Cov}(\\tau_{1},\\tau_{2}) = \\text{Cov}(${b1}\\eta, ${b2}\\eta) = ${b1}\\cdot${b2}\\cdot\\text{Var}(\\eta) = ${b1 * b2 * varEta2}\\)`,
+    rule: "K8",
+    level: 3,
+  });
+
+  return exercises;
+}
+
+// World 7: Pfaddiagramme → Gleichungen
+function generateW7Exercises() {
+  const exercises = [];
+
+  exercises.push({
+    type: "multiplechoice",
+    question: "In einem Pfaddiagramm bedeutet ein einseitiger Pfeil (→) von X nach Y:",
+    options: [
+      "Y wird (teilweise) durch X bestimmt: Y = ... + βX + ...",
+      "X und Y sind korreliert",
+      "X ist der Erwartungswert von Y",
+      "X und Y haben die gleiche Varianz"
+    ],
+    correct: 0,
+    rule: null,
+    psychologie: "Pfaddiagramme sind die Sprache der Strukturgleichungsmodellierung (SEM), dem wichtigsten Werkzeug für komplexe psychologische Modelle. Jeder Pfeil steht für eine gerichtete Beziehung – z.\u00A0B. ‚Selbstwirksamkeit → Studienerfolg'. Wer Pfaddiagramme lesen kann, versteht auf einen Blick die Hypothesenstruktur einer Studie, ohne sich durch Seiten voller Gleichungen arbeiten zu müssen.",
+    level: 1,
+  });
+
+  exercises.push({
+    type: "multiplechoice",
+    question: "Ein Doppelpfeil (↔) zwischen X und Y bedeutet:",
+    options: [
+      "Kovarianz / Korrelation: \\(\\text{Cov}(X,Y) ≠ 0\\)",
+      "Kausaler Effekt von X auf Y",
+      "X = Y",
+      "\\(\\text{Var}(X) = \\text{Var}(Y)\\)"
+    ],
+    correct: 0,
+    rule: null,
+    psychologie: "Doppelpfeile repräsentieren Kovarianzen zwischen Variablen, deren Zusammenhang nicht kausal modelliert wird. In psychologischen Modellen treten sie häufig zwischen korrelierten Messfehlern auf (z.\u00A0B. wenn zwei Items eine gemeinsame Methodenvarianz teilen) oder zwischen latenten Faktoren (z.\u00A0B. Korrelation zwischen Angst und Depression als latente Variablen).",
+    level: 1,
+  });
+
+  // Einfache Regression als Pfadmodell
+  exercises.push({
+    type: "fillblank",
+    question: "Pfadmodell: \\(\\eta \\to Y_{1}\\) mit Pfadkoeffizient \\(\\beta_{1}\\) und Fehler \\(\\varepsilon_{1}\\). Schreibe die Gleichung: \\(Y_{1} = ?\\cdot\\eta + \\varepsilon_{1}\\). Was steht für '?'?",
+    prompt: "\\(Y_{1} = ?\\cdot\\eta + \\varepsilon_{1}\\)",
+    answer: "β₁",
+    hint: "Der Pfadkoeffizient \\(\\beta_{1}\\) verbindet \\(\\eta\\) mit \\(Y_{1}\\).",
+    rule: null,
+    psychologie: "Die Übersetzung Pfaddiagramm → Gleichung ist eine Kernkompetenz für das Verständnis von SEM-Output. Wenn Mplus oder lavaan ein Modell schätzt, stecken dahinter genau diese Gleichungen. Die Faktorladung β₁ gibt an, wie stark ein beobachteter Wert (z.\u00A0B. ein Fragebogenitem) den latenten Faktor (z.\u00A0B. Extraversion) widerspiegelt.",
+    level: 2,
+  });
+
+  exercises.push({
+    type: "fillblank",
+    question: "Gegeben: \\(Y_{1} = \\beta_{1}\\eta + \\varepsilon_{1}\\). Da \\(\\text{Cov}(\\eta, \\varepsilon_{1}) = 0\\):",
+    prompt: "\\(\\text{Var}(Y_{1}) = \\beta_{1}^2\\cdot\\text{Var}(\\eta) + \\text{Var}(\\varepsilon_{1})\\). Wenn \\(\\beta_{1} = 2\\), \\(\\text{Var}(\\eta) = 5\\), \\(\\text{Var}(\\varepsilon_{1}) = 3\\), dann \\(\\text{Var}(Y_{1}) = ?\\)",
+    answer: "23",
+    hint: "\\(\\text{Var}(Y_{1}) = 4\\cdot5 + 3 = 23\\)",
+    rule: "V5",
+    level: 2,
+  });
+
+  // Zwei Indikatoren
+  exercises.push({
+    type: "fillblank",
+    question: "Pfadmodell: \\(\\eta \\to Y_{1}\\) (\\(\\beta_{1}\\)), \\(\\eta \\to Y_{2}\\) (\\(\\beta_{2}\\)). \\(\\text{Cov}(\\varepsilon_{1},\\varepsilon_{2})=0, \\text{Cov}(\\eta,\\varepsilon_{i})=0\\). Dann:",
+    prompt: "\\(\\text{Cov}(Y_{1},Y_{2}) = \\beta_{1}\\cdot\\beta_{2}\\cdot\\text{Var}(\\eta)\\). Wenn \\(\\beta_{1}=2\\), \\(\\beta_{2}=3\\), \\(\\text{Var}(\\eta)=4\\), dann \\(\\text{Cov}(Y_{1},Y_{2}) = ?\\)",
+    answer: "24",
+    hint: "\\(\\text{Cov}(\\beta_{1}\\eta+\\varepsilon_{1}, \\beta_{2}\\eta+\\varepsilon_{2}) = \\beta_{1}\\beta_{2}\\text{Var}(\\eta) = 2\\cdot3\\cdot4 = 24\\)",
+    rule: "C5",
+    level: 3,
+  });
+
+  return exercises;
+}
+
+// World 8: Implizierte Kovarianzmatrix
+function generateW8Exercises() {
+  const exercises = [];
+
+  const b1 = 2, b2 = 3, ve = 5, ve1 = 2, ve2 = 3;
+  exercises.push({
+    type: "fillblank",
+    question: `Modell: \\(Y_{1} = ${b1}\\eta + \\varepsilon_{1}\\), \\(Y_{2} = ${b2}\\eta + \\varepsilon_{2}\\). \\(\\text{Var}(\\eta)=${ve}\\), \\(\\text{Var}(\\varepsilon_{1})=${ve1}\\), \\(\\text{Var}(\\varepsilon_{2})=${ve2}\\).`,
+    prompt: `\\(\\Sigma_{11} = \\text{Var}(Y_{1}) = ${b1}^2\\cdot${ve} + ${ve1} = ?\\)`,
+    answer: `${b1*b1*ve + ve1}`,
+    hint: `${b1*b1}\\cdot${ve} + ${ve1} = ${b1*b1*ve} + ${ve1} = ${b1*b1*ve + ve1}`,
+    rule: "V5",
+    psychologie: "Σ₁₁ ist die vom Modell vorhergesagte Varianz eines Indikators. Programme wie lavaan oder Mplus berechnen die komplette implizierte Kovarianzmatrix Σ(θ) und vergleichen sie mit der empirischen Kovarianzmatrix S. Große Abweichungen zwischen Σ und S deuten auf Modell-Misfit hin – das Modell bildet die Daten nicht gut ab. Die Diagonalelemente (Varianzen) zeigen, ob das Modell die Streuung jedes einzelnen Items korrekt vorhersagt.",
+    level: 1,
+  });
+
+  exercises.push({
+    type: "fillblank",
+    question: `(Fortsetzung) \\(\\Sigma_{12} = \\text{Cov}(Y_{1},Y_{2}) = ${b1}\\cdot${b2}\\cdot\\text{Var}(\\eta) = ?\\)`,
+    prompt: `\\(\\Sigma_{12} = ?\\)`,
+    answer: `${b1*b2*ve}`,
+    hint: `${b1}\\cdot${b2}\\cdot${ve} = ${b1*b2*ve}`,
+    rule: "C5",
+    level: 1,
+  });
+
+  exercises.push({
+    type: "fillblank",
+    question: `(Fortsetzung) \\(\\Sigma_{22} = \\text{Var}(Y_{2}) = ${b2}^2\\cdot${ve} + ${ve2} = ?\\)`,
+    prompt: `\\(\\Sigma_{22} = ?\\)`,
+    answer: `${b2*b2*ve + ve2}`,
+    hint: `${b2*b2}\\cdot${ve} + ${ve2} = ${b2*b2*ve + ve2}`,
+    rule: "V5",
+    level: 1,
+  });
+
+  // 3-indicator model
+  exercises.push({
+    type: "multiplechoice",
+    question: "Für ein Modell mit 3 Indikatoren \\(Y_{1}, Y_{2}, Y_{3}\\) und einem Faktor \\(\\eta\\): Wie viele verschiedene Einträge hat die implizierte Kovarianzmatrix (symmetrisch)?",
+    options: ["6 (3 Varianzen + 3 Kovarianzen)", "9", "3", "12"],
+    correct: 0,
+    rule: null,
+    psychologie: "Die modellimplizierte Kovarianzmatrix Σ(θ) ist das Herzstück der SEM-Schätzung: Das Modell gilt als passend, wenn Σ(θ) ≈ S (beobachtete Kovarianzmatrix). Chi²-Test, RMSEA, CFI – alle Fit-Indizes vergleichen diese beiden Matrizen. Zu wissen, wie viele Einträge Σ hat, hilft auch zu verstehen, wie viele Freiheitsgrade ein Modell hat: df = Anzahl nicht-redundanter Einträge in S minus Anzahl freier Parameter.",
+    level: 2,
+  });
+
+  exercises.push({
+    type: "fillblank",
+    question: "3-Faktormodell: \\(Y_{1}=1\\cdot\\eta+\\varepsilon_{1}\\), \\(Y_{2}=2\\cdot\\eta+\\varepsilon_{2}\\), \\(Y_{3}=3\\cdot\\eta+\\varepsilon_{3}\\). \\(\\text{Var}(\\eta)=4\\), alle \\(\\text{Var}(\\varepsilon_{i})=1\\).",
+    prompt: "\\(\\text{Cov}(Y_{1},Y_{3}) = 1\\cdot3\\cdot4 = ?\\)",
+    answer: "12",
+    hint: "\\(\\text{Cov}(Y_{1},Y_{3}) = \\beta_{1}\\cdot\\beta_{3}\\cdot\\text{Var}(\\eta) = 1\\cdot3\\cdot4 = 12\\)",
+    rule: "C5",
+    level: 2,
+  });
+
+  return exercises;
+}
+
+// World 9: CFA
+function generateW9Exercises() {
+  const exercises = [];
+
+  exercises.push({
+    type: "multiplechoice",
+    question: "Was unterscheidet eine CFA von einer EFA?",
+    options: [
+      "Bei der CFA werden die Faktorladungen vorab festgelegt (konfirmatorisch)",
+      "CFA benötigt mehr Variablen",
+      "EFA verwendet keine latenten Variablen",
+      "CFA ist weniger restriktiv"
+    ],
+    correct: 0,
+    rule: null,
+    psychologie: "Die CFA ist das Standardverfahren zur Überprüfung der Konstruktvalidität psychologischer Tests. Wenn ein neuer Fragebogen zur Erfassung von Achtsamkeit entwickelt wird, prüft die CFA, ob die Items tatsächlich die postulierten Faktoren (z.\u00A0B. ‚Beobachten', ‚Beschreiben', ‚Nicht-Reagieren') messen. Ohne CFA gibt es keine belastbare empirische Evidenz für die Faktorenstruktur eines Instruments.",
+    level: 1,
+  });
+
+  exercises.push({
+    type: "multiplechoice",
+    question: "Im CFA-Modell \\(Y_{i} = \\lambda_{i}\\eta + \\varepsilon_{i}\\): Was ist \\(\\eta\\)?",
+    options: [
+      "Eine latente (nicht beobachtbare) Variable",
+      "Der Mittelwert der \\(Y_{i}\\)",
+      "Der Messfehler",
+      "Eine beobachtete Variable"
+    ],
+    correct: 0,
+    rule: null,
+    psychologie: "Latente Variablen sind das Kernkonzept der psychologischen Diagnostik: Intelligenz, Extraversion, Depression – all das sind Konstrukte, die nicht direkt beobachtbar sind, sondern nur über Indikatoren (Items, Subtests) erschlossen werden. Die CFA formalisiert genau diese Idee: η ist das latente Konstrukt, die Yᵢ sind die beobachteten Antworten, und die λᵢ geben an, wie gut jedes Item das Konstrukt misst.",
+    level: 1,
+  });
+
+  exercises.push({
+    type: "fillblank",
+    question: "CFA: \\(Y_{1} = \\lambda_{1}\\eta + \\varepsilon_{1}\\), \\(Y_{2} = \\lambda_{2}\\eta + \\varepsilon_{2}\\). \\(\\text{Var}(\\eta) = 1\\) (standardisiert). \\(\\lambda_{1} = 0.8\\), \\(\\lambda_{2} = 0.6\\).",
+    prompt: "\\(\\text{Cov}(Y_{1},Y_{2}) = \\lambda_{1}\\cdot\\lambda_{2}\\cdot\\text{Var}(\\eta) = 0.8 \\cdot 0.6 \\cdot 1 = ?\\)",
+    answer: "0.48",
+    hint: "0.8 · 0.6 · 1 = 0.48",
+    rule: "C5",
+    level: 2,
+  });
+
+  exercises.push({
+    type: "fillblank",
+    question: "CFA: \\(\\lambda_{1} = 0.8\\), \\(\\text{Var}(\\eta) = 1\\), \\(\\text{Var}(\\varepsilon_{1}) = 0.36\\). Berechne \\(\\text{Var}(Y_{1})\\):",
+    prompt: "\\(\\text{Var}(Y_{1}) = \\lambda_{1}^2\\cdot\\text{Var}(\\eta) + \\text{Var}(\\varepsilon_{1}) = ?\\)",
+    answer: "1",
+    hint: "0.64·1 + 0.36 = 1.00",
+    rule: "V5",
+    level: 2,
+  });
+
+  exercises.push({
+    type: "fillblank",
+    question: "\\(\\text{Rel}(Y_{1})\\) im CFA-Modell mit \\(\\lambda_{1}=0.8\\), \\(\\text{Var}(\\eta)=1\\), \\(\\text{Var}(Y_{1})=1\\):",
+    prompt: "\\(\\text{Rel}(Y_{1}) = \\frac{\\lambda_{1}^2\\cdot\\text{Var}(\\eta)}{\\text{Var}(Y_{1})} = ?\\)",
+    answer: "0.64",
+    hint: "0.8²·1/1 = 0.64",
+    rule: "K5",
+    level: 3,
+  });
+
+  exercises.push({
+    type: "fillblank",
+    question: "Gegeben: \\(\\lambda_{1} = 0.7\\), \\(\\lambda_{2} = 0.9\\), \\(\\text{Var}(\\eta) = 1\\) (standardisiert):",
+    prompt: "\\(\\text{Cov}(Y_{1},Y_{2}) = 0.7 \\cdot 0.9 \\cdot 1 = ?\\)",
+    answer: "0.63",
+    hint: "0.7 · 0.9 = 0.63",
+    rule: "C5",
+    psychologie: "Die Itemreliabilität aus der CFA (λ² bei standardisiertem η) zeigt, wie gut ein einzelnes Item das Konstrukt misst. λ₁ = 0.8 bedeutet: 64 % der Itemvarianz ist wahre Varianz. In der Testkonstruktion werden Items mit zu geringer Ladung (z.\u00A0B. λ < 0.4) entfernt, weil sie mehr Messfehler als Konstruktinformation enthalten. McDonalds ω als CFA-basierte Reliabilität nutzt genau diese Ladungen, um die Reliabilität des Gesamtscores zu bestimmen.",
+    level: 3,
+  });
+
+  return exercises;
+}
+
+const RAW_GENERATORS = {
+  1: generateW1Exercises,
+  2: generateW2Exercises,
+  3: generateW3Exercises,
+  4: generateW4Exercises,
+  5: generateW5Exercises,
+  6: generateW6Exercises,
+  7: generateW7Exercises,
+  8: generateW8Exercises,
+  9: generateW9Exercises,
+};
+
+// Wrap generators to auto-shuffle MC options
+const EXERCISE_GENERATORS = Object.fromEntries(
+  Object.entries(RAW_GENERATORS).map(([k, gen]) => [k, () => {
+    return gen().map(ex => {
+      if (ex.type === "multiplechoice" && ex.options && ex.correct !== undefined) {
+        const { options, correct } = shuffleMC(ex.options, ex.correct);
+        return { ...ex, options, correct };
+      }
+      return ex;
+    });
+  }])
+);
+
+// ============================================================
+// COMPONENTS
+// ============================================================
+
+function RuleCard({ rule }) {
+  const [showPsych, setShowPsych] = useState(false);
+  if (!rule) return null;
+  const r = RULES[rule] || KTT_RULES[rule];
+  if (!r) return null;
+  return (
+    <div style={{
+      background: 'linear-gradient(135deg, var(--rule-bg-from), var(--rule-bg-to))',
+      border: '1px solid var(--rule-border)',
+      borderRadius: 12,
+      padding: '12px 16px',
+      marginBottom: 12,
+      fontSize: '0.9em',
+    }}>
+      <div style={{ color: 'var(--blue)', fontWeight: 700, marginBottom: 4 }}>
+        Regel {r.label}
+      </div>
+      <MathText>{r.text}</MathText>
+      <div style={{ color: 'var(--text-dim)', fontSize: '0.85em' }}>{r.desc}</div>
+      {r.psychologie && (
+        <div style={{ marginTop: 8 }}>
+          <button onClick={() => setShowPsych(!showPsych)} style={{
+            background: 'none',
+            border: 'none',
+            color: 'var(--orange)',
+            fontSize: '0.85em',
+            fontWeight: 600,
+            cursor: 'pointer',
+            padding: 0,
+            textDecoration: 'underline',
+            textDecorationStyle: 'dotted',
+          }}>
+            🧠 {showPsych ? 'Anwendung ausblenden' : 'Wozu brauche ich das als Psychologe/in?'}
+          </button>
+          {showPsych && (
+            <div style={{
+              marginTop: 8,
+              padding: '10px 14px',
+              background: 'var(--hint-bg)',
+              border: '1px solid var(--hint-border)',
+              borderRadius: 8,
+              fontSize: '0.88em',
+              lineHeight: 1.6,
+              color: 'var(--text)',
+            }}>
+              {r.psychologie}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ProgressBar({ current, total }) {
+  const pct = total > 0 ? (current / total) * 100 : 0;
+  return (
+    <div style={{
+      width: '100%',
+      height: 12,
+      background: 'var(--bg-light)',
+      borderRadius: 6,
+      overflow: 'hidden',
+      marginBottom: 16,
+    }}>
+      <div style={{
+        width: `${pct}%`,
+        height: '100%',
+        background: 'var(--green)',
+        borderRadius: 6,
+        transition: 'width 0.4s ease',
+      }} />
+    </div>
+  );
+}
+
+function Hearts({ lives }) {
+  return (
+    <div style={{ display: 'flex', gap: 4 }}>
+      {[1,2,3].map(i => (
+        <span key={i} style={{ fontSize: 20, opacity: i <= lives ? 1 : 0.2 }}>❤️</span>
+      ))}
+    </div>
+  );
+}
+
+function PsychRelevance({ exercise }) {
+  const [show, setShow] = useState(false);
+  // Get psychologie text: either directly from exercise, or from linked rule
+  let text = exercise.psychologie;
+  if (!text && exercise.rule) {
+    const r = RULES[exercise.rule] || KTT_RULES[exercise.rule];
+    if (r) text = r.psychologie;
+  }
+  if (!text) return null;
+  return (
+    <div style={{ marginTop: 10, marginBottom: 4 }}>
+      <button onClick={() => setShow(!show)} style={{
+        background: 'none',
+        border: 'none',
+        color: 'var(--purple)',
+        fontSize: '0.85em',
+        fontWeight: 600,
+        cursor: 'pointer',
+        padding: 0,
+        textDecoration: 'underline',
+        textDecorationStyle: 'dotted',
+      }}>
+        🧠 {show ? 'Anwendung ausblenden' : 'Wozu brauche ich das als Psychologe/in?'}
+      </button>
+      {show && (
+        <div style={{
+          marginTop: 8,
+          padding: '10px 14px',
+          background: 'var(--psych-bg)',
+          border: '1px solid var(--psych-border)',
+          borderRadius: 8,
+          fontSize: '0.88em',
+          lineHeight: 1.6,
+          color: 'var(--text)',
+        }}>
+          {text}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FillBlankExercise({ exercise, onAnswer }) {
+  const [value, setValue] = useState('');
+  const [showHint, setShowHint] = useState(false);
+  const inputRef = useRef(null);
+
+  useEffect(() => { inputRef.current?.focus(); }, [exercise]);
+
+  const handleSubmit = () => {
+    if (!value.trim()) return;
+    const correct = value.trim().replace(',', '.') === exercise.answer.replace(',', '.');
+    onAnswer(correct);
+    setValue('');
+    setShowHint(false);
+  };
+
+  return (
+    <div>
+      {exercise.rule && <RuleCard rule={exercise.rule} />}
+      <div style={{ fontSize: '1.1em', marginBottom: 8, lineHeight: 1.6 }}><MathText>{exercise.question}</MathText></div>
+      <MathText block>{exercise.prompt.replace('?', '___')}</MathText>
+      <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
+        <input
+          ref={inputRef}
+          type="text"
+          value={value}
+          onChange={e => setValue(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+          placeholder="Deine Antwort..."
+          style={{
+            flex: 1,
+            padding: '12px 16px',
+            borderRadius: 12,
+            border: '2px solid var(--input-border)',
+            background: 'var(--input-bg)',
+            color: 'var(--text)',
+            fontSize: '1.1em',
+            fontFamily: "'Cambria Math', Georgia, serif",
+            outline: 'none',
+          }}
+        />
+        <button onClick={handleSubmit} disabled={!value.trim()} style={{
+          padding: '12px 24px',
+          borderRadius: 12,
+          border: 'none',
+          background: value.trim() ? 'var(--green)' : 'var(--bg-light)',
+          color: '#fff',
+          fontWeight: 700,
+          fontSize: '1em',
+          transition: 'background 0.2s',
+        }}>
+          Prüfen
+        </button>
+      </div>
+      {!showHint && (
+        <button onClick={() => setShowHint(true)} style={{
+          marginTop: 12,
+          background: 'none',
+          border: 'none',
+          color: 'var(--text-dim)',
+          fontSize: '0.85em',
+          textDecoration: 'underline',
+        }}>
+          💡 Hinweis anzeigen
+        </button>
+      )}
+      {showHint && (
+        <div style={{
+          marginTop: 12,
+          padding: '10px 14px',
+          background: 'var(--hint-bg)',
+          border: '1px solid var(--hint-border)',
+          borderRadius: 8,
+          fontSize: '0.9em',
+          color: 'var(--orange)',
+        }}>
+          💡 <MathText>{exercise.hint}</MathText>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function MultipleChoiceExercise({ exercise, onAnswer }) {
+  const [selected, setSelected] = useState(null);
+
+  const handleSelect = (idx) => {
+    if (selected !== null) return;
+    setSelected(idx);
+    setTimeout(() => {
+      onAnswer(idx === exercise.correct);
+      setSelected(null);
+    }, 800);
+  };
+
+  return (
+    <div>
+      {exercise.rule && <RuleCard rule={exercise.rule} />}
+      <div style={{ fontSize: '1.1em', marginBottom: 16, lineHeight: 1.6 }}><MathText>{exercise.question}</MathText></div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {exercise.options.map((opt, idx) => {
+          let bg = 'var(--bg-light)';
+          let border = '2px solid transparent';
+          if (selected !== null) {
+            if (idx === exercise.correct) { bg = 'rgba(88,204,2,0.18)'; border = '2px solid var(--green)'; }
+            else if (idx === selected && idx !== exercise.correct) { bg = 'rgba(255,75,75,0.18)'; border = '2px solid var(--red)'; }
+          }
+          return (
+            <button key={idx} onClick={() => handleSelect(idx)} style={{
+              padding: '14px 18px',
+              borderRadius: 12,
+              background: bg,
+              border: border,
+              color: 'var(--text)',
+              textAlign: 'left',
+              fontSize: '1em',
+              transition: 'all 0.2s',
+              cursor: selected !== null ? 'default' : 'pointer',
+            }}>
+              <span style={{ color: 'var(--text-dim)', marginRight: 10, fontWeight: 700 }}>
+                {['A', 'B', 'C', 'D'][idx]}
+              </span>
+              <MathText>{opt}</MathText>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function FeedbackBanner({ correct, explanation }) {
+  if (correct === null) return null;
+  return (
+    <div style={{
+      position: 'fixed',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      padding: '16px 24px',
+      background: correct ? 'var(--feedback-correct-bg)' : 'var(--feedback-wrong-bg)',
+      color: '#fff',
+      fontWeight: 700,
+      fontSize: '1.1em',
+      zIndex: 100,
+      animation: 'slideUp 0.3s ease',
+      display: 'flex',
+      alignItems: 'center',
+      gap: 12,
+    }}>
+      <span style={{ fontSize: '1.5em' }}>{correct ? '✅' : '❌'}</span>
+      <span>{correct ? 'Richtig!' : 'Leider falsch.'}</span>
+      {!correct && explanation && (
+        <span style={{ fontWeight: 400, fontSize: '0.9em', marginLeft: 8 }}>{explanation}</span>
+      )}
+    </div>
+  );
+}
+
+function WorldMap({ onSelectWorld, progress }) {
+  return (
+    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 16px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
+        {WORLDS.map((w, idx) => {
+          const p = progress[w.id] || { completed: 0, total: 0 };
+          const done = p.completed >= p.total && p.total > 0;
+          return (
+            <button
+              key={w.id}
+              onClick={() => onSelectWorld(w.id)}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 8,
+                padding: '20px 12px',
+                borderRadius: 16,
+                border: done ? `2px solid ${w.color}` : '2px solid transparent',
+                background: 'var(--bg-card)',
+                cursor: 'pointer',
+                textAlign: 'center',
+                transition: 'all 0.2s',
+              }}
+            >
+              <div style={{
+                width: 52, height: 52,
+                borderRadius: '50%',
+                background: done ? w.color : 'var(--bg-light)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '1.5em',
+                flexShrink: 0,
+              }}>
+                {done ? '⭐' : w.icon}
+              </div>
+              <div style={{ width: '100%' }}>
+                <div style={{ fontWeight: 700, fontSize: '0.95em' }}>
+                  {w.name}
+                </div>
+                <div style={{ fontSize: '0.75em', color: 'var(--text-dim)', marginTop: 2 }}>{w.desc}</div>
+                {p.total > 0 && (
+                  <div style={{
+                    marginTop: 6,
+                    height: 6,
+                    background: 'var(--bg)',
+                    borderRadius: 3,
+                    overflow: 'hidden',
+                  }}>
+                    <div style={{
+                      width: `${(p.completed / p.total) * 100}%`,
+                      height: '100%',
+                      background: w.color,
+                      borderRadius: 3,
+                    }} />
+                  </div>
+                )}
+              </div>
+              {done && <span style={{ fontSize: '1.2em', color: w.color }}>✓</span>}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function RuleReference({ worldId }) {
+  const [open, setOpen] = useState(false);
+  let rules = [];
+  if (worldId <= 1) rules = [RULES.E1, RULES.E2];
+  else if (worldId === 2) rules = [RULES.V1, RULES.V2, RULES.V3, RULES.V4, RULES.V5];
+  else if (worldId === 3) rules = [RULES.C1, RULES.C2, RULES.C3, RULES.C4, RULES.C5];
+  else if (worldId <= 4) rules = [...Object.values(RULES)];
+  else if (worldId <= 6) rules = [...Object.values(RULES), ...Object.values(KTT_RULES)];
+  else rules = [...Object.values(RULES), ...Object.values(KTT_RULES)];
+
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <button onClick={() => setOpen(!open)} style={{
+        background: 'var(--bg-light)',
+        border: 'none',
+        color: 'var(--blue)',
+        padding: '8px 14px',
+        borderRadius: 8,
+        fontSize: '0.85em',
+        fontWeight: 600,
+      }}>
+        📖 Regelkarten {open ? 'ausblenden' : 'einblenden'}
+      </button>
+      {open && (
+        <div style={{ marginTop: 12, maxHeight: 300, overflowY: 'auto', paddingRight: 8 }}>
+          {rules.map(r => <RuleCard key={r.id} rule={r.id} />)}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function LevelSession({ worldId, onBack, progress, setProgress }) {
+  const [exercises, setExercises] = useState([]);
+  const [currentIdx, setCurrentIdx] = useState(0);
+  const [lives, setLives] = useState(3);
+  const [feedback, setFeedback] = useState(null);
+  const [score, setScore] = useState(0);
+  const [sessionDone, setSessionDone] = useState(false);
+  const [streak, setStreak] = useState(0);
+
+  useEffect(() => {
+    const gen = EXERCISE_GENERATORS[worldId];
+    if (gen) {
+      setExercises(shuffleArray(gen()));
+    }
+  }, [worldId]);
+
+  const handleAnswer = useCallback((correct) => {
+    setFeedback(correct);
+    if (correct) {
+      setScore(s => s + 1);
+      setStreak(s => s + 1);
+    } else {
+      setLives(l => l - 1);
+      setStreak(0);
+    }
+    setTimeout(() => {
+      setFeedback(null);
+      if (!correct && lives <= 1) {
+        setSessionDone(true);
+        return;
+      }
+      if (currentIdx + 1 >= exercises.length) {
+        setSessionDone(true);
+        setProgress(p => ({
+          ...p,
+          [worldId]: { completed: score + (correct ? 1 : 0), total: exercises.length }
+        }));
+        return;
+      }
+      setCurrentIdx(i => i + 1);
+    }, 2000);
+  }, [currentIdx, exercises.length, lives, score, worldId, setProgress]);
+
+  const world = WORLDS.find(w => w.id === worldId);
+  if (!world) return <div>Loading...</div>;
+
+  if (!exercises.length) return <div>Generating exercises...</div>;
+
+  if (sessionDone) {
+    return (
+      <div style={{ maxWidth: 520, margin: '0 auto', padding: '40px 16px', textAlign: 'center' }}>
+        <h2 style={{ fontSize: '2em', fontWeight: 800, marginBottom: 12 }}>
+          {lives > 0 ? '🎉 Geschafft!' : '😢 Spiel vorbei'}
+        </h2>
+        <p style={{ fontSize: '1.2em', marginBottom: 24, color: 'var(--text-dim)' }}>
+          Du hast {score} von {exercises.length} Aufgaben richtig gelöst.
+        </p>
+        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 24, flexWrap: 'wrap' }}>
+          <button onClick={onBack} style={{
+            padding: '12px 24px',
+            borderRadius: 12,
+            border: 'none',
+            background: 'var(--bg-light)',
+            color: 'var(--text)',
+            fontWeight: 700,
+            fontSize: '1em',
+          }}>
+            Zur Übersicht
+          </button>
+          <button onClick={() => {
+            setExercises(shuffleArray(EXERCISE_GENERATORS[worldId]()));
+            setCurrentIdx(0);
+            setLives(3);
+            setScore(0);
+            setSessionDone(false);
+            setStreak(0);
+          }} style={{
+            padding: '12px 24px',
+            borderRadius: 12,
+            border: 'none',
+            background: 'var(--green)',
+            color: '#fff',
+            fontWeight: 700,
+            fontSize: '1em',
+          }}>
+            Nochmal üben
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const ex = exercises[currentIdx];
+
+  return (
+    <div style={{ maxWidth: 520, margin: '0 auto', padding: '16px 16px 80px' }}>
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+        <button onClick={onBack} style={{
+          background: 'none',
+          border: 'none',
+          color: 'var(--text-dim)',
+          fontSize: '1.3em',
+          padding: 4,
+        }}>
+          ✕
+        </button>
+        <div style={{ flex: 1 }}>
+          <ProgressBar current={currentIdx} total={exercises.length} />
+        </div>
+        <Hearts lives={lives} />
+      </div>
+
+      {/* World title */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+        marginBottom: 12,
+        color: world.color,
+        fontWeight: 700,
+        fontSize: '0.9em',
+      }}>
+        <span>{world.icon}</span>
+        <span>{world.name}</span>
+        <span style={{ color: 'var(--text-dim)', fontWeight: 400 }}>
+          — Aufgabe {currentIdx + 1}/{exercises.length}
+        </span>
+        {streak >= 3 && <span style={{ marginLeft: 'auto', color: 'var(--gold)' }}>🔥 {streak}</span>}
+      </div>
+
+      <RuleReference worldId={worldId} />
+
+      {/* Exercise */}
+      {ex.type === 'fillblank' && <FillBlankExercise exercise={ex} onAnswer={handleAnswer} />}
+      {ex.type === 'multiplechoice' && <MultipleChoiceExercise exercise={ex} onAnswer={handleAnswer} />}
+
+      <FeedbackBanner correct={feedback} explanation={!feedback && ex.hint ? ex.hint : null} />
+    </div>
+  );
+}
+
+// ============================================================
+// APP
+// ============================================================
+
+function App() {
+  const [currentWorld, setCurrentWorld] = useState(null);
+  const [progress, setProgress] = useState(() => {
+    const p = {};
+    WORLDS.forEach(w => { p[w.id] = { completed: 0, total: 0 }; });
+    return p;
+  });
+
+  if (currentWorld) {
+    return (
+      <LevelSession
+        worldId={currentWorld}
+        onBack={() => setCurrentWorld(null)}
+        progress={progress}
+        setProgress={setProgress}
+      />
+    );
+  }
+
+  return <WorldMap onSelectWorld={setCurrentWorld} progress={progress} />;
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+</script>
+
+<style>
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+input:focus {
+  border-color: var(--blue) !important;
+}
+button:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+</style>
+
+<script>
+// Theme sync: listen for postMessage from parent (Quarto) page
+// Quarto uses data-bs-theme="dark" / "light" on <html>
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+}
+
+// Listen for theme messages from parent iframe
+window.addEventListener('message', function(e) {
+  if (e.data && (e.data.theme === 'dark' || e.data.theme === 'light')) {
+    setTheme(e.data.theme);
+  }
+});
+
+// On load: try to detect parent theme, or fall back to system preference
+(function() {
+  try {
+    // Try reading parent's data-bs-theme (same-origin only)
+    var parentTheme = window.parent.document.documentElement.getAttribute('data-bs-theme');
+    if (parentTheme) { setTheme(parentTheme); return; }
+  } catch(e) { /* cross-origin, ignore */ }
+  // Fall back to system preference
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    setTheme('dark');
+  }
+})();
+
+// Also watch for system preference changes
+if (window.matchMedia) {
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+    // Only apply if no explicit theme was set by parent
+    if (!document.documentElement.hasAttribute('data-theme')) {
+      setTheme(e.matches ? 'dark' : 'light');
+    }
+  });
+}
+</script>
+
+</body>
+</html>

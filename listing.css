@@ -1,0 +1,74 @@
+/* Spalte schmal halten (optional, aber hilfreich) */
+td[data-field="path"] { 
+  width: 2rem;          /* anpassen nach Geschmack */
+  text-align: center;
+}
+
+/* Originaltext komplett „platzlos“ machen */
+.listing-path {
+  display: inline-block;
+  width: 1.2rem;        /* schmaler Platz nur fürs Icon */
+  font-size: 0;         /* Text hat Breite 0 → beeinflusst Layout nicht */
+  line-height: 1;
+  cursor: help;
+}
+
+/* Icon sichtbar machen */
+.listing-path::after {
+  content: "ℹ️";        /* oder "i", "🗂️", etc. */
+  font-size: 1rem;      /* eigenes Font-Size nur fürs Icon */
+}
+
+.quarto-listing quarto-listing-container-table{
+  font-size: 75%;
+}
+
+.listing-icon:hover {
+  color: #1a73e8;
+  text-decoration: underline;
+}
+
+/* gesamte Listing-Tabelle kleiner und dichter */
+.quarto-listing-table {
+  font-size: 75%;          /* 75 % Schriftgröße */
+  line-height: 1.1;        /* geringere Zeilenhöhe */
+  border-collapse: collapse;
+}
+
+/* Kopf- und Datenzellen enger setzen */
+.quarto-listing-table th,
+.quarto-listing-table td {
+  padding: 0.2em 0.4em;    /* wenig Innenabstand */
+  vertical-align: middle;
+}
+
+/* Kopfzeile minimal hervorheben */
+.quarto-listing-table thead th {
+  background-color: #f7f7f7;
+  font-weight: 600;
+  border-bottom: 1px solid #ccc;
+}
+
+/* leichte Gitterlinien, aber unaufdringlich */
+.quarto-listing-table td,
+.quarto-listing-table th {
+  border: 1px solid #e0e0e0;
+}
+
+/* keine übermäßigen Ränder rund um die Tabelle */
+.quarto-listing-table {
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
+}
+
+/* optionale: Zeilenabstand minimieren, aber abwechselnde Farbe behalten */
+.quarto-listing-table tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+/* falls du Filter/Sortierleiste hast → kompakt halten */
+.quarto-listing .listing-actions {
+  margin-bottom: 0.3em;
+  gap: 0.3em;
+  font-size: 80%;
+}

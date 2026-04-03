@@ -1,0 +1,54 @@
+<script>
+window.addEventListener("load", () => {
+  console.log("tooltip.js: start");
+
+  const tds = document.querySelectorAll(
+    "td[data-field='path'], td[data-col='path'], td:has(.listing-path)"
+  );
+  console.log("tooltip.js: tds =", tds.length);
+
+  tds.forEach(td => {
+    const span = td.querySelector(".listing-path");
+    const a = span ? span.querySelector("a") : null;
+
+    // Tooltip-Text = Pfad oder Textinhalt
+    const candidates = [
+      span && span.getAttribute("data-path"),
+      a && a.getAttribute("href"),
+      span && span.textContent,
+      td.textContent
+    ].filter(Boolean);
+
+    // Pfad bereinigen: führende / entfernen
+    let original = (candidates[0] || "").trim().replace(/^\/+/, "");
+    if (!original) return;
+
+    // Icon erzeugen
+    const icon = document.createElement("span");
+    icon.className = "listing-icon";
+    icon.textContent = "ℹ️";
+    icon.title = original;
+
+    // Klick → Pfad kopieren + Feedback
+    icon.addEventListener("click", async (ev) => {
+      ev.stopPropagation();
+      try {
+        await navigator.clipboard.writeText(original);
+        const old = icon.textContent;
+        icon.textContent = "✅";
+        setTimeout(() => (icon.textContent = old), 800);
+      } catch (err) {
+        console.error("Kopieren fehlgeschlagen:", err);
+        icon.textContent = "❌";
+        setTimeout(() => (icon.textContent = "ℹ️"), 800);
+      }
+    });
+
+    // Original aus Layout nehmen, Icon einsetzen
+    if (span) span.style.display = "none";
+    td.appendChild(icon);
+  });
+
+  console.log("tooltip.js: done");
+});
+</script>

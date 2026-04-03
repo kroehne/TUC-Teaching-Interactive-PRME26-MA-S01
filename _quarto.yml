@@ -1,0 +1,49 @@
+project:
+  type: website
+  output-dir: docs/
+  render:
+    - "*.qmd"
+    - "S01_*.qmd"
+    - "S02_*.qmd"
+    - "S03_*.qmd"
+    - "S04_*.qmd"
+    - "S05_*.qmd"
+    - "S06_*.qmd"
+    - "S07_*.qmd"
+    - "S08_*.qmd"
+    - "S09_*.qmd"
+    - "S10_*.qmd"
+    - "S11_*.qmd"
+    - "S12_*.qmd"
+    - "S13_*.qmd"
+    - "S14_*.qmd"
+    - "MISC_*.qmd"
+  resources:
+    - static/**     
+    
+website:
+  search: false    
+  sidebar:
+    header: |
+      <div style="margin-left:-50px;margin-top:-50px;">![](/static/logo.png)</div>
+      <div style="margin-top:-40px;margin-bottom:-25px;">
+      **TUC-PRME-26 | <br/>MA-S01**
+      </div>
+    collapse-level: 1
+    style: floating
+    contents:
+      - section: "01: Vorbesprechung"
+        contents:
+          - href: S01_SteyerEid2001BoxFandG_01.qmd
+            text: A | Rechenregeln
+          - href: S01_SteyerEid2001Game_01.qmd
+            text: B | Regeln Spielerisch
+
+
+theme:
+  light: 
+    - flatly 
+    - theme_flatly.scss
+  dark: 
+    - darkly 
+    - theme_darkly.scss            

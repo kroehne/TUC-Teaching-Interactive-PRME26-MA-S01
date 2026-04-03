@@ -1,0 +1,19 @@
+---
+title: "A | Box F und G"
+format: live-html
+engine: knitr
+week: 8
+topic: "Rechenregeln für SEM"
+status: "Version 0.1"
+comment: "Box F und G"
+lang: de
+webr:
+  packages: [htmltools]
+  quiet: true
+---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+ 
+Notation nach:
+
+* Steyer, R., & Eid, M. (2001). Messen und Testen (2., korrigierte Aufl). Springer.

@@ -1,0 +1,57 @@
+---
+title: "B | Regeln Spielerisch"
+format: live-html
+engine: knitr
+week: 8
+topic: "Rechenregeln für SEM"
+status: "Version 0.1"
+comment: "Spiel zum Erlernen der Regeln"
+lang: de
+webr:
+  packages: [htmltools]
+  quiet: true
+---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+
+<iframe id="mathe-game" src="static/mathe_game.html"
+        style="width:100%; height:65vh; border:1px solid #333; border-radius:12px;"
+        allow="fullscreen">
+</iframe>
+
+<script>
+// Sync Quarto theme toggle with iframe
+(function() {
+  function sendTheme() {
+    var theme = document.documentElement.getAttribute('data-bs-theme') || 'light';
+    var iframe = document.getElementById('mathe-game');
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage({ theme: theme }, '*');
+    }
+  }
+  // Send on load
+  window.addEventListener('load', function() { setTimeout(sendTheme, 500); });
+  // Watch for Quarto theme changes (MutationObserver on <html> data-bs-theme)
+  var observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(m) {
+      if (m.attributeName === 'data-bs-theme') sendTheme();
+    });
+  });
+  observer.observe(document.documentElement, { attributes: true });
+})();
+</script>
+
+Für Nebenrechungen in R:
+
+```{webr}
+#| warning: false
+#| echo: true
+
+
+```
+
+
+
+Notation nach:
+
+* Steyer, R., & Eid, M. (2001). Messen und Testen (2., korrigierte Aufl). Springer.

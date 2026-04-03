@@ -1,0 +1,37 @@
+---
+title: "Seminar Forschungsmethoden - Master Psychologie: „Anwendungsseminar Strukturgleichungsmodelle“"
+format:
+  html:
+    theme:
+      light: flatly    
+      dark: darkly       
+page-layout: article  
+---
+
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  iframe {
+    width: 100%;
+    height: 100vh;  
+    border: none;
+  }
+</style>
+
+## Zugriff
+ 
+```{r}
+#| autorun: true
+#| echo: false
+#| warning: false
+library(qrcode)
+code <- qr_code("https://kroehne.github.io/TUC-Teaching-Interactive-PRME26-MA-S01/")
+plot(code)
+```
+  
+URL: https://kroehne.github.io/TUC-Teaching-Interactive-PRME26-MA-S01
+ 

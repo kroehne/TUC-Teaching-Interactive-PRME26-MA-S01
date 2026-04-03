@@ -1,0 +1,44 @@
+---
+title: "TITEL"
+format: live-html
+engine: knitr
+---
+  
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+
+
+```{webr}
+#| warning: false
+#| echo: false
+#| input:
+#|   - seed
+
+set.seed(seed)
+ 
+```
+
+
+
+```{ojs}
+//| echo: false  
+ 
+/* ► Seed & Resample-Button */
+  mutable seed = (()=>{
+    const key = "webrSeedOutlier";
+    let s = +localStorage.getItem(key);
+    if (!s) { s = Math.floor(Math.random()*1e9); localStorage.setItem(key, s); }
+    return s;
+  })();
+function randomSeed(){
+  const buf = new Uint32Array(1); crypto.getRandomValues(buf);
+  return (buf[0] % 2147483646) + 1;               // 1 … 2^31−2
+}
+
+viewof resample_btn = {
+  const btn = Inputs.button("Neue Zufallsstichprobe");
+  btn.addEventListener("click", ()=>{ mutable seed = randomSeed(); });
+  return btn;
+}
+ 
+```
+
