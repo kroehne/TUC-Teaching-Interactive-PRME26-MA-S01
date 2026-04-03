@@ -17,3 +17,120 @@ webr:
 Notation nach:
 
 * Steyer, R., & Eid, M. (2001). Messen und Testen (2., korrigierte Aufl). Springer.
+
+### Box F.1: Das Wichtigste zu Erwartungswerten, Varianzen und Kovarianzen
+
+#### A. Definitionen
+
+**Erwartungswert** $E(X)$: Falls $X$ nur die Werte $x_1, \ldots, x_n$ annimmt:
+
+$$E(X) := \sum_{i=1}^{n} x_i \cdot P(X = x_i)$$
+
+**Kovarianz** $Cov(X, Y)$:
+
+$$Cov(X, Y) := E\bigl[\bigl(X - E(X)\bigr) \cdot \bigl(Y - E(Y)\bigr)\bigr]$$
+
+**Varianz** $Var(X)$:
+
+$$Var(X) := Cov(X, X) = E\bigl[\bigl(X - E(X)\bigr)^2\bigr]$$
+
+**Standardabweichung (Streuung)** $Std(X)$:
+
+$$Std(X) := +\bigl[Var(X)\bigr]^{1/2}$$
+
+**Korrelation** $Kor(X, Y)$:
+
+$$Kor(X, Y) := \begin{cases} \dfrac{Cov(X, Y)}{Std(X) \cdot Std(Y)}, & \text{falls } Std(X) > 0 \text{ und } Std(Y) > 0 \\ 0, & \text{sonst.} \end{cases}$$
+
+**Unkorreliertheit:**
+
+$$Cov(X, Y) = Kor(X, Y) = 0$$
+
+#### B. Rechenregeln für Erwartungswerte, Varianzen und Kovarianzen
+
+Sind $X$ und $Y$ numerische Zufallsvariablen auf $(\Omega, \mathcal{A}, P)$ mit endlichen Erwartungswerten sowie $\alpha$ und $\beta \in \mathbb{R}$, dann gelten:
+
+**(i)** $\quad E(\alpha) = \alpha$
+
+**(ii)** $\quad E(\alpha\, X + \beta\, Y) = \alpha\, E(X) + \beta\, E(Y)$
+
+**(iii)** $\quad Var(X) = E(X^2) - \bigl[E(X)\bigr]^2$
+
+**(iv)** $\quad Var(X) = 0, \text{ falls } X = \alpha$
+
+**(v)** $\quad Var(\alpha\, X) = \alpha^2\, Var(X)$
+
+**(vi)** $\quad Var(\alpha + X) = Var(X)$
+
+**(vii)** $\quad Var(\alpha\, X + \beta\, Y) = \alpha^2\, Var(X) + \beta^2\, Var(Y) + 2\,\alpha\,\beta\, Cov(X, Y)$
+
+**(viii)** $\quad Cov(X, Y) = E(X \cdot Y) - E(X) \cdot E(Y)$
+
+**(ix)** $\quad Cov(X, Y) = 0, \text{ falls } X = \alpha$
+
+**(x)** $\quad Cov(\alpha\, X,\; \beta\, Y) = \alpha\,\beta\, Cov(X, Y)$
+
+**(xi)** $\quad Cov(\alpha + X,\; \beta + Y) = Cov(X, Y)$
+
+Sind $X_1, X_2, Y_1$ und $Y_2$ numerische Zufallsvariablen auf $(\Omega, \mathcal{A}, P)$ mit endlichen Erwartungswerten und $\alpha_1, \alpha_2, \beta_1, \beta_2 \in \mathbb{R}$, dann gelten:
+
+**(xii)**
+
+$$Cov(\alpha_1 X_1 + \alpha_2 X_2,\; \beta_1 Y_1 + \beta_2 Y_2) = \alpha_1 \beta_1\, Cov(X_1, Y_1) + \alpha_1 \beta_2\, Cov(X_1, Y_2) + \alpha_2 \beta_1\, Cov(X_2, Y_1) + \alpha_2 \beta_2\, Cov(X_2, Y_2)$$
+
+
+### Box G.1: Das Wichtigste zum bedingten Erwartungswert und zur Regression
+
+#### A. Definitionen
+
+**Bedingter Erwartungswert** $E(Y \mid X = x)$: Bei diskretem $Y$ und $P(X = x) > 0$:
+
+$$E(Y \mid X = x) := \sum_{i=1}^{n} y_i \cdot P(Y = y_i \mid X = x)$$
+
+**Regression (bedingte Erwartung)** $E(Y \mid X)$ bzw. $E(Y \mid X_1, \ldots, X_m)$:
+
+$E(Y \mid X)$ ist diejenige Zufallsvariable, deren Werte die bedingten Erwartungswerte $E(Y \mid X = x)$ sind, d.h. sie ist eine Funktion von $X$. Dabei heißt $Y$ der *Regressand* und $X$ der *Regressor*, der auch aus mehreren Zufallsvariablen $X_1, \ldots, X_m$ bestehen kann.
+
+**Residuum** $\varepsilon$:
+
+$$\varepsilon := Y - E(Y \mid X)$$
+
+ist die nicht durch die Regression $E(Y \mid X)$ determinierte Komponente von $Y$.
+
+**Determinationskoeffizient** $R^2_{Y|X}$ **und Multiple Korrelation** $R_{Y|X}$:
+
+$$R^2_{Y|X} := \begin{cases} \dfrac{Var\bigl[E(Y \mid X)\bigr]}{Var(Y)}, & \text{falls } Var(Y) > 0 \\ 0, & \text{andernfalls.} \end{cases}$$
+
+$R^2_{Y|X}$ ist der durch die Regression $E(Y \mid X)$ determinierte Varianzanteil von $Y$. Er gibt die Stärke der regressiven Abhängigkeit an, ist invariant unter eineindeutigen Abbildungen von $X$ und unter linearen Transformationen von $Y$.
+
+**Regressive Unabhängigkeit:**
+
+$$E(Y \mid X) = E(Y)$$
+
+#### B. Rechenregeln für Regressionen
+
+**(i)** $\quad E(\alpha \mid X) = \alpha, \quad \alpha \in \mathbb{R}$
+
+**(ii)** $\quad E(\alpha\, Y_1 + \beta\, Y_2 \mid X) = \alpha\, E(Y_1 \mid X) + \beta\, E(Y_2 \mid X), \quad \alpha, \beta \in \mathbb{R}$
+
+**(iii)** $\quad E\bigl[E(Y \mid X)\bigr] = E(Y)$
+
+**(iv)** $\quad E\bigl[f(X) \mid X\bigr] = f(X), \quad \text{falls } f(X) \text{ numerisch ist.}$
+
+**(v)** $\quad E\bigl[E(Y \mid X) \mid f(X)\bigr] = E\bigl[Y \mid f(X)\bigr]$
+
+**(vi)** $\quad E\bigl[f(X) \cdot Y \mid X\bigr] = f(X) \cdot E(Y \mid X), \quad \text{falls } f(X) \text{ numerisch ist.}$
+
+#### C. Eigenschaften des Residuums
+
+**(vii)** $\quad E(\varepsilon) = 0$
+
+**(viii)** $\quad Cov\bigl[\varepsilon,\; E(Y \mid X)\bigr] = 0$
+
+**(ix)** $\quad Var(Y) = Var\bigl[E(Y \mid X)\bigr] + Var(\varepsilon)$
+
+**(x)** $\quad E(\varepsilon \mid X) = 0$
+
+**(xi)** $\quad E\bigl[\varepsilon \mid f(X)\bigr] = 0$
+
+**(xii)** $\quad Cov\bigl[\varepsilon,\; f(X)\bigr] = 0, \quad \text{falls } f(X) \text{ numerisch ist.}$

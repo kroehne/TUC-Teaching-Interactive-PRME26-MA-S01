@@ -22,22 +22,68 @@ webr:
 <script>
 // Sync Quarto theme toggle with iframe
 (function() {
+  function getQuartoTheme() {
+    // 1. data-bs-theme (Bootstrap 5.3+ / Quarto standard)
+    var t = document.documentElement.getAttribute('data-bs-theme');
+    if (t === 'dark' || t === 'light') return t;
+    // 2. body class .quarto-dark (some Quarto versions)
+    if (document.body && document.body.classList.contains('quarto-dark')) return 'dark';
+    // 3. Check for <link> with darkly theme active
+    var links = document.querySelectorAll('link[rel="stylesheet"][href*="darkly"]');
+    for (var i = 0; i < links.length; i++) {
+      if (!links[i].disabled) return 'dark';
+    }
+    return 'light';
+  }
+
   function sendTheme() {
-    var theme = document.documentElement.getAttribute('data-bs-theme') || 'light';
+    var theme = getQuartoTheme();
     var iframe = document.getElementById('mathe-game');
     if (iframe && iframe.contentWindow) {
       iframe.contentWindow.postMessage({ theme: theme }, '*');
     }
   }
-  // Send on load
-  window.addEventListener('load', function() { setTimeout(sendTheme, 500); });
-  // Watch for Quarto theme changes (MutationObserver on <html> data-bs-theme)
+
+  // Retry sending until iframe is ready (covers webR/live-html delay)
+  function sendThemeWithRetry(attempts) {
+    sendTheme();
+    if (attempts > 0) {
+      setTimeout(function() { sendThemeWithRetry(attempts - 1); }, 500);
+    }
+  }
+
+  // Send on load with multiple retries
+  window.addEventListener('load', function() { sendThemeWithRetry(5); });
+  // Also try on DOMContentLoaded (earlier)
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() { sendThemeWithRetry(3); }, 300);
+  });
+
+  // Watch for Quarto theme changes via MutationObserver
   var observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(m) {
-      if (m.attributeName === 'data-bs-theme') sendTheme();
+      if (m.attributeName === 'data-bs-theme' || m.attributeName === 'class') {
+        sendTheme();
+      }
     });
   });
   observer.observe(document.documentElement, { attributes: true });
+  // Also observe body for class changes (quarto-dark)
+  if (document.body) {
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  } else {
+    document.addEventListener('DOMContentLoaded', function() {
+      observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    });
+  }
+
+  // Watch for stylesheet enable/disable changes (Quarto toggles <link> elements)
+  var sheetObserver = new MutationObserver(function() { sendTheme(); });
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('link[rel="stylesheet"]').forEach(function(link) {
+      sheetObserver.observe(link, { attributes: true, attributeFilter: ['disabled', 'href'] });
+    });
+  });
 })();
 </script>
 

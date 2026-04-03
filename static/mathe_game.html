@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MathE – Erwartungswerte, Varianzen & Kovarianzen</title>
+<title>Rechenregeln-Trainer</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
@@ -189,15 +189,15 @@ const RULES = {
     psychologie: "In der Diagnostik werden häufig Konstanten zu Testwerten addiert (z.\u00A0B. ein Schwierigkeitsparameter oder ein fester Zuschlag bei der Normierung). Um den erwarteten Gesamtwert eines Tests zu berechnen, muss man wissen, dass sich der Erwartungswert einer Konstanten nicht verändert – sie geht einfach als fester Wert in die Berechnung ein. Das ist auch die Grundlage dafür, Intercepts in Regressionsmodellen korrekt zu interpretieren." },
   E2: { id: "E2", label: "(ii)", text: "\\(E(\\alpha X + \\beta Y) = \\alpha E(X) + \\beta E(Y)\\)", desc: "Der Erwartungswert ist linear.",
     psychologie: "In der Psychologie bildet man ständig gewichtete Summen: Skalenwerte als Summe von Items, Composite-Scores aus Subtests, oder gewichtete Prädiktoren in der Regressionsdiagnostik. Die Linearität des Erwartungswerts erlaubt es, den erwarteten Gesamtwert direkt aus den Erwartungswerten der Einzelteile zu berechnen – z.\u00A0B. den erwarteten IQ-Gesamtwert aus den mittleren Subtestwerten. Ohne diese Regel wäre die Interpretation zusammengesetzter Scores nicht möglich." },
-  V1: { id: "V1", label: "(iii)", text: "\\(\\text{Var}(X) = E(X^2) - [E(X)]^2\\)", desc: "Verschiebungssatz der Varianz.",
+  V1: { id: "V1", label: "(iii)", text: "\\(\\text{Var}(X) = E(X^{2}) - [E(X)]^{2}\\)", desc: "Verschiebungssatz der Varianz.",
     psychologie: "Der Verschiebungssatz ist die rechnerische Grundlage, um aus Rohdaten (Summen und Quadratsummen) die Varianz zu bestimmen. In der Forschungsmethodik wird er benötigt, um Streuungsmaße effizient zu berechnen – etwa bei der Varianzanalyse (ANOVA) oder bei der Bestimmung von Effektstärken. In der Diagnostik ist die Varianz die Basis für Reliabilität und Standardmessfehler." },
   V2: { id: "V2", label: "(iv)", text: "\\(\\text{Var}(X) = 0\\), falls \\(X = \\alpha\\) (Konstante)", desc: "Eine Konstante hat keine Streuung.",
     psychologie: "Wenn ein Testwert bei allen Personen identisch ausfällt (z.\u00A0B. ein Item, das jeder richtig löst), hat er keine Varianz und trägt weder zur Reliabilität noch zur Validität bei. Diese Regel erklärt, warum Items mit extremer Schwierigkeit (p ≈ 0 oder p ≈ 1) bei der Testkonstruktion eliminiert werden: Sie liefern keine Information über interindividuelle Unterschiede." },
-  V3: { id: "V3", label: "(v)", text: "\\(\\text{Var}(\\alpha X) = \\alpha^2 \\, \\text{Var}(X)\\)", desc: "Skalierung geht quadratisch in die Varianz ein.",
+  V3: { id: "V3", label: "(v)", text: "\\(\\text{Var}(\\alpha X) = \\alpha^{2} \\, \\text{Var}(X)\\)", desc: "Skalierung geht quadratisch in die Varianz ein.",
     psychologie: "Wenn man Testwerte umrechnet (z.\u00A0B. von Rohwerten in IQ-Punkte durch Multiplikation mit einem Faktor), verändert sich die Varianz quadratisch. Das ist entscheidend für die z-Standardisierung: Teilt man durch die Standardabweichung (σ), wird Var(X/σ) = Var(X)/σ² = 1. Auch bei der Gewichtung von Subtests in Testbatterien muss man wissen, dass ein doppeltes Gewicht die Varianz vervierfacht, nicht verdoppelt." },
   V4: { id: "V4", label: "(vi)", text: "\\(\\text{Var}(\\alpha + X) = \\text{Var}(X)\\)", desc: "Verschiebung ändert die Varianz nicht.",
     psychologie: "Ob man zu jedem IQ-Wert 100 addiert oder nicht – die Streuung bleibt gleich. Diese Translationsinvarianz ist grundlegend für die Normierung: Man kann Skalenmittelwerte beliebig verschieben (z.\u00A0B. auf M = 100 oder M = 50), ohne die Reliabilität oder die Differenzierungsfähigkeit des Tests zu verändern. Auch bei der Zentrierung von Prädiktoren in der Regression bleibt die Varianz erhalten." },
-  V5: { id: "V5", label: "(vii)", text: "\\(\\text{Var}(\\alpha X + \\beta Y) = \\alpha^2\\text{Var}(X) + \\beta^2\\text{Var}(Y) + 2\\alpha\\beta\\text{Cov}(X,Y)\\)", desc: "Varianz einer Linearkombination zweier Zufallsvariablen.",
+  V5: { id: "V5", label: "(vii)", text: "\\(\\text{Var}(\\alpha X + \\beta Y) = \\alpha^{2}\\text{Var}(X) + \\beta^{2}\\text{Var}(Y) + 2\\alpha\\beta\\text{Cov}(X,Y)\\)", desc: "Varianz einer Linearkombination zweier Zufallsvariablen.",
     psychologie: "Dies ist die zentrale Formel für die Diagnostik: Die Varianz eines Gesamttestwertes (Summe aus Subtests) hängt nicht nur von den Einzelvarianzen ab, sondern auch von den Kovarianzen zwischen den Subtests. Deshalb sind hoch korrelierende Items in einer Skala wünschenswert – sie erhöhen die Gesamtvarianz und damit die Reliabilität. In Strukturgleichungsmodellen wird diese Regel verwendet, um die modellimplizierte Kovarianzmatrix abzuleiten." },
   C1: { id: "C1", label: "(viii)", text: "\\(\\text{Cov}(X,Y) = E(XY) - E(X)\\,E(Y)\\)", desc: "Verschiebungssatz der Kovarianz.",
     psychologie: "Die Kovarianz ist das Fundament der Korrelation und damit der gesamten korrelativen Forschung in der Psychologie. Ob Zusammenhang zwischen Intelligenz und Schulleistung, zwischen Therapiedauer und Symptomreduktion, oder zwischen zwei Testitems – stets wird die Kovarianz benötigt. Der Verschiebungssatz ermöglicht die effiziente Berechnung aus Rohdaten (Produktsummen und Einzelsummen)." },
@@ -343,10 +343,10 @@ function generateW2Exercises() {
   // V1: Verschiebungssatz
   exercises.push({
     type: "fillblank",
-    question: "Gegeben \\(E(X) = 3\\), \\(E(X^2) = 12\\). Berechne \\(\\text{Var}(X)\\):",
-    prompt: "\\(\\text{Var}(X) = E(X^2) - [E(X)]^2 = 12 - 9 = ?\\)",
+    question: "Gegeben \\(E(X) = 3\\), \\(E(X^{2}) = 12\\). Berechne \\(\\text{Var}(X)\\):",
+    prompt: "\\(\\text{Var}(X) = E(X^{2}) - [E(X)]^{2} = 12 - 9 = ?\\)",
     answer: "3",
-    hint: "\\(\\text{Var}(X) = E(X^2) - [E(X)]^2 = 12 - 3^2 = 3\\)",
+    hint: "\\(\\text{Var}(X) = E(X^{2}) - [E(X)]^{2} = 12 - 3^{2} = 3\\)",
     rule: "V1",
     level: 1,
   });
@@ -368,9 +368,9 @@ function generateW2Exercises() {
   exercises.push({
     type: "fillblank",
     question: `Gegeben: \\(\\text{Var}(X) = ${v3_var}\\). Berechne \\(\\text{Var}(${v3_a}X)\\):`,
-    prompt: `\\(\\text{Var}(${v3_a}X) = ${v3_a}^2 \\cdot \\text{Var}(X) = ?\\)`,
+    prompt: `\\(\\text{Var}(${v3_a}X) = ${v3_a}^{2} \\cdot \\text{Var}(X) = ?\\)`,
     answer: `${v3_a * v3_a * v3_var}`,
-    hint: `\\(\\text{Var}(${v3_a}X) = ${v3_a}^2 \\cdot ${v3_var} = ${v3_a * v3_a} \\cdot ${v3_var} = ${v3_a * v3_a * v3_var}\\)`,
+    hint: `\\(\\text{Var}(${v3_a}X) = ${v3_a}^{2} \\cdot ${v3_var} = ${v3_a * v3_a} \\cdot ${v3_var} = ${v3_a * v3_a * v3_var}\\)`,
     rule: "V3",
     level: 2,
   });
@@ -395,7 +395,7 @@ function generateW2Exercises() {
   exercises.push({
     type: "fillblank",
     question: `Gegeben: \\(\\text{Var}(X) = ${v5_vx}\\), \\(\\text{Var}(Y) = ${v5_vy}\\), \\(\\text{Cov}(X,Y) = ${v5_cov}\\). Berechne \\(\\text{Var}(${v5_a}X + ${v5_b}Y)\\):`,
-    prompt: `\\(\\text{Var}(${v5_a}X + ${v5_b}Y) = ${v5_a}^2\\cdot${v5_vx} + ${v5_b}^2\\cdot${v5_vy} + 2\\cdot${v5_a}\\cdot${v5_b}\\cdot${v5_cov} = ?\\)`,
+    prompt: `\\(\\text{Var}(${v5_a}X + ${v5_b}Y) = ${v5_a}^{2}\\cdot${v5_vx} + ${v5_b}^{2}\\cdot${v5_vy} + 2\\cdot${v5_a}\\cdot${v5_b}\\cdot${v5_cov} = ?\\)`,
     answer: `${v5_a*v5_a*v5_vx + v5_b*v5_b*v5_vy + 2*v5_a*v5_b*v5_cov}`,
     hint: `\\(${v5_a*v5_a}\\cdot${v5_vx} + ${v5_b*v5_b}\\cdot${v5_vy} + 2\\cdot${v5_a*v5_b}\\cdot${v5_cov} = ${v5_a*v5_a*v5_vx} + ${v5_b*v5_b*v5_vy} + ${2*v5_a*v5_b*v5_cov}\\)`,
     rule: "V5",
@@ -660,7 +660,7 @@ function generateW7Exercises() {
   exercises.push({
     type: "fillblank",
     question: "Gegeben: \\(Y_{1} = \\beta_{1}\\eta + \\varepsilon_{1}\\). Da \\(\\text{Cov}(\\eta, \\varepsilon_{1}) = 0\\):",
-    prompt: "\\(\\text{Var}(Y_{1}) = \\beta_{1}^2\\cdot\\text{Var}(\\eta) + \\text{Var}(\\varepsilon_{1})\\). Wenn \\(\\beta_{1} = 2\\), \\(\\text{Var}(\\eta) = 5\\), \\(\\text{Var}(\\varepsilon_{1}) = 3\\), dann \\(\\text{Var}(Y_{1}) = ?\\)",
+    prompt: "\\(\\text{Var}(Y_{1}) = \\beta_{1}^{2}\\cdot\\text{Var}(\\eta) + \\text{Var}(\\varepsilon_{1})\\). Wenn \\(\\beta_{1} = 2\\), \\(\\text{Var}(\\eta) = 5\\), \\(\\text{Var}(\\varepsilon_{1}) = 3\\), dann \\(\\text{Var}(Y_{1}) = ?\\)",
     answer: "23",
     hint: "\\(\\text{Var}(Y_{1}) = 4\\cdot5 + 3 = 23\\)",
     rule: "V5",
@@ -689,7 +689,7 @@ function generateW8Exercises() {
   exercises.push({
     type: "fillblank",
     question: `Modell: \\(Y_{1} = ${b1}\\eta + \\varepsilon_{1}\\), \\(Y_{2} = ${b2}\\eta + \\varepsilon_{2}\\). \\(\\text{Var}(\\eta)=${ve}\\), \\(\\text{Var}(\\varepsilon_{1})=${ve1}\\), \\(\\text{Var}(\\varepsilon_{2})=${ve2}\\).`,
-    prompt: `\\(\\Sigma_{11} = \\text{Var}(Y_{1}) = ${b1}^2\\cdot${ve} + ${ve1} = ?\\)`,
+    prompt: `\\(\\Sigma_{11} = \\text{Var}(Y_{1}) = ${b1}^{2}\\cdot${ve} + ${ve1} = ?\\)`,
     answer: `${b1*b1*ve + ve1}`,
     hint: `${b1*b1}\\cdot${ve} + ${ve1} = ${b1*b1*ve} + ${ve1} = ${b1*b1*ve + ve1}`,
     rule: "V5",
@@ -709,7 +709,7 @@ function generateW8Exercises() {
 
   exercises.push({
     type: "fillblank",
-    question: `(Fortsetzung) \\(\\Sigma_{22} = \\text{Var}(Y_{2}) = ${b2}^2\\cdot${ve} + ${ve2} = ?\\)`,
+    question: `(Fortsetzung) \\(\\Sigma_{22} = \\text{Var}(Y_{2}) = ${b2}^{2}\\cdot${ve} + ${ve2} = ?\\)`,
     prompt: `\\(\\Sigma_{22} = ?\\)`,
     answer: `${b2*b2*ve + ve2}`,
     hint: `${b2*b2}\\cdot${ve} + ${ve2} = ${b2*b2*ve + ve2}`,
@@ -788,7 +788,7 @@ function generateW9Exercises() {
   exercises.push({
     type: "fillblank",
     question: "CFA: \\(\\lambda_{1} = 0.8\\), \\(\\text{Var}(\\eta) = 1\\), \\(\\text{Var}(\\varepsilon_{1}) = 0.36\\). Berechne \\(\\text{Var}(Y_{1})\\):",
-    prompt: "\\(\\text{Var}(Y_{1}) = \\lambda_{1}^2\\cdot\\text{Var}(\\eta) + \\text{Var}(\\varepsilon_{1}) = ?\\)",
+    prompt: "\\(\\text{Var}(Y_{1}) = \\lambda_{1}^{2}\\cdot\\text{Var}(\\eta) + \\text{Var}(\\varepsilon_{1}) = ?\\)",
     answer: "1",
     hint: "0.64·1 + 0.36 = 1.00",
     rule: "V5",
@@ -798,7 +798,7 @@ function generateW9Exercises() {
   exercises.push({
     type: "fillblank",
     question: "\\(\\text{Rel}(Y_{1})\\) im CFA-Modell mit \\(\\lambda_{1}=0.8\\), \\(\\text{Var}(\\eta)=1\\), \\(\\text{Var}(Y_{1})=1\\):",
-    prompt: "\\(\\text{Rel}(Y_{1}) = \\frac{\\lambda_{1}^2\\cdot\\text{Var}(\\eta)}{\\text{Var}(Y_{1})} = ?\\)",
+    prompt: "\\(\\text{Rel}(Y_{1}) = \\frac{\\lambda_{1}^{2}\\cdot\\text{Var}(\\eta)}{\\text{Var}(Y_{1})} = ?\\)",
     answer: "0.64",
     hint: "0.8²·1/1 = 0.64",
     rule: "K5",
@@ -993,9 +993,8 @@ function FillBlankExercise({ exercise, onAnswer }) {
 
   return (
     <div>
-      {exercise.rule && <RuleCard rule={exercise.rule} />}
       <div style={{ fontSize: '1.1em', marginBottom: 8, lineHeight: 1.6 }}><MathText>{exercise.question}</MathText></div>
-      <MathText block>{exercise.prompt.replace('?', '___')}</MathText>
+      <MathText block>{exercise.prompt.replace('?', '\\,\\boxed{\\phantom{00}}')}</MathText>
       <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
         <input
           ref={inputRef}
@@ -1072,7 +1071,6 @@ function MultipleChoiceExercise({ exercise, onAnswer }) {
 
   return (
     <div>
-      {exercise.rule && <RuleCard rule={exercise.rule} />}
       <div style={{ fontSize: '1.1em', marginBottom: 16, lineHeight: 1.6 }}><MathText>{exercise.question}</MathText></div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {exercise.options.map((opt, idx) => {
@@ -1202,32 +1200,46 @@ function WorldMap({ onSelectWorld, progress }) {
   );
 }
 
-function RuleReference({ worldId }) {
-  const [open, setOpen] = useState(false);
-  let rules = [];
-  if (worldId <= 1) rules = [RULES.E1, RULES.E2];
-  else if (worldId === 2) rules = [RULES.V1, RULES.V2, RULES.V3, RULES.V4, RULES.V5];
-  else if (worldId === 3) rules = [RULES.C1, RULES.C2, RULES.C3, RULES.C4, RULES.C5];
-  else if (worldId <= 4) rules = [...Object.values(RULES)];
-  else if (worldId <= 6) rules = [...Object.values(RULES), ...Object.values(KTT_RULES)];
-  else rules = [...Object.values(RULES), ...Object.values(KTT_RULES)];
+function getRulesForWorld(worldId) {
+  if (worldId <= 1) return [RULES.E1, RULES.E2];
+  if (worldId === 2) return [RULES.V1, RULES.V2, RULES.V3, RULES.V4, RULES.V5];
+  if (worldId === 3) return [RULES.C1, RULES.C2, RULES.C3, RULES.C4, RULES.C5];
+  if (worldId <= 4) return [...Object.values(RULES)];
+  return [...Object.values(RULES), ...Object.values(KTT_RULES)];
+}
+
+function RuleDisplay({ worldId, currentRule, ruleMode, setRuleMode }) {
+  const allRules = getRulesForWorld(worldId);
 
   return (
     <div style={{ marginBottom: 16 }}>
-      <button onClick={() => setOpen(!open)} style={{
-        background: 'var(--bg-light)',
-        border: 'none',
-        color: 'var(--blue)',
-        padding: '8px 14px',
-        borderRadius: 8,
-        fontSize: '0.85em',
-        fontWeight: 600,
-      }}>
-        📖 Regelkarten {open ? 'ausblenden' : 'einblenden'}
-      </button>
-      {open && (
-        <div style={{ marginTop: 12, maxHeight: 300, overflowY: 'auto', paddingRight: 8 }}>
-          {rules.map(r => <RuleCard key={r.id} rule={r.id} />)}
+      <select
+        value={ruleMode}
+        onChange={e => setRuleMode(e.target.value)}
+        style={{
+          background: 'var(--bg-light)',
+          border: '1px solid var(--card-border)',
+          color: 'var(--text)',
+          padding: '8px 14px',
+          borderRadius: 8,
+          fontSize: '0.85em',
+          fontWeight: 600,
+          cursor: 'pointer',
+          appearance: 'auto',
+        }}
+      >
+        <option value="current">🎯 passende Regel einblenden</option>
+        <option value="all">📖 alle Regeln einblenden</option>
+        <option value="none">Regeln ausblenden</option>
+      </select>
+      {ruleMode === 'current' && currentRule && (
+        <div style={{ marginTop: 8 }}>
+          <RuleCard rule={currentRule} />
+        </div>
+      )}
+      {ruleMode === 'all' && (
+        <div style={{ marginTop: 8, maxHeight: 300, overflowY: 'auto', paddingRight: 8 }}>
+          {allRules.map(r => <RuleCard key={r.id} rule={r.id} />)}
         </div>
       )}
     </div>
@@ -1242,6 +1254,7 @@ function LevelSession({ worldId, onBack, progress, setProgress }) {
   const [score, setScore] = useState(0);
   const [sessionDone, setSessionDone] = useState(false);
   const [streak, setStreak] = useState(0);
+  const [ruleMode, setRuleMode] = useState('current');
 
   useEffect(() => {
     const gen = EXERCISE_GENERATORS[worldId];
@@ -1365,7 +1378,7 @@ function LevelSession({ worldId, onBack, progress, setProgress }) {
         {streak >= 3 && <span style={{ marginLeft: 'auto', color: 'var(--gold)' }}>🔥 {streak}</span>}
       </div>
 
-      <RuleReference worldId={worldId} />
+      <RuleDisplay worldId={worldId} currentRule={ex.rule} ruleMode={ruleMode} setRuleMode={setRuleMode} />
 
       {/* Exercise */}
       {ex.type === 'fillblank' && <FillBlankExercise exercise={ex} onAnswer={handleAnswer} />}
@@ -1421,37 +1434,72 @@ button:hover:not(:disabled) {
 
 <script>
 // Theme sync: listen for postMessage from parent (Quarto) page
-// Quarto uses data-bs-theme="dark" / "light" on <html>
-function setTheme(theme) {
+var _themeSetByParent = false;
+
+function setTheme(theme, fromParent) {
   document.documentElement.setAttribute('data-theme', theme);
+  if (fromParent) _themeSetByParent = true;
 }
 
-// Listen for theme messages from parent iframe
+// Listen for theme messages from parent
 window.addEventListener('message', function(e) {
   if (e.data && (e.data.theme === 'dark' || e.data.theme === 'light')) {
-    setTheme(e.data.theme);
+    setTheme(e.data.theme, true);
   }
 });
 
-// On load: try to detect parent theme, or fall back to system preference
+// On load: try multiple detection strategies
 (function() {
-  try {
-    // Try reading parent's data-bs-theme (same-origin only)
-    var parentTheme = window.parent.document.documentElement.getAttribute('data-bs-theme');
-    if (parentTheme) { setTheme(parentTheme); return; }
-  } catch(e) { /* cross-origin, ignore */ }
-  // Fall back to system preference
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    setTheme('dark');
+  function detectParentTheme() {
+    try {
+      var doc = window.parent.document;
+      // 1. data-bs-theme (Bootstrap 5.3+ / Quarto standard)
+      var t = doc.documentElement.getAttribute('data-bs-theme');
+      if (t === 'dark' || t === 'light') return t;
+      // 2. body class .quarto-dark
+      if (doc.body && doc.body.classList.contains('quarto-dark')) return 'dark';
+      // 3. Check for active darkly stylesheet
+      var links = doc.querySelectorAll('link[rel="stylesheet"][href*="darkly"]');
+      for (var i = 0; i < links.length; i++) {
+        if (!links[i].disabled) return 'dark';
+      }
+      // 4. Check parent background color as heuristic
+      if (doc.body) {
+        var bg = window.parent.getComputedStyle(doc.body).backgroundColor;
+        var match = bg.match(/\d+/g);
+        if (match && match.length >= 3) {
+          var brightness = (parseInt(match[0]) * 299 + parseInt(match[1]) * 587 + parseInt(match[2]) * 114) / 1000;
+          if (brightness < 128) return 'dark';
+        }
+      }
+    } catch(e) { /* cross-origin, ignore */ }
+    return null;
   }
+
+  // Try immediately and with retries
+  function tryDetect(attempts) {
+    if (_themeSetByParent) return; // parent already sent via postMessage
+    var theme = detectParentTheme();
+    if (theme) {
+      setTheme(theme, false);
+    } else if (attempts > 0) {
+      setTimeout(function() { tryDetect(attempts - 1); }, 400);
+    } else {
+      // Final fallback: system preference
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        setTheme('dark', false);
+      }
+    }
+  }
+
+  tryDetect(6);
 })();
 
-// Also watch for system preference changes
+// Watch for system preference changes (only if parent hasn't taken control)
 if (window.matchMedia) {
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-    // Only apply if no explicit theme was set by parent
-    if (!document.documentElement.hasAttribute('data-theme')) {
-      setTheme(e.matches ? 'dark' : 'light');
+    if (!_themeSetByParent) {
+      setTheme(e.matches ? 'dark' : 'light', false);
     }
   });
 }

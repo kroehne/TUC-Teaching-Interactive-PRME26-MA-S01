@@ -61,6 +61,35 @@ ul.task-list li input[type="checkbox"] {
 <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -317,6 +346,76 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li>Steyer, R., &amp; Eid, M. (2001). Messen und Testen (2., korrigierte Aufl). Springer.</li>
 </ul>
+<section id="box-f.1-das-wichtigste-zu-erwartungswerten-varianzen-und-kovarianzen" class="level3">
+<h3 class="anchored" data-anchor-id="box-f.1-das-wichtigste-zu-erwartungswerten-varianzen-und-kovarianzen">Box F.1: Das Wichtigste zu Erwartungswerten, Varianzen und Kovarianzen</h3>
+<section id="a.-definitionen" class="level4">
+<h4 class="anchored" data-anchor-id="a.-definitionen">A. Definitionen</h4>
+<p><strong>Erwartungswert</strong> <span class="math inline">\(E(X)\)</span>: Falls <span class="math inline">\(X\)</span> nur die Werte <span class="math inline">\(x_1, \ldots, x_n\)</span> annimmt:</p>
+<p><span class="math display">\[E(X) := \sum_{i=1}^{n} x_i \cdot P(X = x_i)\]</span></p>
+<p><strong>Kovarianz</strong> <span class="math inline">\(Cov(X, Y)\)</span>:</p>
+<p><span class="math display">\[Cov(X, Y) := E\bigl[\bigl(X - E(X)\bigr) \cdot \bigl(Y - E(Y)\bigr)\bigr]\]</span></p>
+<p><strong>Varianz</strong> <span class="math inline">\(Var(X)\)</span>:</p>
+<p><span class="math display">\[Var(X) := Cov(X, X) = E\bigl[\bigl(X - E(X)\bigr)^2\bigr]\]</span></p>
+<p><strong>Standardabweichung (Streuung)</strong> <span class="math inline">\(Std(X)\)</span>:</p>
+<p><span class="math display">\[Std(X) := +\bigl[Var(X)\bigr]^{1/2}\]</span></p>
+<p><strong>Korrelation</strong> <span class="math inline">\(Kor(X, Y)\)</span>:</p>
+<p><span class="math display">\[Kor(X, Y) := \begin{cases} \dfrac{Cov(X, Y)}{Std(X) \cdot Std(Y)}, &amp; \text{falls } Std(X) &gt; 0 \text{ und } Std(Y) &gt; 0 \\ 0, &amp; \text{sonst.} \end{cases}\]</span></p>
+<p><strong>Unkorreliertheit:</strong></p>
+<p><span class="math display">\[Cov(X, Y) = Kor(X, Y) = 0\]</span></p>
+</section>
+<section id="b.-rechenregeln-für-erwartungswerte-varianzen-und-kovarianzen" class="level4">
+<h4 class="anchored" data-anchor-id="b.-rechenregeln-für-erwartungswerte-varianzen-und-kovarianzen">B. Rechenregeln für Erwartungswerte, Varianzen und Kovarianzen</h4>
+<p>Sind <span class="math inline">\(X\)</span> und <span class="math inline">\(Y\)</span> numerische Zufallsvariablen auf <span class="math inline">\((\Omega, \mathcal{A}, P)\)</span> mit endlichen Erwartungswerten sowie <span class="math inline">\(\alpha\)</span> und <span class="math inline">\(\beta \in \mathbb{R}\)</span>, dann gelten:</p>
+<p><strong>(i)</strong> <span class="math inline">\(\quad E(\alpha) = \alpha\)</span></p>
+<p><strong>(ii)</strong> <span class="math inline">\(\quad E(\alpha\, X + \beta\, Y) = \alpha\, E(X) + \beta\, E(Y)\)</span></p>
+<p><strong>(iii)</strong> <span class="math inline">\(\quad Var(X) = E(X^2) - \bigl[E(X)\bigr]^2\)</span></p>
+<p><strong>(iv)</strong> <span class="math inline">\(\quad Var(X) = 0, \text{ falls } X = \alpha\)</span></p>
+<p><strong>(v)</strong> <span class="math inline">\(\quad Var(\alpha\, X) = \alpha^2\, Var(X)\)</span></p>
+<p><strong>(vi)</strong> <span class="math inline">\(\quad Var(\alpha + X) = Var(X)\)</span></p>
+<p><strong>(vii)</strong> <span class="math inline">\(\quad Var(\alpha\, X + \beta\, Y) = \alpha^2\, Var(X) + \beta^2\, Var(Y) + 2\,\alpha\,\beta\, Cov(X, Y)\)</span></p>
+<p><strong>(viii)</strong> <span class="math inline">\(\quad Cov(X, Y) = E(X \cdot Y) - E(X) \cdot E(Y)\)</span></p>
+<p><strong>(ix)</strong> <span class="math inline">\(\quad Cov(X, Y) = 0, \text{ falls } X = \alpha\)</span></p>
+<p><strong>(x)</strong> <span class="math inline">\(\quad Cov(\alpha\, X,\; \beta\, Y) = \alpha\,\beta\, Cov(X, Y)\)</span></p>
+<p><strong>(xi)</strong> <span class="math inline">\(\quad Cov(\alpha + X,\; \beta + Y) = Cov(X, Y)\)</span></p>
+<p>Sind <span class="math inline">\(X_1, X_2, Y_1\)</span> und <span class="math inline">\(Y_2\)</span> numerische Zufallsvariablen auf <span class="math inline">\((\Omega, \mathcal{A}, P)\)</span> mit endlichen Erwartungswerten und <span class="math inline">\(\alpha_1, \alpha_2, \beta_1, \beta_2 \in \mathbb{R}\)</span>, dann gelten:</p>
+<p><strong>(xii)</strong></p>
+<p><span class="math display">\[Cov(\alpha_1 X_1 + \alpha_2 X_2,\; \beta_1 Y_1 + \beta_2 Y_2) = \alpha_1 \beta_1\, Cov(X_1, Y_1) + \alpha_1 \beta_2\, Cov(X_1, Y_2) + \alpha_2 \beta_1\, Cov(X_2, Y_1) + \alpha_2 \beta_2\, Cov(X_2, Y_2)\]</span></p>
+</section>
+</section>
+<section id="box-g.1-das-wichtigste-zum-bedingten-erwartungswert-und-zur-regression" class="level3">
+<h3 class="anchored" data-anchor-id="box-g.1-das-wichtigste-zum-bedingten-erwartungswert-und-zur-regression">Box G.1: Das Wichtigste zum bedingten Erwartungswert und zur Regression</h3>
+<section id="a.-definitionen-1" class="level4">
+<h4 class="anchored" data-anchor-id="a.-definitionen-1">A. Definitionen</h4>
+<p><strong>Bedingter Erwartungswert</strong> <span class="math inline">\(E(Y \mid X = x)\)</span>: Bei diskretem <span class="math inline">\(Y\)</span> und <span class="math inline">\(P(X = x) &gt; 0\)</span>:</p>
+<p><span class="math display">\[E(Y \mid X = x) := \sum_{i=1}^{n} y_i \cdot P(Y = y_i \mid X = x)\]</span></p>
+<p><strong>Regression (bedingte Erwartung)</strong> <span class="math inline">\(E(Y \mid X)\)</span> bzw. <span class="math inline">\(E(Y \mid X_1, \ldots, X_m)\)</span>:</p>
+<p><span class="math inline">\(E(Y \mid X)\)</span> ist diejenige Zufallsvariable, deren Werte die bedingten Erwartungswerte <span class="math inline">\(E(Y \mid X = x)\)</span> sind, d.h. sie ist eine Funktion von <span class="math inline">\(X\)</span>. Dabei heißt <span class="math inline">\(Y\)</span> der <em>Regressand</em> und <span class="math inline">\(X\)</span> der <em>Regressor</em>, der auch aus mehreren Zufallsvariablen <span class="math inline">\(X_1, \ldots, X_m\)</span> bestehen kann.</p>
+<p><strong>Residuum</strong> <span class="math inline">\(\varepsilon\)</span>:</p>
+<p><span class="math display">\[\varepsilon := Y - E(Y \mid X)\]</span></p>
+<p>ist die nicht durch die Regression <span class="math inline">\(E(Y \mid X)\)</span> determinierte Komponente von <span class="math inline">\(Y\)</span>.</p>
+<p><strong>Determinationskoeffizient</strong> <span class="math inline">\(R^2_{Y|X}\)</span> <strong>und Multiple Korrelation</strong> <span class="math inline">\(R_{Y|X}\)</span>:</p>
+<p><span class="math display">\[R^2_{Y|X} := \begin{cases} \dfrac{Var\bigl[E(Y \mid X)\bigr]}{Var(Y)}, &amp; \text{falls } Var(Y) &gt; 0 \\ 0, &amp; \text{andernfalls.} \end{cases}\]</span></p>
+<p><span class="math inline">\(R^2_{Y|X}\)</span> ist der durch die Regression <span class="math inline">\(E(Y \mid X)\)</span> determinierte Varianzanteil von <span class="math inline">\(Y\)</span>. Er gibt die Stärke der regressiven Abhängigkeit an, ist invariant unter eineindeutigen Abbildungen von <span class="math inline">\(X\)</span> und unter linearen Transformationen von <span class="math inline">\(Y\)</span>.</p>
+<p><strong>Regressive Unabhängigkeit:</strong></p>
+<p><span class="math display">\[E(Y \mid X) = E(Y)\]</span></p>
+</section>
+<section id="b.-rechenregeln-für-regressionen" class="level4">
+<h4 class="anchored" data-anchor-id="b.-rechenregeln-für-regressionen">B. Rechenregeln für Regressionen</h4>
+<p><strong>(i)</strong> <span class="math inline">\(\quad E(\alpha \mid X) = \alpha, \quad \alpha \in \mathbb{R}\)</span></p>
+<p><strong>(ii)</strong> <span class="math inline">\(\quad E(\alpha\, Y_1 + \beta\, Y_2 \mid X) = \alpha\, E(Y_1 \mid X) + \beta\, E(Y_2 \mid X), \quad \alpha, \beta \in \mathbb{R}\)</span></p>
+<p><strong>(iii)</strong> <span class="math inline">\(\quad E\bigl[E(Y \mid X)\bigr] = E(Y)\)</span></p>
+<p><strong>(iv)</strong> <span class="math inline">\(\quad E\bigl[f(X) \mid X\bigr] = f(X), \quad \text{falls } f(X) \text{ numerisch ist.}\)</span></p>
+<p><strong>(v)</strong> <span class="math inline">\(\quad E\bigl[E(Y \mid X) \mid f(X)\bigr] = E\bigl[Y \mid f(X)\bigr]\)</span></p>
+<p><strong>(vi)</strong> <span class="math inline">\(\quad E\bigl[f(X) \cdot Y \mid X\bigr] = f(X) \cdot E(Y \mid X), \quad \text{falls } f(X) \text{ numerisch ist.}\)</span></p>
+</section>
+<section id="c.-eigenschaften-des-residuums" class="level4">
+<h4 class="anchored" data-anchor-id="c.-eigenschaften-des-residuums">C. Eigenschaften des Residuums</h4>
+<p><strong>(vii)</strong> <span class="math inline">\(\quad E(\varepsilon) = 0\)</span></p>
+<p><strong>(viii)</strong> <span class="math inline">\(\quad Cov\bigl[\varepsilon,\; E(Y \mid X)\bigr] = 0\)</span></p>
+<p><strong>(ix)</strong> <span class="math inline">\(\quad Var(Y) = Var\bigl[E(Y \mid X)\bigr] + Var(\varepsilon)\)</span></p>
+<p><strong>(x)</strong> <span class="math inline">\(\quad E(\varepsilon \mid X) = 0\)</span></p>
+<p><strong>(xi)</strong> <span class="math inline">\(\quad E\bigl[\varepsilon \mid f(X)\bigr] = 0\)</span></p>
+<p><strong>(xii)</strong> <span class="math inline">\(\quad Cov\bigl[\varepsilon,\; f(X)\bigr] = 0, \quad \text{falls } f(X) \text{ numerisch ist.}\)</span></p>
 
 
 <script type="ojs-module-contents">
@@ -333,6 +432,8 @@ eyJjb250ZW50cyI6W119
 <script type="vfs-file">
 W10=
 </script>
+</section>
+</section>
 
 </main> <!-- /main -->
 <script type="ojs-module-contents">
