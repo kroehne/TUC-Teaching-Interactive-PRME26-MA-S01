@@ -25,7 +25,7 @@ website:
   search: false    
   sidebar:
     header: |
-      <div style="margin-left:-50px;margin-top:-50px;">![](/static/logo.png)</div>
+      <a href="./"><div style="margin-left:-50px;margin-top:-50px;">![](/static/logo.png)</div></a>
       <div style="margin-top:-40px;margin-bottom:-25px;">
       **TUC-PRME-26 | <br/>MA-S01**
       </div>

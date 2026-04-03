@@ -131,6 +131,18 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
   border-radius: 8px;
   margin: 8px 0;
   line-height: 1.8;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+/* MathJax: allow line breaking, hide scrollbars */
+mjx-container, .MathJax {
+  max-width: 100% !important;
+  overflow: hidden !important;
+  display: inline-block !important;
+}
+mjx-math {
+  white-space: normal !important;
 }
 .rule-tag {
   display: inline-block;
@@ -175,7 +187,7 @@ const WORLDS = [
   { id: 1, name: "Erwartungswert", icon: "🎯", color: "#58cc02", desc: "E(·) – Rechenregeln für Erwartungswerte" },
   { id: 2, name: "Varianz", icon: "📊", color: "#1cb0f6", desc: "Var(·) – Streuungsmaße beherrschen" },
   { id: 3, name: "Kovarianz", icon: "🔗", color: "#ce82ff", desc: "Cov(·,·) – Zusammenhänge berechnen" },
-  { id: 4, name: "Regression", icon: "📈", color: "#ff9600", desc: "Bedingte Erwartung E(Y|X)" },
+  { id: 4, name: "Regression", icon: "📈", color: "#ff9600", desc: "E(Y|X), Residuen und R²" },
   { id: 5, name: "KTT Grundlagen", icon: "🧱", color: "#ff4b4b", desc: "Y = τ + ε – Klassische Testtheorie" },
   { id: 6, name: "KTT-Modelle", icon: "🏗️", color: "#ffc800", desc: "Parallel, ess. τ-äquivalent, τ-kongenerisch" },
   { id: 7, name: "Pfaddiagramme", icon: "🔀", color: "#58cc02", desc: "Pfaddiagramme → Gleichungen" },
@@ -209,6 +221,34 @@ const RULES = {
     psychologie: "Ob man die Depressionsskala bei 0 oder bei 50 beginnen lässt – der Zusammenhang mit anderen Variablen ändert sich nicht. Diese Translationsinvarianz der Kovarianz ist wichtig für die Forschungspraxis: Zentrierung von Variablen (z.\u00A0B. um Mittelwert 0) verändert keine Korrelationen und keinen Zusammenhang, was bei der Interpretation von Interaktionseffekten in der Regression relevant ist." },
   C5: { id: "C5", label: "(xii)", text: "\\(\\text{Cov}(\\alpha_{1} X_{1} + \\alpha_{2} X_{2},\\; \\beta_{1} Y_{1} + \\beta_{2} Y_{2}) = \\alpha_{1}\\beta_{1}\\text{Cov}(X_{1},Y_{1}) + \\alpha_{1}\\beta_{2}\\text{Cov}(X_{1},Y_{2}) + \\alpha_{2}\\beta_{1}\\text{Cov}(X_{2},Y_{1}) + \\alpha_{2}\\beta_{2}\\text{Cov}(X_{2},Y_{2})\\)", desc: "Bilinearität der Kovarianz.",
     psychologie: "Diese allgemeine Regel ist der Schlüssel zur Strukturgleichungsmodellierung (SEM): Wenn man wissen will, wie zwei Skalenwerte (jeweils Summen mehrerer Items) zusammenhängen, braucht man alle paarweisen Item-Kovarianzen. In der konfirmatorischen Faktorenanalyse (CFA) wird genau diese Regel benutzt, um aus Faktorladungen und Faktorvarianzen die erwarteten Kovarianzen zwischen beobachteten Variablen abzuleiten – das ist die modellimplizierte Kovarianzmatrix Σ(θ)." },
+};
+
+// Regression rules (Box G.1 from Steyer & Eid)
+const REG_RULES = {
+  R1: { id: "R1", label: "G(i)", text: "\\(E(\\alpha \\mid X) = \\alpha, \\quad \\alpha \\in \\mathbb{R}\\)", desc: "Der bedingte Erwartungswert einer Konstanten ist die Konstante selbst.",
+    psychologie: "Wenn ein Merkmalswert für alle Personen gleich ist (z.\u00A0B. ein fester Aufgaben-Schwierigkeitsparameter), dann ändert sich daran auch nichts, wenn man nach einer anderen Variable bedingt. Das ist die Grundlage dafür, dass Intercepts in Regressionsmodellen als feste Werte interpretiert werden können." },
+  R2: { id: "R2", label: "G(ii)", text: "\\(E(\\alpha Y_{1} + \\beta Y_{2} \\mid X) = \\alpha\\, E(Y_{1} \\mid X) + \\beta\\, E(Y_{2} \\mid X)\\)", desc: "Der bedingte Erwartungswert ist linear.",
+    psychologie: "In der Psychologie werden oft zusammengesetzte Kriterien vorhergesagt (z.\u00A0B. Gesamtleistung als Summe von Subtests). Die Linearität der bedingten Erwartung erlaubt es, die Vorhersage des Gesamtscores aus den Einzelvorhersagen zusammenzusetzen – die Grundlage für multiple Regressionsmodelle in der Forschungspraxis." },
+  R3: { id: "R3", label: "G(iii)", text: "\\(E\\bigl[E(Y \\mid X)\\bigr] = E(Y)\\)", desc: "Turmregel (Law of Iterated Expectations): Der Erwartungswert der bedingten Erwartung ist der unbedingte Erwartungswert.",
+    psychologie: "Egal, wie man Personen in Subgruppen aufteilt (z.\u00A0B. nach Geschlecht) – der gewichtete Durchschnitt aller Gruppenvorhersagen ergibt wieder den Gesamtdurchschnitt. Diese Regel ist fundamental für die Varianzzerlegung in der ANOVA und erklärt, warum gruppenspezifische Vorhersagen im Mittel die Gesamtpopulation korrekt abbilden." },
+  R4: { id: "R4", label: "G(iv)", text: "\\(E\\bigl[f(X) \\mid X\\bigr] = f(X)\\)", desc: "Eine Funktion des Regressors ist unter Bedingung auf diesen Regressor ‚bekannt'.",
+    psychologie: "Wenn man nach dem IQ bedingt, dann ist auch der quadrierte IQ ‚bekannt'. In der Regressionsdiagnostik bedeutet das: Polynomiale Terme (z.\u00A0B. \\(X^{2}\\)) in einem Modell verhalten sich unter Bedingung auf \\(X\\) wie Konstanten. Das ist die Grundlage dafür, dass man den Regressor als ‚fixiert' behandeln kann." },
+  R5: { id: "R5", label: "G(v)", text: "\\(E\\bigl[E(Y \\mid X) \\mid f(X)\\bigr] = E\\bigl[Y \\mid f(X)\\bigr]\\)", desc: "Glättungseigenschaft: Vergröbern des Regressors vereinfacht die Regression.",
+    psychologie: "Wenn man statt des genauen IQ-Werts nur die IQ-Kategorie (unter-, durchschnittlich, über-) verwendet, dann ist die Regression auf die Kategorie gleich dem bedingten Erwartungswert von Y gegeben die Kategorie. In der Praxis wird das relevant bei der Bildung von Clustern oder der Kategorisierung kontinuierlicher Prädiktoren." },
+  R6: { id: "R6", label: "G(vi)", text: "\\(E\\bigl[f(X) \\cdot Y \\mid X\\bigr] = f(X) \\cdot E(Y \\mid X)\\)", desc: "Herausziehen bekannter Faktoren aus der bedingten Erwartung.",
+    psychologie: "Wenn eine Variable unter der Bedingung ‚bekannt' ist (weil sie eine Funktion des Regressors ist), kann man sie vor die bedingte Erwartung ziehen – genau wie eine Konstante. Das ist die Basis für die Herleitung von Interaktionseffekten und Moderationsanalysen in der psychologischen Forschung." },
+  Res1: { id: "Res1", label: "G(vii)", text: "\\(E(\\varepsilon) = 0\\)", desc: "Das Residuum hat Erwartungswert 0.",
+    psychologie: "In jedem Regressionsmodell sind die Vorhersagefehler im Mittel null – das Modell ist also im Durchschnitt korrekt. In der Diagnostik heißt das: Der vorhergesagte Therapieerfolg ist im Mittel über alle Patienten weder zu optimistisch noch zu pessimistisch. Systematische Abweichungen wären ein Zeichen für Modellmissspezifikation." },
+  Res2: { id: "Res2", label: "G(viii)", text: "\\(\\text{Cov}\\bigl[\\varepsilon,\\; E(Y \\mid X)\\bigr] = 0\\)", desc: "Residuum und Vorhersage sind unkorreliert.",
+    psychologie: "Der Vorhersagefehler hängt nicht mit der Vorhersage zusammen. In der Diagnostik ist das wichtig: Ob jemand eine hohe oder niedrige Prognose erhält, sagt nichts darüber, wie groß der Vorhersagefehler ist. Verletzungen dieser Eigenschaft (z.\u00A0B. bei Heteroskedastizität) erfordern robuste Standardfehler." },
+  Res3: { id: "Res3", label: "G(ix)", text: "\\(\\text{Var}(Y) = \\text{Var}\\bigl[E(Y \\mid X)\\bigr] + \\text{Var}(\\varepsilon)\\)", desc: "Varianzzerlegung: Gesamtvarianz = erklärte Varianz + Residualvarianz.",
+    psychologie: "Das ist die zentrale Zerlegung der Varianzaufklärung: \\(R^{2} = \\text{Var}[E(Y|X)] / \\text{Var}(Y)\\) gibt an, wieviel Prozent der Varianz eines Kriteriums durch den Prädiktor erklärt werden. Ein \\(R^{2} = 0{,}25\\) bedeutet: 25 % der Unterschiede (z.\u00A0B. in Therapieerfolg) werden durch den Prädiktor (z.\u00A0B. Schweregrad) erklärt." },
+  Res4: { id: "Res4", label: "G(x)", text: "\\(E(\\varepsilon \\mid X) = 0\\)", desc: "Das Residuum hat bedingten Erwartungswert 0 gegeben den Regressor.",
+    psychologie: "Für jeden einzelnen Wert des Prädiktors ist der mittlere Vorhersagefehler null. Das ist strenger als \\(E(\\varepsilon) = 0\\) und bedeutet: Es gibt keine systematischen Vorhersagefehler in Subgruppen. In der Diagnostik heißt das z.\u00A0B.: Der Vorhersagefehler für Therapieerfolg ist im Mittel null, egal ob die Patienten schwer oder leicht erkrankt sind." },
+  Res5: { id: "Res5", label: "G(xi)", text: "\\(E\\bigl[\\varepsilon \\mid f(X)\\bigr] = 0\\)", desc: "Das Residuum hat bedingten Erwartungswert 0 gegeben jede Funktion des Regressors.",
+    psychologie: "Nicht nur für \\(X\\) selbst, sondern auch für jede Transformation \\(f(X)\\) (z.\u00A0B. \\(X^{2}\\), \\(\\log X\\)) ist der mittlere Vorhersagefehler null. Das schließt nichtlineare Zusammenhänge zwischen Fehler und Prädiktor aus – eine wichtige Modellannahme, deren Verletzung auf fehlende nichtlineare Terme hinweist." },
+  Res6: { id: "Res6", label: "G(xii)", text: "\\(\\text{Cov}\\bigl[\\varepsilon,\\; f(X)\\bigr] = 0\\)", desc: "Residuum und jede Funktion des Regressors sind unkorreliert.",
+    psychologie: "Der Vorhersagefehler korreliert mit keiner Funktion des Prädiktors. In der Regressionsdiagnostik prüft man genau das: Wenn man \\(\\varepsilon\\) gegen \\(X\\), \\(X^{2}\\) oder \\(\\hat{Y}\\) plottet und Muster erkennt, ist diese Eigenschaft verletzt – ein Zeichen für Modellmissspezifikation." },
 };
 
 // KTT rules
@@ -477,37 +517,221 @@ function generateW3Exercises() {
 function generateW4Exercises() {
   const exercises = [];
 
+  // --- Rechenregeln für bedingte Erwartungen ---
+
+  // R1: E(α|X) = α
   exercises.push({
     type: "multiplechoice",
-    question: "In der linearen Regression \\(Y = \\alpha + \\beta X + \\varepsilon\\): Was ist \\(\\alpha\\)?",
-    options: ["Intercept (Schnittpunkt mit der y-Achse)", "Regressionsgradient", "Fehlervarianz", "Korrelation"],
+    question: "Was ist \\(E(5 \\mid X)\\)?",
+    options: ["5", "\\(5 \\cdot E(X)\\)", "0", "\\(5X\\)"],
     correct: 0,
-    rule: null,
-    psychologie: "Der Intercept ist der vorhergesagte Y-Wert, wenn X = 0. In der Diagnostik ist das relevant: z. B. wenn X = Trainingsintensität und Y = Leistung, gibt der Intercept die Baseline-Leistung ohne Training an. Ein negativer Intercept kann inhaltlich bedeutungslos sein und ist ein Grund, die Zentrierung von X zu erwägen.",
+    rule: "R1",
     level: 1,
+  });
+
+  const r1_c = randInt(2, 9);
+  exercises.push({
+    type: "fillblank",
+    question: `Berechne \\(E(${r1_c} \\mid X)\\):`,
+    prompt: `\\(E(${r1_c} \\mid X) = ?\\)`,
+    answer: `${r1_c}`,
+    hint: `Regel G(i): \\(E(\\alpha \\mid X) = \\alpha\\). Also \\(E(${r1_c} \\mid X) = ${r1_c}\\).`,
+    rule: "R1",
+    level: 1,
+  });
+
+  // R2: Linearität E(αY₁ + βY₂ | X)
+  const r2_a = randInt(2, 4), r2_b = randInt(2, 4);
+  exercises.push({
+    type: "multiplechoice",
+    question: `Was ist \\(E(${r2_a}Y_{1} + ${r2_b}Y_{2} \\mid X)\\)?`,
+    options: [
+      `\\(${r2_a}\\,E(Y_{1} \\mid X) + ${r2_b}\\,E(Y_{2} \\mid X)\\)`,
+      `\\(${r2_a + r2_b}\\,E(Y_{1} \\mid X)\\)`,
+      `\\(E(Y_{1} \\mid X) \\cdot E(Y_{2} \\mid X)\\)`,
+      `\\(${r2_a * r2_b}\\,E(Y_{1}Y_{2} \\mid X)\\)`
+    ],
+    correct: 0,
+    rule: "R2",
+    level: 1,
+  });
+
+  // R3: Turmregel E[E(Y|X)] = E(Y)
+  exercises.push({
+    type: "multiplechoice",
+    question: "Was besagt die Turmregel (Law of Iterated Expectations)?",
+    options: [
+      "\\(E\\bigl[E(Y \\mid X)\\bigr] = E(Y)\\)",
+      "\\(E\\bigl[E(Y \\mid X)\\bigr] = E(X)\\)",
+      "\\(E(Y \\mid X) = E(Y)\\)",
+      "\\(E\\bigl[E(Y \\mid X)\\bigr] = 0\\)"
+    ],
+    correct: 0,
+    rule: "R3",
+    level: 1,
+  });
+
+  const r3_ey = randInt(3, 10);
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(E(Y) = ${r3_ey}\\). Was ist \\(E\\bigl[E(Y \\mid X)\\bigr]\\)?`,
+    prompt: `\\(E\\bigl[E(Y \\mid X)\\bigr] = ?\\)`,
+    answer: `${r3_ey}`,
+    hint: `Turmregel G(iii): \\(E\\bigl[E(Y \\mid X)\\bigr] = E(Y) = ${r3_ey}\\).`,
+    rule: "R3",
+    level: 1,
+  });
+
+  // R4: E[f(X)|X] = f(X)
+  exercises.push({
+    type: "multiplechoice",
+    question: "Was ist \\(E(X^{2} \\mid X)\\)?",
+    options: [
+      "\\(X^{2}\\)",
+      "\\(E(X)^{2}\\)",
+      "\\(\\text{Var}(X)\\)",
+      "\\(2X\\)"
+    ],
+    correct: 0,
+    rule: "R4",
+    level: 2,
   });
 
   exercises.push({
     type: "multiplechoice",
-    question: "Die Regressionsgerade minimiert:",
-    options: ["Die Summe der quadrierten Residuen", "Die Anzahl der Residuen", "Die Varianz von X", "Die Varianz von Y"],
+    question: "Gegeben eine Funktion \\(g(X) = 3X + 1\\). Was ist \\(E\\bigl[g(X) \\mid X\\bigr]\\)?",
+    options: [
+      "\\(3X + 1\\) (die Funktion selbst)",
+      "\\(3\\,E(X) + 1\\)",
+      "\\(E(X) + 1\\)",
+      "\\(3 + X\\)"
+    ],
     correct: 0,
-    rule: null,
-    psychologie: "Kleinste-Quadrate-Schätzung (OLS) ist die Standard-Regressionsmethod, weil sie die Vorhersagefehler (ε) minimiert. Das ist optimal, wenn die Fehler normalverteilt und homoskedastisch sind – Annahmen, die regelmäßig überprüft werden sollten.",
-    level: 1,
+    rule: "R4",
+    level: 2,
   });
+
+  // R6: E[f(X)·Y | X] = f(X)·E(Y|X)
+  exercises.push({
+    type: "multiplechoice",
+    question: "Was ist \\(E(X \\cdot Y \\mid X)\\)?",
+    options: [
+      "\\(X \\cdot E(Y \\mid X)\\)",
+      "\\(E(X) \\cdot E(Y)\\)",
+      "\\(\\text{Cov}(X, Y)\\)",
+      "\\(E(XY)\\)"
+    ],
+    correct: 0,
+    rule: "R6",
+    level: 2,
+  });
+
+  // --- Parametrisierung der Regression ---
 
   const w4_x = randInt(2, 5);
   const w4_y = randInt(3, 8);
   const w4_beta = randInt(1, 3);
   exercises.push({
     type: "fillblank",
-    question: `Gegeben: \\(\\alpha = ${w4_x}\\) (Intercept), \\(\\beta = ${w4_beta}\\) (Gradient). Berechne die Vorhersage für \\(X = ${w4_y}\\):`,
-    prompt: `\\(\\hat{Y} = ${w4_x} + ${w4_beta} \\cdot ${w4_y} = ?\\)`,
+    question: `Gegeben: \\(\\alpha = ${w4_x}\\) (Intercept), \\(\\beta = ${w4_beta}\\) (Slope). Berechne die Vorhersage für \\(X = ${w4_y}\\):`,
+    prompt: `\\(E(Y \\mid X = ${w4_y}) = ${w4_x} + ${w4_beta} \\cdot ${w4_y} = ?\\)`,
     answer: `${w4_x + w4_beta * w4_y}`,
-    hint: `\\(\\hat{Y} = ${w4_x} + ${w4_beta * w4_y} = ${w4_x + w4_beta * w4_y}\\)`,
-    rule: null,
+    hint: `\\(E(Y \\mid X = ${w4_y}) = ${w4_x} + ${w4_beta * w4_y} = ${w4_x + w4_beta * w4_y}\\)`,
+    rule: "R1",
     level: 2,
+  });
+
+  // --- Residuen-Eigenschaften ---
+
+  // Res1: E(ε) = 0
+  exercises.push({
+    type: "fillblank",
+    question: "In der Regression \\(Y = E(Y \\mid X) + \\varepsilon\\). Was ist \\(E(\\varepsilon)\\)?",
+    prompt: "\\(E(\\varepsilon) = ?\\)",
+    answer: "0",
+    hint: "Eigenschaft G(vii): \\(E(\\varepsilon) = 0\\). Das Residuum hat stets Erwartungswert 0.",
+    rule: "Res1",
+    level: 1,
+  });
+
+  // Res2: Cov[ε, E(Y|X)] = 0
+  exercises.push({
+    type: "fillblank",
+    question: "Wie groß ist \\(\\text{Cov}\\bigl[\\varepsilon,\\; E(Y \\mid X)\\bigr]\\)?",
+    prompt: "\\(\\text{Cov}\\bigl[\\varepsilon, E(Y \\mid X)\\bigr] = ?\\)",
+    answer: "0",
+    hint: "Eigenschaft G(viii): Residuum und Vorhersage sind unkorreliert: \\(\\text{Cov}[\\varepsilon, E(Y|X)] = 0\\).",
+    rule: "Res2",
+    level: 1,
+  });
+
+  // Res3: Var(Y) = Var[E(Y|X)] + Var(ε) → R²-Berechnung
+  const res3_varY = randInt(10, 20);
+  const res3_varEps = randInt(2, res3_varY - 2);
+  const res3_varReg = res3_varY - res3_varEps;
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(\\text{Var}(Y) = ${res3_varY}\\), \\(\\text{Var}(\\varepsilon) = ${res3_varEps}\\). Berechne \\(\\text{Var}\\bigl[E(Y \\mid X)\\bigr]\\):`,
+    prompt: `\\(\\text{Var}\\bigl[E(Y \\mid X)\\bigr] = \\text{Var}(Y) - \\text{Var}(\\varepsilon) = ?\\)`,
+    answer: `${res3_varReg}`,
+    hint: `\\(\\text{Var}[E(Y|X)] = ${res3_varY} - ${res3_varEps} = ${res3_varReg}\\)`,
+    rule: "Res3",
+    level: 2,
+  });
+
+  // R²-Berechnung aus Varianzzerlegung
+  const r2_varY = 20;
+  const r2_varReg2 = randInt(4, 16);
+  const r2_val = (r2_varReg2 / r2_varY).toFixed(2);
+  exercises.push({
+    type: "fillblank",
+    question: `Gegeben: \\(\\text{Var}(Y) = ${r2_varY}\\), \\(\\text{Var}\\bigl[E(Y \\mid X)\\bigr] = ${r2_varReg2}\\). Berechne \\(R^{2}_{Y|X}\\):`,
+    prompt: `\\(R^{2}_{Y|X} = \\frac{\\text{Var}[E(Y \\mid X)]}{\\text{Var}(Y)} = \\frac{${r2_varReg2}}{${r2_varY}} = ?\\)`,
+    answer: `${r2_val}`,
+    hint: `\\(R^{2}_{Y|X} = \\frac{${r2_varReg2}}{${r2_varY}} = ${r2_val}\\)`,
+    rule: "Res3",
+    level: 2,
+  });
+
+  // Res4: E(ε|X) = 0
+  exercises.push({
+    type: "fillblank",
+    question: "Was ist \\(E(\\varepsilon \\mid X)\\)?",
+    prompt: "\\(E(\\varepsilon \\mid X) = ?\\)",
+    answer: "0",
+    hint: "Eigenschaft G(x): \\(E(\\varepsilon \\mid X) = 0\\). Für jeden Wert von \\(X\\) ist der mittlere Vorhersagefehler null.",
+    rule: "Res4",
+    level: 2,
+  });
+
+  // Res6: Cov[ε, f(X)] = 0
+  exercises.push({
+    type: "multiplechoice",
+    question: "Gegeben \\(\\varepsilon = Y - E(Y \\mid X)\\). Welche Aussage gilt?",
+    options: [
+      "\\(\\text{Cov}(\\varepsilon, f(X)) = 0\\) für jede numerische Funktion \\(f\\)",
+      "\\(\\text{Cov}(\\varepsilon, X) > 0\\)",
+      "\\(\\text{Var}(\\varepsilon) = \\text{Var}(Y)\\)",
+      "\\(E(\\varepsilon) = E(Y)\\)"
+    ],
+    correct: 0,
+    rule: "Res6",
+    level: 2,
+  });
+
+  // Regressive Unabhängigkeit
+  exercises.push({
+    type: "multiplechoice",
+    question: "Was bedeutet ‚regressive Unabhängigkeit' von \\(Y\\) und \\(X\\)?",
+    options: [
+      "\\(E(Y \\mid X) = E(Y)\\): Die Vorhersage hängt nicht von \\(X\\) ab",
+      "\\(\\text{Cov}(X, Y) = 0\\)",
+      "\\(\\text{Var}(Y \\mid X) = 0\\)",
+      "\\(Y\\) und \\(X\\) sind stochastisch unabhängig"
+    ],
+    correct: 0,
+    rule: null,
+    level: 1,
   });
 
   return exercises;
@@ -647,11 +871,15 @@ function generateW7Exercises() {
 
   // Einfache Regression als Pfadmodell
   exercises.push({
-    type: "fillblank",
-    question: "Pfadmodell: \\(\\eta \\to Y_{1}\\) mit Pfadkoeffizient \\(\\beta_{1}\\) und Fehler \\(\\varepsilon_{1}\\). Schreibe die Gleichung: \\(Y_{1} = ?\\cdot\\eta + \\varepsilon_{1}\\). Was steht für '?'?",
-    prompt: "\\(Y_{1} = ?\\cdot\\eta + \\varepsilon_{1}\\)",
-    answer: "β₁",
-    hint: "Der Pfadkoeffizient \\(\\beta_{1}\\) verbindet \\(\\eta\\) mit \\(Y_{1}\\).",
+    type: "multiplechoice",
+    question: "Pfadmodell: \\(\\eta \\to Y_{1}\\) mit Pfadkoeffizient \\(\\beta_{1}\\) und Fehler \\(\\varepsilon_{1}\\). Was steht in der Gleichung \\(Y_{1} = \\;?\\;\\cdot\\eta + \\varepsilon_{1}\\) für '?'?",
+    options: [
+      "\\(\\beta_{1}\\) (der Pfadkoeffizient)",
+      "\\(\\text{Var}(\\eta)\\)",
+      "\\(\\varepsilon_{1}\\)",
+      "\\(\\text{Cov}(\\eta, Y_{1})\\)"
+    ],
+    correct: 0,
     rule: null,
     psychologie: "Die Übersetzung Pfaddiagramm → Gleichung ist eine Kernkompetenz für das Verständnis von SEM-Output. Wenn Mplus oder lavaan ein Modell schätzt, stecken dahinter genau diese Gleichungen. Die Faktorladung β₁ gibt an, wie stark ein beobachteter Wert (z.\u00A0B. ein Fragebogenitem) den latenten Faktor (z.\u00A0B. Extraversion) widerspiegelt.",
     level: 2,
@@ -691,7 +919,7 @@ function generateW8Exercises() {
     question: `Modell: \\(Y_{1} = ${b1}\\eta + \\varepsilon_{1}\\), \\(Y_{2} = ${b2}\\eta + \\varepsilon_{2}\\). \\(\\text{Var}(\\eta)=${ve}\\), \\(\\text{Var}(\\varepsilon_{1})=${ve1}\\), \\(\\text{Var}(\\varepsilon_{2})=${ve2}\\).`,
     prompt: `\\(\\Sigma_{11} = \\text{Var}(Y_{1}) = ${b1}^{2}\\cdot${ve} + ${ve1} = ?\\)`,
     answer: `${b1*b1*ve + ve1}`,
-    hint: `${b1*b1}\\cdot${ve} + ${ve1} = ${b1*b1*ve} + ${ve1} = ${b1*b1*ve + ve1}`,
+    hint: `\\(${b1*b1}\\cdot${ve} + ${ve1} = ${b1*b1*ve} + ${ve1} = ${b1*b1*ve + ve1}\\)`,
     rule: "V5",
     psychologie: "Σ₁₁ ist die vom Modell vorhergesagte Varianz eines Indikators. Programme wie lavaan oder Mplus berechnen die komplette implizierte Kovarianzmatrix Σ(θ) und vergleichen sie mit der empirischen Kovarianzmatrix S. Große Abweichungen zwischen Σ und S deuten auf Modell-Misfit hin – das Modell bildet die Daten nicht gut ab. Die Diagonalelemente (Varianzen) zeigen, ob das Modell die Streuung jedes einzelnen Items korrekt vorhersagt.",
     level: 1,
@@ -699,20 +927,20 @@ function generateW8Exercises() {
 
   exercises.push({
     type: "fillblank",
-    question: `(Fortsetzung) \\(\\Sigma_{12} = \\text{Cov}(Y_{1},Y_{2}) = ${b1}\\cdot${b2}\\cdot\\text{Var}(\\eta) = ?\\)`,
+    question: `\\(\\Sigma_{12} = \\text{Cov}(Y_{1},Y_{2}) = ${b1}\\cdot${b2}\\cdot\\text{Var}(\\eta) = ?\\)`,
     prompt: `\\(\\Sigma_{12} = ?\\)`,
     answer: `${b1*b2*ve}`,
-    hint: `${b1}\\cdot${b2}\\cdot${ve} = ${b1*b2*ve}`,
+    hint: `\\(${b1}\\cdot${b2}\\cdot${ve} = ${b1*b2*ve}\\)`,
     rule: "C5",
     level: 1,
   });
 
   exercises.push({
     type: "fillblank",
-    question: `(Fortsetzung) \\(\\Sigma_{22} = \\text{Var}(Y_{2}) = ${b2}^{2}\\cdot${ve} + ${ve2} = ?\\)`,
+    question: `\\(\\Sigma_{22} = \\text{Var}(Y_{2}) = ${b2}^{2}\\cdot${ve} + ${ve2} = ?\\)`,
     prompt: `\\(\\Sigma_{22} = ?\\)`,
     answer: `${b2*b2*ve + ve2}`,
-    hint: `${b2*b2}\\cdot${ve} + ${ve2} = ${b2*b2*ve + ve2}`,
+    hint: `\\(${b2*b2}\\cdot${ve} + ${ve2} = ${b2*b2*ve + ve2}\\)`,
     rule: "V5",
     level: 1,
   });
@@ -749,7 +977,7 @@ function generateW9Exercises() {
     type: "multiplechoice",
     question: "Was unterscheidet eine CFA von einer EFA?",
     options: [
-      "Bei der CFA werden die Faktorladungen vorab festgelegt (konfirmatorisch)",
+      "Bei der CFA wird die Struktur der Faktorladungen vorab festgelegt (konfirmatorisch)",
       "CFA benötigt mehr Variablen",
       "EFA verwendet keine latenten Variablen",
       "CFA ist weniger restriktiv"
@@ -851,7 +1079,7 @@ const EXERCISE_GENERATORS = Object.fromEntries(
 function RuleCard({ rule }) {
   const [showPsych, setShowPsych] = useState(false);
   if (!rule) return null;
-  const r = RULES[rule] || KTT_RULES[rule];
+  const r = RULES[rule] || REG_RULES[rule] || KTT_RULES[rule];
   if (!r) return null;
   return (
     <div style={{
@@ -861,12 +1089,15 @@ function RuleCard({ rule }) {
       padding: '12px 16px',
       marginBottom: 12,
       fontSize: '0.9em',
+      overflow: 'hidden',
     }}>
       <div style={{ color: 'var(--blue)', fontWeight: 700, marginBottom: 4 }}>
         Regel {r.label}
       </div>
-      <MathText>{r.text}</MathText>
-      <div style={{ color: 'var(--text-dim)', fontSize: '0.85em' }}>{r.desc}</div>
+      <div style={{ overflow: 'hidden', maxWidth: '100%' }}>
+        <MathText>{r.text}</MathText>
+      </div>
+      <div style={{ color: 'var(--text-dim)', fontSize: '0.85em' }}><MathText>{r.desc}</MathText></div>
       {r.psychologie && (
         <div style={{ marginTop: 8 }}>
           <button onClick={() => setShowPsych(!showPsych)} style={{
@@ -893,7 +1124,7 @@ function RuleCard({ rule }) {
               lineHeight: 1.6,
               color: 'var(--text)',
             }}>
-              {r.psychologie}
+              <MathText>{r.psychologie}</MathText>
             </div>
           )}
         </div>
@@ -939,7 +1170,7 @@ function PsychRelevance({ exercise }) {
   // Get psychologie text: either directly from exercise, or from linked rule
   let text = exercise.psychologie;
   if (!text && exercise.rule) {
-    const r = RULES[exercise.rule] || KTT_RULES[exercise.rule];
+    const r = RULES[exercise.rule] || REG_RULES[exercise.rule] || KTT_RULES[exercise.rule];
     if (r) text = r.psychologie;
   }
   if (!text) return null;
@@ -969,7 +1200,7 @@ function PsychRelevance({ exercise }) {
           lineHeight: 1.6,
           color: 'var(--text)',
         }}>
-          {text}
+          <MathText>{text}</MathText>
         </div>
       )}
     </div>
@@ -985,7 +1216,11 @@ function FillBlankExercise({ exercise, onAnswer }) {
 
   const handleSubmit = () => {
     if (!value.trim()) return;
-    const correct = value.trim().replace(',', '.') === exercise.answer.replace(',', '.');
+    const normalize = s => {
+      const n = parseFloat(s.trim().replace(/,/g, '.'));
+      return isNaN(n) ? s.trim().toLowerCase() : n;
+    };
+    const correct = normalize(value) === normalize(exercise.answer);
     onAnswer(correct);
     setValue('');
     setShowHint(false);
@@ -1204,8 +1439,9 @@ function getRulesForWorld(worldId) {
   if (worldId <= 1) return [RULES.E1, RULES.E2];
   if (worldId === 2) return [RULES.V1, RULES.V2, RULES.V3, RULES.V4, RULES.V5];
   if (worldId === 3) return [RULES.C1, RULES.C2, RULES.C3, RULES.C4, RULES.C5];
-  if (worldId <= 4) return [...Object.values(RULES)];
-  return [...Object.values(RULES), ...Object.values(KTT_RULES)];
+  if (worldId === 4) return [...Object.values(REG_RULES)];
+  if (worldId <= 6) return [...Object.values(RULES), ...Object.values(REG_RULES), ...Object.values(KTT_RULES)];
+  return [...Object.values(RULES), ...Object.values(REG_RULES), ...Object.values(KTT_RULES)];
 }
 
 function RuleDisplay({ worldId, currentRule, ruleMode, setRuleMode }) {
