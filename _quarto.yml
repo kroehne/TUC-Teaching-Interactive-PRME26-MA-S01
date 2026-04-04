@@ -38,8 +38,21 @@ website:
             text: "A | Grundlage und Rechenregeln"
           - href: S01_SteyerEid2001Game_01.qmd
             text: "B | MatheQuest: SEM"
-
-
+      - section: "02: Grundlagen"
+        contents:
+          - href: S02_PD_01.qmd
+            text: "A | Übung 1"
+          - href: S02_PD_02.qmd
+            text: "B | Übung 2"
+      - section: "03: CFA"
+        contents:
+          - href: S03_CFA_01.qmd
+            text: "A | Live"
+          - href: S03_CFA_02.qmd
+            text: "B | Übung 1"
+          - href: S03_CFA_03.qmd
+            text: "C | Übung 2"            
+            
 theme:
   light: 
     - flatly 

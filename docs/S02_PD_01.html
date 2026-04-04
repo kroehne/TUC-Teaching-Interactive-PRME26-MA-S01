@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>B | MatheQuest: Grundlagen der Strukturgleichungsmodellierung</title>
+<title>A | Übung 1</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -61,6 +61,35 @@ ul.task-list li input[type="checkbox"] {
 <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -235,7 +264,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./S01_SteyerEid2001BoxFandG_01.html">01: Vorbesprechung</a></li><li class="breadcrumb-item"><a href="./S01_SteyerEid2001Game_01.html">B | MatheQuest: SEM</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./S02_PD_01.html">02: Grundlagen</a></li><li class="breadcrumb-item"><a href="./S02_PD_01.html">A | Übung 1</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -265,13 +294,13 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
  <span class="menu-text">01: Vorbesprechung</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Abschnitt umschalten">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Abschnitt umschalten">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./S01_SteyerEid2001BoxFandG_01.html" class="sidebar-item-text sidebar-link">
@@ -280,7 +309,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./S01_SteyerEid2001Game_01.html" class="sidebar-item-text sidebar-link active">
+  <a href="./S01_SteyerEid2001Game_01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">B | MatheQuest: SEM</span></a>
   </div>
 </li>
@@ -288,16 +317,16 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">02: Grundlagen</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Abschnitt umschalten">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Abschnitt umschalten">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./S02_PD_01.html" class="sidebar-item-text sidebar-link">
+  <a href="./S02_PD_01.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">A | Übung 1</span></a>
   </div>
 </li>
@@ -348,9 +377,9 @@ ul.task-list li input[type="checkbox"] {
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./S01_SteyerEid2001BoxFandG_01.html">01: Vorbesprechung</a></li><li class="breadcrumb-item"><a href="./S01_SteyerEid2001Game_01.html">B | MatheQuest: SEM</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./S02_PD_01.html">02: Grundlagen</a></li><li class="breadcrumb-item"><a href="./S02_PD_01.html">A | Übung 1</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">B | MatheQuest: Grundlagen der Strukturgleichungsmodellierung</h1>
+<h1 class="title">A | Übung 1</h1>
 </div>
 
 
@@ -367,97 +396,204 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<iframe id="mathe-game" src="static/mathe_game.html" style="width:100%; height:65vh; border:1px solid #333; border-radius:12px;" allow="fullscreen">
-</iframe>
-<script>
-// Sync Quarto theme toggle with iframe
-(function() {
-  function getQuartoTheme() {
-    // 1. data-bs-theme (Bootstrap 5.3+ / Quarto standard)
-    var t = document.documentElement.getAttribute('data-bs-theme');
-    if (t === 'dark' || t === 'light') return t;
-    // 2. body class .quarto-dark (some Quarto versions)
-    if (document.body && document.body.classList.contains('quarto-dark')) return 'dark';
-    // 3. Check for <link> with darkly theme active
-    var links = document.querySelectorAll('link[rel="stylesheet"][href*="darkly"]');
-    for (var i = 0; i < links.length; i++) {
-      if (!links[i].disabled) return 'dark';
-    }
-    return 'light';
-  }
-
-  function sendTheme() {
-    var theme = getQuartoTheme();
-    var iframe = document.getElementById('mathe-game');
-    if (iframe && iframe.contentWindow) {
-      iframe.contentWindow.postMessage({ theme: theme }, '*');
-    }
-  }
-
-  // Retry sending until iframe is ready (covers webR/live-html delay)
-  function sendThemeWithRetry(attempts) {
-    sendTheme();
-    if (attempts > 0) {
-      setTimeout(function() { sendThemeWithRetry(attempts - 1); }, 500);
-    }
-  }
-
-  // Send on load with multiple retries
-  window.addEventListener('load', function() { sendThemeWithRetry(5); });
-  // Also try on DOMContentLoaded (earlier)
-  document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(function() { sendThemeWithRetry(3); }, 300);
-  });
-
-  // Watch for Quarto theme changes via MutationObserver
-  var observer = new MutationObserver(function(mutations) {
-    mutations.forEach(function(m) {
-      if (m.attributeName === 'data-bs-theme' || m.attributeName === 'class') {
-        sendTheme();
-      }
-    });
-  });
-  observer.observe(document.documentElement, { attributes: true });
-  // Also observe body for class changes (quarto-dark)
-  if (document.body) {
-    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-  } else {
-    document.addEventListener('DOMContentLoaded', function() {
-      observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-    });
-  }
-
-  // Watch for stylesheet enable/disable changes (Quarto toggles <link> elements)
-  var sheetObserver = new MutationObserver(function() { sendTheme(); });
-  document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('link[rel="stylesheet"]').forEach(function(link) {
-      sheetObserver.observe(link, { attributes: true, attributeFilter: ['disabled', 'href'] });
-    });
-  });
-})();
-</script>
-<p>Für Nebenrechungen in R:</p>
-<div class="cell">
-<div>
-<div id="webr-1" class="exercise-cell">
-
-</div>
-<script type="webr-1-contents">
-eyJhdHRyIjp7ImVjaG8iOnRydWUsImVkaXQiOnRydWUsImV2YWwiOnRydWUsIndhcm5pbmciOmZhbHNlfSwiY29kZSI6IiJ9
-</script>
-</div>
-</div>
-<p>Notation nach:</p>
+<section id="pfaddiagramm" class="level2">
+<h2 class="anchored" data-anchor-id="pfaddiagramm">Pfaddiagramm</h2>
+<p><img src="static/uebung_pfaddiagramm_in_gleichungen_01.svg" class="img-fluid" width="700"></p>
+</section>
+<section id="regressionsgleichungen-manifest" class="level2">
+<h2 class="anchored" data-anchor-id="regressionsgleichungen-manifest">Regressionsgleichungen (manifest)</h2>
+<details>
+<summary>
+SPOILER!
+</summary>
+<p><span class="math display">\[
+\begin{aligned}
+Y_1 &amp;= \lambda_{11}\eta_1 + \varepsilon_1 = \eta_1 + \varepsilon_1 \\
+Y_2 &amp;= \lambda_{21}\eta_1 + \varepsilon_2 \\
+Y_3 &amp;= \lambda_{32}\eta_2 + \varepsilon_3 = \eta_2 + \varepsilon_3
+\end{aligned}
+\]</span></p>
+<p>Kommentar: Da <span class="math inline">\(\lambda_{11}=1\)</span> und <span class="math inline">\(\lambda_{32}=1\)</span>, sind <span class="math inline">\(Y_1\)</span> und <span class="math inline">\(Y_3\)</span> direkt als Summe von latenter Variable und Residuum darstellbar.</p>
+</details>
+<hr>
+</section>
+<section id="regressionsgleichungen-latent" class="level2">
+<h2 class="anchored" data-anchor-id="regressionsgleichungen-latent">Regressionsgleichungen (latent)</h2>
+<details>
+<summary>
+SPOILER!
+</summary>
+<p><span class="math display">\[
+\eta_2 = \beta_{21}\eta_1 + \zeta_2
+\]</span></p>
+<p>Einsetzen in <span class="math inline">\(Y_3\)</span>:</p>
+<p><span class="math display">\[
+Y_3 = \eta_2 + \varepsilon_3 = \beta_{21}\eta_1 + \zeta_2 + \varepsilon_3
+\]</span></p>
+</details>
+<hr>
+</section>
+<section id="varianzen" class="level2">
+<h2 class="anchored" data-anchor-id="varianzen">Varianzen</h2>
+<details>
+<summary>
+SPOILER!
+</summary>
+<p><span class="math display">\[
+\mathrm{Var}(Y_1) = \mathrm{Var}(\eta_1 + \varepsilon_1) = \mathrm{Var}(\eta_1) + \mathrm{Var}(\varepsilon_1) + 2\mathrm{Cov}(\eta_1,\varepsilon_1)
+\]</span></p>
+<p>Kommentar: Nach Annahme <span class="math inline">\(\mathrm{Cov}(\eta_1,\varepsilon_1)=0\)</span> (Residuum unkorreliert mit latenter Variablen) ergibt sich:</p>
+<p><span class="math display">\[
+\mathrm{Var}(Y_1) = \mathrm{Var}(\eta_1) + \mathrm{Var}(\varepsilon_1)
+\]</span></p>
+<hr>
+<p><span class="math display">\[
+\mathrm{Var}(Y_2) = \mathrm{Var}(\lambda_{21}\eta_1 + \varepsilon_2) = \lambda_{21}^2 \,\mathrm{Var}(\eta_1) + \mathrm{Var}(\varepsilon_2)
+\]</span></p>
+<hr>
+<p><span class="math display">\[
+\mathrm{Var}(Y_3) = \mathrm{Var}(\beta_{21}\eta_1 + \zeta_2 + \varepsilon_3)
+\]</span></p>
+<p>Da <span class="math inline">\(\mathrm{Var}(\varepsilon_3)=0\)</span>, bleibt:</p>
+<p><span class="math display">\[
+\mathrm{Var}(Y_3) = \mathrm{Var}(\beta_{21}\eta_1 + \zeta_2) = \beta_{21}^2\mathrm{Var}(\eta_1) + \mathrm{Var}(\zeta_2)
+\]</span></p>
+<hr>
+</details>
+</section>
+<section id="kovarianzen" class="level2">
+<h2 class="anchored" data-anchor-id="kovarianzen">Kovarianzen</h2>
+<details>
+<summary>
+SPOILER!
+</summary>
+<p><span class="math inline">\(\mathrm{Cov}(Y_1,Y_2)\)</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathrm{Cov}(Y_1,Y_2) &amp;= \mathrm{Cov}(\eta_1 + \varepsilon_1,\; \lambda_{21}\eta_1 + \varepsilon_2) \\
+&amp;= \lambda_{21}\mathrm{Cov}(\eta_1,\eta_1) + \mathrm{Cov}(\eta_1,\varepsilon_2) + \lambda_{21}\mathrm{Cov}(\varepsilon_1,\eta_1) + \mathrm{Cov}(\varepsilon_1,\varepsilon_2)
+\end{aligned}
+\]</span></p>
+<p>Nach den Annahmen (<span class="math inline">\(\mathrm{Cov}(\varepsilon_i,\varepsilon_j)=0\)</span> für <span class="math inline">\(i\neq j\)</span>, Residuen unkorreliert mit latenten Variablen):</p>
+<p><span class="math display">\[
+\mathrm{Cov}(Y_1,Y_2) = \lambda_{21}\mathrm{Var}(\eta_1)
+\]</span></p>
+<hr>
+<p><span class="math inline">\(mathrm{Cov}(Y_1,Y_3)\)</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathrm{Cov}(Y_1,Y_3) &amp;= \mathrm{Cov}(\eta_1+\varepsilon_1,\; \beta_{21}\eta_1+\zeta_2+\varepsilon_3) \\
+&amp;= \beta_{21}\mathrm{Cov}(\eta_1,\eta_1)+\mathrm{Cov}(\eta_1,\zeta_2)+\mathrm{Cov}(\eta_1,\varepsilon_3)+\beta_{21}\mathrm{Cov}(\varepsilon_1,\eta_1)+\mathrm{Cov}(\varepsilon_1,\zeta_2)+\mathrm{Cov}(\varepsilon_1,\varepsilon_3)
+\end{aligned}
+\]</span></p>
+<p>Nach den Annahmen bleiben nur:</p>
+<p><span class="math display">\[
+\mathrm{Cov}(Y_1,Y_3) = \beta_{21}\mathrm{Var}(\eta_1)
+\]</span></p>
+<hr>
+<p><span class="math inline">\(\mathrm{Cov}(Y_2,Y_3)\)</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathrm{Cov}(Y_2,Y_3) &amp;= \mathrm{Cov}(\lambda_{21}\eta_1+\varepsilon_2,\; \beta_{21}\eta_1+\zeta_2+\varepsilon_3) \\
+&amp;= \lambda_{21}\beta_{21}\mathrm{Cov}(\eta_1,\eta_1)+\lambda_{21}\mathrm{Cov}(\eta_1,\zeta_2)+\lambda_{21}\mathrm{Cov}(\eta_1,\varepsilon_3)+\beta_{21}\mathrm{Cov}(\varepsilon_2,\eta_1)+\mathrm{Cov}(\varepsilon_2,\zeta_2)+\mathrm{Cov}(\varepsilon_2,\varepsilon_3)
+\end{aligned}
+\]</span></p>
+<p>Nach den Annahmen:</p>
+<p><span class="math display">\[
+\mathrm{Cov}(Y_2,Y_3) = \lambda_{21}\beta_{21}\mathrm{Var}(\eta_1)
+\]</span></p>
+</details>
+</section>
+<section id="kompakte-matrizenform" class="level2">
+<h2 class="anchored" data-anchor-id="kompakte-matrizenform">Kompakte Matrizenform</h2>
+<details>
+<summary>
+SPOILER!
+</summary>
+<section id="messmodell" class="level3">
+<h3 class="anchored" data-anchor-id="messmodell">Messmodell</h3>
+<p><span class="math display">\[
+\underset{(3 \times 1)}{\mathbf{y}} = \underset{(3 \times 2)}{\boldsymbol{\Lambda}} \;\underset{(2 \times 1)}{\boldsymbol{\eta}} + \underset{(3 \times 1)}{\boldsymbol{\varepsilon}}
+\]</span></p>
+<p>mit</p>
+<p><span class="math display">\[
+\begin{pmatrix} Y_1 \\ Y_2 \\ Y_3 \end{pmatrix}
+=
+\begin{pmatrix} 1 &amp; 0 \\ \lambda_{21} &amp; 0 \\ 0 &amp; 1 \end{pmatrix}
+\begin{pmatrix} \eta_1 \\ \eta_2 \end{pmatrix}
++
+\begin{pmatrix} \varepsilon_1 \\ \varepsilon_2 \\ \varepsilon_3 \end{pmatrix}
+\]</span></p>
+</section>
+<section id="strukturmodell" class="level3">
+<h3 class="anchored" data-anchor-id="strukturmodell">Strukturmodell</h3>
+<p><span class="math display">\[
+\underset{(2 \times 1)}{\boldsymbol{\eta}} = \underset{(2 \times 2)}{\mathbf{B}}\;\underset{(2 \times 1)}{\boldsymbol{\eta}} + \underset{(2 \times 1)}{\boldsymbol{\zeta}}
+\]</span></p>
+<p>mit</p>
+<p><span class="math display">\[
+\begin{pmatrix} \eta_1 \\ \eta_2 \end{pmatrix}
+=
+\begin{pmatrix} 0 &amp; 0 \\ \beta_{21} &amp; 0 \end{pmatrix}
+\begin{pmatrix} \eta_1 \\ \eta_2 \end{pmatrix}
++
+\begin{pmatrix} \zeta_1 \\ \zeta_2 \end{pmatrix}
+\]</span></p>
+<p>Kommentar: <span class="math inline">\(\eta_1\)</span> ist exogen (erste Zeile von <span class="math inline">\(\mathbf{B}\)</span> ist null), d.h. <span class="math inline">\(\zeta_1 \equiv \eta_1\)</span>.</p>
+</section>
+<section id="parametermatrizen" class="level3">
+<h3 class="anchored" data-anchor-id="parametermatrizen">Parametermatrizen</h3>
+<p>Kovarianzmatrix der latenten Residuen:</p>
+<p><span class="math display">\[
+\boldsymbol{\Psi} = \mathrm{Cov}(\boldsymbol{\zeta}) =
+\begin{pmatrix} \psi_{11} &amp; 0 \\ 0 &amp; \psi_{22} \end{pmatrix}
+\]</span></p>
+<p>mit <span class="math inline">\(\psi_{11} = \mathrm{Var}(\eta_1)\)</span> und <span class="math inline">\(\psi_{22} = \mathrm{Var}(\zeta_2)\)</span>.</p>
+<p>Kovarianzmatrix der Messresiduen:</p>
+<p><span class="math display">\[
+\boldsymbol{\Theta} = \mathrm{Cov}(\boldsymbol{\varepsilon}) =
+\begin{pmatrix} \theta_{1} &amp; 0 &amp; 0 \\ 0 &amp; \theta_{2} &amp; 0 \\ 0 &amp; 0 &amp; 0 \end{pmatrix}
+\]</span></p>
+<p>mit der Restriktion <span class="math inline">\(\mathrm{Var}(\varepsilon_3) = 0\)</span>.</p>
+</section>
+<section id="modellimplizierte-kovarianzmatrix" class="level3">
+<h3 class="anchored" data-anchor-id="modellimplizierte-kovarianzmatrix">Modellimplizierte Kovarianzmatrix</h3>
+<p><span class="math display">\[
+\boldsymbol{\Sigma} = \boldsymbol{\Lambda}\,(\mathbf{I}-\mathbf{B})^{-1}\,\boldsymbol{\Psi}\,\left[(\mathbf{I}-\mathbf{B})^{-1}\right]^\top \boldsymbol{\Lambda}^\top + \boldsymbol{\Theta}
+\]</span></p>
+<p>Herleitung in einzelnen Schritten:</p>
+<p><span class="math display">\[
+(\mathbf{I}-\mathbf{B})^{-1}
+=
+\begin{pmatrix} 1 &amp; 0 \\ -\beta_{21} &amp; 1 \end{pmatrix}^{-1}
+=
+\begin{pmatrix} 1 &amp; 0 \\ \beta_{21} &amp; 1 \end{pmatrix}
+\]</span></p>
+<p>Daraus ergibt sich die Kovarianzmatrix der latenten Variablen:</p>
+<p><span class="math display">\[
+(\mathbf{I}-\mathbf{B})^{-1}\,\boldsymbol{\Psi}\,\left[(\mathbf{I}-\mathbf{B})^{-1}\right]^\top
+=
+\begin{pmatrix} \psi_{11} &amp; \beta_{21}\psi_{11} \\ \beta_{21}\psi_{11} &amp; \beta_{21}^2\psi_{11}+\psi_{22} \end{pmatrix}
+\]</span></p>
+<p>Und schließlich:</p>
+<p><span class="math display">\[
+\boldsymbol{\Sigma}
+=
+\begin{pmatrix}
+\psi_{11} + \theta_{1}  &amp;  \lambda_{21}\psi_{11}  &amp;  \beta_{21}\psi_{11} \\
+\lambda_{21}\psi_{11}  &amp;  \lambda_{21}^2\psi_{11} + \theta_{2}  &amp;  \lambda_{21}\beta_{21}\psi_{11} \\
+\beta_{21}\psi_{11}  &amp;  \lambda_{21}\beta_{21}\psi_{11}  &amp;  \beta_{21}^2\psi_{11} + \psi_{22}
+\end{pmatrix}
+\]</span></p>
+<p>Kommentar:</p>
 <ul>
-<li>Steyer, R., &amp; Eid, M. (2001). Messen und Testen (2., korrigierte Aufl). Springer.</li>
+<li>Das Modell hat <strong>6 freie Parameter</strong> (<span class="math inline">\(\lambda_{21}\)</span>, <span class="math inline">\(\beta_{21}\)</span>, <span class="math inline">\(\psi_{11}\)</span>, <span class="math inline">\(\psi_{22}\)</span>, <span class="math inline">\(\theta_1\)</span>, <span class="math inline">\(\theta_2\)</span>) bei 6 nicht-redundanten Elementen in <span class="math inline">\(\boldsymbol{\Sigma}\)</span> (3 Varianzen + 3 Kovarianzen), d.h. das Modell hat <span class="math inline">\(df = 6 - 6 = 0\)</span> Freiheitsgrade und ist <strong>gerade identifiziert</strong> (<em>just identified</em>).</li>
 </ul>
+</section></details>
 
 
-<script type="webr-data">
-eyJvcHRpb25zIjp7ImJhc2VVcmwiOiJodHRwczovL3dlYnIuci13YXNtLm9yZy92MC40LjIvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsiZXZhbHVhdGUiLCJrbml0ciIsImh0bWx0b29scyJdLCJyZXBvcyI6W119LCJyZW5kZXJfZGYiOiJkZWZhdWx0In0=
-</script>
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0xIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICAvLyBXYWl0IGZvciBvdXRwdXQgdG8gYmUgd3JpdHRlbiB0byB0aGUgRE9NLCB0aGVuIHRyaWdnZXIgd2lkZ2V0IHJlbmRlcmluZ1xuICBhd2FpdCBfd2Vicl92YWx1ZV8xO1xuICBpZiAod2luZG93LkhUTUxXaWRnZXRzKSB7XG4gICAgd2luZG93LkhUTUxXaWRnZXRzLnN0YXRpY1JlbmRlcigpO1xuICB9XG4gIGlmICh3aW5kb3cuUGFnZWRUYWJsZURvYykge1xuICAgIHdpbmRvdy5QYWdlZFRhYmxlRG9jLmluaXRBbGwoKTtcbiAgfVxufVxuIn0seyJjZWxsTmFtZSI6IndlYnItMSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzEgPSB7XG4gIGNvbnN0IHsgV2ViUkV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHdlYnItMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV8xID0gd2ViUk9qcy5wcm9jZXNzKF93ZWJyX2VkaXRvcl8xLCB7fSk7XG4ifSx7ImNlbGxOYW1lIjoid2Vici1wcmVsdWRlIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoid2ViUk9qcyA9IHtcbiAgY29uc3QgeyBXZWJSLCBDaGFubmVsVHlwZSB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZS5XZWJSO1xuICBjb25zdCB7XG4gICAgV2ViUkV2YWx1YXRvcixcbiAgICBXZWJSRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoXG4gIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHN0YXR1c0NvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1zdGF0dXNcIik7XG4gIGNvbnN0IGluZGljYXRvckNvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGluZGljYXRvckNvbnRhaW5lci5jbGFzc0xpc3QucmVtb3ZlKFwiZC1ub25lXCIpO1xuXG4gIGxldCBzdGF0dXNUZXh0ID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKVxuICBzdGF0dXNUZXh0LmNsYXNzTGlzdCA9IFwiZXhlcmNpc2UtbG9hZGluZy1kZXRhaWxzXCI7XG4gIHN0YXR1c1RleHQgPSBzdGF0dXNDb250YWluZXIuYXBwZW5kQ2hpbGQoc3RhdHVzVGV4dCk7XG4gIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgSW5pdGlhbGlzZWA7XG5cbiAgLy8gSG9pc3QgaW5kaWNhdG9yIG91dCBmcm9tIGZpbmFsIHNsaWRlIHdoZW4gcnVubmluZyB1bmRlciByZXZlYWxcbiAgY29uc3QgcmV2ZWFsU3RhdHVzID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgLmV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpZiAocmV2ZWFsU3RhdHVzKSB7XG4gICAgcmV2ZWFsU3RhdHVzLnJlbW92ZSgpO1xuICAgIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsID4gLnNsaWRlc1wiKS5hcHBlbmRDaGlsZChyZXZlYWxTdGF0dXMpO1xuICB9XG5cbiAgLy8gTWFrZSBhbnkgcmV2ZWFsIHNsaWRlcyB3aXRoIGxpdmUgY2VsbHMgc2Nyb2xsYWJsZVxuICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKFwiLnJldmVhbCAuZXhlcmNpc2UtY2VsbFwiKS5mb3JFYWNoKChlbCkgPT4ge1xuICAgIGVsLmNsb3Nlc3QoJ3NlY3Rpb24uc2xpZGUnKS5jbGFzc0xpc3QuYWRkKFwic2Nyb2xsYWJsZVwiKTtcbiAgfSlcblxuICAvLyB3ZWJSIHN1cHBsZW1lbnRhbCBkYXRhIGFuZCBvcHRpb25zXG4gIGNvbnN0IGRhdGFDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItZGF0YVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGRhdGEgPSBKU09OLnBhcnNlKGI2NERlY29kZShkYXRhQ29udGVudCkpO1xuXG4gIC8vIEdyYWIgbGlzdCBvZiByZXNvdXJjZXMgdG8gYmUgZG93bmxvYWRlZFxuICBjb25zdCBmaWxlc0NvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwidmZzLWZpbGVcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBmaWxlcyA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGZpbGVzQ29udGVudCkpO1xuXG4gIC8vIFVzZSBQb3N0TWVzc2FnZSBjaGFubmVsIGZvciBhc3luYyBjb21tdW5pY2F0aW9uXG4gIC8vIFdlIGRvIG5vdCBleHBlY3QgdG8gdGFrZSBuZXN0ZWQgcHJvbXB0IGlucHV0IGluIFF1YXJ0byBMaXZlIGNlbGxzXG4gIGRhdGEub3B0aW9ucy5jaGFubmVsVHlwZSA9IENoYW5uZWxUeXBlLlBvc3RNZXNzYWdlO1xuXG4gIC8vIEluaXRpYWxpc2Ugd2ViUiBhbmQgc2V0dXAgZm9yIFIgY29kZSBldmFsdWF0aW9uXG4gIGxldCB3ZWJSUHJvbWlzZSA9IChhc3luYyAod2ViUikgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgd2ViUmA7XG4gICAgYXdhaXQgd2ViUi5pbml0KCk7XG5cbiAgICAvLyBJbnN0YWxsIHByb3ZpZGVkIGxpc3Qgb2YgcGFja2FnZXNcbiAgICAvLyBFbnN1cmUgd2ViUiBkZWZhdWx0IHJlcG8gaXMgaW5jbHVkZWRcbiAgICBkYXRhLnBhY2thZ2VzLnJlcG9zLnB1c2goXCJodHRwczovL3JlcG8uci13YXNtLm9yZ1wiKVxuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIHdlYlIuZXZhbFJWb2lkKGBcbiAgICAgICAgd2Vicjo6aW5zdGFsbChwa2csIHJlcG9zID0gcmVwb3MpXG4gICAgICAgIGxpYnJhcnkocGtnLCBjaGFyYWN0ZXIub25seSA9IFRSVUUpXG4gICAgICBgLCB7IGVudjoge1xuICAgICAgICBwa2c6IHBrZyxcbiAgICAgICAgcmVwb3M6IGRhdGEucGFja2FnZXMucmVwb3MsXG4gICAgICB9fSk7XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCB3ZWJSLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKCFlLm1lc3NhZ2UuaW5jbHVkZXMoXCJGUyBlcnJvclwiKSkge1xuICAgICAgICAgICAgdGhyb3cgZTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHJldHVybiBhd2FpdCB3ZWJSLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluc3RhbGxpbmcgd2ViUiBzaGltc2A7XG4gICAgYXdhaXQgd2ViUi5ldmFsUlZvaWQoYHdlYnI6OnNoaW1faW5zdGFsbCgpYCk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFdlYlIgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUih3ZWJSLCBkYXRhKTtcblxuICAgIHN0YXR1c1RleHQucmVtb3ZlKCk7XG4gICAgaWYgKHN0YXR1c0NvbnRhaW5lci5jaGlsZHJlbi5sZW5ndGggPT0gMCkge1xuICAgICAgc3RhdHVzQ29udGFpbmVyLnBhcmVudE5vZGUucmVtb3ZlKCk7XG4gICAgfVxuICAgIHJldHVybiB3ZWJSO1xuICB9KShuZXcgV2ViUihkYXRhLm9wdGlvbnMpKTtcblxuICAvLyBLZWVwIHRyYWNrIG9mIGluaXRpYWwgT0pTIGJsb2NrIHJlbmRlclxuICBjb25zdCByZW5kZXJlZE9qcyA9IHt9O1xuXG4gIGNvbnN0IHByb2Nlc3MgPSBhc3luYyAoY29udGV4dCwgaW5wdXRzKSA9PiB7XG4gICAgY29uc3Qgd2ViUiA9IGF3YWl0IHdlYlJQcm9taXNlO1xuICAgIGNvbnN0IGV2YWx1YXRvciA9IG5ldyBXZWJSRXZhbHVhdG9yKHdlYlIsIGNvbnRleHQpXG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHJvY2VzcyxcbiAgICB3ZWJSUHJvbWlzZSxcbiAgICByZW5kZXJlZE9qcyxcbiAgfTtcbn1cbiJ9XX0=
+eyJjb250ZW50cyI6W119
 </script>
 <div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
 <div id="exercise-loading-status" class="d-flex gap-2">
@@ -470,6 +606,8 @@ eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0xIiwiaW5saW5lIjpmYWxzZSwibWV0
 <script type="vfs-file">
 W10=
 </script>
+</section>
+
 
 </main> <!-- /main -->
 <script type="ojs-module-contents">

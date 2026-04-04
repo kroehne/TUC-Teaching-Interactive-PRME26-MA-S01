@@ -1,0 +1,35 @@
+---
+title: "C | Übung 2"
+format: live-html
+engine: knitr  
+status: "Version 0.1"
+lang: de 
+---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+ 
+##  4-Modell-Vergleich 
+
+::: {.callout-important title="Aufgabe"}
+Schätzen Sie 4 Modelle für die HolzingerSwineford-Daten und erstellen Sie eine Vergleichstabelle:
+
+| Modell | lavaan |
+|---|---|
+| (a) 1-Faktor | `g =~ x1 + ... + x9` |
+| (b) 3 Faktoren korreliert | (wie in Folie 5) |
+| (c) 3 Faktoren orthogonal | `cfa(..., orthogonal = TRUE)` |
+| (d) Hierarchisch (g 2. Ordnung) | `g =~ visual + textual + speed` |
+
+1. Fit-Tabelle: χ², df, CFI, RMSEA, AIC
+2. χ²-Differenztest: (a) vs. (b), (c) vs. (b)
+3. Warum haben (b) und (d) den gleichen Fit?
+:::
+
+```{r}
+#| echo: true
+#| eval: false
+sapply(list(f_1f, f_3f, f_orth, f_hier), function(f) {
+  fitMeasures(f, c("chisq","df","cfi","rmsea","aic"))
+}) |> t() |> round(3)
+```
+

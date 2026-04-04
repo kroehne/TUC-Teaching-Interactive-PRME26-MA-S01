@@ -1,0 +1,82 @@
+---
+title: "A | CFA Live"
+format: live-html
+engine: knitr  
+status: "Version 0.1"
+lang: de 
+---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+ 
+## 3-Faktor-CFA 
+ 
+
+
+```{webr}
+#| warning: false
+#| echo: false
+
+webr::install("quadprog",  repos = "https://kroehne.github.io/webr-quadprog-repo")
+
+library(mnormt)
+library(lavaan)                
+
+assignInNamespace("lav_options_checkinterval", function(x, nm, num2int) {
+    if (any(is.na(x))) return(TRUE)
+    if (num2int) x <- as.integer(x)                                                                                              
+    oks <- vapply(x, function(x1) {
+      (x1 > nm$bounds[1] || (x1 == nm$bounds[1] && nm$first.in)) &&                                                              
+      (x1 < nm$bounds[2] || (x1 == nm$bounds[2] && nm$last.in))                                                                  
+    }, TRUE)
+    all(oks)                                                                                                                     
+  }, ns = "lavaan")
+
+model_3f <-  "visual  =~ x1 + x2 + x3
+              textual =~ x4 + x5 + x6
+              speed   =~ x7 + x8 + x9"
+
+fit_3f <- cfa(model_3f, data = HolzingerSwineford1939)
+
+library(lavaanPlot)
+```
+
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: false
+library(lavaan)
+model_3f <-  "visual  =~ x1 + x2 + x3
+              textual =~ x4 + x5 + x6
+              speed   =~ x7 + x8 + x9"
+fit_3f <- cfa(model_3f, data = HolzingerSwineford1939)
+summary(fit_3f)
+```
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: false
+# Standardisierte Lösung
+standardizedSolution(fit_3f)[1:9, 
+            c("lhs","op","rhs","est.std")]
+```
+
+
+
+```{webr}
+#| warning: false
+#| echo: true
+library(lavaanPlot)
+lavaanPlot(model = fit_3f,  
+     node_options = list(shape = "box", fontname = "Helvetica"), 
+     edge_options = list(color = "grey"), 
+     coefs = TRUE, stand = TRUE,covs = TRUE)
+```
+
+```{webr}
+#| warning: false
+#| echo: true
+library(tidySEM)
+graph_sem(fit_3f)
+```

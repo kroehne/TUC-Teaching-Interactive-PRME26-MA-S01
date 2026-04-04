@@ -14,14 +14,69 @@
     "text": "URL: https://kroehne.github.io/TUC-Teaching-Interactive-PRME26-MA-S01"
   },
   {
-    "objectID": "S01_SteyerEid2001BoxFandG_01.html",
-    "href": "S01_SteyerEid2001BoxFandG_01.html",
-    "title": "A | Box F und G",
+    "objectID": "S03_CFA_02.html",
+    "href": "S03_CFA_02.html",
+    "title": "B | Übung 1",
     "section": "",
-    "text": "Anhang F (S. 339-350) und G (S. 351-366) aus:\n\nSteyer, R., & Eid, M. (2001). Messen und Testen (2., korrigierte Aufl). Springer.\n\n\nBox F.1: Das Wichtigste zu Erwartungswerten, Varianzen und Kovarianzen\n\nA. Definitionen\nErwartungswert \\(E(X)\\): Falls \\(X\\) nur die Werte \\(x_1, \\ldots, x_n\\) annimmt:\n\\[E(X) := \\sum_{i=1}^{n} x_i \\cdot P(X = x_i)\\]\nKovarianz \\(Cov(X, Y)\\):\n\\[Cov(X, Y) := E\\bigl[\\bigl(X - E(X)\\bigr) \\cdot \\bigl(Y - E(Y)\\bigr)\\bigr]\\]\nVarianz \\(Var(X)\\):\n\\[Var(X) := Cov(X, X) = E\\bigl[\\bigl(X - E(X)\\bigr)^2\\bigr]\\]\nStandardabweichung (Streuung) \\(Std(X)\\):\n\\[Std(X) := +\\bigl[Var(X)\\bigr]^{1/2}\\]\nKorrelation \\(Kor(X, Y)\\):\n\\[Kor(X, Y) := \\begin{cases} \\dfrac{Cov(X, Y)}{Std(X) \\cdot Std(Y)}, & \\text{falls } Std(X) &gt; 0 \\text{ und } Std(Y) &gt; 0 \\\\ 0, & \\text{sonst.} \\end{cases}\\]\nUnkorreliertheit:\n\\[Cov(X, Y) = Kor(X, Y) = 0\\]\n\n\nB. Rechenregeln für Erwartungswerte, Varianzen und Kovarianzen\nSind \\(X\\) und \\(Y\\) numerische Zufallsvariablen auf \\((\\Omega, \\mathcal{A}, P)\\) mit endlichen Erwartungswerten sowie \\(\\alpha\\) und \\(\\beta \\in \\mathbb{R}\\), dann gelten:\n(i) \\(\\quad E(\\alpha) = \\alpha\\)\n(ii) \\(\\quad E(\\alpha\\, X + \\beta\\, Y) = \\alpha\\, E(X) + \\beta\\, E(Y)\\)\n(iii) \\(\\quad Var(X) = E(X^2) - \\bigl[E(X)\\bigr]^2\\)\n(iv) \\(\\quad Var(X) = 0, \\text{ falls } X = \\alpha\\)\n(v) \\(\\quad Var(\\alpha\\, X) = \\alpha^2\\, Var(X)\\)\n(vi) \\(\\quad Var(\\alpha + X) = Var(X)\\)\n(vii) \\(\\quad Var(\\alpha\\, X + \\beta\\, Y) = \\alpha^2\\, Var(X) + \\beta^2\\, Var(Y) + 2\\,\\alpha\\,\\beta\\, Cov(X, Y)\\)\n(viii) \\(\\quad Cov(X, Y) = E(X \\cdot Y) - E(X) \\cdot E(Y)\\)\n(ix) \\(\\quad Cov(X, Y) = 0, \\text{ falls } X = \\alpha\\)\n(x) \\(\\quad Cov(\\alpha\\, X,\\; \\beta\\, Y) = \\alpha\\,\\beta\\, Cov(X, Y)\\)\n(xi) \\(\\quad Cov(\\alpha + X,\\; \\beta + Y) = Cov(X, Y)\\)\nSind \\(X_1, X_2, Y_1\\) und \\(Y_2\\) numerische Zufallsvariablen auf \\((\\Omega, \\mathcal{A}, P)\\) mit endlichen Erwartungswerten und \\(\\alpha_1, \\alpha_2, \\beta_1, \\beta_2 \\in \\mathbb{R}\\), dann gelten:\n(xii)\n\\[Cov(\\alpha_1 X_1 + \\alpha_2 X_2,\\; \\beta_1 Y_1 + \\beta_2 Y_2) = \\alpha_1 \\beta_1\\, Cov(X_1, Y_1) + \\alpha_1 \\beta_2\\, Cov(X_1, Y_2) + \\alpha_2 \\beta_1\\, Cov(X_2, Y_1) + \\alpha_2 \\beta_2\\, Cov(X_2, Y_2)\\]\n\n\n\nBox G.1: Das Wichtigste zum bedingten Erwartungswert und zur Regression\n\nA. Definitionen\nBedingter Erwartungswert \\(E(Y \\mid X = x)\\): Bei diskretem \\(Y\\) und \\(P(X = x) &gt; 0\\):\n\\[E(Y \\mid X = x) := \\sum_{i=1}^{n} y_i \\cdot P(Y = y_i \\mid X = x)\\]\nRegression (bedingte Erwartung) \\(E(Y \\mid X)\\) bzw. \\(E(Y \\mid X_1, \\ldots, X_m)\\):\n\\(E(Y \\mid X)\\) ist diejenige Zufallsvariable, deren Werte die bedingten Erwartungswerte \\(E(Y \\mid X = x)\\) sind, d.h. sie ist eine Funktion von \\(X\\). Dabei heißt \\(Y\\) der Regressand und \\(X\\) der Regressor, der auch aus mehreren Zufallsvariablen \\(X_1, \\ldots, X_m\\) bestehen kann.\nResiduum \\(\\varepsilon\\):\n\\[\\varepsilon := Y - E(Y \\mid X)\\]\nist die nicht durch die Regression \\(E(Y \\mid X)\\) determinierte Komponente von \\(Y\\).\nDeterminationskoeffizient \\(R^2_{Y|X}\\) und Multiple Korrelation \\(R_{Y|X}\\):\n\\[R^2_{Y|X} := \\begin{cases} \\dfrac{Var\\bigl[E(Y \\mid X)\\bigr]}{Var(Y)}, & \\text{falls } Var(Y) &gt; 0 \\\\ 0, & \\text{andernfalls.} \\end{cases}\\]\n\\(R^2_{Y|X}\\) ist der durch die Regression \\(E(Y \\mid X)\\) determinierte Varianzanteil von \\(Y\\). Er gibt die Stärke der regressiven Abhängigkeit an, ist invariant unter eineindeutigen Abbildungen von \\(X\\) und unter linearen Transformationen von \\(Y\\).\nRegressive Unabhängigkeit:\n\\[E(Y \\mid X) = E(Y)\\]\n\n\nB. Rechenregeln für Regressionen\n(i) \\(\\quad E(\\alpha \\mid X) = \\alpha, \\quad \\alpha \\in \\mathbb{R}\\)\n(ii) \\(\\quad E(\\alpha\\, Y_1 + \\beta\\, Y_2 \\mid X) = \\alpha\\, E(Y_1 \\mid X) + \\beta\\, E(Y_2 \\mid X), \\quad \\alpha, \\beta \\in \\mathbb{R}\\)\n(iii) \\(\\quad E\\bigl[E(Y \\mid X)\\bigr] = E(Y)\\)\n(iv) \\(\\quad E\\bigl[f(X) \\mid X\\bigr] = f(X), \\quad \\text{falls } f(X) \\text{ numerisch ist.}\\)\n(v) \\(\\quad E\\bigl[E(Y \\mid X) \\mid f(X)\\bigr] = E\\bigl[Y \\mid f(X)\\bigr]\\)\n(vi) \\(\\quad E\\bigl[f(X) \\cdot Y \\mid X\\bigr] = f(X) \\cdot E(Y \\mid X), \\quad \\text{falls } f(X) \\text{ numerisch ist.}\\)\n\n\nC. Eigenschaften des Residuums\n(vii) \\(\\quad E(\\varepsilon) = 0\\)\n(viii) \\(\\quad Cov\\bigl[\\varepsilon,\\; E(Y \\mid X)\\bigr] = 0\\)\n(ix) \\(\\quad Var(Y) = Var\\bigl[E(Y \\mid X)\\bigr] + Var(\\varepsilon)\\)\n(x) \\(\\quad E(\\varepsilon \\mid X) = 0\\)\n(xi) \\(\\quad E\\bigl[\\varepsilon \\mid f(X)\\bigr] = 0\\)\n(xii) \\(\\quad Cov\\bigl[\\varepsilon,\\; f(X)\\bigr] = 0, \\quad \\text{falls } f(X) \\text{ numerisch ist.}\\)",
+    "text": "WichtigAufgabe\n\n\n\n\nSpezifizieren Sie ein 1-Faktor-Modell (alle 9 Items auf einen Faktor g)\nSchätzen Sie es mit cfa()\nVergleichen Sie den Fit mit dem 3-Faktor-Modell (Tabelle)\nFühren Sie einen χ²-Differenztest durch: anova(fit_1f, fit_3f)\nDiskutieren Sie: Ist der 3-Faktor-Fit signifikant besser? Wie groß ist die Verbesserung in CFI?\n\n\n\n\n# Hilfestellung:\nmodel_1f &lt;- '\n  g =~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9\n'\nfit_1f &lt;- cfa(model_1f, data = HolzingerSwineford1939)\n\n# Fit vergleichen\nfitMeasures(fit_1f, c(\"chisq\", \"df\", \"cfi\", \"rmsea\", \"srmr\"))\nfitMeasures(fit_3f, c(\"chisq\", \"df\", \"cfi\", \"rmsea\", \"srmr\"))\n\n# Chi-Quadrat-Differenztest\nanova(fit_1f, fit_3f)",
     "crumbs": [
-      "01: Vorbesprechung",
-      "A | Grundlage und Rechenregeln"
+      "03: CFA",
+      "B | Übung 1"
+    ]
+  },
+  {
+    "objectID": "S03_CFA_02.html#faktor-vs.-3-faktor",
+    "href": "S03_CFA_02.html#faktor-vs.-3-faktor",
+    "title": "B | Übung 1",
+    "section": "",
+    "text": "WichtigAufgabe\n\n\n\n\nSpezifizieren Sie ein 1-Faktor-Modell (alle 9 Items auf einen Faktor g)\nSchätzen Sie es mit cfa()\nVergleichen Sie den Fit mit dem 3-Faktor-Modell (Tabelle)\nFühren Sie einen χ²-Differenztest durch: anova(fit_1f, fit_3f)\nDiskutieren Sie: Ist der 3-Faktor-Fit signifikant besser? Wie groß ist die Verbesserung in CFI?\n\n\n\n\n# Hilfestellung:\nmodel_1f &lt;- '\n  g =~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9\n'\nfit_1f &lt;- cfa(model_1f, data = HolzingerSwineford1939)\n\n# Fit vergleichen\nfitMeasures(fit_1f, c(\"chisq\", \"df\", \"cfi\", \"rmsea\", \"srmr\"))\nfitMeasures(fit_3f, c(\"chisq\", \"df\", \"cfi\", \"rmsea\", \"srmr\"))\n\n# Chi-Quadrat-Differenztest\nanova(fit_1f, fit_3f)",
+    "crumbs": [
+      "03: CFA",
+      "B | Übung 1"
+    ]
+  },
+  {
+    "objectID": "S02_PD_02.html#regressionsgleichungen-manifest-und-latent",
+    "href": "S02_PD_02.html#regressionsgleichungen-manifest-und-latent",
+    "title": "B | Übung 2",
+    "section": "Regressionsgleichungen (manifest und latent)",
+    "text": "Regressionsgleichungen (manifest und latent)\n\n\nSPOILER!\n\n\\[\n\\begin{aligned}\nY_1 &= \\lambda_{11}\\eta_1 + \\varepsilon_1 = \\eta_1 + \\varepsilon_1 \\quad (\\lambda_{11}=1)\\\\\nY_2 &= \\lambda_{21}\\eta_1 + \\varepsilon_2\\\\\n\\eta_2 &= \\beta_{21}\\eta_1 + \\zeta_2 = \\eta_1 + \\zeta_2 \\quad (\\beta_{21}=1)\\\\\nY_3 &= \\lambda_{32}\\eta_2 + \\varepsilon_3 = \\eta_2 + \\varepsilon_3 \\quad (\\lambda_{32}=1)\\\\\n     &= \\eta_1 + \\zeta_2 + \\varepsilon_3\\\\\nY_4 &= \\lambda_{42}\\eta_2 + \\varepsilon_4 = \\eta_2 + \\varepsilon_4 \\quad (\\lambda_{42}=1)\\\\\n     &= \\eta_1 + \\zeta_2 + \\varepsilon_4\\\\\n\\eta_3 &= \\beta_{31}\\eta_1 + \\beta_{32}\\eta_2 + \\zeta_3\\\\\n       &= \\beta_{31}\\eta_1 + \\beta_{32}(\\eta_1+\\zeta_2) + \\zeta_3\\\\\n       &= (\\beta_{31}+\\beta_{32})\\eta_1 + \\beta_{32}\\zeta_2 + \\zeta_3\\\\\nY_5 &= \\lambda_{53}\\eta_3 + \\varepsilon_5 = \\eta_3 + \\varepsilon_5 \\quad (\\lambda_{53}=1)\\\\\n     &= (\\beta_{31}+\\beta_{32})\\eta_1 + \\beta_{32}\\zeta_2 + \\zeta_3 + \\varepsilon_5\\\\\nY_6 &= \\lambda_{63}\\eta_3 + \\varepsilon_6\\\\\n    &= \\lambda_{63}\\left[(\\beta_{31}+\\beta_{32})\\eta_1 + \\beta_{32}\\zeta_2 + \\zeta_3\\right]+\\varepsilon_6\\\\\n    &= \\lambda_{63}(\\beta_{31}+\\beta_{32})\\eta_1 + \\lambda_{63}\\beta_{32}\\zeta_2 + \\lambda_{63}\\zeta_3 + \\varepsilon_6\n\\end{aligned}\n\\]",
+    "crumbs": [
+      "02: Grundlagen",
+      "B | Übung 2"
+    ]
+  },
+  {
+    "objectID": "S02_PD_02.html#varianzen",
+    "href": "S02_PD_02.html#varianzen",
+    "title": "B | Übung 2",
+    "section": "Varianzen",
+    "text": "Varianzen\n\n\nSPOILER!\n\n\\[\n\\mathrm{Var}(Y_1)=\\mathrm{Var}(\\eta_1)+\\mathrm{Var}(\\varepsilon_1)\n\\] \\[\n\\mathrm{Var}(Y_2)=\\lambda_{21}^2\\mathrm{Var}(\\eta_1)+\\mathrm{Var}(\\varepsilon_2)\n\\] \\[\n\\mathrm{Var}(Y_3)=\\mathrm{Var}(\\eta_1+\\zeta_2+\\varepsilon_3)=\\mathrm{Var}(\\eta_1)+\\mathrm{Var}(\\zeta_2)+\\mathrm{Var}(\\varepsilon_3)\n\\] \\[\n\\mathrm{Var}(Y_4)=\\mathrm{Var}(\\eta_1+\\zeta_2+\\varepsilon_4)=\\mathrm{Var}(\\eta_1)+\\mathrm{Var}(\\zeta_2)+\\mathrm{Var}(\\varepsilon_4)\n\\] \\[\n\\begin{aligned}\n\\mathrm{Var}(Y_5) &= \\mathrm{Var}\\bigl((\\beta_{31}+\\beta_{32})\\eta_1+\\beta_{32}\\zeta_2+\\zeta_3+\\varepsilon_5\\bigr)\\\\\n&= (\\beta_{31}+\\beta_{32})^2\\mathrm{Var}(\\eta_1)+\\beta_{32}^2\\mathrm{Var}(\\zeta_2)+\\mathrm{Var}(\\zeta_3)+\\mathrm{Var}(\\varepsilon_5)\n\\end{aligned}\n\\] \\[\n\\begin{aligned}\n\\mathrm{Var}(Y_6) &= \\mathrm{Var}\\bigl(\\lambda_{63}(\\beta_{31}+\\beta_{32})\\eta_1+\\lambda_{63}\\beta_{32}\\zeta_2+\\lambda_{63}\\zeta_3+\\varepsilon_6\\bigr)\\\\\n&= \\lambda_{63}^2(\\beta_{31}+\\beta_{32})^2\\mathrm{Var}(\\eta_1)+\\lambda_{63}^2\\beta_{32}^2\\mathrm{Var}(\\zeta_2)+\\lambda_{63}^2\\mathrm{Var}(\\zeta_3)+\\mathrm{Var}(\\varepsilon_6)\n\\end{aligned}\n\\]",
+    "crumbs": [
+      "02: Grundlagen",
+      "B | Übung 2"
+    ]
+  },
+  {
+    "objectID": "S02_PD_02.html#kovarianzen",
+    "href": "S02_PD_02.html#kovarianzen",
+    "title": "B | Übung 2",
+    "section": "Kovarianzen",
+    "text": "Kovarianzen\n\n\nSPOILER!\n\n\nZwischen \\(Y_1\\) und anderen Variablen\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_1,Y_2)&=\\mathrm{Cov}(\\eta_1+\\varepsilon_1,\\;\\lambda_{21}\\eta_1+\\varepsilon_2)=\\lambda_{21}\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_1,Y_3)&=\\mathrm{Cov}(\\eta_1+\\varepsilon_1,\\;\\eta_1+\\zeta_2+\\varepsilon_3)=\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_1,Y_4)&=\\mathrm{Cov}(\\eta_1+\\varepsilon_1,\\;\\eta_1+\\zeta_2+\\varepsilon_4)=\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_1,Y_5)&=\\mathrm{Cov}\\bigl(\\eta_1+\\varepsilon_1,\\;(\\beta_{31}+\\beta_{32})\\eta_1+\\beta_{32}\\zeta_2+\\zeta_3+\\varepsilon_5\\bigr)\\\\\n&=(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_1,Y_6)&=\\mathrm{Cov}\\bigl(\\eta_1+\\varepsilon_1,\\;\\lambda_{63}(\\beta_{31}+\\beta_{32})\\eta_1+\\lambda_{63}\\beta_{32}\\zeta_2+\\lambda_{63}\\zeta_3+\\varepsilon_6\\bigr)\\\\\n&=\\lambda_{63}(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)\n\\end{aligned}\n\\]\n\n\nZwischen \\(Y_2\\) und anderen Variablen\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_2,Y_3)&=\\mathrm{Cov}(\\lambda_{21}\\eta_1+\\varepsilon_2,\\;\\eta_1+\\zeta_2+\\varepsilon_3)=\\lambda_{21}\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_2,Y_4)&=\\lambda_{21}\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_2,Y_5)&=\\lambda_{21}(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_2,Y_6)&=\\lambda_{21}\\lambda_{63}(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)\n\\end{aligned}\n\\]\n\n\nZwischen \\(Y_3\\) und anderen Variablen\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_3,Y_4)&=\\mathrm{Cov}(\\eta_1+\\zeta_2+\\varepsilon_3,\\;\\eta_1+\\zeta_2+\\varepsilon_4)=\\mathrm{Var}(\\eta_1)+\\mathrm{Var}(\\zeta_2)\\\\\n\\mathrm{Cov}(Y_3,Y_5)&=\\mathrm{Cov}\\bigl(\\eta_1+\\zeta_2+\\varepsilon_3,\\;(\\beta_{31}+\\beta_{32})\\eta_1+\\beta_{32}\\zeta_2+\\zeta_3+\\varepsilon_5\\bigr)\\\\\n&=(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)+\\beta_{32}\\mathrm{Var}(\\zeta_2)\\\\\n\\mathrm{Cov}(Y_3,Y_6)&=\\lambda_{63}\\bigl[(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)+\\beta_{32}\\mathrm{Var}(\\zeta_2)\\bigr]\n\\end{aligned}\n\\]\n\n\nZwischen \\(Y_4\\) und anderen Variablen\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_4,Y_5)&=(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)+\\beta_{32}\\mathrm{Var}(\\zeta_2)\\\\\n\\mathrm{Cov}(Y_4,Y_6)&=\\lambda_{63}\\bigl[(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)+\\beta_{32}\\mathrm{Var}(\\zeta_2)\\bigr]\n\\end{aligned}\n\\]\n\n\nZwischen \\(Y_5\\) und \\(Y_6\\)\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_5,Y_6)&=\\lambda_{63}\\bigl[(\\beta_{31}+\\beta_{32})^2\\mathrm{Var}(\\eta_1)+\\beta_{32}^2\\mathrm{Var}(\\zeta_2)+\\mathrm{Var}(\\zeta_3)\\bigr]\n\\end{aligned}\n\\]",
+    "crumbs": [
+      "02: Grundlagen",
+      "B | Übung 2"
+    ]
+  },
+  {
+    "objectID": "S02_PD_02.html#kompakte-matrizenform",
+    "href": "S02_PD_02.html#kompakte-matrizenform",
+    "title": "B | Übung 2",
+    "section": "Kompakte Matrizenform",
+    "text": "Kompakte Matrizenform\n\n\nSPOILER!\n\n\nMessmodell\n\\[\n\\underset{(6 \\times 1)}{\\mathbf{y}} = \\underset{(6 \\times 3)}{\\boldsymbol{\\Lambda}} \\;\\underset{(3 \\times 1)}{\\boldsymbol{\\eta}} + \\underset{(6 \\times 1)}{\\boldsymbol{\\varepsilon}}\n\\]\nmit\n\\[\n\\begin{pmatrix} Y_1 \\\\ Y_2 \\\\ Y_3 \\\\ Y_4 \\\\ Y_5 \\\\ Y_6 \\end{pmatrix}\n=\n\\begin{pmatrix} 1 & 0 & 0 \\\\ \\lambda_{21} & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1 \\\\ 0 & 0 & \\lambda_{63} \\end{pmatrix}\n\\begin{pmatrix} \\eta_1 \\\\ \\eta_2 \\\\ \\eta_3 \\end{pmatrix}\n+\n\\begin{pmatrix} \\varepsilon_1 \\\\ \\varepsilon_2 \\\\ \\varepsilon_3 \\\\ \\varepsilon_4 \\\\ \\varepsilon_5 \\\\ \\varepsilon_6 \\end{pmatrix}\n\\]\n\n\nStrukturmodell\n\\[\n\\underset{(3 \\times 1)}{\\boldsymbol{\\eta}} = \\underset{(3 \\times 3)}{\\mathbf{B}}\\;\\underset{(3 \\times 1)}{\\boldsymbol{\\eta}} + \\underset{(3 \\times 1)}{\\boldsymbol{\\zeta}}\n\\]\nmit\n\\[\n\\begin{pmatrix} \\eta_1 \\\\ \\eta_2 \\\\ \\eta_3 \\end{pmatrix}\n=\n\\begin{pmatrix} 0 & 0 & 0 \\\\ 1 & 0 & 0 \\\\ \\beta_{31} & \\beta_{32} & 0 \\end{pmatrix}\n\\begin{pmatrix} \\eta_1 \\\\ \\eta_2 \\\\ \\eta_3 \\end{pmatrix}\n+\n\\begin{pmatrix} \\zeta_1 \\\\ \\zeta_2 \\\\ \\zeta_3 \\end{pmatrix}\n\\]\nKommentar: \\(\\eta_1\\) ist exogen (erste Zeile von \\(\\mathbf{B}\\) ist null), d.h. \\(\\zeta_1 \\equiv \\eta_1\\). Die Fixierung \\(\\beta_{21}=1\\) ist in \\(\\mathbf{B}\\) bereits eingesetzt.\n\n\nParametermatrizen\nKovarianzmatrix der Störterme (latent):\n\\[\n\\boldsymbol{\\Psi} = \\mathrm{Cov}(\\boldsymbol{\\zeta}) =\n\\begin{pmatrix} \\psi_{11} & 0 & 0 \\\\ 0 & \\psi_{22} & 0 \\\\ 0 & 0 & \\psi_{33} \\end{pmatrix}\n\\]\nmit \\(\\psi_{11} = \\mathrm{Var}(\\eta_1)\\), \\(\\psi_{22} = \\mathrm{Var}(\\zeta_2)\\) und \\(\\psi_{33} = \\mathrm{Var}(\\zeta_3)\\).\nKovarianzmatrix der Messresiduen:\n\\[\n\\boldsymbol{\\Theta} = \\mathrm{Cov}(\\boldsymbol{\\varepsilon}) =\n\\mathrm{diag}(\\theta_{1}, \\theta_{2}, \\theta_{3}, \\theta_{4}, \\theta_{5}, \\theta_{6})\n\\]\n\n\nModellimplizierte Kovarianzmatrix\n\\[\n\\boldsymbol{\\Sigma} = \\boldsymbol{\\Lambda}\\,(\\mathbf{I}-\\mathbf{B})^{-1}\\,\\boldsymbol{\\Psi}\\,\\left[(\\mathbf{I}-\\mathbf{B})^{-1}\\right]^\\top \\boldsymbol{\\Lambda}^\\top + \\boldsymbol{\\Theta}\n\\]\nHerleitung in einzelnen Schritten:\n\\[\n(\\mathbf{I}-\\mathbf{B})\n=\n\\begin{pmatrix} 1 & 0 & 0 \\\\ -1 & 1 & 0 \\\\ -\\beta_{31} & -\\beta_{32} & 1 \\end{pmatrix}\n\\quad\\Longrightarrow\\quad\n(\\mathbf{I}-\\mathbf{B})^{-1}\n=\n\\begin{pmatrix} 1 & 0 & 0 \\\\ 1 & 1 & 0 \\\\ \\beta_{31}+\\beta_{32} & \\beta_{32} & 1 \\end{pmatrix}\n\\]\nKovarianzmatrix der latenten Variablen:\n\\[\n(\\mathbf{I}-\\mathbf{B})^{-1}\\,\\boldsymbol{\\Psi}\\,\\left[(\\mathbf{I}-\\mathbf{B})^{-1}\\right]^\\top\n=\n\\begin{pmatrix}\n\\psi_{11}  &  \\psi_{11}  &  (\\beta_{31}+\\beta_{32})\\psi_{11} \\\\\n\\psi_{11}  &  \\psi_{11}+\\psi_{22}  &  (\\beta_{31}+\\beta_{32})\\psi_{11}+\\beta_{32}\\psi_{22} \\\\\n(\\beta_{31}+\\beta_{32})\\psi_{11}  &  (\\beta_{31}+\\beta_{32})\\psi_{11}+\\beta_{32}\\psi_{22}  &  (\\beta_{31}+\\beta_{32})^2\\psi_{11}+\\beta_{32}^2\\psi_{22}+\\psi_{33}\n\\end{pmatrix}\n\\]\nUnd schließlich \\(\\boldsymbol{\\Sigma} = \\boldsymbol{\\Lambda}\\,\\mathrm{Cov}(\\boldsymbol{\\eta})\\,\\boldsymbol{\\Lambda}^\\top + \\boldsymbol{\\Theta}\\) als \\(6 \\times 6\\)-Matrix.\nKommentar:\n\nDas Modell hat 13 freie Parameter (\\(\\lambda_{21}\\), \\(\\lambda_{63}\\), \\(\\beta_{31}\\), \\(\\beta_{32}\\), \\(\\psi_{11}\\), \\(\\psi_{22}\\), \\(\\psi_{33}\\), \\(\\theta_1\\), \\(\\theta_2\\), \\(\\theta_3\\), \\(\\theta_4\\), \\(\\theta_5\\), \\(\\theta_6\\)) bei 21 nicht-redundanten Elementen in \\(\\boldsymbol{\\Sigma}\\) (6 Varianzen + 15 Kovarianzen), d.h. \\(df = 21 - 13 = 8\\) Freiheitsgrade.",
+    "crumbs": [
+      "02: Grundlagen",
+      "B | Übung 2"
     ]
   },
   {
@@ -33,6 +88,127 @@
     "crumbs": [
       "01: Vorbesprechung",
       "B | MatheQuest: SEM"
+    ]
+  },
+  {
+    "objectID": "S01_SteyerEid2001BoxFandG_01.html",
+    "href": "S01_SteyerEid2001BoxFandG_01.html",
+    "title": "A | Box F und G",
+    "section": "",
+    "text": "Anhang F (S. 339-350) und G (S. 351-366) aus:\n\nSteyer, R., & Eid, M. (2001). Messen und Testen (2., korrigierte Aufl). Springer.\n\n\nBox F.1: Das Wichtigste zu Erwartungswerten, Varianzen und Kovarianzen\n\nA. Definitionen\nErwartungswert \\(E(X)\\): Falls \\(X\\) nur die Werte \\(x_1, \\ldots, x_n\\) annimmt:\n\\[E(X) := \\sum_{i=1}^{n} x_i \\cdot P(X = x_i)\\]\nKovarianz \\(Cov(X, Y)\\):\n\\[Cov(X, Y) := E\\bigl[\\bigl(X - E(X)\\bigr) \\cdot \\bigl(Y - E(Y)\\bigr)\\bigr]\\]\nVarianz \\(Var(X)\\):\n\\[Var(X) := Cov(X, X) = E\\bigl[\\bigl(X - E(X)\\bigr)^2\\bigr]\\]\nStandardabweichung (Streuung) \\(Std(X)\\):\n\\[Std(X) := +\\bigl[Var(X)\\bigr]^{1/2}\\]\nKorrelation \\(Kor(X, Y)\\):\n\\[Kor(X, Y) := \\begin{cases} \\dfrac{Cov(X, Y)}{Std(X) \\cdot Std(Y)}, & \\text{falls } Std(X) &gt; 0 \\text{ und } Std(Y) &gt; 0 \\\\ 0, & \\text{sonst.} \\end{cases}\\]\nUnkorreliertheit:\n\\[Cov(X, Y) = Kor(X, Y) = 0\\]\n\n\nB. Rechenregeln für Erwartungswerte, Varianzen und Kovarianzen\nSind \\(X\\) und \\(Y\\) numerische Zufallsvariablen auf \\((\\Omega, \\mathcal{A}, P)\\) mit endlichen Erwartungswerten sowie \\(\\alpha\\) und \\(\\beta \\in \\mathbb{R}\\), dann gelten:\n(i) \\(\\quad E(\\alpha) = \\alpha\\)\n(ii) \\(\\quad E(\\alpha\\, X + \\beta\\, Y) = \\alpha\\, E(X) + \\beta\\, E(Y)\\)\n(iii) \\(\\quad Var(X) = E(X^2) - \\bigl[E(X)\\bigr]^2\\)\n(iv) \\(\\quad Var(X) = 0, \\text{ falls } X = \\alpha\\)\n(v) \\(\\quad Var(\\alpha\\, X) = \\alpha^2\\, Var(X)\\)\n(vi) \\(\\quad Var(\\alpha + X) = Var(X)\\)\n(vii) \\(\\quad Var(\\alpha\\, X + \\beta\\, Y) = \\alpha^2\\, Var(X) + \\beta^2\\, Var(Y) + 2\\,\\alpha\\,\\beta\\, Cov(X, Y)\\)\n(viii) \\(\\quad Cov(X, Y) = E(X \\cdot Y) - E(X) \\cdot E(Y)\\)\n(ix) \\(\\quad Cov(X, Y) = 0, \\text{ falls } X = \\alpha\\)\n(x) \\(\\quad Cov(\\alpha\\, X,\\; \\beta\\, Y) = \\alpha\\,\\beta\\, Cov(X, Y)\\)\n(xi) \\(\\quad Cov(\\alpha + X,\\; \\beta + Y) = Cov(X, Y)\\)\nSind \\(X_1, X_2, Y_1\\) und \\(Y_2\\) numerische Zufallsvariablen auf \\((\\Omega, \\mathcal{A}, P)\\) mit endlichen Erwartungswerten und \\(\\alpha_1, \\alpha_2, \\beta_1, \\beta_2 \\in \\mathbb{R}\\), dann gelten:\n(xii)\n\\[Cov(\\alpha_1 X_1 + \\alpha_2 X_2,\\; \\beta_1 Y_1 + \\beta_2 Y_2) = \\alpha_1 \\beta_1\\, Cov(X_1, Y_1) + \\alpha_1 \\beta_2\\, Cov(X_1, Y_2) + \\alpha_2 \\beta_1\\, Cov(X_2, Y_1) + \\alpha_2 \\beta_2\\, Cov(X_2, Y_2)\\]\n\n\n\nBox G.1: Das Wichtigste zum bedingten Erwartungswert und zur Regression\n\nA. Definitionen\nBedingter Erwartungswert \\(E(Y \\mid X = x)\\): Bei diskretem \\(Y\\) und \\(P(X = x) &gt; 0\\):\n\\[E(Y \\mid X = x) := \\sum_{i=1}^{n} y_i \\cdot P(Y = y_i \\mid X = x)\\]\nRegression (bedingte Erwartung) \\(E(Y \\mid X)\\) bzw. \\(E(Y \\mid X_1, \\ldots, X_m)\\):\n\\(E(Y \\mid X)\\) ist diejenige Zufallsvariable, deren Werte die bedingten Erwartungswerte \\(E(Y \\mid X = x)\\) sind, d.h. sie ist eine Funktion von \\(X\\). Dabei heißt \\(Y\\) der Regressand und \\(X\\) der Regressor, der auch aus mehreren Zufallsvariablen \\(X_1, \\ldots, X_m\\) bestehen kann.\nResiduum \\(\\varepsilon\\):\n\\[\\varepsilon := Y - E(Y \\mid X)\\]\nist die nicht durch die Regression \\(E(Y \\mid X)\\) determinierte Komponente von \\(Y\\).\nDeterminationskoeffizient \\(R^2_{Y|X}\\) und Multiple Korrelation \\(R_{Y|X}\\):\n\\[R^2_{Y|X} := \\begin{cases} \\dfrac{Var\\bigl[E(Y \\mid X)\\bigr]}{Var(Y)}, & \\text{falls } Var(Y) &gt; 0 \\\\ 0, & \\text{andernfalls.} \\end{cases}\\]\n\\(R^2_{Y|X}\\) ist der durch die Regression \\(E(Y \\mid X)\\) determinierte Varianzanteil von \\(Y\\). Er gibt die Stärke der regressiven Abhängigkeit an, ist invariant unter eineindeutigen Abbildungen von \\(X\\) und unter linearen Transformationen von \\(Y\\).\nRegressive Unabhängigkeit:\n\\[E(Y \\mid X) = E(Y)\\]\n\n\nB. Rechenregeln für Regressionen\n(i) \\(\\quad E(\\alpha \\mid X) = \\alpha, \\quad \\alpha \\in \\mathbb{R}\\)\n(ii) \\(\\quad E(\\alpha\\, Y_1 + \\beta\\, Y_2 \\mid X) = \\alpha\\, E(Y_1 \\mid X) + \\beta\\, E(Y_2 \\mid X), \\quad \\alpha, \\beta \\in \\mathbb{R}\\)\n(iii) \\(\\quad E\\bigl[E(Y \\mid X)\\bigr] = E(Y)\\)\n(iv) \\(\\quad E\\bigl[f(X) \\mid X\\bigr] = f(X), \\quad \\text{falls } f(X) \\text{ numerisch ist.}\\)\n(v) \\(\\quad E\\bigl[E(Y \\mid X) \\mid f(X)\\bigr] = E\\bigl[Y \\mid f(X)\\bigr]\\)\n(vi) \\(\\quad E\\bigl[f(X) \\cdot Y \\mid X\\bigr] = f(X) \\cdot E(Y \\mid X), \\quad \\text{falls } f(X) \\text{ numerisch ist.}\\)\n\n\nC. Eigenschaften des Residuums\n(vii) \\(\\quad E(\\varepsilon) = 0\\)\n(viii) \\(\\quad Cov\\bigl[\\varepsilon,\\; E(Y \\mid X)\\bigr] = 0\\)\n(ix) \\(\\quad Var(Y) = Var\\bigl[E(Y \\mid X)\\bigr] + Var(\\varepsilon)\\)\n(x) \\(\\quad E(\\varepsilon \\mid X) = 0\\)\n(xi) \\(\\quad E\\bigl[\\varepsilon \\mid f(X)\\bigr] = 0\\)\n(xii) \\(\\quad Cov\\bigl[\\varepsilon,\\; f(X)\\bigr] = 0, \\quad \\text{falls } f(X) \\text{ numerisch ist.}\\)",
+    "crumbs": [
+      "01: Vorbesprechung",
+      "A | Grundlage und Rechenregeln"
+    ]
+  },
+  {
+    "objectID": "S02_PD_01.html#regressionsgleichungen-manifest",
+    "href": "S02_PD_01.html#regressionsgleichungen-manifest",
+    "title": "A | Übung 1",
+    "section": "Regressionsgleichungen (manifest)",
+    "text": "Regressionsgleichungen (manifest)\n\n\nSPOILER!\n\n\\[\n\\begin{aligned}\nY_1 &= \\lambda_{11}\\eta_1 + \\varepsilon_1 = \\eta_1 + \\varepsilon_1 \\\\\nY_2 &= \\lambda_{21}\\eta_1 + \\varepsilon_2 \\\\\nY_3 &= \\lambda_{32}\\eta_2 + \\varepsilon_3 = \\eta_2 + \\varepsilon_3\n\\end{aligned}\n\\]\nKommentar: Da \\(\\lambda_{11}=1\\) und \\(\\lambda_{32}=1\\), sind \\(Y_1\\) und \\(Y_3\\) direkt als Summe von latenter Variable und Residuum darstellbar.",
+    "crumbs": [
+      "02: Grundlagen",
+      "A | Übung 1"
+    ]
+  },
+  {
+    "objectID": "S02_PD_01.html#regressionsgleichungen-latent",
+    "href": "S02_PD_01.html#regressionsgleichungen-latent",
+    "title": "A | Übung 1",
+    "section": "Regressionsgleichungen (latent)",
+    "text": "Regressionsgleichungen (latent)\n\n\nSPOILER!\n\n\\[\n\\eta_2 = \\beta_{21}\\eta_1 + \\zeta_2\n\\]\nEinsetzen in \\(Y_3\\):\n\\[\nY_3 = \\eta_2 + \\varepsilon_3 = \\beta_{21}\\eta_1 + \\zeta_2 + \\varepsilon_3\n\\]",
+    "crumbs": [
+      "02: Grundlagen",
+      "A | Übung 1"
+    ]
+  },
+  {
+    "objectID": "S02_PD_01.html#varianzen",
+    "href": "S02_PD_01.html#varianzen",
+    "title": "A | Übung 1",
+    "section": "Varianzen",
+    "text": "Varianzen\n\n\nSPOILER!\n\n\\[\n\\mathrm{Var}(Y_1) = \\mathrm{Var}(\\eta_1 + \\varepsilon_1) = \\mathrm{Var}(\\eta_1) + \\mathrm{Var}(\\varepsilon_1) + 2\\mathrm{Cov}(\\eta_1,\\varepsilon_1)\n\\]\nKommentar: Nach Annahme \\(\\mathrm{Cov}(\\eta_1,\\varepsilon_1)=0\\) (Residuum unkorreliert mit latenter Variablen) ergibt sich:\n\\[\n\\mathrm{Var}(Y_1) = \\mathrm{Var}(\\eta_1) + \\mathrm{Var}(\\varepsilon_1)\n\\]\n\n\\[\n\\mathrm{Var}(Y_2) = \\mathrm{Var}(\\lambda_{21}\\eta_1 + \\varepsilon_2) = \\lambda_{21}^2 \\,\\mathrm{Var}(\\eta_1) + \\mathrm{Var}(\\varepsilon_2)\n\\]\n\n\\[\n\\mathrm{Var}(Y_3) = \\mathrm{Var}(\\beta_{21}\\eta_1 + \\zeta_2 + \\varepsilon_3)\n\\]\nDa \\(\\mathrm{Var}(\\varepsilon_3)=0\\), bleibt:\n\\[\n\\mathrm{Var}(Y_3) = \\mathrm{Var}(\\beta_{21}\\eta_1 + \\zeta_2) = \\beta_{21}^2\\mathrm{Var}(\\eta_1) + \\mathrm{Var}(\\zeta_2)\n\\]",
+    "crumbs": [
+      "02: Grundlagen",
+      "A | Übung 1"
+    ]
+  },
+  {
+    "objectID": "S02_PD_01.html#kovarianzen",
+    "href": "S02_PD_01.html#kovarianzen",
+    "title": "A | Übung 1",
+    "section": "Kovarianzen",
+    "text": "Kovarianzen\n\n\nSPOILER!\n\n\\(\\mathrm{Cov}(Y_1,Y_2)\\)\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_1,Y_2) &= \\mathrm{Cov}(\\eta_1 + \\varepsilon_1,\\; \\lambda_{21}\\eta_1 + \\varepsilon_2) \\\\\n&= \\lambda_{21}\\mathrm{Cov}(\\eta_1,\\eta_1) + \\mathrm{Cov}(\\eta_1,\\varepsilon_2) + \\lambda_{21}\\mathrm{Cov}(\\varepsilon_1,\\eta_1) + \\mathrm{Cov}(\\varepsilon_1,\\varepsilon_2)\n\\end{aligned}\n\\]\nNach den Annahmen (\\(\\mathrm{Cov}(\\varepsilon_i,\\varepsilon_j)=0\\) für \\(i\\neq j\\), Residuen unkorreliert mit latenten Variablen):\n\\[\n\\mathrm{Cov}(Y_1,Y_2) = \\lambda_{21}\\mathrm{Var}(\\eta_1)\n\\]\n\n\\(mathrm{Cov}(Y_1,Y_3)\\)\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_1,Y_3) &= \\mathrm{Cov}(\\eta_1+\\varepsilon_1,\\; \\beta_{21}\\eta_1+\\zeta_2+\\varepsilon_3) \\\\\n&= \\beta_{21}\\mathrm{Cov}(\\eta_1,\\eta_1)+\\mathrm{Cov}(\\eta_1,\\zeta_2)+\\mathrm{Cov}(\\eta_1,\\varepsilon_3)+\\beta_{21}\\mathrm{Cov}(\\varepsilon_1,\\eta_1)+\\mathrm{Cov}(\\varepsilon_1,\\zeta_2)+\\mathrm{Cov}(\\varepsilon_1,\\varepsilon_3)\n\\end{aligned}\n\\]\nNach den Annahmen bleiben nur:\n\\[\n\\mathrm{Cov}(Y_1,Y_3) = \\beta_{21}\\mathrm{Var}(\\eta_1)\n\\]\n\n\\(\\mathrm{Cov}(Y_2,Y_3)\\)\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_2,Y_3) &= \\mathrm{Cov}(\\lambda_{21}\\eta_1+\\varepsilon_2,\\; \\beta_{21}\\eta_1+\\zeta_2+\\varepsilon_3) \\\\\n&= \\lambda_{21}\\beta_{21}\\mathrm{Cov}(\\eta_1,\\eta_1)+\\lambda_{21}\\mathrm{Cov}(\\eta_1,\\zeta_2)+\\lambda_{21}\\mathrm{Cov}(\\eta_1,\\varepsilon_3)+\\beta_{21}\\mathrm{Cov}(\\varepsilon_2,\\eta_1)+\\mathrm{Cov}(\\varepsilon_2,\\zeta_2)+\\mathrm{Cov}(\\varepsilon_2,\\varepsilon_3)\n\\end{aligned}\n\\]\nNach den Annahmen:\n\\[\n\\mathrm{Cov}(Y_2,Y_3) = \\lambda_{21}\\beta_{21}\\mathrm{Var}(\\eta_1)\n\\]",
+    "crumbs": [
+      "02: Grundlagen",
+      "A | Übung 1"
+    ]
+  },
+  {
+    "objectID": "S02_PD_01.html#kompakte-matrizenform",
+    "href": "S02_PD_01.html#kompakte-matrizenform",
+    "title": "A | Übung 1",
+    "section": "Kompakte Matrizenform",
+    "text": "Kompakte Matrizenform\n\n\nSPOILER!\n\n\nMessmodell\n\\[\n\\underset{(3 \\times 1)}{\\mathbf{y}} = \\underset{(3 \\times 2)}{\\boldsymbol{\\Lambda}} \\;\\underset{(2 \\times 1)}{\\boldsymbol{\\eta}} + \\underset{(3 \\times 1)}{\\boldsymbol{\\varepsilon}}\n\\]\nmit\n\\[\n\\begin{pmatrix} Y_1 \\\\ Y_2 \\\\ Y_3 \\end{pmatrix}\n=\n\\begin{pmatrix} 1 & 0 \\\\ \\lambda_{21} & 0 \\\\ 0 & 1 \\end{pmatrix}\n\\begin{pmatrix} \\eta_1 \\\\ \\eta_2 \\end{pmatrix}\n+\n\\begin{pmatrix} \\varepsilon_1 \\\\ \\varepsilon_2 \\\\ \\varepsilon_3 \\end{pmatrix}\n\\]\n\n\nStrukturmodell\n\\[\n\\underset{(2 \\times 1)}{\\boldsymbol{\\eta}} = \\underset{(2 \\times 2)}{\\mathbf{B}}\\;\\underset{(2 \\times 1)}{\\boldsymbol{\\eta}} + \\underset{(2 \\times 1)}{\\boldsymbol{\\zeta}}\n\\]\nmit\n\\[\n\\begin{pmatrix} \\eta_1 \\\\ \\eta_2 \\end{pmatrix}\n=\n\\begin{pmatrix} 0 & 0 \\\\ \\beta_{21} & 0 \\end{pmatrix}\n\\begin{pmatrix} \\eta_1 \\\\ \\eta_2 \\end{pmatrix}\n+\n\\begin{pmatrix} \\zeta_1 \\\\ \\zeta_2 \\end{pmatrix}\n\\]\nKommentar: \\(\\eta_1\\) ist exogen (erste Zeile von \\(\\mathbf{B}\\) ist null), d.h. \\(\\zeta_1 \\equiv \\eta_1\\).\n\n\nParametermatrizen\nKovarianzmatrix der latenten Residuen:\n\\[\n\\boldsymbol{\\Psi} = \\mathrm{Cov}(\\boldsymbol{\\zeta}) =\n\\begin{pmatrix} \\psi_{11} & 0 \\\\ 0 & \\psi_{22} \\end{pmatrix}\n\\]\nmit \\(\\psi_{11} = \\mathrm{Var}(\\eta_1)\\) und \\(\\psi_{22} = \\mathrm{Var}(\\zeta_2)\\).\nKovarianzmatrix der Messresiduen:\n\\[\n\\boldsymbol{\\Theta} = \\mathrm{Cov}(\\boldsymbol{\\varepsilon}) =\n\\begin{pmatrix} \\theta_{1} & 0 & 0 \\\\ 0 & \\theta_{2} & 0 \\\\ 0 & 0 & 0 \\end{pmatrix}\n\\]\nmit der Restriktion \\(\\mathrm{Var}(\\varepsilon_3) = 0\\).\n\n\nModellimplizierte Kovarianzmatrix\n\\[\n\\boldsymbol{\\Sigma} = \\boldsymbol{\\Lambda}\\,(\\mathbf{I}-\\mathbf{B})^{-1}\\,\\boldsymbol{\\Psi}\\,\\left[(\\mathbf{I}-\\mathbf{B})^{-1}\\right]^\\top \\boldsymbol{\\Lambda}^\\top + \\boldsymbol{\\Theta}\n\\]\nHerleitung in einzelnen Schritten:\n\\[\n(\\mathbf{I}-\\mathbf{B})^{-1}\n=\n\\begin{pmatrix} 1 & 0 \\\\ -\\beta_{21} & 1 \\end{pmatrix}^{-1}\n=\n\\begin{pmatrix} 1 & 0 \\\\ \\beta_{21} & 1 \\end{pmatrix}\n\\]\nDaraus ergibt sich die Kovarianzmatrix der latenten Variablen:\n\\[\n(\\mathbf{I}-\\mathbf{B})^{-1}\\,\\boldsymbol{\\Psi}\\,\\left[(\\mathbf{I}-\\mathbf{B})^{-1}\\right]^\\top\n=\n\\begin{pmatrix} \\psi_{11} & \\beta_{21}\\psi_{11} \\\\ \\beta_{21}\\psi_{11} & \\beta_{21}^2\\psi_{11}+\\psi_{22} \\end{pmatrix}\n\\]\nUnd schließlich:\n\\[\n\\boldsymbol{\\Sigma}\n=\n\\begin{pmatrix}\n\\psi_{11} + \\theta_{1}  &  \\lambda_{21}\\psi_{11}  &  \\beta_{21}\\psi_{11} \\\\\n\\lambda_{21}\\psi_{11}  &  \\lambda_{21}^2\\psi_{11} + \\theta_{2}  &  \\lambda_{21}\\beta_{21}\\psi_{11} \\\\\n\\beta_{21}\\psi_{11}  &  \\lambda_{21}\\beta_{21}\\psi_{11}  &  \\beta_{21}^2\\psi_{11} + \\psi_{22}\n\\end{pmatrix}\n\\]\nKommentar:\n\nDas Modell hat 6 freie Parameter (\\(\\lambda_{21}\\), \\(\\beta_{21}\\), \\(\\psi_{11}\\), \\(\\psi_{22}\\), \\(\\theta_1\\), \\(\\theta_2\\)) bei 6 nicht-redundanten Elementen in \\(\\boldsymbol{\\Sigma}\\) (3 Varianzen + 3 Kovarianzen), d.h. das Modell hat \\(df = 6 - 6 = 0\\) Freiheitsgrade und ist gerade identifiziert (just identified).",
+    "crumbs": [
+      "02: Grundlagen",
+      "A | Übung 1"
+    ]
+  },
+  {
+    "objectID": "S03_CFA_01.html",
+    "href": "S03_CFA_01.html",
+    "title": "A | CFA Live",
+    "section": "",
+    "text": "model_3f &lt;- '\n  visual  =~ x1 + x2 + x3\n  textual =~ x4 + x5 + x6\n  speed   =~ x7 + x8 + x9\n'\n\nfit_3f &lt;- cfa(model_3f, data = HolzingerSwineford1939)",
+    "crumbs": [
+      "03: CFA",
+      "A | Live"
+    ]
+  },
+  {
+    "objectID": "S03_CFA_01.html#faktor-vs.-3-faktor",
+    "href": "S03_CFA_01.html#faktor-vs.-3-faktor",
+    "title": "A | CFA 1",
+    "section": "",
+    "text": "WichtigAufgabe\n\n\n\n\nSpezifizieren Sie ein 1-Faktor-Modell (alle 9 Items auf einen Faktor g)\nSchätzen Sie es mit cfa()\nVergleichen Sie den Fit mit dem 3-Faktor-Modell (Tabelle)\nFühren Sie einen χ²-Differenztest durch: anova(fit_1f, fit_3f)\nDiskutieren Sie: Ist der 3-Faktor-Fit signifikant besser? Wie groß ist die Verbesserung in CFI?\n\n\n\n\n# Ihr Code hier:\nmodel_1f &lt;- '\n  g =~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9\n'\nfit_1f &lt;- cfa(model_1f, data = HolzingerSwineford1939)\n\n# Fit vergleichen\nfitMeasures(fit_1f, c(\"chisq\", \"df\", \"cfi\", \"rmsea\", \"srmr\"))\nfitMeasures(fit_3f, c(\"chisq\", \"df\", \"cfi\", \"rmsea\", \"srmr\"))\n\n# Chi-Quadrat-Differenztest\nanova(fit_1f, fit_3f)",
+    "crumbs": [
+      "03: CFA",
+      "A | Live"
+    ]
+  },
+  {
+    "objectID": "S03_CFA_03.html",
+    "href": "S03_CFA_03.html",
+    "title": "C | Übung 2",
+    "section": "",
+    "text": "WichtigAufgabe\n\n\n\nSchätzen Sie 4 Modelle für die HolzingerSwineford-Daten und erstellen Sie eine Vergleichstabelle:\n\n\n\nModell\nlavaan\n\n\n\n\n(a) 1-Faktor\ng =~ x1 + ... + x9\n\n\n(b) 3 Faktoren korreliert\n(wie in Folie 5)\n\n\n(c) 3 Faktoren orthogonal\ncfa(..., orthogonal = TRUE)\n\n\n(d) Hierarchisch (g 2. Ordnung)\ng =~ visual + textual + speed\n\n\n\n\nFit-Tabelle: χ², df, CFI, RMSEA, AIC\nχ²-Differenztest: (a) vs. (b), (c) vs. (b)\nWarum haben (b) und (d) den gleichen Fit?\n\n\n\n\nsapply(list(f_1f, f_3f, f_orth, f_hier), function(f) {\n  fitMeasures(f, c(\"chisq\",\"df\",\"cfi\",\"rmsea\",\"aic\"))\n}) |&gt; t() |&gt; round(3)",
+    "crumbs": [
+      "03: CFA",
+      "C | Übung 2"
+    ]
+  },
+  {
+    "objectID": "S03_CFA_03.html#modell-vergleich",
+    "href": "S03_CFA_03.html#modell-vergleich",
+    "title": "C | Übung 2",
+    "section": "",
+    "text": "WichtigAufgabe\n\n\n\nSchätzen Sie 4 Modelle für die HolzingerSwineford-Daten und erstellen Sie eine Vergleichstabelle:\n\n\n\nModell\nlavaan\n\n\n\n\n(a) 1-Faktor\ng =~ x1 + ... + x9\n\n\n(b) 3 Faktoren korreliert\n(wie in Folie 5)\n\n\n(c) 3 Faktoren orthogonal\ncfa(..., orthogonal = TRUE)\n\n\n(d) Hierarchisch (g 2. Ordnung)\ng =~ visual + textual + speed\n\n\n\n\nFit-Tabelle: χ², df, CFI, RMSEA, AIC\nχ²-Differenztest: (a) vs. (b), (c) vs. (b)\nWarum haben (b) und (d) den gleichen Fit?\n\n\n\n\nsapply(list(f_1f, f_3f, f_orth, f_hier), function(f) {\n  fitMeasures(f, c(\"chisq\",\"df\",\"cfi\",\"rmsea\",\"aic\"))\n}) |&gt; t() |&gt; round(3)",
+    "crumbs": [
+      "03: CFA",
+      "C | Übung 2"
+    ]
+  },
+  {
+    "objectID": "S03_CFA_01.html#faktor-cfa",
+    "href": "S03_CFA_01.html#faktor-cfa",
+    "title": "A | CFA Live",
+    "section": "",
+    "text": "model_3f &lt;- '\n  visual  =~ x1 + x2 + x3\n  textual =~ x4 + x5 + x6\n  speed   =~ x7 + x8 + x9\n'\n\nfit_3f &lt;- cfa(model_3f, data = HolzingerSwineford1939)",
+    "crumbs": [
+      "03: CFA",
+      "A | Live"
     ]
   }
 ]
