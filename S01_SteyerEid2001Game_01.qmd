@@ -1,5 +1,5 @@
 ---
-title: "B | Regeln Spielerisch"
+title: "B | MatheQuest: Grundlagen der Strukturgleichungsmodellierung"
 format: live-html
 engine: knitr
 week: 8

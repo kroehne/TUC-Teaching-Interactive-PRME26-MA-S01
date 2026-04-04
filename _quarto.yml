@@ -35,9 +35,9 @@ website:
       - section: "01: Vorbesprechung"
         contents:
           - href: S01_SteyerEid2001BoxFandG_01.qmd
-            text: A | Rechenregeln
+            text: "A | Grundlage und Rechenregeln"
           - href: S01_SteyerEid2001Game_01.qmd
-            text: B | Regeln Spielerisch
+            text: "B | MatheQuest: SEM"
 
 
 theme:

@@ -596,7 +596,7 @@ function generateW2Exercises() {
       "Es gibt keinen festen Zusammenhang"
     ],
     correct: 0,
-    hint: "Die Standardabweichung hat den Vorteil, dass sie in derselben Einheit wie der Messwert angegeben wird (z.\\,B. IQ-Punkte), während die Varianz in quadrierten Einheiten vorliegt.",
+    hint: "Die Standardabweichung hat den Vorteil, dass sie in derselben Einheit wie der Messwert angegeben wird (z.\u00A0B. IQ-Punkte), während die Varianz in quadrierten Einheiten vorliegt.",
     rule: "DEF_Std",
     level: 1,
   });
@@ -839,7 +839,7 @@ function generateW3Exercises() {
   // Umpolung
   exercises.push({
     type: "fillblank",
-    question: "Ein Item wird umgepolt: \\(X^{*} = 6 - X\\) (d.\\,h. \\(a = -1\\), \\(b = 6\\)). Wenn \\(\\text{Kor}(X,Y) = 0{,}40\\), wie groß ist \\(\\text{Kor}(X^{*}, Y)\\)?",
+    question: "Ein Item wird umgepolt: \\(X^{*} = 6 - X\\) (d.\u00A0h. \\(a = -1\\), \\(b = 6\\)). Wenn \\(\\text{Kor}(X,Y) = 0{,}40\\), wie groß ist \\(\\text{Kor}(X^{*}, Y)\\)?",
     prompt: "\\(\\text{Kor}(X^{*}, Y) = \\text{sign}(-1) \\cdot 0{,}40 = ?\\)",
     answer: "-0.40",
     hint: "\\(\\text{Kor}(aX + b, Y) = \\text{sign}(a) \\cdot \\text{Kor}(X,Y)\\). Da \\(a = -1\\) (negativ), kehrt sich das Vorzeichen um: \\(-0{,}40\\). Deshalb muss man bei umgepolten Items in der Testkonstruktion aufpassen!",
@@ -1406,7 +1406,7 @@ function generateW7Exercises() {
     question: "Was repräsentiert \\(\\varepsilon_{i}\\) in \\(Y_{i} = \\tau_{i} + \\varepsilon_{i}\\)?",
     options: [
       "Den unsystematischen Messfehler (Tagesform, Raten, Ablenkung)",
-      "Den systematischen Fehler (z.\\,B. kulturelle Verzerrung)",
+      "Den systematischen Fehler (z.\u00A0B. kulturelle Verzerrung)",
       "Die wahre Ausprägung des Merkmals",
       "Die Reliabilität des Tests"
     ],
@@ -1591,7 +1591,7 @@ function generateW7Exercises() {
       "Der Test hat maximale Fehlervarianz"
     ],
     correct: 0,
-    hint: "Bei Rel = 1 gilt Var(ε) = 0, d.\\,h. jede beobachtete Variation ist ‚echt'. Das ist ein theoretisches Ideal – in der Praxis gilt Rel < 1.",
+    hint: "Bei Rel = 1 gilt Var(ε) = 0, d.\u00A0h. jede beobachtete Variation ist ‚echt'. Das ist ein theoretisches Ideal – in der Praxis gilt Rel < 1.",
     rule: "K5",
     level: 2,
   });
@@ -1606,7 +1606,7 @@ function generateW7Exercises() {
       "Der Test misst genau das, was er messen soll"
     ],
     correct: 0,
-    hint: "Bei Rel = 0 ist Var(τ) = 0, d.\\,h. alle beobachteten Unterschiede sind reines Messrauschen. Der Test enthält keine Information über individuelle Unterschiede.",
+    hint: "Bei Rel = 0 ist Var(τ) = 0, d.\u00A0h. alle beobachteten Unterschiede sind reines Messrauschen. Der Test enthält keine Information über individuelle Unterschiede.",
     rule: "K5",
     level: 2,
   });
@@ -1804,7 +1804,7 @@ function generateW8Exercises() {
     type: "multiplechoice",
     question: "Das τ-äquivalente Modell entsteht aus dem ess. τ-äquivalenten durch welche zusätzliche Einschränkung?",
     options: [
-      "Alle Intercepts sind gleich: \\(\\alpha_{i} = \\alpha\\) für alle \\(i\\), d.\\,h. \\(\\tau_{1} = \\tau_{2} = \\ldots = \\alpha + \\eta\\)",
+      "Alle Intercepts sind gleich: \\(\\alpha_{i} = \\alpha\\) für alle \\(i\\), d.\u00A0h. \\(\\tau_{1} = \\tau_{2} = \\ldots = \\alpha + \\eta\\)",
       "Alle Fehlervarianzen sind gleich",
       "Alle Ladungen sind verschieden",
       "Der Erwartungswert von \\(\\eta\\) ist null"
@@ -2351,12 +2351,12 @@ const WORLD_INTROS = {
       content: "Der Determinationskoeffizient \\(R^{2}\\) gibt an, welcher Anteil der Varianz von \\(Y\\) durch \\(X\\) erklärt wird:",
       formula: "\\[R^{2} := \\frac{\\text{Var}[E(Y|X)]}{\\text{Var}(Y)} = 1 - \\frac{\\text{Var}(\\varepsilon)}{\\text{Var}(Y)}\\]",
       content2: "Bei einfacher linearer Regression gilt: \\(R^{2} = \\text{Kor}(X,Y)^{2}\\).",
-      example: "\\(R^{2} = 0{,}36\\) bedeutet: 36\\,% der Varianz im Kriterium werden durch den Prädiktor erklärt. Bei einfacher Regression entspricht das \\(r = 0{,}60\\).",
+      example: "\\(R^{2} = 0{,}36\\) bedeutet: 36\u00A0% der Varianz im Kriterium werden durch den Prädiktor erklärt. Bei einfacher Regression entspricht das \\(r = 0{,}60\\).",
       key: "DEF_R2" },
   ],
   5: [
     { title: "Die bedingte Erwartung als allgemeine Regression",
-      content: "In der Schreibweise von Steyer & Eid ist die Regression \\(E(Y|X)\\) nicht auf lineare Zusammenhänge beschränkt – sie gibt für jeden Wert von \\(X\\) den besten (mittleren) Vorhersagewert an. Die lineare Parametrisierung \\(\\alpha + \\beta X\\) ist nur ein Spezialfall.",
+      content: "In der Wahrscheinlichkeitstheorie ist die Regression von \\(Y\\) auf \\(X\\) definiert als der bedingte Erwartungswert \\(E(Y|X)\\) – eine Funktion von \\(X\\), die für jeden Wert von \\(X\\) den besten Vorhersagewert im Sinne des mittleren quadratischen Fehlers angibt. Diese Definition schließt nichtlineare Zusammenhänge ein. Die lineare Parametrisierung \\(E(Y|X) = \\alpha + \\beta X\\) ist ein wichtiger Spezialfall, der nur dann gilt, wenn der Zusammenhang tatsächlich linear ist.",
       key: "Intuition" },
     { title: "Rechenregeln für E(Y|X)",
       content: "Der bedingte Erwartungswert hat ähnliche Regeln wie der unbedingte: Eine Konstante bleibt Konstante: \\(E(\\alpha|X) = \\alpha\\). Linearität: \\(E(\\alpha Y_{1} + \\beta Y_{2}|X) = \\alpha\\,E(Y_{1}|X) + \\beta\\,E(Y_{2}|X)\\). Die Turmregel: \\(E[E(Y|X)] = E(Y)\\) – der Erwartungswert der bedingten Erwartung ist der unbedingte Erwartungswert.",
@@ -2400,13 +2400,13 @@ const WORLD_INTROS = {
       content: "Aus K1–K3 folgt die Varianzzerlegung und die Definition der Reliabilität:",
       formula: "\\[\\text{Var}(Y_{i}) = \\text{Var}(\\tau_{i}) + \\text{Var}(\\varepsilon_{i}) \\qquad \\text{Rel}(Y_{i}) = \\frac{\\text{Var}(\\tau_{i})}{\\text{Var}(Y_{i})}\\]",
       content2: "Je näher Rel an 1, desto genauer misst der Test.",
-      example: "Ein Test mit \\(\\text{Rel} = 0{,}90\\) bedeutet: 90\\,% der Testscore-Varianz sind ‚echte' Unterschiede, nur 10\\,% sind Messfehler.",
+      example: "Ein Test mit \\(\\text{Rel} = 0{,}90\\) bedeutet: 90\u00A0% der Testscore-Varianz sind ‚echte' Unterschiede, nur 10\u00A0% sind Messfehler.",
       key: "K4, K5" },
     { title: "Der Standardmessfehler",
       content: "Aus der Reliabilität kann man den Standardmessfehler berechnen:",
       formula: "\\[\\text{SE} = \\text{SD}(Y) \\cdot \\sqrt{1 - \\text{Rel}(Y)}\\]",
       content2: "Der SE gibt an, wie stark Messwerte um den wahren Wert streuen, und wird für Konfidenzintervalle um individuelle Testergebnisse verwendet.",
-      example: "IQ-Test: \\(\\text{SD} = 15\\), \\(\\text{Rel} = 0{,}90\\) → \\(\\text{SE} = 15 \\cdot \\sqrt{0{,}10} \\approx 4{,}7\\). Ein IQ von 112 hat ein 95\\,%-Konfidenzintervall von ca. [103, 121].",
+      example: "IQ-Test: \\(\\text{SD} = 15\\), \\(\\text{Rel} = 0{,}90\\) → \\(\\text{SE} = 15 \\cdot \\sqrt{0{,}10} \\approx 4{,}7\\). Ein IQ von 112 hat ein 95\u00A0%-Konfidenzintervall von ca. [103, 121].",
       key: "K5a" },
   ],
   8: [
@@ -2432,7 +2432,7 @@ const WORLD_INTROS = {
   ],
   9: [
     { title: "Von Gleichungen zu Pfaddiagrammen",
-      content: "Strukturgleichungsmodelle (SEM) werden oft als Pfaddiagramme dargestellt. Ein gerichteter Pfeil (→) von \\(X\\) nach \\(Y\\) bedeutet: \\(Y\\) wird durch \\(X\\) beeinflusst, d.\\,h. \\(X\\) taucht als Prädiktor in der Gleichung für \\(Y\\) auf. Ein Doppelpfeil (↔) bedeutet Kovarianz.",
+      content: "Strukturgleichungsmodelle (SEM) werden oft als Pfaddiagramme dargestellt. Ein gerichteter Pfeil (→) von \\(X\\) nach \\(Y\\) bedeutet: \\(Y\\) wird durch \\(X\\) beeinflusst, d.\u00A0h. \\(X\\) taucht als Prädiktor in der Gleichung für \\(Y\\) auf. Ein Doppelpfeil (↔) bedeutet Kovarianz.",
       key: "Intuition" },
     { title: "Pfaddiagramm lesen",
       content: "Latente Variablen werden als Kreise/Ovale dargestellt, beobachtete als Rechtecke. Fehlervariablen (\\(\\varepsilon\\)) zeigen auf die beobachteten Variablen. Aus dem Pfaddiagramm liest man direkt die Modellgleichungen ab: \\(Y_{i} = \\alpha_{i} + \\beta_{i}\\,\\eta + \\varepsilon_{i}\\).",
