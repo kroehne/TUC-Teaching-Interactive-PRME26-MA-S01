@@ -1,0 +1,570 @@
+---
+title: "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1"
+subtitle: "Basierend auf Rosseel & Vidal (2025): *A tutorial for understanding SEM using R: Where do all the numbers come from?*"
+format: live-html
+engine: knitr
+status: "Version 0.2"
+lang: de
+---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+
+
+```{webr}
+#| warning: false
+#| echo: false
+
+webr::install("quadprog",  repos = "https://kroehne.github.io/webr-quadprog-repo")
+
+suppressPackageStartupMessages(library(parallel))
+suppressPackageStartupMessages(library(lavaan))
+suppressPackageStartupMessages(library(lavaanPlot))
+
+assignInNamespace("lav_options_checkinterval", function(x, nm, num2int) {
+    if (any(is.na(x))) return(TRUE)
+    if (num2int) x <- as.integer(x)
+    oks <- vapply(x, function(x1) {
+      (x1 > nm$bounds[1] || (x1 == nm$bounds[1] && nm$first.in)) &&
+      (x1 < nm$bounds[2] || (x1 == nm$bounds[2] && nm$last.in))
+    }, TRUE)
+    all(oks)
+  }, ns = "lavaan")
+
+# ------------------------------------------------------------------
+# Vorberechnung aller Objekte, damit jeder Code-Block
+# unabhaengig und in beliebiger Reihenfolge ausfuehrbar ist
+# ------------------------------------------------------------------
+
+# --- Daten ---
+Y <- as.matrix(HolzingerSwineford1939[, 7:15])
+P <- ncol(Y)
+N <- nrow(Y)
+S <- cov(Y) * (N - 1) / N
+
+# --- lavaan-Modell ---
+HS.model <- '
+  visual  =~ x1 + x2 + x3
+  textual =~ x4 + x5 + x6
+  speed   =~ x7 + x8 + x9
+'
+fit <- cfa(HS.model, data = HolzingerSwineford1939)
+
+# --- x2Sigma-Funktion ---
+x2Sigma <- function(x) {
+  LAMBDA <- matrix(0, 9, 3)
+  LAMBDA[1,1] <- 1;
+  LAMBDA[2,1] <- x[1]; LAMBDA[3,1] <- x[2]
+  LAMBDA[4,2] <- 1;
+  LAMBDA[5,2] <- x[3]; LAMBDA[6,2] <- x[4]
+  LAMBDA[7,3] <- 1;
+  LAMBDA[8,3] <- x[5]; LAMBDA[9,3] <- x[6]
+  PSI <- matrix(0, 3, 3)
+  PSI[1,1] <- x[7]
+  PSI[2,1] <- PSI[1,2] <- x[8]
+  PSI[3,1] <- PSI[1,3] <- x[9]
+  PSI[2,2] <- x[10]
+  PSI[3,2] <- PSI[2,3] <- x[11]
+  PSI[3,3] <- x[12]
+  THETA <- matrix(0, 9, 9)
+  diag(THETA) <- x[13:21]
+  LAMBDA %*% PSI %*% t(LAMBDA) + THETA
+}
+
+# --- Startwerte ---
+start.lambda <- c(1, 1, 1, 1, 1, 1)
+start.vech.psi <- c(1, 0, 0, 1, 0, 1)
+start.theta <- rep(0.5, 9)
+start.x <- c(start.lambda, start.vech.psi, start.theta)
+
+# --- ML-Diskrepanzfunktion ---
+f.ml <- function(x) {
+  Sigma <- x2Sigma(x)
+  eigvals <- eigen(Sigma, symmetric = TRUE, only.values = TRUE)$values
+  if (any(eigvals < 0.0001)) return(1000000)
+  Sigma.inv <- solve(Sigma)
+  sum(diag((S %*% Sigma.inv))) + log(det(Sigma)) - log(det(S)) - P
+}
+
+# --- Optimierung ---
+out <- nlminb(start = start.x, objective = f.ml)
+est.final <- round(out$par, 3)
+
+# --- Standardfehler ---
+Sigma.final <- x2Sigma(est.final)
+Sigma.inv <- solve(Sigma.final)
+I.un <- 1/2 * (Sigma.inv %x% Sigma.inv)
+Delta <- numDeriv::jacobian(x2Sigma, x = est.final)
+I.exp <- t(Delta) %*% I.un %*% Delta
+vcov <- 1/N * solve(I.exp)
+se.final <- sqrt(diag(vcov))
+
+# --- Fit-Indizes ---
+nvar <- 9
+chi2.stat <- f.ml(est.final) * N
+chi2.df <- nvar * (nvar + 1) / 2 - length(est.final)
+chi2.pval <- pchisq(chi2.stat, df = chi2.df, lower.tail = FALSE)
+
+f.indep <- function(x) {
+  if (any(x < 0)) return(100000)
+  Sigma <- diag(x)
+  Sigma.inv <- solve(Sigma)
+  sum(diag((S %*% Sigma.inv))) + log(det(Sigma)) - log(det(S)) - P
+}
+out.indep <- nlminb(start = diag(S), objective = f.indep)
+est.indep <- out.indep$par
+fval.indep <- out.indep$objective
+chi2.stat.indep <- fval.indep * N
+chi2.df.indep <- nvar * (nvar + 1) / 2 - length(est.indep)
+
+t1 <- max(c(chi2.stat - chi2.df, 0))
+t2 <- max(c(chi2.stat - chi2.df, chi2.stat.indep - chi2.df.indep, 0))
+CFI <- 1 - t1 / t2
+
+fval <- f.ml(est.final)
+MSEA <- max(0, fval/chi2.df - 1/N)
+RMSEA <- sqrt(MSEA)
+
+scale.cov <- tcrossprod(1/sqrt(diag(S)))
+S.scaled <- S * scale.cov
+Sigma.scaled <- Sigma.final * scale.cov
+residuals <- (S.scaled - Sigma.scaled)[lower.tri(S, diag = TRUE)]
+SRMR <- sqrt(mean(residuals^2))
+```
+
+## Einleitung
+
+Dieses interaktive Tutorial folgt dem Paper von Rosseel & Vidal (2025) und zeigt Schritt für Schritt, wie die Zahlen in der SEM-Ausgabe tatsächlich berechnet werden. Der Fokus liegt auf Klarheit und Nachvollziehbarkeit -- nicht auf Effizienz. Alle Code-Blöcke können direkt im Browser ausgeführt werden.
+
+**Referenz:** Rosseel, Y., & Vidal, M. (2025). A tutorial for understanding SEM using R: Where do all the numbers come from? *British Journal of Mathematical and Statistical Psychology*. [doi:10.1111/bmsp.70003](https://doi.org/10.1111/bmsp.70003)
+
+
+## Das statistische Modell hinter SEM
+
+Ein Strukturgleichungsmodell (SEM) besteht aus zwei Teilen:
+
+**Messmodell** -- verknüpft latente Variablen mit beobachteten Indikatoren:
+
+$$\mathbf{y} = \boldsymbol{\Lambda} \, \boldsymbol{\eta} + \boldsymbol{\epsilon}$$
+
+wobei $\boldsymbol{\Lambda}$ die Faktorladungsmatrix ist, $\boldsymbol{\eta}$ der Vektor der latenten Variablen, und $\boldsymbol{\epsilon}$ die Residuen (Messfehler).
+
+**Strukturmodell** -- beschreibt die Beziehungen zwischen den latenten Variablen:
+
+$$\boldsymbol{\eta} = \mathbf{B} \, \boldsymbol{\eta} + \boldsymbol{\zeta}$$
+
+Aus diesen beiden Gleichungen ergibt sich die **modellimplizierte Varianz-Kovarianz-Matrix**:
+
+$$\boldsymbol{\Sigma} = \boldsymbol{\Lambda} \, \text{Var}(\boldsymbol{\eta}) \, \boldsymbol{\Lambda}' + \boldsymbol{\Theta}$$
+
+wobei $\text{Var}(\boldsymbol{\eta}) = (\mathbf{I} - \mathbf{B})^{-1} \boldsymbol{\Psi} \, (\mathbf{I} - \mathbf{B}')^{-1}$.
+
+Jedes SEM wird also durch vier Modellmatrizen bestimmt:
+
+- $\boldsymbol{\Lambda}$ -- Faktorladungen (Messmodell)
+- $\boldsymbol{\Theta}$ -- Residualvarianzen der Indikatoren (Messmodell)
+- $\mathbf{B}$ -- Regressionskoeffizienten zwischen latenten Variablen (Strukturmodell)
+- $\boldsymbol{\Psi}$ -- Varianzen/Kovarianzen der latenten Variablen bzw. Störterme (Strukturmodell)
+
+
+## Punktschätzung: Ein CFA-Modell Schritt für Schritt
+
+### Daten vorbereiten
+
+Wir verwenden den klassischen Holzinger-Swineford-Datensatz (1939) mit 9 Testvariablen (x1--x9) und 301 Beobachtungen. Zuerst laden wir die Daten und berechnen die Stichproben-Varianz-Kovarianz-Matrix **S**:
+
+```{webr}
+# Daten laden und Datenmatrix Y extrahieren
+Y <- as.matrix(HolzingerSwineford1939[, 7:15])
+P <- ncol(Y)  # Anzahl Variablen
+N <- nrow(Y)  # Anzahl Beobachtungen
+
+# ML-Version der Varianz-Kovarianz-Matrix
+# (Division durch N statt N-1, wie bei ML-Schaetzung ueblich)
+S <- cov(Y) * (N - 1) / N
+round(S, 3)
+```
+
+### Das CFA-Modell in Matrixform
+
+Unser Drei-Faktor-Modell postuliert drei latente Variablen: *visual* (gemessen durch x1--x3), *textual* (x4--x6) und *speed* (x7--x9). Zuerst schauen wir uns das Modell als **Pfaddiagramm** an:
+
+```{webr}
+#| warning: false
+# Modell definieren und schaetzen (fuer das Pfaddiagramm)
+HS.model <- '
+  visual  =~ x1 + x2 + x3
+  textual =~ x4 + x5 + x6
+  speed   =~ x7 + x8 + x9
+'
+fit <- cfa(HS.model, data = HolzingerSwineford1939)
+
+# Pfaddiagramm zeichnen
+lavaanPlot(model = fit,
+           coefs = TRUE, stand = TRUE, covs = TRUE)
+```
+
+Um dieses Modell mathematisch zu beschreiben, brauchen wir drei Modellmatrizen. Die **$\boldsymbol{\Lambda}$-Matrix** (Faktorladungen) hat 9 Zeilen (beobachtete Variablen) und 3 Spalten (latente Variablen). Die Einsen fixieren die Metrik der latenten Variablen (*unit loading identification*), die Sterne ($*$) markieren die frei zu schaetzenden Parameter:
+
+$$
+\boldsymbol{\Lambda} = \begin{bmatrix}
+1 & 0 & 0 \\
+* & 0 & 0 \\
+* & 0 & 0 \\
+0 & 1 & 0 \\
+0 & * & 0 \\
+0 & * & 0 \\
+0 & 0 & 1 \\
+0 & 0 & * \\
+0 & 0 & *
+\end{bmatrix}
+\quad
+\begin{matrix}
+\text{x1} \\ \text{x2} \\ \text{x3} \\ \text{x4} \\ \text{x5} \\ \text{x6} \\ \text{x7} \\ \text{x8} \\ \text{x9}
+\end{matrix}
+$$
+
+Die Nullen zeigen, dass jeder Indikator nur auf einen Faktor laedt (einfache Struktur). Die $\boldsymbol{\Lambda}$-Matrix enthaelt also **6 freie Parameter**.
+
+Die **$\boldsymbol{\Psi}$-Matrix** (Faktorvarianzen und -kovarianzen) ist eine symmetrische $3 \times 3$-Matrix. Bei einem CFA-Modell (ohne Strukturteil) gilt $\text{Var}(\boldsymbol{\eta}) = \boldsymbol{\Psi}$:
+
+$$
+\boldsymbol{\Psi} = \begin{bmatrix}
+* & & \\
+* & * & \\
+* & * & *
+\end{bmatrix}
+\quad
+\begin{matrix}
+\text{visual} \\ \text{textual} \\ \text{speed}
+\end{matrix}
+$$
+
+Diese Matrix enthaelt **6 freie Parameter**: 3 Faktorvarianzen (Diagonale) und 3 Faktorkovarianzen (unter der Diagonale). Die Matrix ist symmetrisch, d.h. die Werte ueber der Diagonale sind identisch mit denen darunter.
+
+Die **$\boldsymbol{\Theta}$-Matrix** (Residualvarianzen) ist eine $9 \times 9$-Diagonalmatrix. In unserem Modell gibt es keine Residualkovarianzen, daher sind alle Nicht-Diagonal-Elemente null:
+
+$$
+\boldsymbol{\Theta} = \begin{bmatrix}
+* & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & * & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & * & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & * & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & * & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & * & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & * & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & * & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & *
+\end{bmatrix}
+$$
+
+Diese Matrix enthaelt **9 freie Parameter** (die Residualvarianzen der 9 Indikatoren).
+
+Insgesamt hat das CFA-Modell also $6 + 6 + 9 =$ **21 freie Parameter**. Die modellimplizierte Kovarianzmatrix berechnet sich fuer ein CFA-Modell vereinfacht als:
+
+$$\boldsymbol{\Sigma}(\boldsymbol{\theta}) = \boldsymbol{\Lambda} \, \boldsymbol{\Psi} \, \boldsymbol{\Lambda}' + \boldsymbol{\Theta}$$
+
+
+### Die Funktion x2Sigma: Vom Parametervektor zur Modellmatrix
+
+Der Kern von SEM: Wir packen alle 21 freien Parameter in einen einzigen Vektor $\boldsymbol{\theta}$ und schreiben eine Funktion, die daraus die modellimplizierte $\boldsymbol{\Sigma}(\boldsymbol{\theta})$ berechnet:
+
+```{webr}
+x2Sigma <- function(x) {
+  # Lambda-Matrix (9 x 3): Faktorladungen
+  LAMBDA <- matrix(0, 9, 3)
+  LAMBDA[1,1] <- 1        # fixiert fuer Identifikation
+  LAMBDA[2,1] <- x[1]     # frei
+  LAMBDA[3,1] <- x[2]     # frei
+  LAMBDA[4,2] <- 1        # fixiert
+  LAMBDA[5,2] <- x[3]     # frei
+  LAMBDA[6,2] <- x[4]     # frei
+  LAMBDA[7,3] <- 1        # fixiert
+  LAMBDA[8,3] <- x[5]     # frei
+  LAMBDA[9,3] <- x[6]     # frei
+
+  # Psi-Matrix (3 x 3): Faktorvarianzen und -kovarianzen
+  PSI <- matrix(0, 3, 3)
+  PSI[1,1] <- x[7]                       # Var(visual)
+  PSI[2,1] <- PSI[1,2] <- x[8]           # Cov(visual, textual)
+  PSI[3,1] <- PSI[1,3] <- x[9]           # Cov(visual, speed)
+  PSI[2,2] <- x[10]                      # Var(textual)
+  PSI[3,2] <- PSI[2,3] <- x[11]          # Cov(textual, speed)
+  PSI[3,3] <- x[12]                      # Var(speed)
+
+  # Theta-Matrix (9 x 9): Residualvarianzen (diagonal)
+  THETA <- matrix(0, 9, 9)
+  diag(THETA) <- x[13:21]
+
+  # Modellimplizierte Sigma-Matrix: Lambda * Psi * Lambda' + Theta
+  Sigma <- LAMBDA %*% PSI %*% t(LAMBDA) + THETA
+  Sigma
+}
+
+str(x2Sigma)
+```
+
+### Startwerte ausprobieren
+
+Bevor wir optimieren, setzen wir einfache Startwerte ein und schauen, wie weit die resultierende $\boldsymbol{\Sigma}$ von der beobachteten **S** entfernt ist:
+
+```{webr}
+# Einfache Startwerte
+start.lambda <- c(1, 1,  1, 1,  1, 1)   # Faktorladungen
+start.vech.psi <- c(1, 0, 0,  1, 0,  1) # Psi-Elemente
+start.theta <- rep(0.5, 9)               # Residualvarianzen
+
+# Alle freien Parameter in einem Vektor
+start.x <- c(start.lambda, start.vech.psi, start.theta)
+
+# Modellimplizierte Sigma mit diesen Startwerten
+round(x2Sigma(start.x), 1)
+```
+
+Diese Matrix sieht noch sehr anders aus als **S** -- unsere Startwerte sind eben nur grobe Schaetzungen.
+
+
+### Die ML-Diskrepanzfunktion
+
+Um zu messen, wie weit $\boldsymbol{\Sigma}(\boldsymbol{\theta})$ von **S** entfernt ist, verwenden wir die **Maximum-Likelihood-Diskrepanzfunktion**:
+
+$$F_{\text{ML}}(\boldsymbol{\theta}) = \text{tr}\!\left[\mathbf{S}\boldsymbol{\Sigma}(\boldsymbol{\theta})^{-1}\right] + \ln|\boldsymbol{\Sigma}(\boldsymbol{\theta})| - \ln|\mathbf{S}| - P$$
+
+Diese Funktion ist genau dann null, wenn $\boldsymbol{\Sigma} = \mathbf{S}$. Andernfalls ist sie positiv -- je groesser, desto schlechter die Passung.
+
+```{webr}
+f.ml <- function(x) {
+  Sigma <- x2Sigma(x)
+  # Pruefen ob Sigma positiv definit ist
+  eigvals <- eigen(Sigma, symmetric = TRUE, only.values = TRUE)$values
+  if (any(eigvals < 0.0001)) {
+    return(1000000)  # Strafe bei nicht-positiv-definiter Matrix
+  }
+  Sigma.inv <- solve(Sigma)
+  F.ml <- sum(diag((S %*% Sigma.inv))) + log(det(Sigma)) - log(det(S)) - P
+  F.ml
+}
+
+# Diskrepanzfunktion mit Startwerten auswerten
+f.ml(start.x)
+```
+
+### Optimierung: Die besten Parameterwerte finden
+
+Jetzt verwenden wir `nlminb()` (denselben Optimierer, den auch lavaan nutzt), um die Parameterwerte zu finden, die $F_{\text{ML}}$ minimieren:
+
+```{webr}
+out <- nlminb(start = start.x, objective = f.ml)
+
+# Konvergenz pruefen (0 = erfolgreich)
+cat("Konvergenz:", out$convergence, "\n")
+cat("Iterationen:", out$iterations, "\n")
+cat("Minimaler F_ML-Wert:", round(out$objective, 6), "\n")
+
+# Geschaetzte Parameter (gerundet)
+est.final <- round(out$par, 3)
+est.final
+```
+
+### Vergleich mit lavaan
+
+Stimmen unsere Ergebnisse? Pruefen wir mit lavaan:
+
+```{webr}
+#| warning: false
+# fit wurde bereits oben definiert (Pfaddiagramm-Block)
+est <- unname(coef(fit))
+
+# Unsere Schaetzungen vs. lavaan (gleiche Reihenfolge)
+round(est[c(1:6, 16, 19, 20, 17, 21, 18, 7:15)], 3)
+```
+
+Die Werte stimmen (bis auf minimale Abweichungen, da lavaan bessere Startwerte und analytische Gradienten verwendet).
+
+
+## Standardfehler
+
+Standardfehler geben an, wie stark die Parameterschaetzungen schwanken wuerden, wenn wir das Modell an verschiedenen Stichproben derselben Population schaetzen wuerden.
+
+### Analytische Standardfehler
+
+Fuer die analytischen Standardfehler benoetigen wir zwei Zutaten:
+
+**1. Die Informationsmatrix des saturierten Modells:**
+
+$$\mathcal{J}_{\text{un}} = \frac{1}{2} \left(\boldsymbol{\Sigma}^{-1} \otimes \boldsymbol{\Sigma}^{-1}\right)$$
+
+```{webr}
+# Finale Sigma-Matrix und deren Inverse
+Sigma.final <- x2Sigma(est.final)
+Sigma.inv <- solve(Sigma.final)
+
+# Informationsmatrix des saturierten Modells
+# Das Kronecker-Produkt (%x%) erzeugt eine 81 x 81 Matrix
+I.un <- 1/2 * (Sigma.inv %x% Sigma.inv)
+```
+
+**2. Die Delta-Matrix** (Jacobi-Matrix) -- sie beschreibt, wie sich die Elemente von $\boldsymbol{\Sigma}$ aendern, wenn wir die freien Parameter leicht veraendern:
+
+```{webr}
+# Delta-Matrix numerisch approximieren
+Delta <- numDeriv::jacobian(x2Sigma, x = est.final)
+dim(Delta)  # 81 Zeilen (Elemente von Sigma) x 21 Spalten (freie Parameter)
+```
+
+**3. Zusammensetzen:** Die erwartete Informationsmatrix der freien Parameter und daraus die Standardfehler:
+
+```{webr}
+# Erwartete Informationsmatrix
+I.exp <- t(Delta) %*% I.un %*% Delta
+
+# Varianz-Kovarianz-Matrix der Parameterschaetzer
+vcov <- 1/N * solve(I.exp)
+
+# Standardfehler = Wurzel der Diagonalelemente
+se.final <- sqrt(diag(vcov))
+round(se.final, 3)
+```
+
+### Wald-Statistik und p-Werte
+
+Die Wald-Statistik (z-Wert) ist einfach der Quotient aus Schaetzung und Standardfehler. Damit koennen wir p-Werte berechnen:
+
+```{webr}
+wald <- est.final / se.final
+pval <- 2 * pnorm(abs(wald), lower.tail = FALSE)
+
+# Ergebnis-Tabelle (erste 6 Parameter = Faktorladungen)
+ergebnis <- data.frame(
+  Schaetzung = est.final,
+  Std.Fehler = se.final,
+  z.Wert = round(wald, 3),
+  p.Wert = round(pval, 4)
+)
+head(ergebnis)
+```
+
+
+## Fit-Indizes
+
+### Chi-Quadrat-Teststatistik
+
+Die Chi-Quadrat-Statistik ergibt sich direkt aus dem minimalen $F_{\text{ML}}$-Wert:
+
+$$\chi^2 = N \times F_{\text{ML}}$$
+
+```{webr}
+chi2.stat <- f.ml(est.final) * N
+round(chi2.stat, 3)
+
+# Freiheitsgrade: Anzahl nicht-redundanter Elemente in S minus freie Parameter
+nvar <- 9
+chi2.df <- nvar * (nvar + 1) / 2 - length(est.final)
+chi2.df
+
+# p-Wert
+chi2.pval <- pchisq(chi2.stat, df = chi2.df, lower.tail = FALSE)
+round(chi2.pval, 4)
+```
+
+Ein signifikanter Chi-Quadrat-Test (p < .05) deutet darauf hin, dass das Modell die Daten nicht perfekt erklaert -- bei grossem N ist dies fast immer der Fall.
+
+
+### Comparative Fit Index (CFI)
+
+Der CFI vergleicht unser Modell mit einem **Unabhaengigkeitsmodell** (alle Kovarianzen = 0). Die Formel:
+
+$$\text{CFI} = 1 - \frac{T}{T_b}$$
+
+wobei $T = \max(\chi^2 - \text{df}, 0)$ und $T_b = \max(\chi^2_b - \text{df}_b, 0)$.
+
+```{webr}
+# Unabhaengigkeitsmodell fitten
+f.indep <- function(x) {
+  if (any(x < 0)) return(100000)
+  Sigma <- diag(x)
+  Sigma.inv <- solve(Sigma)
+  F.ml <- sum(diag((S %*% Sigma.inv))) + log(det(Sigma)) - log(det(S)) - P
+  F.ml
+}
+out.indep <- nlminb(start = diag(S), objective = f.indep)
+est.indep <- out.indep$par
+
+# Chi-Quadrat des Unabhaengigkeitsmodells
+fval.indep <- out.indep$objective
+chi2.stat.indep <- fval.indep * N
+chi2.df.indep <- nvar * (nvar + 1) / 2 - length(est.indep)
+
+# CFI berechnen
+t1 <- max(c(chi2.stat - chi2.df, 0))
+t2 <- max(c(chi2.stat - chi2.df, chi2.stat.indep - chi2.df.indep, 0))
+CFI <- 1 - t1 / t2
+round(CFI, 3)
+```
+
+Werte ueber .95 gelten als guter Fit. Unser CFI von ca. .931 ist akzeptabel, aber nicht ideal.
+
+
+### RMSEA (Root Mean Square Error of Approximation)
+
+$$\text{RMSEA} = \sqrt{\frac{F_{\text{ML}}}{\text{df}} - \frac{1}{N}}$$
+
+```{webr}
+fval <- f.ml(est.final)
+MSEA <- max(0, fval/chi2.df - 1/N)
+RMSEA <- sqrt(MSEA)
+round(RMSEA, 3)
+```
+
+Werte unter .05 gelten als guter Fit, unter .08 als akzeptabel.
+
+
+### SRMR (Standardized Root Mean Square Residual)
+
+Der SRMR basiert auf den standardisierten Residuen -- den Unterschieden zwischen **S** und $\boldsymbol{\Sigma}(\hat{\boldsymbol{\theta}})$, nachdem beide mit den Standardabweichungen skaliert wurden:
+
+```{webr}
+# Skalierungsfaktoren (1 / Standardabweichung)
+scale.cov <- tcrossprod(1/sqrt(diag(S)))
+
+# Standardisierte Matrizen
+S.scaled <- S * scale.cov
+Sigma.scaled <- Sigma.final * scale.cov
+
+# Residuen (nur untere Dreiecksmatrix, inkl. Diagonale)
+residuals <- (S.scaled - Sigma.scaled)[lower.tri(S, diag = TRUE)]
+SRMR <- sqrt(mean(residuals^2))
+round(SRMR, 3)
+```
+
+Werte unter .08 gelten als akzeptabel.
+
+
+### Vergleich mit lavaan
+
+```{webr}
+# Unsere Werte
+cat("Unsere Berechnung:\n")
+cat("  Chi2 =", round(chi2.stat, 3),
+    "  df =", chi2.df,
+    "  p =", round(chi2.pval, 4), "\n")
+cat("  CFI  =", round(CFI, 3), "\n")
+cat("  RMSEA=", round(RMSEA, 3), "\n")
+cat("  SRMR =", round(SRMR, 3), "\n\n")
+
+# lavaan-Werte
+cat("lavaan:\n")
+fitMeasures(fit, c("chisq", "df", "pvalue", "cfi", "rmsea", "srmr"))
+```
+
+
+## Zusammenfassung
+
+In diesem Tutorial haben wir die zentralen Berechnungen hinter SEM manuell nachvollzogen:
+
+1. **Modellmatrizen definieren** ($\boldsymbol{\Lambda}$, $\boldsymbol{\Psi}$, $\boldsymbol{\Theta}$) und daraus $\boldsymbol{\Sigma}(\boldsymbol{\theta})$ berechnen
+2. **ML-Diskrepanzfunktion** $F_{\text{ML}}$ aufstellen -- misst den Abstand zwischen $\boldsymbol{\Sigma}$ und **S**
+3. **Optimierung** mit `nlminb()` -- findet die Parameterwerte, die $F_{\text{ML}}$ minimieren
+4. **Standardfehler** ueber die erwartete Informationsmatrix berechnen
+5. **Fit-Indizes** ($\chi^2$, CFI, RMSEA, SRMR) ableiten
+
+Der gesamte Prozess brauchte nur ca. 30 Zeilen R-Code fuer die Kernberechnung. lavaan macht im Wesentlichen dasselbe -- nur mit besseren Startwerten, analytischen Gradienten und vielen zusaetzlichen Optionen.

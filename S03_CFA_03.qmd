@@ -7,7 +7,73 @@ lang: de
 ---
 
 {{< include _extensions/r-wasm/live/_knitr.qmd >}}
+
+
+```{webr}
+#| warning: false
+#| echo: false
+
+webr::install("quadprog",  repos = "https://kroehne.github.io/webr-quadprog-repo")
  
+suppressPackageStartupMessages(library(mnormt))
+suppressPackageStartupMessages(library(lavaan))
+suppressPackageStartupMessages(library(lavaanPlot))
+suppressPackageStartupMessages(library(DT))
+
+assignInNamespace("lav_options_checkinterval", function(x, nm, num2int) {
+    if (any(is.na(x))) return(TRUE)
+    if (num2int) x <- as.integer(x)                                                                                              
+    oks <- vapply(x, function(x1) {
+      (x1 > nm$bounds[1] || (x1 == nm$bounds[1] && nm$first.in)) &&                                                              
+      (x1 < nm$bounds[2] || (x1 == nm$bounds[2] && nm$last.in))                                                                  
+    }, TRUE)
+    all(oks)                                                                                                                     
+  }, ns = "lavaan")
+ 
+
+View <- function(dat){
+  dat_name <- deparse(substitute(dat))
+  df_display <- dat |>
+  dplyr::mutate(
+    dplyr::across(everything(), ~ ifelse(is.na(.x), "❌ (NA)", .x))
+  )
+  
+  DT::datatable(
+    df_display,
+    rownames = FALSE, 
+    options = list(
+      pageLength = 5,
+      scrollX = TRUE,
+      dom = 'tip',   
+      columnDefs = list(list(className = 'dt-center', targets = "_all"))
+    ),
+    caption = htmltools::tags$caption(
+      style = 'caption-side: top; text-align: left;',
+      'data.frame: ', htmltools::strong(dat_name)
+    )
+  )  
+}
+
+model_1f <- '
+  g =~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9
+'
+fit_1f <- cfa(model_1f, data = HolzingerSwineford1939)
+
+model_3f <-  "visual  =~ x1 + x2 + x3
+              textual =~ x4 + x5 + x6
+              speed   =~ x7 + x8 + x9"
+fit_3f <- cfa(model_3f, data = HolzingerSwineford1939)
+
+fit_orth <- cfa(model_3f, data = HolzingerSwineford1939, orthogonal = TRUE)
+
+model_hier <-  "visual  =~ x1 + x2 + x3
+              textual =~ x4 + x5 + x6
+              speed   =~ x7 + x8 + x9
+              g =~ visual + textual + speed"
+fit_hier <- cfa(model_hier, data = HolzingerSwineford1939)
+
+rm(ojs_define)
+``` 
 ##  4-Modell-Vergleich 
 
 ::: {.callout-important title="Aufgabe"}
@@ -16,7 +82,7 @@ Schätzen Sie 4 Modelle für die HolzingerSwineford-Daten und erstellen Sie eine
 | Modell | lavaan |
 |---|---|
 | (a) 1-Faktor | `g =~ x1 + ... + x9` |
-| (b) 3 Faktoren korreliert | (wie in Folie 5) |
+| (b) 3 Faktoren korreliert | `visual  =~ x1 + x2 + x3`, `textual =~ x4 + x5 + x6` und `speed =~ x7 + x8 + x9` |
 | (c) 3 Faktoren orthogonal | `cfa(..., orthogonal = TRUE)` |
 | (d) Hierarchisch (g 2. Ordnung) | `g =~ visual + textual + speed` |
 
@@ -25,11 +91,71 @@ Schätzen Sie 4 Modelle für die HolzingerSwineford-Daten und erstellen Sie eine
 3. Warum haben (b) und (d) den gleichen Fit?
 :::
 
+<details>
+<summary>Hilfestellung</summary>
+
+Wenn die Ausgaben von `lavaan` in folgenden `R`-Objekten vorliegen:
+
+(a) `fit_1f <- cfa(model_1f, data = HolzingerSwineford1939)`
+(b) `fit_3f <- cfa(model_3f, data = HolzingerSwineford1939)`
+(c) `fit_orth <- cfa(model_3f, data = HolzingerSwineford1939, orthogonal = TRUE)`
+(d) `fit_hier <- cfa(model_hier, data = HolzingerSwineford1939)`
+
+Vergleichstabelle:
+
 ```{r}
 #| echo: true
 #| eval: false
-sapply(list(f_1f, f_3f, f_orth, f_hier), function(f) {
+sapply(list(fit_1f, fit_3f, fit_orth, fit_hier), function(f) {
   fitMeasures(f, c("chisq","df","cfi","rmsea","aic"))
 }) |> t() |> round(3)
 ```
 
+χ²-Differenztest: 
+
+```{r}
+#| echo: true
+#| eval: false
+# (a) vs. (b)
+anova(fit_1f,fit_3f)
+
+#(c) vs. (b):
+anova(fit_orth,fit_3f)
+```
+
+</details>
+
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: false
+library(lavaan)
+
+# (a)
+
+model_1f <- 'g =~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9'
+# fit_1f <-  ????
+
+# (b)
+
+model_3f <-  "visual  =~ x1 + x2 + x3
+              textual =~ x4 + x5 + x6
+              speed   =~ x7 + x8 + x9"
+# fit_3f <- ????
+
+# (c)
+
+# fit_orth <- ????
+
+# (d)
+
+model_hier <-  "visual  =~ x1 + x2 + x3
+              textual =~ x4 + x5 + x6
+              speed   =~ x7 + x8 + x9
+              g =~ visual + textual + speed"
+# fit_hier <- ????
+
+# ...
+
+```

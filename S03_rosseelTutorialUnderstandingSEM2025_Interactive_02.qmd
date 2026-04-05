@@ -1,0 +1,880 @@
+---
+title: "E | Interaktives Tutorial von Rosseel & Vidal (2025) - 2"
+subtitle: "Erweiterungen: Mittelwertstruktur, Mehrgruppenmodelle und fehlende Werte"
+format: live-html
+engine: knitr
+status: "Version 0.1"
+lang: de
+---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+
+
+```{webr}
+#| warning: false
+#| echo: false
+
+webr::install("quadprog",  repos = "https://kroehne.github.io/webr-quadprog-repo")
+
+suppressPackageStartupMessages(library(parallel))
+suppressPackageStartupMessages(library(lavaan))
+suppressPackageStartupMessages(library(lavaanPlot))
+
+assignInNamespace("lav_options_checkinterval", function(x, nm, num2int) {
+    if (any(is.na(x))) return(TRUE)
+    if (num2int) x <- as.integer(x)
+    oks <- vapply(x, function(x1) {
+      (x1 > nm$bounds[1] || (x1 == nm$bounds[1] && nm$first.in)) &&
+      (x1 < nm$bounds[2] || (x1 == nm$bounds[2] && nm$last.in))
+    }, TRUE)
+    all(oks)
+  }, ns = "lavaan")
+
+# ------------------------------------------------------------------
+# Vorberechnung aller Objekte, damit jeder Code-Block
+# unabhaengig und in beliebiger Reihenfolge ausfuehrbar ist
+# ------------------------------------------------------------------
+
+# --- Daten ---
+Y <- as.matrix(HolzingerSwineford1939[, 7:15])
+P <- ncol(Y)
+N <- nrow(Y)
+S <- cov(Y) * (N - 1) / N
+ybar <- colMeans(Y)
+
+# --- Basis-CFA (ohne Mittelwertstruktur) ---
+HS.model <- '
+  visual  =~ x1 + x2 + x3
+  textual =~ x4 + x5 + x6
+  speed   =~ x7 + x8 + x9
+'
+fit.cov <- cfa(HS.model, data = HolzingerSwineford1939)
+
+# --- CFA mit Mittelwertstruktur ---
+fit.mean <- cfa(HS.model, data = HolzingerSwineford1939, meanstructure = TRUE)
+
+# --- x2implied-Funktion (mit Mittelwertstruktur) ---
+x2implied <- function(x) {
+  LAMBDA <- matrix(0, 9, 3)
+  LAMBDA[1,1] <- 1
+  LAMBDA[2,1] <- x[1]; LAMBDA[3,1] <- x[2]
+  LAMBDA[4,2] <- 1
+  LAMBDA[5,2] <- x[3]; LAMBDA[6,2] <- x[4]
+  LAMBDA[7,3] <- 1
+  LAMBDA[8,3] <- x[5]; LAMBDA[9,3] <- x[6]
+  PSI <- matrix(0, 3, 3)
+  PSI[1,1] <- x[7]
+  PSI[2,1] <- PSI[1,2] <- x[8]
+  PSI[3,1] <- PSI[1,3] <- x[9]
+  PSI[2,2] <- x[10]
+  PSI[3,2] <- PSI[2,3] <- x[11]
+  PSI[3,3] <- x[12]
+  THETA <- matrix(0, 9, 9)
+  diag(THETA) <- x[13:21]
+  Sigma <- LAMBDA %*% PSI %*% t(LAMBDA) + THETA
+  # Mittelwertstruktur: nu (Intercepts) + Lambda * alpha (latente Mittelwerte)
+  nu <- x[22:30]       # Intercepts der beobachteten Variablen
+  alpha <- x[31:33]    # latente Mittelwerte (fixiert auf 0)
+  Mu <- nu + LAMBDA %*% alpha
+  list(Sigma = Sigma, Mu = as.vector(Mu))
+}
+
+# --- ML-Diskrepanzfunktion mit Mittelwertstruktur ---
+f.ml.mean <- function(x) {
+  out <- x2implied(x)
+  Sigma <- out$Sigma
+  Mu <- out$Mu
+  eigvals <- eigen(Sigma, symmetric = TRUE, only.values = TRUE)$values
+  if (any(eigvals < 0.0001)) return(1000000)
+  Sigma.inv <- solve(Sigma)
+  # Kovarianz-Teil
+  F1 <- sum(diag(S %*% Sigma.inv)) + log(det(Sigma)) - log(det(S)) - P
+  # Mittelwert-Teil
+  diff <- ybar - Mu
+  F2 <- t(diff) %*% Sigma.inv %*% diff
+  as.numeric(F1 + F2)
+}
+
+# --- Startwerte und Optimierung (Mittelwertstruktur) ---
+start.mean <- c(
+  1, 1, 1, 1, 1, 1,           # Lambda
+  1, 0, 0, 1, 0, 1,           # Psi
+  rep(0.5, 9),                 # Theta
+  ybar,                        # nu (Intercepts = beobachtete Mittelwerte)
+  0, 0, 0                     # alpha (latente Mittelwerte = 0)
+)
+out.mean <- nlminb(start = start.mean, objective = f.ml.mean)
+est.mean <- round(out.mean$par, 3)
+
+# --- Mehrgruppenmodelle: Daten pro Gruppe ---
+dat1 <- HolzingerSwineford1939[HolzingerSwineford1939$school == "Pasteur", ]
+dat2 <- HolzingerSwineford1939[HolzingerSwineford1939$school == "Grant-White", ]
+Y1 <- as.matrix(dat1[, 7:15]); N1 <- nrow(Y1)
+Y2 <- as.matrix(dat2[, 7:15]); N2 <- nrow(Y2)
+S1 <- cov(Y1) * (N1 - 1) / N1
+S2 <- cov(Y2) * (N2 - 1) / N2
+N.total <- N1 + N2
+
+# x2Sigma fuer Mehrgruppenmodelle (gleiche Funktion wie Teil 1)
+x2Sigma.mg <- function(x) {
+  LAMBDA <- matrix(0, 9, 3)
+  LAMBDA[1,1] <- 1
+  LAMBDA[2,1] <- x[1]; LAMBDA[3,1] <- x[2]
+  LAMBDA[4,2] <- 1
+  LAMBDA[5,2] <- x[3]; LAMBDA[6,2] <- x[4]
+  LAMBDA[7,3] <- 1
+  LAMBDA[8,3] <- x[5]; LAMBDA[9,3] <- x[6]
+  PSI <- matrix(0, 3, 3)
+  PSI[1,1] <- x[7]
+  PSI[2,1] <- PSI[1,2] <- x[8]
+  PSI[3,1] <- PSI[1,3] <- x[9]
+  PSI[2,2] <- x[10]
+  PSI[3,2] <- PSI[2,3] <- x[11]
+  PSI[3,3] <- x[12]
+  THETA <- matrix(0, 9, 9)
+  diag(THETA) <- x[13:21]
+  LAMBDA %*% PSI %*% t(LAMBDA) + THETA
+}
+
+# ML-Diskrepanz pro Gruppe
+f.ml.group <- function(x, S.g, P.g) {
+  Sigma <- x2Sigma.mg(x)
+  eigvals <- eigen(Sigma, symmetric = TRUE, only.values = TRUE)$values
+  if (any(eigvals < 0.0001)) return(1000000)
+  Sigma.inv <- solve(Sigma)
+  sum(diag(S.g %*% Sigma.inv)) + log(det(Sigma)) - log(det(S.g)) - P.g
+}
+
+# Konfigurale Analyse: separate Schaetzung pro Gruppe
+start.x <- c(1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, rep(0.5, 9))
+out1.sep <- nlminb(start = start.x, objective = f.ml.group, S.g = S1, P.g = P)
+out2.sep <- nlminb(start = start.x, objective = f.ml.group, S.g = S2, P.g = P)
+est1.sep <- round(out1.sep$par, 3)
+est2.sep <- round(out2.sep$par, 3)
+
+# Gemeinsame Diskrepanzfunktion (gewichtete Summe)
+f.ml.multigroup.free <- function(x) {
+  x1 <- x[1:21]; x2 <- x[22:42]
+  F1 <- f.ml.group(x1, S1, P)
+  F2 <- f.ml.group(x2, S2, P)
+  (N1 * F1 + N2 * F2) / N.total
+}
+start.mg.free <- c(start.x, start.x)
+out.mg.free <- nlminb(start = start.mg.free, objective = f.ml.multigroup.free)
+
+# Metrische Invarianz: gemeinsame Ladungen
+f.ml.multigroup.metric <- function(x) {
+  lambda.shared <- x[1:6]
+  x1 <- c(lambda.shared, x[7:21])
+  x2 <- c(lambda.shared, x[22:36])
+  F1 <- f.ml.group(x1, S1, P)
+  F2 <- f.ml.group(x2, S2, P)
+  (N1 * F1 + N2 * F2) / N.total
+}
+start.mg.metric <- c(start.x[1:6], start.x[7:21], start.x[7:21])
+out.mg.metric <- nlminb(start = start.mg.metric, objective = f.ml.multigroup.metric)
+
+# lavaan-Modelle
+fit.config <- cfa(HS.model, data = HolzingerSwineford1939,
+                  group = "school")
+fit.metric <- cfa(HS.model, data = HolzingerSwineford1939,
+                  group = "school", group.equal = "loadings")
+fit.scalar <- cfa(HS.model, data = HolzingerSwineford1939,
+                  group = "school", group.equal = c("loadings", "intercepts"))
+fit.strict <- cfa(HS.model, data = HolzingerSwineford1939,
+                  group = "school", group.equal = c("loadings", "intercepts", "residuals"))
+
+# --- Fehlende Werte ---
+set.seed(1234)
+HS.missing <- HolzingerSwineford1939[, c(1, 7:15)]
+Y.miss <- as.matrix(HS.missing[, -1])
+Y.missing <- apply(Y.miss, 2L, function(x) {
+  x[sample(1:N, floor(N/20))] <- as.numeric(NA); x
+})
+HS.missing[, -1] <- as.data.frame(Y.missing)
+
+fit.listwise <- cfa(HS.model, data = HS.missing, missing = "listwise")
+fit.fiml <- cfa(HS.model, data = HS.missing, missing = "fiml")
+
+# --- FIML-Diskrepanzfunktion (manuell) ---
+x2implied.simple <- function(x) {
+  LAMBDA <- matrix(0, 9, 3)
+  LAMBDA[1,1] <- 1
+  LAMBDA[2,1] <- x[1]; LAMBDA[3,1] <- x[2]
+  LAMBDA[4,2] <- 1
+  LAMBDA[5,2] <- x[3]; LAMBDA[6,2] <- x[4]
+  LAMBDA[7,3] <- 1
+  LAMBDA[8,3] <- x[5]; LAMBDA[9,3] <- x[6]
+  PSI <- matrix(0, 3, 3)
+  PSI[1,1] <- x[7]
+  PSI[2,1] <- PSI[1,2] <- x[8]
+  PSI[3,1] <- PSI[1,3] <- x[9]
+  PSI[2,2] <- x[10]
+  PSI[3,2] <- PSI[2,3] <- x[11]
+  PSI[3,3] <- x[12]
+  THETA <- matrix(0, 9, 9)
+  diag(THETA) <- x[13:21]
+  Sigma <- LAMBDA %*% PSI %*% t(LAMBDA) + THETA
+  Mu <- x[22:30]
+  list(Sigma = Sigma, Mu = Mu)
+}
+
+f.fiml <- function(x) {
+  out <- x2implied.simple(x)
+  Sigma <- out$Sigma
+  Mu <- out$Mu
+  eigvals <- eigen(Sigma, symmetric = TRUE, only.values = TRUE)$values
+  if (any(eigvals < 0.0001)) return(1000000)
+  Sigma.inv.full <- solve(Sigma)
+  LogDet.full <- log(det(Sigma))
+  Yc <- t(t(Y.missing) - Mu)
+  DIST <- rep(as.numeric(NA), N)
+  logdet <- rep(as.numeric(NA), N)
+  for (i in 1:N) {
+    na.idx <- which(is.na(Y.missing[i, ]))
+    if (length(na.idx) > 0L) {
+      iy <- Yc[i, -na.idx, drop = FALSE]
+      isigma <- Sigma[-na.idx, -na.idx, drop = FALSE]
+      isigma.inv <- solve(isigma)
+      ilogdet <- log(det(isigma))
+    } else {
+      iy <- Yc[i, , drop = FALSE]
+      isigma.inv <- Sigma.inv.full
+      ilogdet <- LogDet.full
+    }
+    logdet[i] <- ilogdet
+    DIST[i] <- sum(isigma.inv * crossprod(iy))
+  }
+  fx <- (sum(logdet) + sum(DIST)) / N
+  fx
+}
+
+start.fiml <- c(
+  1, 1, 1, 1, 1, 1,
+  1, 0, 0, 1, 0, 1,
+  rep(0.5, 9),
+  colMeans(Y.missing, na.rm = TRUE)
+)
+out.fiml.manual <- nlminb(start = start.fiml, objective = f.fiml)
+est.fiml.manual <- round(out.fiml.manual$par, 3)
+```
+
+## Einleitung
+
+Dieses Tutorial baut auf [Teil 1](S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html) auf und behandelt drei wichtige Erweiterungen des Basis-SEM:
+
+1. **Mittelwertstruktur** -- Intercepts und latente Mittelwerte in das Modell einbeziehen
+2. **Mehrgruppenmodelle** -- dasselbe Modell in verschiedenen Gruppen schaetzen und Messinvarianz testen
+3. **Fehlende Werte** -- Full Information Maximum Likelihood (FIML) als Alternative zum listenweisen Ausschluss
+
+**Referenz:** Rosseel, Y., & Vidal, M. (2025). A tutorial for understanding SEM using R: Where do all the numbers come from? *British Journal of Mathematical and Statistical Psychology*. [doi:10.1111/bmsp.70003](https://doi.org/10.1111/bmsp.70003)
+
+
+## Mittelwertstruktur
+
+### Warum Mittelwerte?
+
+Im Basis-CFA (Teil 1) haben wir nur die Varianz-Kovarianz-Matrix $\mathbf{S}$ modelliert. Die Mittelwerte der Variablen wurden ignoriert. Das reicht aus, solange wir nur Zusammenhaenge untersuchen. Aber fuer bestimmte Fragestellungen brauchen wir die Mittelwertstruktur:
+
+- **Mehrgruppenvergleiche**: Unterscheiden sich die latenten Mittelwerte zwischen Gruppen?
+- **Laengsschnittmodelle**: Veraendert sich der latente Mittelwert ueber die Zeit?
+- **Growth-Curve-Modelle**: Wie entwickeln sich individuelle Trajektorien?
+
+### Das erweiterte Modell
+
+Neben $\boldsymbol{\Sigma}(\boldsymbol{\theta})$ modellieren wir jetzt auch den **modellimplizierten Mittelwertvektor**:
+
+$$E(\mathbf{y}) = \boldsymbol{\nu} + \boldsymbol{\Lambda} \, E(\boldsymbol{\eta})$$
+
+wobei:
+
+- $\boldsymbol{\nu}$ = Vektor der **Intercepts** (Achsenabschnitte) der beobachteten Variablen
+- $E(\boldsymbol{\eta}) = (\mathbf{I} - \mathbf{B})^{-1} \boldsymbol{\alpha}$ = erwartete Werte der latenten Variablen
+- $\boldsymbol{\alpha}$ = Vektor der **latenten Mittelwerte**
+
+Fuer ein CFA-Modell (ohne Strukturteil, $\mathbf{B} = \mathbf{0}$) vereinfacht sich das zu:
+
+$$\boldsymbol{\mu}(\boldsymbol{\theta}) = \boldsymbol{\nu} + \boldsymbol{\Lambda} \, \boldsymbol{\alpha}$$
+
+Zur **Identifikation** werden die latenten Mittelwerte auf null fixiert ($\boldsymbol{\alpha} = \mathbf{0}$), sodass die Intercepts $\boldsymbol{\nu}$ gleich den beobachteten Mittelwerten entsprechen.
+
+### Die erweiterte Diskrepanzfunktion
+
+Die ML-Diskrepanzfunktion bekommt einen zusaetzlichen Term fuer die Mittelwerte:
+
+$$F_{\text{ML}}(\boldsymbol{\theta}) = \text{tr}\!\left[\mathbf{S}\boldsymbol{\Sigma}(\boldsymbol{\theta})^{-1}\right] + \ln|\boldsymbol{\Sigma}(\boldsymbol{\theta})| - \ln|\mathbf{S}| - P + \left[\bar{\mathbf{y}} - \boldsymbol{\mu}(\boldsymbol{\theta})\right]' \boldsymbol{\Sigma}(\boldsymbol{\theta})^{-1} \left[\bar{\mathbf{y}} - \boldsymbol{\mu}(\boldsymbol{\theta})\right]$$
+
+Der neue letzte Term ist eine quadratische Form, die misst, wie weit der modellimplizierte Mittelwertvektor $\boldsymbol{\mu}(\boldsymbol{\theta})$ vom beobachteten Mittelwertvektor $\bar{\mathbf{y}}$ entfernt ist.
+
+### Die Funktion x2implied
+
+Statt nur $\boldsymbol{\Sigma}$ zurueckzugeben, liefert die erweiterte Funktion jetzt sowohl $\boldsymbol{\Sigma}$ als auch $\boldsymbol{\mu}$:
+
+```{webr}
+x2implied <- function(x) {
+  # Lambda, Psi, Theta wie in Teil 1
+  LAMBDA <- matrix(0, 9, 3)
+  LAMBDA[1,1] <- 1
+  LAMBDA[2,1] <- x[1]; LAMBDA[3,1] <- x[2]
+  LAMBDA[4,2] <- 1
+  LAMBDA[5,2] <- x[3]; LAMBDA[6,2] <- x[4]
+  LAMBDA[7,3] <- 1
+  LAMBDA[8,3] <- x[5]; LAMBDA[9,3] <- x[6]
+
+  PSI <- matrix(0, 3, 3)
+  PSI[1,1] <- x[7]
+  PSI[2,1] <- PSI[1,2] <- x[8]
+  PSI[3,1] <- PSI[1,3] <- x[9]
+  PSI[2,2] <- x[10]
+  PSI[3,2] <- PSI[2,3] <- x[11]
+  PSI[3,3] <- x[12]
+
+  THETA <- matrix(0, 9, 9)
+  diag(THETA) <- x[13:21]
+
+  Sigma <- LAMBDA %*% PSI %*% t(LAMBDA) + THETA
+
+  # NEU: Mittelwertstruktur
+  nu    <- x[22:30]    # Intercepts
+  alpha <- x[31:33]    # latente Mittelwerte
+
+  Mu <- nu + LAMBDA %*% alpha
+
+  list(Sigma = Sigma, Mu = as.vector(Mu))
+}
+
+# Parametervektor hat jetzt 33 Elemente:
+# x[1:6]   = Faktorladungen
+# x[7:12]  = Psi-Elemente
+# x[13:21] = Residualvarianzen
+# x[22:30] = Intercepts (nu)
+# x[31:33] = latente Mittelwerte (alpha)
+cat("Anzahl Parameter:", 6 + 6 + 9 + 9 + 3, "=",
+    "6 Ladungen + 6 Psi + 9 Theta + 9 Intercepts + 3 lat. Mittelwerte\n")
+```
+
+
+### Diskrepanzfunktion und Optimierung
+
+```{webr}
+# Beobachtete Stichprobenstatistiken
+Y <- as.matrix(HolzingerSwineford1939[, 7:15])
+P <- ncol(Y); N <- nrow(Y)
+S <- cov(Y) * (N - 1) / N
+ybar <- colMeans(Y)
+
+cat("Beobachtete Mittelwerte:\n")
+round(ybar, 3)
+```
+
+```{webr}
+# Erweiterte ML-Diskrepanzfunktion
+f.ml.mean <- function(x) {
+  out <- x2implied(x)
+  Sigma <- out$Sigma; Mu <- out$Mu
+  eigvals <- eigen(Sigma, symmetric = TRUE, only.values = TRUE)$values
+  if (any(eigvals < 0.0001)) return(1000000)
+  Sigma.inv <- solve(Sigma)
+  # Kovarianz-Teil (wie in Teil 1)
+  F1 <- sum(diag(S %*% Sigma.inv)) + log(det(Sigma)) - log(det(S)) - P
+  # Mittelwert-Teil (NEU)
+  diff <- ybar - Mu
+  F2 <- t(diff) %*% Sigma.inv %*% diff
+  as.numeric(F1 + F2)
+}
+
+# Startwerte: Intercepts = beobachtete Mittelwerte, latente Mittelwerte = 0
+start.mean <- c(
+  1, 1, 1, 1, 1, 1,       # Lambda
+  1, 0, 0, 1, 0, 1,       # Psi
+  rep(0.5, 9),             # Theta
+  ybar,                    # nu = beobachtete Mittelwerte als Startwert
+  0, 0, 0                  # alpha = 0 (fixiert)
+)
+out.mean <- nlminb(start = start.mean, objective = f.ml.mean)
+
+cat("Konvergenz:", out.mean$convergence, "\n")
+cat("Geschaetzte Intercepts:\n")
+round(out.mean$par[22:30], 3)
+cat("\nBeobachtete Mittelwerte (zum Vergleich):\n")
+round(ybar, 3)
+```
+
+Die geschaetzten Intercepts entsprechen den beobachteten Mittelwerten -- das ist zu erwarten, da die latenten Mittelwerte auf null fixiert sind.
+
+
+### Vergleich mit lavaan
+
+```{webr}
+#| warning: false
+# lavaan mit Mittelwertstruktur
+fit.mean <- cfa(HS.model, data = HolzingerSwineford1939,
+                meanstructure = TRUE)
+summary(fit.mean)
+```
+
+Im `summary()` erscheinen jetzt zusaetzlich die geschaetzten Intercepts. Die Fit-Indizes sind identisch mit dem Modell ohne Mittelwertstruktur, da die Intercepts in einem Eingruppen-Modell genau identifiziert sind.
+
+
+## Mehrgruppenmodelle
+
+### Die Grundidee
+
+Bei Mehrgruppenmodellen wird dasselbe SEM **gleichzeitig** in mehreren Gruppen geschaetzt. Der zentrale Trick: Die Diskrepanzfunktionen der einzelnen Gruppen werden als **gewichtete Summe** kombiniert:
+
+$$F_{\text{ML}}^{\text{gesamt}} = \frac{1}{N} \sum_{g=1}^{G} N_g \cdot F_{\text{ML}}^{(g)}$$
+
+wobei $N_g$ die Stichprobengroesse der Gruppe $g$ ist und $F_{\text{ML}}^{(g)}$ die ML-Diskrepanzfunktion fuer Gruppe $g$. Jede Gruppe hat ihre eigene beobachtete Kovarianzmatrix $\mathbf{S}_g$ und ihre eigene modellimplizierte Matrix $\boldsymbol{\Sigma}_g(\boldsymbol{\theta})$. Die Gesamt-Chi-Quadrat-Statistik ist dann:
+
+$$\chi^2_{\text{gesamt}} = N \cdot F_{\text{ML}}^{\text{gesamt}} = \sum_{g=1}^{G} N_g \cdot F_{\text{ML}}^{(g)} = \chi^2_1 + \chi^2_2 + \ldots + \chi^2_G$$
+
+Das heisst: **Die Chi-Quadrat-Statistiken der einzelnen Gruppen addieren sich.** Ebenso addieren sich die Freiheitsgrade. Das ist die Grundlage fuer alle Mehrgruppenvergleiche.
+
+### Daten pro Gruppe
+
+Der Holzinger-Swineford-Datensatz enthaelt Daten aus zwei Schulen:
+
+```{webr}
+table(HolzingerSwineford1939$school)
+```
+
+Wir berechnen die Stichprobenstatistiken separat fuer jede Gruppe:
+
+```{webr}
+# Daten nach Schule aufteilen
+dat1 <- HolzingerSwineford1939[HolzingerSwineford1939$school == "Pasteur", ]
+dat2 <- HolzingerSwineford1939[HolzingerSwineford1939$school == "Grant-White", ]
+
+Y1 <- as.matrix(dat1[, 7:15]); N1 <- nrow(Y1)
+Y2 <- as.matrix(dat2[, 7:15]); N2 <- nrow(Y2)
+N.total <- N1 + N2
+
+# ML-Kovarianzmatrizen pro Gruppe
+S1 <- cov(Y1) * (N1 - 1) / N1
+S2 <- cov(Y2) * (N2 - 1) / N2
+
+cat("Pasteur:     N =", N1, "\n")
+cat("Grant-White: N =", N2, "\n")
+cat("Gesamt:      N =", N.total, "\n")
+```
+
+
+### Separate Schaetzung pro Gruppe
+
+Zuerst schaetzen wir das CFA-Modell **separat** in jeder Gruppe. Jede Gruppe hat ihren eigenen Satz von 21 Parametern und ihre eigene Diskrepanzfunktion:
+
+```{webr}
+# Gleiche x2Sigma-Funktion wie in Teil 1
+x2Sigma.mg <- function(x) {
+  LAMBDA <- matrix(0, 9, 3)
+  LAMBDA[1,1] <- 1
+  LAMBDA[2,1] <- x[1]; LAMBDA[3,1] <- x[2]
+  LAMBDA[4,2] <- 1
+  LAMBDA[5,2] <- x[3]; LAMBDA[6,2] <- x[4]
+  LAMBDA[7,3] <- 1
+  LAMBDA[8,3] <- x[5]; LAMBDA[9,3] <- x[6]
+  PSI <- matrix(0, 3, 3)
+  PSI[1,1] <- x[7]
+  PSI[2,1] <- PSI[1,2] <- x[8]
+  PSI[3,1] <- PSI[1,3] <- x[9]
+  PSI[2,2] <- x[10]
+  PSI[3,2] <- PSI[2,3] <- x[11]
+  PSI[3,3] <- x[12]
+  THETA <- matrix(0, 9, 9)
+  diag(THETA) <- x[13:21]
+  LAMBDA %*% PSI %*% t(LAMBDA) + THETA
+}
+
+# ML-Diskrepanz fuer EINE Gruppe
+f.ml.group <- function(x, S.g, P.g) {
+  Sigma <- x2Sigma.mg(x)
+  eigvals <- eigen(Sigma, symmetric = TRUE, only.values = TRUE)$values
+  if (any(eigvals < 0.0001)) return(1000000)
+  Sigma.inv <- solve(Sigma)
+  sum(diag(S.g %*% Sigma.inv)) + log(det(Sigma)) - log(det(S.g)) - P.g
+}
+
+# Separate Schaetzung
+start.x <- c(1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, rep(0.5, 9))
+P <- 9
+
+out1.sep <- nlminb(start = start.x, objective = f.ml.group, S.g = S1, P.g = P)
+out2.sep <- nlminb(start = start.x, objective = f.ml.group, S.g = S2, P.g = P)
+
+cat("Gruppe 1 (Pasteur):     F_ML =", round(out1.sep$objective, 6), "\n")
+cat("Gruppe 2 (Grant-White): F_ML =", round(out2.sep$objective, 6), "\n")
+```
+
+
+### Die Additivitaet der Chi-Quadrat-Statistiken
+
+Jetzt zeigen wir den zentralen Punkt: Die Gesamt-Chi-Quadrat-Statistik ist die **Summe** der gruppenspezifischen Chi-Quadrat-Werte:
+
+```{webr}
+# Chi-Quadrat pro Gruppe
+chi2.g1 <- N1 * out1.sep$objective
+chi2.g2 <- N2 * out2.sep$objective
+
+# Freiheitsgrade pro Gruppe (gleich, da gleiches Modell)
+df.per.group <- P * (P + 1) / 2 - 21  # 45 - 21 = 24
+
+cat("=== Chi-Quadrat pro Gruppe ===\n")
+cat("Gruppe 1 (Pasteur):     chi2 =", round(chi2.g1, 3),
+    "  df =", df.per.group, "\n")
+cat("Gruppe 2 (Grant-White): chi2 =", round(chi2.g2, 3),
+    "  df =", df.per.group, "\n\n")
+
+cat("=== Summe ===\n")
+cat("chi2_gesamt =", round(chi2.g1, 3), "+", round(chi2.g2, 3),
+    "=", round(chi2.g1 + chi2.g2, 3), "\n")
+cat("df_gesamt   =", df.per.group, "+", df.per.group,
+    "=", 2 * df.per.group, "\n")
+```
+
+
+### Die gemeinsame Diskrepanzfunktion
+
+Statt separat zu optimieren, koennen wir auch eine **gemeinsame Diskrepanzfunktion** aufstellen, die beide Gruppen gleichzeitig beruecksichtigt. Das ist mathematisch aequivalent, aber die Voraussetzung fuer Restriktionen ueber die Gruppen:
+
+```{webr}
+# Gemeinsame Diskrepanzfunktion: gewichtete Summe
+# x[1:21]  = Parameter Gruppe 1
+# x[22:42] = Parameter Gruppe 2
+f.ml.multigroup.free <- function(x) {
+  x1 <- x[1:21]    # Parameter Gruppe 1
+  x2 <- x[22:42]   # Parameter Gruppe 2
+  F1 <- f.ml.group(x1, S1, P)
+  F2 <- f.ml.group(x2, S2, P)
+  # Gewichtete Summe (Gewichte = Anteil an Gesamtstichprobe)
+  (N1 * F1 + N2 * F2) / N.total
+}
+
+# Optimierung: 42 freie Parameter (21 pro Gruppe)
+start.mg.free <- c(start.x, start.x)
+out.mg.free <- nlminb(start = start.mg.free, objective = f.ml.multigroup.free)
+
+cat("Gemeinsame Optimierung:\n")
+cat("  F_ML_gesamt =", round(out.mg.free$objective, 6), "\n")
+cat("  chi2_gesamt =", round(out.mg.free$objective * N.total, 3), "\n")
+cat("  df_gesamt   =", 2 * df.per.group, "\n")
+cat("  Anzahl freie Parameter: 42 (21 pro Gruppe)\n")
+```
+
+### Vergleich mit lavaan
+
+```{webr}
+#| warning: false
+# lavaan: konfigurale Analyse (= alle Parameter frei pro Gruppe)
+fit.config <- cfa(HS.model, data = HolzingerSwineford1939,
+                  group = "school")
+
+cat("lavaan (konfigural):\n")
+fitMeasures(fit.config, c("chisq", "df", "cfi", "rmsea"))
+cat("\nUnsere Berechnung:\n")
+cat("  chi2 =", round(out.mg.free$objective * N.total, 3), "\n")
+cat("  df   =", 2 * df.per.group, "\n")
+```
+
+
+### Restriktionen ueber Gruppen: Der Kern von Mehrgruppenmodellen
+
+Der eigentliche Mehrwert entsteht, wenn wir **Parameter zwischen den Gruppen gleichsetzen**. Statt 42 freier Parameter (21 pro Gruppe) koennen wir z.B. die 6 Faktorladungen gleichsetzen. Dann haben wir nur noch $42 - 6 = 36$ freie Parameter:
+
+```{webr}
+# Metrische Invarianz: gleiche Ladungen, Rest frei
+# x[1:6]   = gemeinsame Faktorladungen
+# x[7:21]  = Psi + Theta Gruppe 1
+# x[22:36] = Psi + Theta Gruppe 2
+f.ml.multigroup.metric <- function(x) {
+  lambda.shared <- x[1:6]
+  x1 <- c(lambda.shared, x[7:21])   # Gruppe 1: gemeinsame Ladungen + eigene Varianzen
+  x2 <- c(lambda.shared, x[22:36])  # Gruppe 2: gemeinsame Ladungen + eigene Varianzen
+  F1 <- f.ml.group(x1, S1, P)
+  F2 <- f.ml.group(x2, S2, P)
+  (N1 * F1 + N2 * F2) / N.total
+}
+
+start.mg.metric <- c(start.x[1:6], start.x[7:21], start.x[7:21])
+out.mg.metric <- nlminb(start = start.mg.metric, objective = f.ml.multigroup.metric)
+
+cat("Metrische Invarianz (gleiche Ladungen):\n")
+cat("  chi2 =", round(out.mg.metric$objective * N.total, 3), "\n")
+cat("  df   =", 2 * (P*(P+1)/2) - length(start.mg.metric), "\n")
+cat("  Freie Parameter:", length(start.mg.metric),
+    "(6 gemeinsame Ladungen + 2 x 15 Varianzen)\n")
+```
+
+Die Differenz der Chi-Quadrat-Werte zwischen dem freien und dem restringierten Modell testet, ob die Gleichsetzung der Ladungen zu einer signifikanten Verschlechterung fuehrt:
+
+```{webr}
+chi2.free   <- out.mg.free$objective * N.total
+chi2.metric <- out.mg.metric$objective * N.total
+df.free   <- 2 * (P*(P+1)/2) - 42
+df.metric <- 2 * (P*(P+1)/2) - 36
+
+delta.chi2 <- chi2.metric - chi2.free
+delta.df   <- df.metric - df.free
+p.value    <- pchisq(delta.chi2, df = delta.df, lower.tail = FALSE)
+
+cat("=== Chi-Quadrat-Differenztest ===\n")
+cat("Konfigural: chi2 =", round(chi2.free, 3), "  df =", df.free, "\n")
+cat("Metrisch:   chi2 =", round(chi2.metric, 3), "  df =", df.metric, "\n")
+cat("Differenz:  Delta chi2 =", round(delta.chi2, 3),
+    "  Delta df =", delta.df,
+    "  p =", round(p.value, 4), "\n")
+```
+
+
+### Anwendung: Messinvarianz mit lavaan
+
+Nachdem wir verstanden haben, wie Mehrgruppenmodelle funktionieren, nutzen wir lavaan fuer die systematische Pruefung der **Messinvarianz**. Jede Stufe fuegt weitere Gleichheitsrestriktionen hinzu:
+
+| Stufe | Name | Restriktion | Bedeutung |
+|-------|------|-------------|-----------|
+| 1 | Konfigural | Gleiche Modellstruktur | Gleiche Faktoren, gleiche Zuordnung |
+| 2 | Metrisch | + gleiche Faktorladungen | Faktoren haben dieselbe Bedeutung |
+| 3 | Skalar | + gleiche Intercepts | Latente Mittelwerte vergleichbar |
+| 4 | Strikt | + gleiche Residualvarianzen | Gleiche Messgenauigkeit |
+
+```{webr}
+#| warning: false
+fit.config <- cfa(HS.model, data = HolzingerSwineford1939,
+                  group = "school")
+fit.metric <- cfa(HS.model, data = HolzingerSwineford1939,
+                  group = "school", group.equal = "loadings")
+fit.scalar <- cfa(HS.model, data = HolzingerSwineford1939,
+                  group = "school", group.equal = c("loadings", "intercepts"))
+fit.strict <- cfa(HS.model, data = HolzingerSwineford1939,
+                  group = "school",
+                  group.equal = c("loadings", "intercepts", "residuals"))
+
+# Uebersichtstabelle
+modelle <- list(
+  Konfigural = fit.config, Metrisch = fit.metric,
+  Skalar = fit.scalar, Strikt = fit.strict
+)
+tab <- data.frame(
+  Modell = names(modelle),
+  Chi2 = sapply(modelle, function(m) round(fitMeasures(m, "chisq"), 3)),
+  df = sapply(modelle, function(m) fitMeasures(m, "df")),
+  CFI = sapply(modelle, function(m) round(fitMeasures(m, "cfi"), 3)),
+  RMSEA = sapply(modelle, function(m) round(fitMeasures(m, "rmsea"), 3)),
+  row.names = NULL
+)
+tab
+```
+
+Als Faustregel: Ein CFI-Unterschied von weniger als .01 zwischen aufeinanderfolgenden Stufen spricht fuer Messinvarianz (Chen, 2007).
+
+```{webr}
+#| warning: false
+# Chi-Quadrat-Differenztests
+cat("=== Modellvergleiche ===\n\n")
+vergleiche <- list(
+  "Konfigural vs. Metrisch" = anova(fit.config, fit.metric),
+  "Metrisch vs. Skalar"     = anova(fit.metric, fit.scalar),
+  "Skalar vs. Strikt"       = anova(fit.scalar, fit.strict)
+)
+for (name in names(vergleiche)) {
+  v <- vergleiche[[name]]
+  cat(name, ":\n")
+  cat("  Delta Chi2 =", round(v[["Chisq diff"]][2], 3),
+      "  Delta df =", v[["Df diff"]][2],
+      "  p =", round(v[["Pr(>Chisq)"]][2], 4), "\n\n")
+}
+```
+
+### Latente Mittelwertunterschiede
+
+Wenn skalare Invarianz gegeben ist, koennen wir die latenten Mittelwerte zwischen den Gruppen vergleichen. Die erste Gruppe dient als Referenz (latente Mittelwerte = 0):
+
+```{webr}
+#| warning: false
+summary(fit.scalar)
+```
+
+Unter "Intercepts" der zweiten Gruppe (Grant-White) sehen wir die geschaetzten latenten Mittelwertunterschiede relativ zur ersten Gruppe (Pasteur).
+
+
+## Fehlende Werte und FIML
+
+### Das Problem
+
+In der Praxis fehlen haeufig einzelne Werte. Der einfachste Umgang ist **listenweiser Ausschluss** (*listwise deletion*): Alle Personen mit mindestens einem fehlenden Wert werden komplett entfernt. Das kann zu erheblichem Datenverlust fuehren.
+
+### Daten mit fehlenden Werten erzeugen
+
+Wir fuegen dem Holzinger-Swineford-Datensatz zufaellig ca. 5% fehlende Werte pro Variable hinzu:
+
+```{webr}
+set.seed(1234)
+Y.miss <- as.matrix(HolzingerSwineford1939[, 7:15])
+N <- nrow(Y.miss)
+
+# Zufaellig ca. 5% der Werte pro Variable auf NA setzen
+Y.missing <- apply(Y.miss, 2L, function(x) {
+  x[sample(1:N, floor(N/20))] <- as.numeric(NA); x
+})
+
+# Wie viele fehlende Werte?
+cat("Fehlende Werte pro Variable:\n")
+colSums(is.na(Y.missing))
+cat("\nPersonen mit mindestens einem NA:",
+    sum(apply(Y.missing, 1, function(r) any(is.na(r)))), "von", N, "\n")
+cat("Verbleibend bei listenweisem Ausschluss:",
+    sum(complete.cases(Y.missing)), "\n")
+```
+
+### Listenweiser Ausschluss vs. FIML
+
+```{webr}
+#| warning: false
+# Datensatz mit fehlenden Werten
+HS.missing <- HolzingerSwineford1939[, c(1, 7:15)]
+HS.missing[, -1] <- as.data.frame(Y.missing)
+
+# Listenweiser Ausschluss
+fit.listwise <- cfa(HS.model, data = HS.missing, missing = "listwise")
+
+# FIML
+fit.fiml <- cfa(HS.model, data = HS.missing, missing = "fiml")
+
+cat("=== Listenweiser Ausschluss ===\n")
+cat("N verwendet:", lavInspect(fit.listwise, "nobs"), "\n")
+fitMeasures(fit.listwise, c("chisq", "df", "cfi", "rmsea"))
+```
+
+```{webr}
+#| warning: false
+cat("=== FIML ===\n")
+cat("N verwendet:", lavInspect(fit.fiml, "nobs"), "\n")
+fitMeasures(fit.fiml, c("chisq", "df", "cfi", "rmsea"))
+```
+
+FIML nutzt **alle** Beobachtungen -- auch die mit fehlenden Werten -- und liefert daher effizientere Schaetzungen.
+
+
+### Wie FIML funktioniert
+
+Bei FIML wird statt einer einzelnen globalen Diskrepanzfunktion die **Log-Likelihood fuer jede Person einzeln** berechnet, wobei nur die tatsaechlich beobachteten Variablen verwendet werden:
+
+$$\log L(\boldsymbol{\theta} | \mathbf{y}_i) = -\frac{P_i}{2} \ln(2\pi) - \frac{1}{2} \ln|\boldsymbol{\Sigma}_i(\boldsymbol{\theta})| - \frac{1}{2} [\mathbf{y}_i - \boldsymbol{\mu}_i(\boldsymbol{\theta})]' \boldsymbol{\Sigma}_i(\boldsymbol{\theta})^{-1} [\mathbf{y}_i - \boldsymbol{\mu}_i(\boldsymbol{\theta})]$$
+
+Dabei ist $P_i$ die Anzahl der beobachteten Variablen fuer Person $i$, und $\boldsymbol{\Sigma}_i$ und $\boldsymbol{\mu}_i$ sind die entsprechenden Teilmatrizen bzw. Teilvektoren (nach Entfernung der Zeilen/Spalten der fehlenden Variablen). Die Gesamt-Log-Likelihood ist die Summe ueber alle Personen:
+
+$$\log L(\boldsymbol{\theta} | \mathcal{Y}) = \sum_{i=1}^{N} \log L(\boldsymbol{\theta} | \mathbf{y}_i)$$
+
+
+### FIML-Diskrepanzfunktion in R
+
+Fuer FIML brauchen wir eine vereinfachte `x2implied`-Funktion, bei der die latenten Mittelwerte direkt in den Intercepts aufgehen (da wir $\boldsymbol{\alpha} = \mathbf{0}$ fixieren):
+
+```{webr}
+# Vereinfachte Funktion: gibt Sigma und Mu zurueck
+# Mu = nu (Intercepts), da alpha = 0
+x2implied.simple <- function(x) {
+  LAMBDA <- matrix(0, 9, 3)
+  LAMBDA[1,1] <- 1
+  LAMBDA[2,1] <- x[1]; LAMBDA[3,1] <- x[2]
+  LAMBDA[4,2] <- 1
+  LAMBDA[5,2] <- x[3]; LAMBDA[6,2] <- x[4]
+  LAMBDA[7,3] <- 1
+  LAMBDA[8,3] <- x[5]; LAMBDA[9,3] <- x[6]
+  PSI <- matrix(0, 3, 3)
+  PSI[1,1] <- x[7]
+  PSI[2,1] <- PSI[1,2] <- x[8]
+  PSI[3,1] <- PSI[1,3] <- x[9]
+  PSI[2,2] <- x[10]
+  PSI[3,2] <- PSI[2,3] <- x[11]
+  PSI[3,3] <- x[12]
+  THETA <- matrix(0, 9, 9)
+  diag(THETA) <- x[13:21]
+  Sigma <- LAMBDA %*% PSI %*% t(LAMBDA) + THETA
+  Mu <- x[22:30]  # Intercepts = erwartete Mittelwerte
+  list(Sigma = Sigma, Mu = Mu)
+}
+
+# Parametervektor: x[1:21] = Kovarianzparameter, x[22:30] = Intercepts
+cat("x2implied.simple definiert (21 + 9 = 30 Parameter)\n")
+```
+
+Jetzt die eigentliche FIML-Diskrepanzfunktion. Der entscheidende Unterschied zur normalen ML-Funktion: In der Schleife ueber alle Personen werden fuer jede Person nur die **beobachteten** Variablen verwendet:
+
+```{webr}
+f.fiml.manual <- function(x) {
+  out <- x2implied.simple(x)
+  Sigma <- out$Sigma; Mu <- out$Mu
+
+  eigvals <- eigen(Sigma, symmetric = TRUE, only.values = TRUE)$values
+  if (any(eigvals < 0.0001)) return(1000000)
+
+  Sigma.inv.full <- solve(Sigma)
+  LogDet.full <- log(det(Sigma))
+
+  # Daten zentrieren mit modellimpliziertem Mittelwert
+  Yc <- t(t(Y.missing) - Mu)
+
+  DIST <- rep(as.numeric(NA), N)
+  logdet <- rep(as.numeric(NA), N)
+
+  for (i in 1:N) {
+    na.idx <- which(is.na(Y.missing[i, ]))
+
+    if (length(na.idx) > 0L) {
+      # Fehlende Variablen: Sigma und y reduzieren
+      iy <- Yc[i, -na.idx, drop = FALSE]
+      isigma <- Sigma[-na.idx, -na.idx, drop = FALSE]
+      isigma.inv <- solve(isigma)
+      ilogdet <- log(det(isigma))
+    } else {
+      # Vollstaendiger Fall
+      iy <- Yc[i, , drop = FALSE]
+      isigma.inv <- Sigma.inv.full
+      ilogdet <- LogDet.full
+    }
+
+    logdet[i] <- ilogdet
+    DIST[i]   <- sum(isigma.inv * crossprod(iy))
+  }
+
+  # Diskrepanzfunktion (= -2/N * loglik, bis auf Konstanten)
+  (sum(logdet) + sum(DIST)) / N
+}
+
+cat("FIML-Diskrepanzfunktion definiert.\n")
+cat("Fuer jede Person wird die Likelihood nur ueber die\n")
+cat("beobachteten Variablen berechnet -- das ist der Kern von FIML.\n")
+```
+
+### Vergleich der Parameterschaetzungen
+
+```{webr}
+#| warning: false
+# Vergleich: Listenweiser Ausschluss vs. FIML vs. Vollstaendige Daten
+fit.complete <- cfa(HS.model, data = HolzingerSwineford1939)
+
+est.complete <- round(coef(fit.complete), 3)
+est.lw       <- round(coef(fit.listwise), 3)
+est.fm       <- round(coef(fit.fiml), 3)
+
+# Faktorladungen vergleichen (erste 6 Parameter)
+vergl <- data.frame(
+  Parameter = names(est.complete)[1:6],
+  Vollstaendig = est.complete[1:6],
+  Listenweise = est.lw[1:6],
+  FIML = est.fm[1:6],
+  row.names = NULL
+)
+vergl
+```
+
+Die FIML-Schaetzungen liegen in der Regel naeher an den Schaetzungen aus den vollstaendigen Daten als die Schaetzungen aus dem listenweisen Ausschluss.
+
+
+## Zusammenfassung
+
+| Erweiterung | Schluesselidee | lavaan-Argument |
+|-------------|---------------|-----------------|
+| Mittelwertstruktur | $\boldsymbol{\mu} = \boldsymbol{\nu} + \boldsymbol{\Lambda}\boldsymbol{\alpha}$ modelliert Intercepts und latente Mittelwerte | `meanstructure = TRUE` |
+| Mehrgruppenmodelle | Gleiches Modell in verschiedenen Gruppen, stufenweise Restriktionen | `group = "var"`, `group.equal = ...` |
+| FIML | Likelihood pro Person, nur ueber beobachtete Variablen | `missing = "fiml"` |

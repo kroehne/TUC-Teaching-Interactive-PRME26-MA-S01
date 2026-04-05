@@ -1,0 +1,676 @@
+---
+title: "A | Interaktives Tutorial von Rosseel & Vidal (2025) - 3"
+subtitle: "Ordinale Variablen, WLSMV und die Verbindung zu IRT"
+format: live-html
+engine: knitr
+status: "Version 0.1"
+lang: de
+---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+
+
+```{webr}
+#| warning: false
+#| echo: false
+
+webr::install("quadprog",  repos = "https://kroehne.github.io/webr-quadprog-repo")
+
+suppressPackageStartupMessages(library(parallel))
+suppressPackageStartupMessages(library(lavaan))
+suppressPackageStartupMessages(library(TAM))
+
+assignInNamespace("lav_options_checkinterval", function(x, nm, num2int) {
+    if (any(is.na(x))) return(TRUE)
+    if (num2int) x <- as.integer(x)
+    oks <- vapply(x, function(x1) {
+      (x1 > nm$bounds[1] || (x1 == nm$bounds[1] && nm$first.in)) &&
+      (x1 < nm$bounds[2] || (x1 == nm$bounds[2] && nm$last.in))
+    }, TRUE)
+    all(oks)
+  }, ns = "lavaan")
+
+# ------------------------------------------------------------------
+# Vorberechnung aller Objekte
+# ------------------------------------------------------------------
+
+# --- Daten ---
+Y <- as.matrix(HolzingerSwineford1939[, 7:15])
+P <- ncol(Y)
+N <- nrow(Y)
+
+# --- Ordinale Version: Mediansplit -> 2 Kategorien ---
+HS9 <- HolzingerSwineford1939[, c("x1","x2","x3","x4","x5","x6","x7","x8","x9")]
+HSbinary <- as.data.frame(lapply(HS9, function(x) {
+  factor(ifelse(x <= median(x), 0, 1), levels = c(0, 1), ordered = TRUE)
+}))
+
+# --- 4 Kategorien ---
+HS4cat <- as.data.frame(lapply(HS9, function(x) {
+  breaks <- quantile(x, probs = c(0, 0.25, 0.5, 0.75, 1))
+  cuts <- cut(x, breaks = breaks, include.lowest = TRUE, labels = FALSE)
+  factor(cuts, ordered = TRUE)
+}))
+
+# --- CFA-Modell ---
+HS.model <- '
+  visual  =~ x1 + x2 + x3
+  textual =~ x4 + x5 + x6
+  speed   =~ x7 + x8 + x9
+'
+
+# --- Kontinuierliche Schaetzung (ML, Referenz) ---
+fit.ml <- cfa(HS.model, data = HolzingerSwineford1939)
+
+# --- ML auf ordinale Daten (falsch, aber lehrreich) ---
+HS4cat.num <- as.data.frame(lapply(HS4cat, as.numeric))
+fit.ml.ord <- cfa(HS.model, data = HS4cat.num)
+
+# --- WLSMV auf ordinale Daten (korrekt) ---
+fit.wlsmv.4 <- cfa(HS.model, data = HS4cat, ordered = TRUE)
+
+# --- WLSMV auf binaere Daten ---
+fit.wlsmv.2 <- cfa(HS.model, data = HSbinary, ordered = TRUE)
+
+# --- Polychorische Korrelation manuell (2x2 Fall) ---
+# Berechnung fuer x1 und x2 (binaer)
+
+# --- Schwellenwerte und polychorische Korrelationen von lavaan ---
+fit.wlsmv.4.inspect <- lavInspect(fit.wlsmv.4, "sampstat")
+
+# --- IRT-Parametrisierung ---
+fit.irt <- cfa(HS.model, data = HS4cat, ordered = TRUE,
+               parameterization = "theta")
+
+# --- 1PL/Rasch-Modell in lavaan ---
+rasch.model <- '
+  F =~ x4 + x5 + x6
+'
+fit.rasch <- cfa(rasch.model,
+                 data = HS4cat[, c("x4","x5","x6")],
+                 ordered = TRUE,
+                 parameterization = "theta",
+                 std.lv = TRUE)
+
+# --- TAM: GRM zum Vergleich ---
+# TAM braucht numerische Daten (0-basiert)
+dat.tam.3 <- as.data.frame(lapply(HS4cat[, c("x4","x5","x6")], function(x) as.numeric(x) - 1))
+tam.grm.3 <- TAM::tam.mml.2pl(resp = dat.tam.3, irtmodel = "GPCM", verbose = FALSE)
+
+# Q-Matrix fuer 3-Faktor-Modell (nur Struktur, kein TAM-Fit -- zu langsam in WebR)
+Q.matrix <- matrix(0, 9, 3, dimnames = list(paste0("x", 1:9), c("visual","textual","speed")))
+Q.matrix[1:3, 1] <- 1
+Q.matrix[4:6, 2] <- 1
+Q.matrix[7:9, 3] <- 1
+```
+
+## Einleitung
+
+In den Teilen [1](S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html) und [2](S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html) haben wir SEM mit **kontinuierlichen** Variablen behandelt. In der Praxis sind viele Variablen jedoch **ordinal** -- z.B. Likert-Skalen (1--5), dichotome Items (richtig/falsch) oder Bewertungen (gering/mittel/hoch). Dieses Tutorial erklaert:
+
+1. Warum die Behandlung ordinaler Daten als kontinuierlich problematisch ist
+2. Das **Schwellenwertmodell** (*threshold model*) als theoretische Grundlage
+3. **Polychorische Korrelationen** als Alternative zu Pearson-Korrelationen
+4. Den **WLSMV-Schaetzer** und seine Anwendung in lavaan
+5. Die **Verbindung zwischen CFA und IRT**
+
+**Referenzen:**
+
+- Rosseel, Y., & Vidal, M. (2025). A tutorial for understanding SEM using R. *British Journal of Mathematical and Statistical Psychology*. [doi:10.1111/bmsp.70003](https://doi.org/10.1111/bmsp.70003)
+- Flora, D. B., & Curran, P. J. (2004). An empirical evaluation of alternative methods of estimation for confirmatory factor analysis with ordinal data. *Psychological Methods*, 9(4), 466--491.
+- Rhemtulla, M., Brosseau-Liard, P. E., & Savalei, V. (2012). When can categorical variables be treated as continuous? *Psychological Methods*, 17(3), 354--373.
+
+
+## Das Problem: Ordinale Daten als kontinuierlich behandeln
+
+### Ordinale Version des Holzinger-Swineford-Datensatzes
+
+Um das Problem zu demonstrieren, erstellen wir eine ordinale Version unseres Datensatzes. Wir teilen jede Variable in 4 Kategorien (Quartile):
+
+```{webr}
+# Originaldaten
+HS9 <- HolzingerSwineford1939[, c("x1","x2","x3","x4","x5","x6",
+                                   "x7","x8","x9")]
+
+# In 4 Kategorien umwandeln (Quartile)
+HS4cat <- as.data.frame(lapply(HS9, function(x) {
+  breaks <- quantile(x, probs = c(0, 0.25, 0.5, 0.75, 1))
+  cuts <- cut(x, breaks = breaks, include.lowest = TRUE, labels = FALSE)
+  factor(cuts, ordered = TRUE)
+}))
+
+# Verteilung anschauen
+table(HS4cat$x1)
+```
+
+
+### Was passiert, wenn wir ordinal als kontinuierlich behandeln?
+
+Wenn wir die ordinalen Kategorien einfach als Zahlen (1, 2, 3, 4) behandeln und ML-Schaetzung verwenden, erhalten wir verzerrte Ergebnisse:
+
+```{webr}
+#| warning: false
+HS.model <- '
+  visual  =~ x1 + x2 + x3
+  textual =~ x4 + x5 + x6
+  speed   =~ x7 + x8 + x9
+'
+
+# ML auf die kontinuierlichen Originaldaten (korrekt)
+fit.ml <- cfa(HS.model, data = HolzingerSwineford1939)
+
+# ML auf die ordinalen Daten, als waeren sie kontinuierlich (falsch!)
+HS4cat.num <- as.data.frame(lapply(HS4cat, as.numeric))
+fit.ml.ord <- cfa(HS.model, data = HS4cat.num)
+
+# Faktorladungen vergleichen
+cat("=== Standardisierte Faktorladungen ===\n\n")
+std.ml <- standardizedSolution(fit.ml)
+std.ord <- standardizedSolution(fit.ml.ord)
+lad <- std.ml$op == "=~"
+
+vergl <- data.frame(
+  Faktor = std.ml$lhs[lad],
+  Item = std.ml$rhs[lad],
+  Kontinuierlich = round(std.ml$est.std[lad], 3),
+  Ordinal_als_kont = round(std.ord$est.std[lad], 3)
+)
+vergl
+```
+
+Die Faktorladungen werden systematisch **unterschaetzt** (*attenuation*), weil Pearson-Korrelationen zwischen ordinalen Variablen die wahren Zusammenhaenge unterschaetzen. Je weniger Kategorien, desto staerker der Effekt (Rhemtulla et al., 2012).
+
+
+## Das Schwellenwertmodell
+
+### Die Grundidee
+
+Das Schwellenwertmodell (Muthen, 1984) nimmt an, dass hinter jeder beobachteten ordinalen Variable $y$ eine **kontinuierliche latente Antwortvariable** $y^*$ liegt. Die beobachtete Kategorie ergibt sich durch Schwellenwerte (*thresholds*) $\tau_1, \tau_2, \ldots$, die $y^*$ in Abschnitte teilen:
+
+$$y = k \quad \text{wenn} \quad \tau_{k-1} < y^* \leq \tau_k$$
+
+Fuer eine Variable mit $C$ Kategorien gibt es $C - 1$ Schwellenwerte.
+
+**Beispiel** mit 4 Kategorien:
+
+$$
+y = \begin{cases}
+1 & \text{wenn } y^* \leq \tau_1 \\
+2 & \text{wenn } \tau_1 < y^* \leq \tau_2 \\
+3 & \text{wenn } \tau_2 < y^* \leq \tau_3 \\
+4 & \text{wenn } y^* > \tau_3
+\end{cases}
+$$
+
+Die Schwellenwerte werden aus den beobachteten Haeufigkeiten geschaetzt: Wenn z.B. 25% der Personen in Kategorie 1 fallen, dann ist $\tau_1 = \Phi^{-1}(0.25) \approx -0.674$ (wobei $\Phi^{-1}$ die inverse Standardnormalverteilung ist).
+
+### Schwellenwerte in R berechnen
+
+```{webr}
+# Schwellenwerte fuer x1 (4 Kategorien)
+freq <- table(HS4cat$x1)
+cum.prop <- cumsum(freq) / sum(freq)
+
+cat("Kumulative Anteile:\n")
+round(cum.prop, 3)
+
+# Schwellenwerte = inverse Normalverteilung der kumulativen Anteile
+# (nur fuer die ersten C-1 Kategorien)
+thresholds <- qnorm(cum.prop[1:3])
+cat("\nSchwellenwerte (tau_1, tau_2, tau_3):\n")
+round(thresholds, 3)
+```
+
+### Schwellenwerte in lavaan
+
+Wenn wir lavaan mit `ordered = TRUE` verwenden, schaetzt es automatisch die Schwellenwerte:
+
+```{webr}
+#| warning: false
+# CFA mit WLSMV fuer ordinale Daten
+fit.wlsmv.4 <- cfa(HS.model, data = HS4cat, ordered = TRUE)
+
+# Schwellenwerte anzeigen
+cat("Geschaetzte Schwellenwerte (lavaan):\n\n")
+parest <- parameterEstimates(fit.wlsmv.4)
+thresholds.lav <- parest[parest$op == "|", ]
+print(thresholds.lav[, c("lhs", "rhs", "est")], row.names = FALSE)
+```
+
+
+## Polychorische Korrelationen
+
+### Von Pearson zu polychorisch
+
+Pearson-Korrelationen messen den **linearen** Zusammenhang zwischen beobachteten Werten. Bei ordinalen Daten ist das problematisch, weil die beobachteten Kategorien nur grobe Approximationen der dahinterliegenden kontinuierlichen Variablen sind.
+
+**Polychorische Korrelationen** schaetzen stattdessen die Korrelation zwischen den latenten Antwortvariablen $y^*_i$ und $y^*_j$, unter der Annahme einer bivariaten Normalverteilung. Sie sind typischerweise **hoeher** als die entsprechenden Pearson-Korrelationen:
+
+```{webr}
+# Pearson-Korrelation (auf numerischen Kategorien)
+r.pearson <- cor(as.numeric(HS4cat$x4), as.numeric(HS4cat$x5))
+
+# Polychorische Korrelation (von lavaan geschaetzt)
+sampstat <- lavInspect(fit.wlsmv.4, "sampstat")
+r.polychor <- sampstat$cov["x4", "x5"]
+
+cat("Pearson-Korrelation  (x4, x5):", round(r.pearson, 3), "\n")
+cat("Polychorische Korr.  (x4, x5):", round(r.polychor, 3), "\n")
+cat("\nDie polychorische Korrelation ist hoeher,\n")
+cat("weil sie die Abschwachung durch die Kategorisierung korrigiert.\n")
+```
+
+
+### Vergleich: Pearson vs. polychorische Korrelationsmatrix
+
+```{webr}
+# Pearson-Korrelation (falsch fuer ordinale Daten)
+R.pearson <- cor(as.data.frame(lapply(HS4cat, as.numeric)))
+
+# Polychorische Korrelation (von lavaan)
+R.polychor <- sampstat$cov
+
+cat("=== Pearson-Korrelationen ===\n")
+round(R.pearson, 2)
+
+cat("\n=== Polychorische Korrelationen ===\n")
+round(R.polychor, 2)
+
+cat("\n=== Differenz (polychorisch - Pearson) ===\n")
+round(R.polychor - R.pearson, 2)
+```
+
+Die Differenzen sind durchweg positiv -- polychorische Korrelationen sind systematisch hoeher als Pearson-Korrelationen.
+
+
+## Der WLSMV-Schaetzer
+
+### Ueberblick
+
+Beim WLSMV-Verfahren (*Weighted Least Squares, Mean and Variance adjusted*) wird die Parameterschaetzung in **zwei Schritten** durchgefuehrt:
+
+**Schritt 1 -- Stichprobenstatistiken berechnen:**
+
+- Schwellenwerte $\hat{\tau}$ aus den beobachteten Haeufigkeiten
+- Polychorische Korrelationen $\hat{R}$ aus den bivariaten Haeufigkeiten
+- Die asymptotische Kovarianzmatrix $\hat{\Gamma}$ dieser Statistiken
+
+**Schritt 2 -- CFA auf den polychorischen Korrelationen:**
+
+Die Modellparameter (Faktorladungen, Faktorkovarianzen) werden geschaetzt, indem die modellimplizierte Korrelationsmatrix $\boldsymbol{\Sigma}(\boldsymbol{\theta})$ an die polychorische Korrelationsmatrix $\hat{R}$ angepasst wird. Statt der ML-Diskrepanzfunktion wird eine **gewichtete Kleinste-Quadrate-Funktion** verwendet:
+
+$$F_{\text{WLS}}(\boldsymbol{\theta}) = [\mathbf{s} - \boldsymbol{\sigma}(\boldsymbol{\theta})]' \mathbf{W} [\mathbf{s} - \boldsymbol{\sigma}(\boldsymbol{\theta})]$$
+
+wobei $\mathbf{s}$ die nicht-redundanten Elemente von $\hat{R}$ enthaelt, $\boldsymbol{\sigma}(\boldsymbol{\theta})$ die entsprechenden modellimplizierten Werte, und $\mathbf{W}$ eine Gewichtsmatrix ist.
+
+### WLS, DWLS und WLSMV: Begriffe sortieren
+
+In der Literatur und in verschiedenen Softwarepaketen werden mehrere verwandte Begriffe verwendet, die leicht zu Verwirrung fuehren. Hier eine Uebersicht:
+
+**WLS** (*Weighted Least Squares*, auch ADF = *Asymptotically Distribution Free*): Die volle Gewichtsmatrix $\mathbf{W} = \hat{\Gamma}^{-1}$ wird verwendet. $\hat{\Gamma}$ ist die asymptotische Kovarianzmatrix der Stichprobenstatistiken (polychorische Korrelationen und Schwellenwerte). Da $\hat{\Gamma}$ bei vielen Variablen sehr gross wird ($p^* \times p^*$, wobei $p^* = p(p+1)/2$), erfordert WLS **sehr grosse Stichproben** ($N > 5000$) und ist numerisch instabil. In der Praxis wird WLS daher selten verwendet.
+
+**DWLS** (*Diagonally Weighted Least Squares*): Statt der vollen $\hat{\Gamma}^{-1}$ wird nur deren **Diagonale** als Gewichtsmatrix $\mathbf{W}$ verwendet. Die Diagonalelemente sind die Kehrwerte der asymptotischen Varianzen jeder einzelnen polychorischen Korrelation. Das ist numerisch viel stabiler und funktioniert auch bei kleinerem $N$. DWLS liefert konsistente Parameterschaetzungen, aber die *naive* Chi-Quadrat-Statistik und Standardfehler sind verzerrt, weil die Korrelationen zwischen den Stichprobenstatistiken ignoriert werden.
+
+**WLSMV** (*Weighted Least Squares, Mean and Variance adjusted*): Die **Parameterschaetzung** erfolgt wie bei DWLS (diagonale Gewichtsmatrix). Aber danach werden die **Chi-Quadrat-Statistik** und die **Standardfehler** mit Hilfe der vollen $\hat{\Gamma}$-Matrix korrigiert:
+
+- Die Chi-Quadrat-Statistik wird so skaliert, dass ihr **Mittelwert** (*mean*) und ihre **Varianz** (*variance*) der theoretischen Chi-Quadrat-Verteilung entsprechen
+- Die Standardfehler werden ebenfalls mit der vollen $\hat{\Gamma}$-Matrix korrigiert (*robust* standard errors)
+
+WLSMV kombiniert also die numerische Stabilitaet von DWLS mit der statistischen Korrektheit von WLS.
+
+### Unterschiede zwischen lavaan und Mplus
+
+| | lavaan | Mplus |
+|---|---|---|
+| `estimator = "DWLS"` | DWLS + robuste Korrektur | -- (kein direktes Aequivalent) |
+| `estimator = "WLSMV"` | DWLS + Mean-and-Variance-Korrektur | `ESTIMATOR = WLSMV;` |
+| `estimator = "WLS"` | Volle WLS (selten sinnvoll, braucht $N > 5000$) | `ESTIMATOR = WLS;` |
+| `ordered = TRUE` (Default) | Waehlt automatisch **WLSMV** | Waehlt automatisch **WLSMV** |
+| `estimator = "ULSMV"` | ULS + robuste Korrektur | `ESTIMATOR = ULSMV;` |
+
+**Wichtig:** In lavaan liefern `estimator = "DWLS"` und `estimator = "WLSMV"` nahezu identische Ergebnisse. Beide verwenden DWLS fuer die Parameterschaetzung und robuste Korrekturen fuer Teststatistik und Standardfehler. Sie unterscheiden sich nur in technischen Details der Korrekturmethode. In der Praxis genuegt es, einfach `ordered = TRUE` zu setzen -- lavaan waehlt dann automatisch WLSMV.
+
+In lavaan kann man die Korrektur sichtbar machen. Beide Varianten -- `estimator = "DWLS"` und `estimator = "WLSMV"` -- verwenden intern denselben DWLS-Algorithmus fuer die Parameterschaetzung und wenden robuste Korrekturen an. lavaan berichtet einen **Skalierungsfaktor**, der zeigt, wie stark die Chi-Quadrat-Statistik korrigiert wurde:
+
+```{webr}
+#| warning: false
+fit.wlsmv <- cfa(HS.model, data = HS4cat, ordered = TRUE)
+
+# Skalierungsfaktor der Chi-Quadrat-Statistik
+cat("=== WLSMV: Robuste Korrektur ===\n\n")
+fm <- fitMeasures(fit.wlsmv,
+        c("chisq", "df", "pvalue",
+          "chisq.scaling.factor", "cfi", "rmsea"))
+cat("Chi-Quadrat (skaliert):  ", round(fm["chisq"], 3), "\n")
+cat("Freiheitsgrade:          ", fm["df"], "\n")
+cat("Skalierungsfaktor:       ", round(fm["chisq.scaling.factor"], 3), "\n")
+cat("CFI:                     ", round(fm["cfi"], 3), "\n")
+cat("RMSEA:                   ", round(fm["rmsea"], 3), "\n")
+
+cat("\nDer Skalierungsfaktor zeigt, wie stark die naive\n")
+cat("Chi-Quadrat-Statistik korrigiert wurde.\n")
+cat("Faktor > 1: naive Statistik war zu gross (konservativ).\n")
+cat("Faktor < 1: naive Statistik war zu klein (liberal).\n")
+```
+ 
+### Vergleich: ML (kontinuierlich) vs. WLSMV (ordinal)
+
+```{webr}
+#| warning: false
+# Standardisierte Ladungen vergleichen
+std.ml <- standardizedSolution(fit.ml)
+std.mlord <- standardizedSolution(fit.ml.ord)
+std.wlsmv <- standardizedSolution(fit.wlsmv.4)
+
+lad <- std.ml$op == "=~"
+
+vergl <- data.frame(
+  Faktor = std.ml$lhs[lad],
+  Item = std.ml$rhs[lad],
+  ML_Original = round(std.ml$est.std[lad], 3),
+  ML_Ordinal  = round(std.mlord$est.std[lad], 3),
+  WLSMV       = round(std.wlsmv$est.std[lad], 3)
+)
+vergl
+```
+
+**WLSMV** auf den ordinalen Daten liefert Ladungen, die den ML-Schaetzungen auf den **Originaldaten** viel naeher kommen als ML auf den ordinalen Daten. Das zeigt: WLSMV korrigiert die Abschwachung durch die Kategorisierung.
+
+### Effekt der Kategorienzahl
+
+Was passiert, wenn wir nur 2 statt 4 Kategorien haben? Je weniger Kategorien, desto wichtiger wird WLSMV:
+
+```{webr}
+#| warning: false
+# Binaere Version (Mediansplit)
+HSbinary <- as.data.frame(lapply(HS9, function(x) {
+  factor(ifelse(x <= median(x), 0, 1), levels = c(0, 1), ordered = TRUE)
+}))
+
+fit.wlsmv.2 <- cfa(HS.model, data = HSbinary, ordered = TRUE)
+
+std.wlsmv.2 <- standardizedSolution(fit.wlsmv.2)
+lad <- std.wlsmv.2$op == "=~"
+
+vergl2 <- data.frame(
+  Faktor = std.ml$lhs[lad],
+  Item = std.ml$rhs[lad],
+  ML_Original = round(std.ml$est.std[lad], 3),
+  WLSMV_4Kat  = round(std.wlsmv$est.std[lad], 3),
+  WLSMV_2Kat  = round(std.wlsmv.2$est.std[lad], 3)
+)
+vergl2
+```
+
+Selbst mit nur 2 Kategorien approximiert WLSMV die wahren Ladungen oft erstaunlich gut -- dank des Schwellenwertmodells und der tetrachorischen/polychorischen Korrelationen (Flora & Curran, 2004).
+
+
+## Die Verbindung zwischen CFA und IRT
+
+### CFA und IRT als zwei Seiten derselben Medaille
+
+Ein CFA-Modell fuer ordinale Daten und ein IRT-Modell (Item Response Theory) beschreiben **denselben statistischen Prozess**, nur mit unterschiedlicher Parametrisierung:
+
+| | CFA (Delta-Parametrisierung) | IRT (Theta-Parametrisierung) |
+|---|---|---|
+| Latente Variable | Faktor $\eta$ | Trait $\theta$ |
+| Itemparameter | Faktorladung $\lambda$, Schwellenwert $\tau$ | Diskrimination $a$, Schwierigkeit $b$ |
+| Residualvarianz | Frei geschaetzt | Auf 1 fixiert |
+| Faktorvarianz | Auf 1 fixiert (std.lv) | Frei geschaetzt |
+
+Die Umrechnung ist direkt:
+
+$$a_j = \frac{\lambda_j}{\sqrt{1 - \lambda_j^2}} \qquad b_{jk} = \frac{\tau_{jk}}{\lambda_j}$$
+
+wobei $a_j$ die IRT-Diskrimination, $b_{jk}$ die IRT-Schwierigkeit fuer Kategorie $k$ und $\lambda_j$ die standardisierte Faktorladung ist.
+
+
+### CFA in der Standard-Parametrisierung (Delta)
+
+In der Standard-Parametrisierung ("delta") hat lavaan die Residualvarianzen der latenten Antwortvariablen $y^*$ als freie Parameter. Die Gesamtvarianz von $y^*$ ist nicht fixiert:
+
+```{webr}
+#| warning: false
+fit.delta <- cfa(HS.model, data = HS4cat, ordered = TRUE,
+                 parameterization = "delta")
+
+cat("=== Delta-Parametrisierung (Standard) ===\n\n")
+parest.d <- parameterEstimates(fit.delta)
+lad.d <- parest.d[parest.d$op == "=~", ]
+cat("Faktorladungen:\n")
+print(lad.d[, c("lhs", "rhs", "est", "se")], row.names = FALSE)
+```
+
+
+### CFA in der IRT-Parametrisierung (Theta)
+
+In der Theta-Parametrisierung werden die Residualvarianzen auf 1 fixiert. Die resultierenden Faktorladungen entsprechen direkt den IRT-Diskriminationsparametern (bis auf eine Transformation):
+
+```{webr}
+#| warning: false
+fit.theta <- cfa(HS.model, data = HS4cat, ordered = TRUE,
+                 parameterization = "theta")
+
+cat("=== Theta-Parametrisierung (IRT-nah) ===\n\n")
+parest.t <- parameterEstimates(fit.theta)
+
+# Faktorladungen
+lad.t <- parest.t[parest.t$op == "=~", ]
+cat("Faktorladungen (= IRT slope / Diskrimination):\n")
+print(lad.t[, c("lhs", "rhs", "est", "se")], row.names = FALSE)
+
+# Schwellenwerte
+thr.t <- parest.t[parest.t$op == "|", ]
+cat("\nSchwellenwerte (= IRT difficulty / Schwierigkeit):\n")
+print(thr.t[, c("lhs", "rhs", "est", "se")], row.names = FALSE)
+```
+
+
+### Umrechnung: CFA-Ladungen zu IRT-Parametern
+
+```{webr}
+# Standardisierte Ladungen aus der Delta-Parametrisierung
+std.delta <- standardizedSolution(fit.delta)
+lad.idx <- std.delta$op == "=~"
+lambda.std <- std.delta$est.std[lad.idx]
+item.names <- std.delta$rhs[lad.idx]
+
+# IRT-Diskrimination: a = lambda / sqrt(1 - lambda^2)
+a.irt <- lambda.std / sqrt(1 - lambda.std^2)
+
+# Ladungen aus Theta-Parametrisierung (sollten = a.irt sein)
+lad.theta <- parest.t[parest.t$op == "=~", "est"]
+
+cat("=== Umrechnung CFA -> IRT ===\n\n")
+umrechnung <- data.frame(
+  Item = item.names,
+  Lambda_std = round(lambda.std, 3),
+  a_berechnet = round(a.irt, 3),
+  a_theta = round(lad.theta, 3)
+)
+umrechnung
+```
+
+Die berechneten IRT-Diskriminationsparameter (`a_berechnet`) stimmen mit den Faktorladungen aus der Theta-Parametrisierung (`a_theta`) ueberein. Das zeigt: **CFA und IRT sind aequivalent** -- es ist nur eine Frage der Parametrisierung.
+
+
+### Ein einfaches IRT-Modell: 1-Faktor-CFA = Graded Response Model
+
+Ein Einzel-Faktor-CFA fuer ordinale Items ist aequivalent zum **Graded Response Model** (GRM) aus der IRT:
+
+```{webr}
+#| warning: false
+# 1-Faktor-Modell fuer die textual-Items
+grm.model <- '
+  F =~ x4 + x5 + x6
+'
+fit.grm <- cfa(grm.model,
+               data = HS4cat[, c("x4","x5","x6")],
+               ordered = TRUE,
+               parameterization = "theta",
+               std.lv = TRUE)
+
+cat("=== Graded Response Model (via CFA) ===\n\n")
+parest.grm <- parameterEstimates(fit.grm)
+
+# Diskriminationsparameter
+cat("Diskrimination (a):\n")
+lad.grm <- parest.grm[parest.grm$op == "=~", ]
+print(lad.grm[, c("rhs", "est")], row.names = FALSE)
+
+# Schwierigkeitsparameter
+cat("\nSchwierigkeit (b = tau / a):\n")
+thr.grm <- parest.grm[parest.grm$op == "|", ]
+for (item in unique(thr.grm$lhs)) {
+  a <- lad.grm$est[lad.grm$rhs == item]
+  taus <- thr.grm$est[thr.grm$lhs == item]
+  bs <- round(taus / a, 3)
+  cat("  ", item, ": b =", paste(bs, collapse = ", "), "\n")
+}
+```
+
+
+### Vergleich mit TAM: IRT-Software bestaetigt die Aequivalenz
+
+Um die Aequivalenz von CFA und IRT empirisch zu pruefen, schaetzen wir dasselbe Modell mit dem IRT-Paket **TAM** (Test Analysis Modules). TAM verwendet marginale Maximum-Likelihood-Schaetzung (MML), den Standard-Schaetzer in der IRT.
+
+#### 1-Faktor-Modell (textual-Items): lavaan vs. TAM
+
+```{webr}
+#| warning: false
+# --- lavaan: GRM via CFA (Theta-Parametrisierung) ---
+grm.model <- '
+  F =~ x4 + x5 + x6
+'
+fit.grm <- cfa(grm.model,
+               data = HS4cat[, c("x4","x5","x6")],
+               ordered = TRUE,
+               parameterization = "theta",
+               std.lv = TRUE)
+
+parest.grm <- parameterEstimates(fit.grm)
+lad.grm <- parest.grm[parest.grm$op == "=~", ]
+thr.grm <- parest.grm[parest.grm$op == "|", ]
+
+cat("=== lavaan (CFA, Theta-Parametrisierung) ===\n\n")
+cat("Diskrimination (a = Faktorladung):\n")
+for (item in lad.grm$rhs) {
+  cat("  ", item, ":", round(lad.grm$est[lad.grm$rhs == item], 3), "\n")
+}
+cat("\nSchwellenwerte (tau):\n")
+for (item in unique(thr.grm$lhs)) {
+  taus <- thr.grm$est[thr.grm$lhs == item]
+  cat("  ", item, ":", paste(round(taus, 3), collapse = ", "), "\n")
+}
+```
+
+```{webr}
+#| warning: false
+# --- TAM: Graded Response Model (2PL/GPCM) ---
+# TAM braucht numerische, 0-basierte Daten
+dat.tam.3 <- as.data.frame(lapply(HS4cat[, c("x4","x5","x6")],
+                                   function(x) as.numeric(x) - 1))
+
+tam.grm.3 <- TAM::tam.mml.2pl(dat.tam.3, irtmodel = "GPCM", verbose = FALSE)
+
+cat("=== TAM (IRT, MML-Schaetzung) ===\n\n")
+
+# Struktur der B-Matrix anschauen
+# In TAM ist B ein 3D-Array: Items x Kategorien x Dimensionen
+# Fuer ein 1-Faktor-Modell: B[item, 2, 1] = Diskrimination
+cat("Diskrimination (a):\n")
+for (i in 1:ncol(dat.tam.3)) {
+  cat("  ", names(dat.tam.3)[i], ":",
+      round(tam.grm.3$B[i, 2, 1], 3), "\n")
+}
+
+# Schwierigkeitsparameter (xsi)
+cat("\nSchwellenwerte / Schwierigkeiten (xsi):\n")
+for (i in 1:ncol(dat.tam.3)) {
+  item.name <- names(dat.tam.3)[i]
+  xsi.idx <- grep(paste0("^", item.name), rownames(tam.grm.3$xsi))
+  xsis <- tam.grm.3$xsi$xsi[xsi.idx]
+  cat("  ", item.name, ":", paste(round(xsis, 3), collapse = ", "), "\n")
+}
+```
+
+```{webr}
+#| warning: false
+# --- Direkter Vergleich der Diskriminationsparameter ---
+cat("=== Vergleich: Diskrimination (a) ===\n\n")
+
+a.lavaan <- lad.grm$est
+a.tam <- tam.grm.3$B[1:3, 2, 1]
+
+vergl.a <- data.frame(
+  Item = c("x4", "x5", "x6"),
+  lavaan_CFA = round(a.lavaan, 3),
+  TAM_IRT = round(a.tam, 3),
+  Differenz = round(a.lavaan - a.tam, 3)
+)
+vergl.a
+```
+
+Die Diskriminationsparameter aus lavaan (CFA) und TAM (IRT) sind vergleichbar. Kleine Unterschiede ergeben sich aus den verschiedenen Schaetzmethoden: lavaan verwendet WLSMV (basierend auf polychorischen Korrelationen), TAM verwendet marginale Maximum Likelihood (MML). Bei grossem $N$ konvergieren beide Ansaetze.
+
+
+#### Mehrdimensionale Modelle: Q-Matrix = Lambda-Matrix
+
+Grundsaetzlich kann TAM auch mehrdimensionale Modelle schaetzen. Dafuer verwendet man eine **Q-Matrix**, die genau der Ladungsstruktur der $\boldsymbol{\Lambda}$-Matrix im CFA entspricht:
+
+```{webr}
+# Q-Matrix: Zuordnung Items -> Faktoren
+Q.matrix <- matrix(0, 9, 3,
+  dimnames = list(paste0("x", 1:9), c("visual","textual","speed")))
+Q.matrix[1:3, 1] <- 1  # x1-x3 -> visual
+Q.matrix[4:6, 2] <- 1  # x4-x6 -> textual
+Q.matrix[7:9, 3] <- 1  # x7-x9 -> speed
+
+cat("Q-Matrix (= Ladungsstruktur der Lambda-Matrix):\n")
+Q.matrix
+
+# In TAM waere der Aufruf:
+# tam.3f <- TAM::tam.mml.2pl(dat, Q = Q.matrix)
+# Das dauert in WebR jedoch zu lange (MML-Schaetzung fuer
+# mehrdimensionale Modelle ist rechenintensiv).
+# In einer lokalen R-Installation funktioniert es problemlos.
+```
+
+Die Q-Matrix in TAM und die $\boldsymbol{\Lambda}$-Matrix im CFA beschreiben dieselbe Modellstruktur -- nur die Terminologie unterscheidet sich. Mehrdimensionale IRT-Modelle sind allerdings deutlich rechenintensiver als WLSMV-basierte CFA, da sie numerische Integration ueber die latenten Dimensionen erfordern (bei TAM: adaptive Gauss-Hermite-Quadratur). Fuer mehrdimensionale ordinale Modelle ist lavaan mit WLSMV daher oft die praktischere Wahl.
+
+
+## Wann welchen Schaetzer verwenden?
+
+Basierend auf Rhemtulla et al. (2012) und Flora & Curran (2004):
+
+| Situation | Empfehlung |
+|-----------|-----------|
+| Kontinuierliche Variablen | ML (robust: MLR) |
+| Ordinale Variablen, $\geq$ 5 Kategorien | ML oft akzeptabel, WLSMV besser |
+| Ordinale Variablen, 2--4 Kategorien | **WLSMV** (oder DWLS) notwendig |
+| Binaere/dichotome Variablen | **WLSMV** zwingend |
+| Kleine Stichprobe ($N < 200$) | ML bevorzugen (WLSMV braucht groesseres $N$) |
+| IRT-Interpretation gewuenscht | WLSMV mit `parameterization = "theta"` |
+
+In lavaan ist die Umsetzung denkbar einfach:
+
+```{webr}
+#| warning: false
+# Alles was man braucht: ordered = TRUE
+# lavaan waehlt automatisch WLSMV
+fit <- cfa(HS.model, data = HS4cat, ordered = TRUE)
+
+cat("Schaetzer:", lavInspect(fit, "options")$estimator, "\n")
+cat("Test:", lavInspect(fit, "options")$test, "\n")
+```
+
+
+## Zusammenfassung
+
+| Konzept | Schluesselidee |
+|---------|---------------|
+| Schwellenwertmodell | Ordinalskala entsteht durch Schwellenwerte auf einer latenten kontinuierlichen Variable |
+| Polychorische Korrelation | Schaetzt die Korrelation der latenten Antwortvariablen, korrigiert die Abschwachung durch Kategorisierung |
+| WLSMV | Fittet das SEM-Modell an die polychorischen Korrelationen statt an Pearson-Korrelationen |
+| CFA = IRT | Ein CFA fuer ordinale Daten und ein IRT-Modell (z.B. GRM) sind statistisch aequivalent, nur unterschiedlich parametrisiert |
+| Theta-Parametrisierung | In lavaan: `parameterization = "theta"` liefert direkt IRT-Parameter |

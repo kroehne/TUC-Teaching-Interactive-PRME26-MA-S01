@@ -9,17 +9,17 @@ lang: de
 {{< include _extensions/r-wasm/live/_knitr.qmd >}}
  
 ## 3-Faktor-CFA 
- 
-
 
 ```{webr}
 #| warning: false
 #| echo: false
 
 webr::install("quadprog",  repos = "https://kroehne.github.io/webr-quadprog-repo")
-
-library(mnormt)
-library(lavaan)                
+ 
+suppressPackageStartupMessages(library(mnormt))
+suppressPackageStartupMessages(library(lavaan))
+suppressPackageStartupMessages(library(lavaanPlot))
+suppressPackageStartupMessages(library(DT))
 
 assignInNamespace("lav_options_checkinterval", function(x, nm, num2int) {
     if (any(is.na(x))) return(TRUE)
@@ -37,9 +37,56 @@ model_3f <-  "visual  =~ x1 + x2 + x3
 
 fit_3f <- cfa(model_3f, data = HolzingerSwineford1939)
 
-library(lavaanPlot)
+
+View <- function(dat){
+  dat_name <- deparse(substitute(dat))
+  df_display <- dat |>
+  dplyr::mutate(
+    dplyr::across(everything(), ~ ifelse(is.na(.x), "❌ (NA)", .x))
+  )
+  
+  DT::datatable(
+    df_display,
+    rownames = FALSE, 
+    options = list(
+      pageLength = 5,
+      scrollX = TRUE,
+      dom = 'tip',   
+      columnDefs = list(list(className = 'dt-center', targets = "_all"))
+    ),
+    caption = htmltools::tags$caption(
+      style = 'caption-side: top; text-align: left;',
+      'data.frame: ', htmltools::strong(dat_name)
+    )
+  )  
+}
 ```
 
+
+### Daten
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: false
+library(lavaan)
+View(HolzingerSwineford1939)
+
+```
+
+### Modell-Syntax
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: false
+model_3f <-  "visual  =~ x1 + x2 + x3
+              textual =~ x4 + x5 + x6
+              speed   =~ x7 + x8 + x9"
+model_3f
+```
+
+### Modell-Schätzung
 
 ```{webr}
 #| warning: false
@@ -53,26 +100,28 @@ fit_3f <- cfa(model_3f, data = HolzingerSwineford1939)
 summary(fit_3f)
 ```
 
+### Standardisierte Lösung
+
 ```{webr}
 #| warning: false
 #| echo: true
 #| autorun: false
-# Standardisierte Lösung
 standardizedSolution(fit_3f)[1:9, 
             c("lhs","op","rhs","est.std")]
 ```
 
-
+### Pfaddiagramm
 
 ```{webr}
 #| warning: false
 #| echo: true
 library(lavaanPlot)
-lavaanPlot(model = fit_3f,  
-     node_options = list(shape = "box", fontname = "Helvetica"), 
-     edge_options = list(color = "grey"), 
+lavaanPlot(model = fit_3f,   
      coefs = TRUE, stand = TRUE,covs = TRUE)
 ```
+
+<details>
+<summary>Alternativen zur Darstellung</summary>
 
 ```{webr}
 #| warning: false
@@ -80,3 +129,56 @@ lavaanPlot(model = fit_3f,
 library(tidySEM)
 graph_sem(fit_3f)
 ```
+
+Empfohlen, aber funktioniert nur lokal in R:
+
+```{webr}
+#| warning: false
+#| echo: true
+library(semPlot)
+
+semPaths(
+  fit_3f,
+  what = "std",
+  layout = "tree",  
+  rotation = 2 
+)
+```
+
+</details>
+
+
+### Modellfit
+
+```{webr}
+#| warning: false
+#| echo: true
+fitMeasures(fit_3f, c("chisq", "df", "pvalue",
+                       "cfi", "tli",
+                       "rmsea", "rmsea.ci.lower",
+                       "rmsea.ci.upper", "srmr"))
+```
+
+
+
+### Faktorkorrelationen
+
+```{webr}
+#| warning: false
+#| echo: true
+lavInspect(fit_3f, "cor.lv")
+```
+
+
+
+
+### Residualkorrelationen
+
+```{webr}
+#| warning: false
+#| echo: true
+resid(fit_3f, type = "standardized")$cov
+```
+
+
+

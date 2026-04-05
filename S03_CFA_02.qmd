@@ -7,7 +7,60 @@ lang: de
 ---
 
 {{< include _extensions/r-wasm/live/_knitr.qmd >}}
+
+
+```{webr}
+#| warning: false
+#| echo: false
+
+webr::install("quadprog",  repos = "https://kroehne.github.io/webr-quadprog-repo")
  
+suppressPackageStartupMessages(library(mnormt))
+suppressPackageStartupMessages(library(lavaan))
+suppressPackageStartupMessages(library(lavaanPlot))
+suppressPackageStartupMessages(library(DT))
+
+assignInNamespace("lav_options_checkinterval", function(x, nm, num2int) {
+    if (any(is.na(x))) return(TRUE)
+    if (num2int) x <- as.integer(x)                                                                                              
+    oks <- vapply(x, function(x1) {
+      (x1 > nm$bounds[1] || (x1 == nm$bounds[1] && nm$first.in)) &&                                                              
+      (x1 < nm$bounds[2] || (x1 == nm$bounds[2] && nm$last.in))                                                                  
+    }, TRUE)
+    all(oks)                                                                                                                     
+  }, ns = "lavaan")
+ 
+
+View <- function(dat){
+  dat_name <- deparse(substitute(dat))
+  df_display <- dat |>
+  dplyr::mutate(
+    dplyr::across(everything(), ~ ifelse(is.na(.x), "❌ (NA)", .x))
+  )
+  
+  DT::datatable(
+    df_display,
+    rownames = FALSE, 
+    options = list(
+      pageLength = 5,
+      scrollX = TRUE,
+      dom = 'tip',   
+      columnDefs = list(list(className = 'dt-center', targets = "_all"))
+    ),
+    caption = htmltools::tags$caption(
+      style = 'caption-side: top; text-align: left;',
+      'data.frame: ', htmltools::strong(dat_name)
+    )
+  )  
+}
+
+model_3f <-  "visual  =~ x1 + x2 + x3
+              textual =~ x4 + x5 + x6
+              speed   =~ x7 + x8 + x9"
+fit_3f <- cfa(model_3f, data = HolzingerSwineford1939)
+
+```
+
 ## 1-Faktor vs. 3-Faktor 
 
 ::: {.callout-important title="Aufgabe"}
@@ -18,10 +71,24 @@ lang: de
 5. **Diskutieren** Sie: Ist der 3-Faktor-Fit signifikant besser? Wie groß ist die Verbesserung in CFI?
 :::
 
+<details open>
+<summary>Daten</summary>
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: false
+View(HolzingerSwineford1939)
+```
+
+</details>
+
+
+<details>
+<summary>Hilfestellung</summary>
 ```{r}
 #| echo: true
 #| eval: false
-# Hilfestellung:
 model_1f <- '
   g =~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9
 '
@@ -35,3 +102,15 @@ fitMeasures(fit_3f, c("chisq", "df", "cfi", "rmsea", "srmr"))
 anova(fit_1f, fit_3f)
 ```
 
+</details>
+
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: false
+library(lavaan)
+model_1f <-  ""
+
+# ...
+```

@@ -32,19 +32,19 @@ website:
     collapse-level: 1
     style: floating
     contents:
-      - section: "01: Vorbesprechung"
+      - section: "I: Vorbesprechung"
         contents:
           - href: S01_SteyerEid2001BoxFandG_01.qmd
             text: "A | Grundlage und Rechenregeln"
           - href: S01_SteyerEid2001Game_01.qmd
             text: "B | MatheQuest: SEM"
-      - section: "02: Grundlagen"
+      - section: "Tag 1 - II: Grundlagen"
         contents:
           - href: S02_PD_01.qmd
             text: "A | Übung 1"
           - href: S02_PD_02.qmd
             text: "B | Übung 2"
-      - section: "03: CFA"
+      - section: "Tag 1 - III: Schätzung"
         contents:
           - href: S03_CFA_01.qmd
             text: "A | Live"
@@ -52,6 +52,42 @@ website:
             text: "B | Übung 1"
           - href: S03_CFA_03.qmd
             text: "C | Übung 2"            
+          - href: S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.qmd
+            text: "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1"
+          - href: S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.qmd
+            text: "E | ℹ Tutorial von Rosseel & Vidal (2025) - 2"            
+      - section: "Tag 1 - IV: Einbettung"
+        contents:            
+          - href: S04_rosseelTutorialUnderstandingSEM2025_Interactive_03.qmd 
+            text: "A | ℹ Tutorial von Rosseel & Vidal (2025) - 3"                        
+      - section: "Tag 2 - VI: Messmodelle"
+        contents:            
+          - href: S06_Thema_01.qmd 
+            text: "A | Thema 1" 
+          - href: S06_Thema_02.qmd 
+            text: "B | Thema 2"
+          - href: S06_Thema_03.qmd 
+            text: "C | Thema 3"
+      - section: "Tag 2 - VII: Gruppenvergleiche"
+        contents:            
+          - href: S07_Thema_04.qmd 
+            text: "A | Thema 4" 
+          - href: S07_Thema_05.qmd 
+            text: "B | Thema 5"
+          - href: S07_Thema_06.qmd 
+            text: "C | Thema 6"
+      - section: "Tag 2 - VIII: Strukturmodelle"
+        contents:            
+          - href: S08_Thema_07.qmd 
+            text: "A | Thema 7" 
+          - href: S08_Thema_08.qmd 
+            text: "B | Thema 8"
+      - section: "Tag 2 - IX: Längsschnitt"
+        contents:                
+          - href: S09_Thema_09.qmd 
+            text: "A | Thema 9"                            
+          - href: S09_Thema_10.qmd 
+            text: "B | Thema 10"
             
 theme:
   light: 

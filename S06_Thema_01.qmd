@@ -1,0 +1,169 @@
+---
+title: "A | Thema 1"
+format: live-html
+engine: knitr  
+status: "Version 0.1"
+lang: de 
+---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+ 
+##  
+
+```{webr}
+#| warning: false
+#| echo: false
+
+webr::install("quadprog",  repos = "https://kroehne.github.io/webr-quadprog-repo")
+ 
+suppressPackageStartupMessages(library(mnormt))
+suppressPackageStartupMessages(library(lavaan))
+suppressPackageStartupMessages(library(lavaanPlot))
+suppressPackageStartupMessages(library(DT))
+
+assignInNamespace("lav_options_checkinterval", function(x, nm, num2int) {
+    if (any(is.na(x))) return(TRUE)
+    if (num2int) x <- as.integer(x)                                                                                              
+    oks <- vapply(x, function(x1) {
+      (x1 > nm$bounds[1] || (x1 == nm$bounds[1] && nm$first.in)) &&                                                              
+      (x1 < nm$bounds[2] || (x1 == nm$bounds[2] && nm$last.in))                                                                  
+    }, TRUE)
+    all(oks)                                                                                                                     
+  }, ns = "lavaan")
+
+model_3f <-  "visual  =~ x1 + x2 + x3
+              textual =~ x4 + x5 + x6
+              speed   =~ x7 + x8 + x9"
+
+fit_3f <- cfa(model_3f, data = HolzingerSwineford1939)
+
+
+View <- function(dat){
+  dat_name <- deparse(substitute(dat))
+  df_display <- dat |>
+  dplyr::mutate(
+    dplyr::across(everything(), ~ ifelse(is.na(.x), "❌ (NA)", .x))
+  )
+  
+  DT::datatable(
+    df_display,
+    rownames = FALSE, 
+    options = list(
+      pageLength = 5,
+      scrollX = TRUE,
+      dom = 'tip',   
+      columnDefs = list(list(className = 'dt-center', targets = "_all"))
+    ),
+    caption = htmltools::tags$caption(
+      style = 'caption-side: top; text-align: left;',
+      'data.frame: ', htmltools::strong(dat_name)
+    )
+  )  
+}
+```
+
+### Präsentation
+
+```{webr}
+#| warning: false
+#| echo: true
+# ==============================================================
+# Thema 01: Konfirmatorische Faktorenanalyse und Modellvergleich
+# Datensatz: HolzingerSwineford1939 (lavaan, N=301)
+# ==============================================================
+
+library(lavaan)
+library(lavaanPlot)
+
+data(HolzingerSwineford1939)
+dat <- HolzingerSwineford1939
+
+# ---- PRÄSENTATION: 3-Faktor-CFA ----
+
+model_3f <- '
+  visual  =~ x1 + x2 + x3
+  textual =~ x4 + x5 + x6
+  speed   =~ x7 + x8 + x9
+'
+
+fit_3f <- cfa(model_3f, data = dat)
+summary(fit_3f, fit.measures = TRUE, standardized = TRUE)
+
+# Pfaddiagramm
+lavaanPlot(model = fit_3f,   
+     coefs = TRUE, stand = TRUE,covs = TRUE)
+
+# Fit-Indizes einzeln
+fitMeasures(fit_3f, c("chisq", "df", "pvalue", "cfi", "tli",
+    "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr"))
+
+# Standardisierte Lösung
+standardizedSolution(fit_3f)
+
+# Faktorinterkorrelationen
+lavInspect(fit_3f, "cor.lv")
+
+```
+
+## Bericht
+
+```{webr}
+#| warning: false
+#| echo: true
+library(lavaan)
+library(lavaanPlot)
+
+data(HolzingerSwineford1939)
+dat <- HolzingerSwineford1939
+
+# ---- BERICHT: Modellvergleich (4 Modelle) ----
+
+# Modell a: 1-Faktor (g)
+model_1f <- '
+  g =~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9
+'
+fit_1f <- cfa(model_1f, data = dat)
+
+# Modell b: 3 korrelierte Faktoren (= Präsentationsmodell)
+# fit_3f bereits geschätzt
+
+# Modell c: 3 unkorrelierte (orthogonale) Faktoren
+model_3f_orth <- '
+  visual  =~ x1 + x2 + x3
+  textual =~ x4 + x5 + x6
+  speed   =~ x7 + x8 + x9
+'
+fit_3f_orth <- cfa(model_3f_orth, data = dat, orthogonal = TRUE)
+
+# Modell d: Hierarchisches Modell (g-Faktor 2. Ordnung)
+model_hier <- '
+  visual  =~ x1 + x2 + x3
+  textual =~ x4 + x5 + x6
+  speed   =~ x7 + x8 + x9
+  g       =~ visual + textual + speed
+'
+fit_hier <- cfa(model_hier, data = dat)
+
+
+# Pfaddiagramm
+lavaanPlot(model = fit_hier,   
+     coefs = TRUE, stand = TRUE,covs = TRUE)
+
+# Vergleichstabelle
+fits <- list("1-Faktor" = fit_1f,
+             "3 Faktoren (korreliert)" = fit_3f,
+             "3 Faktoren (orthogonal)" = fit_3f_orth,
+             "Hierarchisch (g)" = fit_hier)
+
+fit_table <- sapply(fits, function(f) {
+  fitMeasures(f, c("chisq", "df", "pvalue", "cfi", "tli",
+                    "rmsea", "srmr", "aic", "bic"))
+})
+round(t(fit_table), 3)
+
+# Chi-Quadrat-Differenztest: 1-Faktor vs. 3-Faktor
+anova(fit_1f, fit_3f)
+
+# Hierarchisch vs. 3-Faktor (gleiche df → identischer Fit bei 3 Faktoren)
+anova(fit_hier, fit_3f)
+```

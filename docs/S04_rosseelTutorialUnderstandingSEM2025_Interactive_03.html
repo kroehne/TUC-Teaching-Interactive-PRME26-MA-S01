@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>A | Interaktives Tutorial von Rosseel &amp; Vidal (2025) - 3</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-707d8167ce6003fca903bfe2be84ab7f.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-67566881ab4f3b133faea9d0fc5e8f68.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-e1513da737e43ca990c7d02ef8bc546c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-67566881ab4f3b133faea9d0fc5e8f68.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+<script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating fullcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./S04_rosseelTutorialUnderstandingSEM2025_Interactive_03.html">Tag 1 - IV: Einbettung</a></li><li class="breadcrumb-item"><a href="./S04_rosseelTutorialUnderstandingSEM2025_Interactive_03.html">A | ℹ Tutorial von Rosseel &amp; Vidal (2025) - 3</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<a href="./">
+<div style="margin-left:-50px;margin-top:-50px;">
+<img src="./static/logo.png" class="img-fluid">
+</div>
+</a>
+<div style="margin-top:-40px;margin-bottom:-25px;">
+<p><strong>TUC-PRME-26 | <br>MA-S01</strong></p>
+</div>
+</div></div>
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+      <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Dunkelmodus umschalten"><i class="bi"></i></a>
+</div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">I: Vorbesprechung</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S01_SteyerEid2001BoxFandG_01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A | Grundlage und Rechenregeln</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S01_SteyerEid2001Game_01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">B | MatheQuest: SEM</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Tag 1 - II: Grundlagen</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S02_PD_01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A | Übung 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S02_PD_02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">B | Übung 2</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Tag 1 - III: Schätzung</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S03_CFA_01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A | Live</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S03_CFA_02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">B | Übung 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S03_CFA_03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">C | Übung 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">D | ℹ Tutorial von Rosseel &amp; Vidal (2025) - 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">E | ℹ Tutorial von Rosseel &amp; Vidal (2025) - 2</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tag 1 - IV: Einbettung</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S04_rosseelTutorialUnderstandingSEM2025_Interactive_03.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">A | ℹ Tutorial von Rosseel &amp; Vidal (2025) - 3</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Tag 2 - VI: Messmodelle</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S06_Thema_01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A | Thema 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S06_Thema_02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">B | Thema 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S06_Thema_03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">C | Thema 3</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
+ <span class="menu-text">Tag 2 - VII: Gruppenvergleiche</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S07_Thema_04.qmd" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A | Thema 4</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S07_Thema_05.qmd" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">B | Thema 5</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S07_Thema_06.qmd" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">C | Thema 6</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
+ <span class="menu-text">Tag 2 - VIII: Strukturmodelle</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S08_Thema_07.qmd" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A | Thema 7</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S08_Thema_08.qmd" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">B | Thema 8</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false">
+ <span class="menu-text">Tag 2 - IX: Längsschnitt</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false" aria-label="Abschnitt umschalten">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S09_Thema_09.qmd" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A | Thema 9</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S09_Thema_10.qmd" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">B | Thema 10</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./S04_rosseelTutorialUnderstandingSEM2025_Interactive_03.html">Tag 1 - IV: Einbettung</a></li><li class="breadcrumb-item"><a href="./S04_rosseelTutorialUnderstandingSEM2025_Interactive_03.html">A | ℹ Tutorial von Rosseel &amp; Vidal (2025) - 3</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">A | Interaktives Tutorial von Rosseel &amp; Vidal (2025) - 3</h1>
+<p class="subtitle lead">Ordinale Variablen, WLSMV und die Verbindung zu IRT</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<div>
+<div id="webr-1" class="exercise-cell">
+
+</div>
+<script type="webr-1-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwid2FybmluZyI6ZmFsc2V9LCJjb2RlIjoiXG53ZWJyOjppbnN0YWxsKFwicXVhZHByb2dcIiwgIHJlcG9zID0gXCJodHRwczovL2tyb2VobmUuZ2l0aHViLmlvL3dlYnItcXVhZHByb2ctcmVwb1wiKVxuXG5zdXBwcmVzc1BhY2thZ2VTdGFydHVwTWVzc2FnZXMobGlicmFyeShwYXJhbGxlbCkpXG5zdXBwcmVzc1BhY2thZ2VTdGFydHVwTWVzc2FnZXMobGlicmFyeShsYXZhYW4pKVxuc3VwcHJlc3NQYWNrYWdlU3RhcnR1cE1lc3NhZ2VzKGxpYnJhcnkoVEFNKSlcblxuYXNzaWduSW5OYW1lc3BhY2UoXCJsYXZfb3B0aW9uc19jaGVja2ludGVydmFsXCIsIGZ1bmN0aW9uKHgsIG5tLCBudW0yaW50KSB7XG4gICAgaWYgKGFueShpcy5uYSh4KSkpIHJldHVybihUUlVFKVxuICAgIGlmIChudW0yaW50KSB4IDwtIGFzLmludGVnZXIoeClcbiAgICBva3MgPC0gdmFwcGx5KHgsIGZ1bmN0aW9uKHgxKSB7XG4gICAgICAoeDEgPiBubSRib3VuZHNbMV0gfHwgKHgxID09IG5tJGJvdW5kc1sxXSAmJiBubSRmaXJzdC5pbikpICYmXG4gICAgICAoeDEgPCBubSRib3VuZHNbMl0gfHwgKHgxID09IG5tJGJvdW5kc1syXSAmJiBubSRsYXN0LmluKSlcbiAgICB9LCBUUlVFKVxuICAgIGFsbChva3MpXG4gIH0sIG5zID0gXCJsYXZhYW5cIilcblxuIyAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cbiMgVm9yYmVyZWNobnVuZyBhbGxlciBPYmpla3RlXG4jIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLVxuXG4jIC0tLSBEYXRlbiAtLS1cblkgPC0gYXMubWF0cml4KEhvbHppbmdlclN3aW5lZm9yZDE5MzlbLCA3OjE1XSlcblAgPC0gbmNvbChZKVxuTiA8LSBucm93KFkpXG5cbiMgLS0tIE9yZGluYWxlIFZlcnNpb246IE1lZGlhbnNwbGl0IC0+IDIgS2F0ZWdvcmllbiAtLS1cbkhTOSA8LSBIb2x6aW5nZXJTd2luZWZvcmQxOTM5WywgYyhcIngxXCIsXCJ4MlwiLFwieDNcIixcIng0XCIsXCJ4NVwiLFwieDZcIixcIng3XCIsXCJ4OFwiLFwieDlcIildXG5IU2JpbmFyeSA8LSBhcy5kYXRhLmZyYW1lKGxhcHBseShIUzksIGZ1bmN0aW9uKHgpIHtcbiAgZmFjdG9yKGlmZWxzZSh4IDw9IG1lZGlhbih4KSwgMCwgMSksIGxldmVscyA9IGMoMCwgMSksIG9yZGVyZWQgPSBUUlVFKVxufSkpXG5cbiMgLS0tIDQgS2F0ZWdvcmllbiAtLS1cbkhTNGNhdCA8LSBhcy5kYXRhLmZyYW1lKGxhcHBseShIUzksIGZ1bmN0aW9uKHgpIHtcbiAgYnJlYWtzIDwtIHF1YW50aWxlKHgsIHByb2JzID0gYygwLCAwLjI1LCAwLjUsIDAuNzUsIDEpKVxuICBjdXRzIDwtIGN1dCh4LCBicmVha3MgPSBicmVha3MsIGluY2x1ZGUubG93ZXN0ID0gVFJVRSwgbGFiZWxzID0gRkFMU0UpXG4gIGZhY3RvcihjdXRzLCBvcmRlcmVkID0gVFJVRSlcbn0pKVxuXG4jIC0tLSBDRkEtTW9kZWxsIC0tLVxuSFMubW9kZWwgPC0gJ1xuICB2aXN1YWwgID1+IHgxICsgeDIgKyB4M1xuICB0ZXh0dWFsID1+IHg0ICsgeDUgKyB4NlxuICBzcGVlZCAgID1+IHg3ICsgeDggKyB4OVxuJ1xuXG4jIC0tLSBLb250aW51aWVybGljaGUgU2NoYWV0enVuZyAoTUwsIFJlZmVyZW56KSAtLS1cbmZpdC5tbCA8LSBjZmEoSFMubW9kZWwsIGRhdGEgPSBIb2x6aW5nZXJTd2luZWZvcmQxOTM5KVxuXG4jIC0tLSBNTCBhdWYgb3JkaW5hbGUgRGF0ZW4gKGZhbHNjaCwgYWJlciBsZWhycmVpY2gpIC0tLVxuSFM0Y2F0Lm51bSA8LSBhcy5kYXRhLmZyYW1lKGxhcHBseShIUzRjYXQsIGFzLm51bWVyaWMpKVxuZml0Lm1sLm9yZCA8LSBjZmEoSFMubW9kZWwsIGRhdGEgPSBIUzRjYXQubnVtKVxuXG4jIC0tLSBXTFNNViBhdWYgb3JkaW5hbGUgRGF0ZW4gKGtvcnJla3QpIC0tLVxuZml0Lndsc212LjQgPC0gY2ZhKEhTLm1vZGVsLCBkYXRhID0gSFM0Y2F0LCBvcmRlcmVkID0gVFJVRSlcblxuIyAtLS0gV0xTTVYgYXVmIGJpbmFlcmUgRGF0ZW4gLS0tXG5maXQud2xzbXYuMiA8LSBjZmEoSFMubW9kZWwsIGRhdGEgPSBIU2JpbmFyeSwgb3JkZXJlZCA9IFRSVUUpXG5cbiMgLS0tIFBvbHljaG9yaXNjaGUgS29ycmVsYXRpb24gbWFudWVsbCAoMngyIEZhbGwpIC0tLVxuIyBCZXJlY2hudW5nIGZ1ZXIgeDEgdW5kIHgyIChiaW5hZXIpXG5cbiMgLS0tIFNjaHdlbGxlbndlcnRlIHVuZCBwb2x5Y2hvcmlzY2hlIEtvcnJlbGF0aW9uZW4gdm9uIGxhdmFhbiAtLS1cbmZpdC53bHNtdi40Lmluc3BlY3QgPC0gbGF2SW5zcGVjdChmaXQud2xzbXYuNCwgXCJzYW1wc3RhdFwiKVxuXG4jIC0tLSBJUlQtUGFyYW1ldHJpc2llcnVuZyAtLS1cbmZpdC5pcnQgPC0gY2ZhKEhTLm1vZGVsLCBkYXRhID0gSFM0Y2F0LCBvcmRlcmVkID0gVFJVRSxcbiAgICAgICAgICAgICAgIHBhcmFtZXRlcml6YXRpb24gPSBcInRoZXRhXCIpXG5cbiMgLS0tIDFQTC9SYXNjaC1Nb2RlbGwgaW4gbGF2YWFuIC0tLVxucmFzY2gubW9kZWwgPC0gJ1xuICBGID1+IHg0ICsgeDUgKyB4NlxuJ1xuZml0LnJhc2NoIDwtIGNmYShyYXNjaC5tb2RlbCxcbiAgICAgICAgICAgICAgICAgZGF0YSA9IEhTNGNhdFssIGMoXCJ4NFwiLFwieDVcIixcIng2XCIpXSxcbiAgICAgICAgICAgICAgICAgb3JkZXJlZCA9IFRSVUUsXG4gICAgICAgICAgICAgICAgIHBhcmFtZXRlcml6YXRpb24gPSBcInRoZXRhXCIsXG4gICAgICAgICAgICAgICAgIHN0ZC5sdiA9IFRSVUUpXG5cbiMgLS0tIFRBTTogR1JNIHp1bSBWZXJnbGVpY2ggLS0tXG4jIFRBTSBicmF1Y2h0IG51bWVyaXNjaGUgRGF0ZW4gKDAtYmFzaWVydClcbmRhdC50YW0uMyA8LSBhcy5kYXRhLmZyYW1lKGxhcHBseShIUzRjYXRbLCBjKFwieDRcIixcIng1XCIsXCJ4NlwiKV0sIGZ1bmN0aW9uKHgpIGFzLm51bWVyaWMoeCkgLSAxKSlcbnRhbS5ncm0uMyA8LSBUQU06OnRhbS5tbWwuMnBsKHJlc3AgPSBkYXQudGFtLjMsIGlydG1vZGVsID0gXCJHUENNXCIsIHZlcmJvc2UgPSBGQUxTRSlcblxuIyBRLU1hdHJpeCBmdWVyIDMtRmFrdG9yLU1vZGVsbCAobnVyIFN0cnVrdHVyLCBrZWluIFRBTS1GaXQgLS0genUgbGFuZ3NhbSBpbiBXZWJSKVxuUS5tYXRyaXggPC0gbWF0cml4KDAsIDksIDMsIGRpbW5hbWVzID0gbGlzdChwYXN0ZTAoXCJ4XCIsIDE6OSksIGMoXCJ2aXN1YWxcIixcInRleHR1YWxcIixcInNwZWVkXCIpKSlcblEubWF0cml4WzE6MywgMV0gPC0gMVxuUS5tYXRyaXhbNDo2LCAyXSA8LSAxXG5RLm1hdHJpeFs3OjksIDNdIDwtIDEifQ==
+</script>
+</div>
+</div>
+<section id="einleitung" class="level2">
+<h2 class="anchored" data-anchor-id="einleitung">Einleitung</h2>
+<p>In den Teilen <a href="S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html">1</a> und <a href="S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html">2</a> haben wir SEM mit <strong>kontinuierlichen</strong> Variablen behandelt. In der Praxis sind viele Variablen jedoch <strong>ordinal</strong> – z.B. Likert-Skalen (1–5), dichotome Items (richtig/falsch) oder Bewertungen (gering/mittel/hoch). Dieses Tutorial erklaert:</p>
+<ol type="1">
+<li>Warum die Behandlung ordinaler Daten als kontinuierlich problematisch ist</li>
+<li>Das <strong>Schwellenwertmodell</strong> (<em>threshold model</em>) als theoretische Grundlage</li>
+<li><strong>Polychorische Korrelationen</strong> als Alternative zu Pearson-Korrelationen</li>
+<li>Den <strong>WLSMV-Schaetzer</strong> und seine Anwendung in lavaan</li>
+<li>Die <strong>Verbindung zwischen CFA und IRT</strong></li>
+</ol>
+<p><strong>Referenzen:</strong></p>
+<ul>
+<li>Rosseel, Y., &amp; Vidal, M. (2025). A tutorial for understanding SEM using R. <em>British Journal of Mathematical and Statistical Psychology</em>. <a href="https://doi.org/10.1111/bmsp.70003">doi:10.1111/bmsp.70003</a></li>
+<li>Flora, D. B., &amp; Curran, P. J. (2004). An empirical evaluation of alternative methods of estimation for confirmatory factor analysis with ordinal data. <em>Psychological Methods</em>, 9(4), 466–491.</li>
+<li>Rhemtulla, M., Brosseau-Liard, P. E., &amp; Savalei, V. (2012). When can categorical variables be treated as continuous? <em>Psychological Methods</em>, 17(3), 354–373.</li>
+</ul>
+</section>
+<section id="das-problem-ordinale-daten-als-kontinuierlich-behandeln" class="level2">
+<h2 class="anchored" data-anchor-id="das-problem-ordinale-daten-als-kontinuierlich-behandeln">Das Problem: Ordinale Daten als kontinuierlich behandeln</h2>
+<section id="ordinale-version-des-holzinger-swineford-datensatzes" class="level3">
+<h3 class="anchored" data-anchor-id="ordinale-version-des-holzinger-swineford-datensatzes">Ordinale Version des Holzinger-Swineford-Datensatzes</h3>
+<p>Um das Problem zu demonstrieren, erstellen wir eine ordinale Version unseres Datensatzes. Wir teilen jede Variable in 4 Kategorien (Quartile):</p>
+<div class="cell">
+<div>
+<div id="webr-2" class="exercise-cell">
+
+</div>
+<script type="webr-2-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiIyBPcmlnaW5hbGRhdGVuXG5IUzkgPC0gSG9semluZ2VyU3dpbmVmb3JkMTkzOVssIGMoXCJ4MVwiLFwieDJcIixcIngzXCIsXCJ4NFwiLFwieDVcIixcIng2XCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwieDdcIixcIng4XCIsXCJ4OVwiKV1cblxuIyBJbiA0IEthdGVnb3JpZW4gdW13YW5kZWxuIChRdWFydGlsZSlcbkhTNGNhdCA8LSBhcy5kYXRhLmZyYW1lKGxhcHBseShIUzksIGZ1bmN0aW9uKHgpIHtcbiAgYnJlYWtzIDwtIHF1YW50aWxlKHgsIHByb2JzID0gYygwLCAwLjI1LCAwLjUsIDAuNzUsIDEpKVxuICBjdXRzIDwtIGN1dCh4LCBicmVha3MgPSBicmVha3MsIGluY2x1ZGUubG93ZXN0ID0gVFJVRSwgbGFiZWxzID0gRkFMU0UpXG4gIGZhY3RvcihjdXRzLCBvcmRlcmVkID0gVFJVRSlcbn0pKVxuXG4jIFZlcnRlaWx1bmcgYW5zY2hhdWVuXG50YWJsZShIUzRjYXQkeDEpIn0=
+</script>
+</div>
+</div>
+</section>
+<section id="was-passiert-wenn-wir-ordinal-als-kontinuierlich-behandeln" class="level3">
+<h3 class="anchored" data-anchor-id="was-passiert-wenn-wir-ordinal-als-kontinuierlich-behandeln">Was passiert, wenn wir ordinal als kontinuierlich behandeln?</h3>
+<p>Wenn wir die ordinalen Kategorien einfach als Zahlen (1, 2, 3, 4) behandeln und ML-Schaetzung verwenden, erhalten wir verzerrte Ergebnisse:</p>
+<div class="cell">
+<div>
+<div id="webr-3" class="exercise-cell">
+
+</div>
+<script type="webr-3-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIndhcm5pbmciOmZhbHNlfSwiY29kZSI6IkhTLm1vZGVsIDwtICdcbiAgdmlzdWFsICA9fiB4MSArIHgyICsgeDNcbiAgdGV4dHVhbCA9fiB4NCArIHg1ICsgeDZcbiAgc3BlZWQgICA9fiB4NyArIHg4ICsgeDlcbidcblxuIyBNTCBhdWYgZGllIGtvbnRpbnVpZXJsaWNoZW4gT3JpZ2luYWxkYXRlbiAoa29ycmVrdClcbmZpdC5tbCA8LSBjZmEoSFMubW9kZWwsIGRhdGEgPSBIb2x6aW5nZXJTd2luZWZvcmQxOTM5KVxuXG4jIE1MIGF1ZiBkaWUgb3JkaW5hbGVuIERhdGVuLCBhbHMgd2FlcmVuIHNpZSBrb250aW51aWVybGljaCAoZmFsc2NoISlcbkhTNGNhdC5udW0gPC0gYXMuZGF0YS5mcmFtZShsYXBwbHkoSFM0Y2F0LCBhcy5udW1lcmljKSlcbmZpdC5tbC5vcmQgPC0gY2ZhKEhTLm1vZGVsLCBkYXRhID0gSFM0Y2F0Lm51bSlcblxuIyBGYWt0b3JsYWR1bmdlbiB2ZXJnbGVpY2hlblxuY2F0KFwiPT09IFN0YW5kYXJkaXNpZXJ0ZSBGYWt0b3JsYWR1bmdlbiA9PT1cXG5cXG5cIilcbnN0ZC5tbCA8LSBzdGFuZGFyZGl6ZWRTb2x1dGlvbihmaXQubWwpXG5zdGQub3JkIDwtIHN0YW5kYXJkaXplZFNvbHV0aW9uKGZpdC5tbC5vcmQpXG5sYWQgPC0gc3RkLm1sJG9wID09IFwiPX5cIlxuXG52ZXJnbCA8LSBkYXRhLmZyYW1lKFxuICBGYWt0b3IgPSBzdGQubWwkbGhzW2xhZF0sXG4gIEl0ZW0gPSBzdGQubWwkcmhzW2xhZF0sXG4gIEtvbnRpbnVpZXJsaWNoID0gcm91bmQoc3RkLm1sJGVzdC5zdGRbbGFkXSwgMyksXG4gIE9yZGluYWxfYWxzX2tvbnQgPSByb3VuZChzdGQub3JkJGVzdC5zdGRbbGFkXSwgMylcbilcbnZlcmdsIn0=
+</script>
+</div>
+</div>
+<p>Die Faktorladungen werden systematisch <strong>unterschaetzt</strong> (<em>attenuation</em>), weil Pearson-Korrelationen zwischen ordinalen Variablen die wahren Zusammenhaenge unterschaetzen. Je weniger Kategorien, desto staerker der Effekt (Rhemtulla et al., 2012).</p>
+</section>
+</section>
+<section id="das-schwellenwertmodell" class="level2">
+<h2 class="anchored" data-anchor-id="das-schwellenwertmodell">Das Schwellenwertmodell</h2>
+<section id="die-grundidee" class="level3">
+<h3 class="anchored" data-anchor-id="die-grundidee">Die Grundidee</h3>
+<p>Das Schwellenwertmodell (Muthen, 1984) nimmt an, dass hinter jeder beobachteten ordinalen Variable <span class="math inline">\(y\)</span> eine <strong>kontinuierliche latente Antwortvariable</strong> <span class="math inline">\(y^*\)</span> liegt. Die beobachtete Kategorie ergibt sich durch Schwellenwerte (<em>thresholds</em>) <span class="math inline">\(\tau_1, \tau_2, \ldots\)</span>, die <span class="math inline">\(y^*\)</span> in Abschnitte teilen:</p>
+<p><span class="math display">\[y = k \quad \text{wenn} \quad \tau_{k-1} &lt; y^* \leq \tau_k\]</span></p>
+<p>Fuer eine Variable mit <span class="math inline">\(C\)</span> Kategorien gibt es <span class="math inline">\(C - 1\)</span> Schwellenwerte.</p>
+<p><strong>Beispiel</strong> mit 4 Kategorien:</p>
+<p><span class="math display">\[
+y = \begin{cases}
+1 &amp; \text{wenn } y^* \leq \tau_1 \\
+2 &amp; \text{wenn } \tau_1 &lt; y^* \leq \tau_2 \\
+3 &amp; \text{wenn } \tau_2 &lt; y^* \leq \tau_3 \\
+4 &amp; \text{wenn } y^* &gt; \tau_3
+\end{cases}
+\]</span></p>
+<p>Die Schwellenwerte werden aus den beobachteten Haeufigkeiten geschaetzt: Wenn z.B. 25% der Personen in Kategorie 1 fallen, dann ist <span class="math inline">\(\tau_1 = \Phi^{-1}(0.25) \approx -0.674\)</span> (wobei <span class="math inline">\(\Phi^{-1}\)</span> die inverse Standardnormalverteilung ist).</p>
+</section>
+<section id="schwellenwerte-in-r-berechnen" class="level3">
+<h3 class="anchored" data-anchor-id="schwellenwerte-in-r-berechnen">Schwellenwerte in R berechnen</h3>
+<div class="cell">
+<div>
+<div id="webr-4" class="exercise-cell">
+
+</div>
+<script type="webr-4-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiIyBTY2h3ZWxsZW53ZXJ0ZSBmdWVyIHgxICg0IEthdGVnb3JpZW4pXG5mcmVxIDwtIHRhYmxlKEhTNGNhdCR4MSlcbmN1bS5wcm9wIDwtIGN1bXN1bShmcmVxKSAvIHN1bShmcmVxKVxuXG5jYXQoXCJLdW11bGF0aXZlIEFudGVpbGU6XFxuXCIpXG5yb3VuZChjdW0ucHJvcCwgMylcblxuIyBTY2h3ZWxsZW53ZXJ0ZSA9IGludmVyc2UgTm9ybWFsdmVydGVpbHVuZyBkZXIga3VtdWxhdGl2ZW4gQW50ZWlsZVxuIyAobnVyIGZ1ZXIgZGllIGVyc3RlbiBDLTEgS2F0ZWdvcmllbilcbnRocmVzaG9sZHMgPC0gcW5vcm0oY3VtLnByb3BbMTozXSlcbmNhdChcIlxcblNjaHdlbGxlbndlcnRlICh0YXVfMSwgdGF1XzIsIHRhdV8zKTpcXG5cIilcbnJvdW5kKHRocmVzaG9sZHMsIDMpIn0=
+</script>
+</div>
+</div>
+</section>
+<section id="schwellenwerte-in-lavaan" class="level3">
+<h3 class="anchored" data-anchor-id="schwellenwerte-in-lavaan">Schwellenwerte in lavaan</h3>
+<p>Wenn wir lavaan mit <code>ordered = TRUE</code> verwenden, schaetzt es automatisch die Schwellenwerte:</p>
+<div class="cell">
+<div>
+<div id="webr-5" class="exercise-cell">
+
+</div>
+<script type="webr-5-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIndhcm5pbmciOmZhbHNlfSwiY29kZSI6IiMgQ0ZBIG1pdCBXTFNNViBmdWVyIG9yZGluYWxlIERhdGVuXG5maXQud2xzbXYuNCA8LSBjZmEoSFMubW9kZWwsIGRhdGEgPSBIUzRjYXQsIG9yZGVyZWQgPSBUUlVFKVxuXG4jIFNjaHdlbGxlbndlcnRlIGFuemVpZ2VuXG5jYXQoXCJHZXNjaGFldHp0ZSBTY2h3ZWxsZW53ZXJ0ZSAobGF2YWFuKTpcXG5cXG5cIilcbnBhcmVzdCA8LSBwYXJhbWV0ZXJFc3RpbWF0ZXMoZml0Lndsc212LjQpXG50aHJlc2hvbGRzLmxhdiA8LSBwYXJlc3RbcGFyZXN0JG9wID09IFwifFwiLCBdXG5wcmludCh0aHJlc2hvbGRzLmxhdlssIGMoXCJsaHNcIiwgXCJyaHNcIiwgXCJlc3RcIildLCByb3cubmFtZXMgPSBGQUxTRSkifQ==
+</script>
+</div>
+</div>
+</section>
+</section>
+<section id="polychorische-korrelationen" class="level2">
+<h2 class="anchored" data-anchor-id="polychorische-korrelationen">Polychorische Korrelationen</h2>
+<section id="von-pearson-zu-polychorisch" class="level3">
+<h3 class="anchored" data-anchor-id="von-pearson-zu-polychorisch">Von Pearson zu polychorisch</h3>
+<p>Pearson-Korrelationen messen den <strong>linearen</strong> Zusammenhang zwischen beobachteten Werten. Bei ordinalen Daten ist das problematisch, weil die beobachteten Kategorien nur grobe Approximationen der dahinterliegenden kontinuierlichen Variablen sind.</p>
+<p><strong>Polychorische Korrelationen</strong> schaetzen stattdessen die Korrelation zwischen den latenten Antwortvariablen <span class="math inline">\(y^*_i\)</span> und <span class="math inline">\(y^*_j\)</span>, unter der Annahme einer bivariaten Normalverteilung. Sie sind typischerweise <strong>hoeher</strong> als die entsprechenden Pearson-Korrelationen:</p>
+<div class="cell">
+<div>
+<div id="webr-6" class="exercise-cell">
+
+</div>
+<script type="webr-6-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiIyBQZWFyc29uLUtvcnJlbGF0aW9uIChhdWYgbnVtZXJpc2NoZW4gS2F0ZWdvcmllbilcbnIucGVhcnNvbiA8LSBjb3IoYXMubnVtZXJpYyhIUzRjYXQkeDQpLCBhcy5udW1lcmljKEhTNGNhdCR4NSkpXG5cbiMgUG9seWNob3Jpc2NoZSBLb3JyZWxhdGlvbiAodm9uIGxhdmFhbiBnZXNjaGFldHp0KVxuc2FtcHN0YXQgPC0gbGF2SW5zcGVjdChmaXQud2xzbXYuNCwgXCJzYW1wc3RhdFwiKVxuci5wb2x5Y2hvciA8LSBzYW1wc3RhdCRjb3ZbXCJ4NFwiLCBcIng1XCJdXG5cbmNhdChcIlBlYXJzb24tS29ycmVsYXRpb24gICh4NCwgeDUpOlwiLCByb3VuZChyLnBlYXJzb24sIDMpLCBcIlxcblwiKVxuY2F0KFwiUG9seWNob3Jpc2NoZSBLb3JyLiAgKHg0LCB4NSk6XCIsIHJvdW5kKHIucG9seWNob3IsIDMpLCBcIlxcblwiKVxuY2F0KFwiXFxuRGllIHBvbHljaG9yaXNjaGUgS29ycmVsYXRpb24gaXN0IGhvZWhlcixcXG5cIilcbmNhdChcIndlaWwgc2llIGRpZSBBYnNjaHdhY2h1bmcgZHVyY2ggZGllIEthdGVnb3Jpc2llcnVuZyBrb3JyaWdpZXJ0LlxcblwiKSJ9
+</script>
+</div>
+</div>
+</section>
+<section id="vergleich-pearson-vs.-polychorische-korrelationsmatrix" class="level3">
+<h3 class="anchored" data-anchor-id="vergleich-pearson-vs.-polychorische-korrelationsmatrix">Vergleich: Pearson vs.&nbsp;polychorische Korrelationsmatrix</h3>
+<div class="cell">
+<div>
+<div id="webr-7" class="exercise-cell">
+
+</div>
+<script type="webr-7-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiIyBQZWFyc29uLUtvcnJlbGF0aW9uIChmYWxzY2ggZnVlciBvcmRpbmFsZSBEYXRlbilcblIucGVhcnNvbiA8LSBjb3IoYXMuZGF0YS5mcmFtZShsYXBwbHkoSFM0Y2F0LCBhcy5udW1lcmljKSkpXG5cbiMgUG9seWNob3Jpc2NoZSBLb3JyZWxhdGlvbiAodm9uIGxhdmFhbilcblIucG9seWNob3IgPC0gc2FtcHN0YXQkY292XG5cbmNhdChcIj09PSBQZWFyc29uLUtvcnJlbGF0aW9uZW4gPT09XFxuXCIpXG5yb3VuZChSLnBlYXJzb24sIDIpXG5cbmNhdChcIlxcbj09PSBQb2x5Y2hvcmlzY2hlIEtvcnJlbGF0aW9uZW4gPT09XFxuXCIpXG5yb3VuZChSLnBvbHljaG9yLCAyKVxuXG5jYXQoXCJcXG49PT0gRGlmZmVyZW56IChwb2x5Y2hvcmlzY2ggLSBQZWFyc29uKSA9PT1cXG5cIilcbnJvdW5kKFIucG9seWNob3IgLSBSLnBlYXJzb24sIDIpIn0=
+</script>
+</div>
+</div>
+<p>Die Differenzen sind durchweg positiv – polychorische Korrelationen sind systematisch hoeher als Pearson-Korrelationen.</p>
+</section>
+</section>
+<section id="der-wlsmv-schaetzer" class="level2">
+<h2 class="anchored" data-anchor-id="der-wlsmv-schaetzer">Der WLSMV-Schaetzer</h2>
+<section id="ueberblick" class="level3">
+<h3 class="anchored" data-anchor-id="ueberblick">Ueberblick</h3>
+<p>Beim WLSMV-Verfahren (<em>Weighted Least Squares, Mean and Variance adjusted</em>) wird die Parameterschaetzung in <strong>zwei Schritten</strong> durchgefuehrt:</p>
+<p><strong>Schritt 1 – Stichprobenstatistiken berechnen:</strong></p>
+<ul>
+<li>Schwellenwerte <span class="math inline">\(\hat{\tau}\)</span> aus den beobachteten Haeufigkeiten</li>
+<li>Polychorische Korrelationen <span class="math inline">\(\hat{R}\)</span> aus den bivariaten Haeufigkeiten</li>
+<li>Die asymptotische Kovarianzmatrix <span class="math inline">\(\hat{\Gamma}\)</span> dieser Statistiken</li>
+</ul>
+<p><strong>Schritt 2 – CFA auf den polychorischen Korrelationen:</strong></p>
+<p>Die Modellparameter (Faktorladungen, Faktorkovarianzen) werden geschaetzt, indem die modellimplizierte Korrelationsmatrix <span class="math inline">\(\boldsymbol{\Sigma}(\boldsymbol{\theta})\)</span> an die polychorische Korrelationsmatrix <span class="math inline">\(\hat{R}\)</span> angepasst wird. Statt der ML-Diskrepanzfunktion wird eine <strong>gewichtete Kleinste-Quadrate-Funktion</strong> verwendet:</p>
+<p><span class="math display">\[F_{\text{WLS}}(\boldsymbol{\theta}) = [\mathbf{s} - \boldsymbol{\sigma}(\boldsymbol{\theta})]' \mathbf{W} [\mathbf{s} - \boldsymbol{\sigma}(\boldsymbol{\theta})]\]</span></p>
+<p>wobei <span class="math inline">\(\mathbf{s}\)</span> die nicht-redundanten Elemente von <span class="math inline">\(\hat{R}\)</span> enthaelt, <span class="math inline">\(\boldsymbol{\sigma}(\boldsymbol{\theta})\)</span> die entsprechenden modellimplizierten Werte, und <span class="math inline">\(\mathbf{W}\)</span> eine Gewichtsmatrix ist.</p>
+</section>
+<section id="wls-dwls-und-wlsmv-begriffe-sortieren" class="level3">
+<h3 class="anchored" data-anchor-id="wls-dwls-und-wlsmv-begriffe-sortieren">WLS, DWLS und WLSMV: Begriffe sortieren</h3>
+<p>In der Literatur und in verschiedenen Softwarepaketen werden mehrere verwandte Begriffe verwendet, die leicht zu Verwirrung fuehren. Hier eine Uebersicht:</p>
+<p><strong>WLS</strong> (<em>Weighted Least Squares</em>, auch ADF = <em>Asymptotically Distribution Free</em>): Die volle Gewichtsmatrix <span class="math inline">\(\mathbf{W} = \hat{\Gamma}^{-1}\)</span> wird verwendet. <span class="math inline">\(\hat{\Gamma}\)</span> ist die asymptotische Kovarianzmatrix der Stichprobenstatistiken (polychorische Korrelationen und Schwellenwerte). Da <span class="math inline">\(\hat{\Gamma}\)</span> bei vielen Variablen sehr gross wird (<span class="math inline">\(p^* \times p^*\)</span>, wobei <span class="math inline">\(p^* = p(p+1)/2\)</span>), erfordert WLS <strong>sehr grosse Stichproben</strong> (<span class="math inline">\(N &gt; 5000\)</span>) und ist numerisch instabil. In der Praxis wird WLS daher selten verwendet.</p>
+<p><strong>DWLS</strong> (<em>Diagonally Weighted Least Squares</em>): Statt der vollen <span class="math inline">\(\hat{\Gamma}^{-1}\)</span> wird nur deren <strong>Diagonale</strong> als Gewichtsmatrix <span class="math inline">\(\mathbf{W}\)</span> verwendet. Die Diagonalelemente sind die Kehrwerte der asymptotischen Varianzen jeder einzelnen polychorischen Korrelation. Das ist numerisch viel stabiler und funktioniert auch bei kleinerem <span class="math inline">\(N\)</span>. DWLS liefert konsistente Parameterschaetzungen, aber die <em>naive</em> Chi-Quadrat-Statistik und Standardfehler sind verzerrt, weil die Korrelationen zwischen den Stichprobenstatistiken ignoriert werden.</p>
+<p><strong>WLSMV</strong> (<em>Weighted Least Squares, Mean and Variance adjusted</em>): Die <strong>Parameterschaetzung</strong> erfolgt wie bei DWLS (diagonale Gewichtsmatrix). Aber danach werden die <strong>Chi-Quadrat-Statistik</strong> und die <strong>Standardfehler</strong> mit Hilfe der vollen <span class="math inline">\(\hat{\Gamma}\)</span>-Matrix korrigiert:</p>
+<ul>
+<li>Die Chi-Quadrat-Statistik wird so skaliert, dass ihr <strong>Mittelwert</strong> (<em>mean</em>) und ihre <strong>Varianz</strong> (<em>variance</em>) der theoretischen Chi-Quadrat-Verteilung entsprechen</li>
+<li>Die Standardfehler werden ebenfalls mit der vollen <span class="math inline">\(\hat{\Gamma}\)</span>-Matrix korrigiert (<em>robust</em> standard errors)</li>
+</ul>
+<p>WLSMV kombiniert also die numerische Stabilitaet von DWLS mit der statistischen Korrektheit von WLS.</p>
+</section>
+<section id="unterschiede-zwischen-lavaan-und-mplus" class="level3">
+<h3 class="anchored" data-anchor-id="unterschiede-zwischen-lavaan-und-mplus">Unterschiede zwischen lavaan und Mplus</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>lavaan</th>
+<th>Mplus</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>estimator = "DWLS"</code></td>
+<td>DWLS + robuste Korrektur</td>
+<td>– (kein direktes Aequivalent)</td>
+</tr>
+<tr class="even">
+<td><code>estimator = "WLSMV"</code></td>
+<td>DWLS + Mean-and-Variance-Korrektur</td>
+<td><code>ESTIMATOR = WLSMV;</code></td>
+</tr>
+<tr class="odd">
+<td><code>estimator = "WLS"</code></td>
+<td>Volle WLS (selten sinnvoll, braucht <span class="math inline">\(N &gt; 5000\)</span>)</td>
+<td><code>ESTIMATOR = WLS;</code></td>
+</tr>
+<tr class="even">
+<td><code>ordered = TRUE</code> (Default)</td>
+<td>Waehlt automatisch <strong>WLSMV</strong></td>
+<td>Waehlt automatisch <strong>WLSMV</strong></td>
+</tr>
+<tr class="odd">
+<td><code>estimator = "ULSMV"</code></td>
+<td>ULS + robuste Korrektur</td>
+<td><code>ESTIMATOR = ULSMV;</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Wichtig:</strong> In lavaan liefern <code>estimator = "DWLS"</code> und <code>estimator = "WLSMV"</code> nahezu identische Ergebnisse. Beide verwenden DWLS fuer die Parameterschaetzung und robuste Korrekturen fuer Teststatistik und Standardfehler. Sie unterscheiden sich nur in technischen Details der Korrekturmethode. In der Praxis genuegt es, einfach <code>ordered = TRUE</code> zu setzen – lavaan waehlt dann automatisch WLSMV.</p>
+<p>In lavaan kann man die Korrektur sichtbar machen. Beide Varianten – <code>estimator = "DWLS"</code> und <code>estimator = "WLSMV"</code> – verwenden intern denselben DWLS-Algorithmus fuer die Parameterschaetzung und wenden robuste Korrekturen an. lavaan berichtet einen <strong>Skalierungsfaktor</strong>, der zeigt, wie stark die Chi-Quadrat-Statistik korrigiert wurde:</p>
+<div class="cell">
+<div>
+<div id="webr-8" class="exercise-cell">
+
+</div>
+<script type="webr-8-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIndhcm5pbmciOmZhbHNlfSwiY29kZSI6ImZpdC53bHNtdiA8LSBjZmEoSFMubW9kZWwsIGRhdGEgPSBIUzRjYXQsIG9yZGVyZWQgPSBUUlVFKVxuXG4jIFNrYWxpZXJ1bmdzZmFrdG9yIGRlciBDaGktUXVhZHJhdC1TdGF0aXN0aWtcbmNhdChcIj09PSBXTFNNVjogUm9idXN0ZSBLb3JyZWt0dXIgPT09XFxuXFxuXCIpXG5mbSA8LSBmaXRNZWFzdXJlcyhmaXQud2xzbXYsXG4gICAgICAgIGMoXCJjaGlzcVwiLCBcImRmXCIsIFwicHZhbHVlXCIsXG4gICAgICAgICAgXCJjaGlzcS5zY2FsaW5nLmZhY3RvclwiLCBcImNmaVwiLCBcInJtc2VhXCIpKVxuY2F0KFwiQ2hpLVF1YWRyYXQgKHNrYWxpZXJ0KTogIFwiLCByb3VuZChmbVtcImNoaXNxXCJdLCAzKSwgXCJcXG5cIilcbmNhdChcIkZyZWloZWl0c2dyYWRlOiAgICAgICAgICBcIiwgZm1bXCJkZlwiXSwgXCJcXG5cIilcbmNhdChcIlNrYWxpZXJ1bmdzZmFrdG9yOiAgICAgICBcIiwgcm91bmQoZm1bXCJjaGlzcS5zY2FsaW5nLmZhY3RvclwiXSwgMyksIFwiXFxuXCIpXG5jYXQoXCJDRkk6ICAgICAgICAgICAgICAgICAgICAgXCIsIHJvdW5kKGZtW1wiY2ZpXCJdLCAzKSwgXCJcXG5cIilcbmNhdChcIlJNU0VBOiAgICAgICAgICAgICAgICAgICBcIiwgcm91bmQoZm1bXCJybXNlYVwiXSwgMyksIFwiXFxuXCIpXG5cbmNhdChcIlxcbkRlciBTa2FsaWVydW5nc2Zha3RvciB6ZWlndCwgd2llIHN0YXJrIGRpZSBuYWl2ZVxcblwiKVxuY2F0KFwiQ2hpLVF1YWRyYXQtU3RhdGlzdGlrIGtvcnJpZ2llcnQgd3VyZGUuXFxuXCIpXG5jYXQoXCJGYWt0b3IgPiAxOiBuYWl2ZSBTdGF0aXN0aWsgd2FyIHp1IGdyb3NzIChrb25zZXJ2YXRpdikuXFxuXCIpXG5jYXQoXCJGYWt0b3IgPCAxOiBuYWl2ZSBTdGF0aXN0aWsgd2FyIHp1IGtsZWluIChsaWJlcmFsKS5cXG5cIikifQ==
+</script>
+</div>
+</div>
+</section>
+<section id="vergleich-ml-kontinuierlich-vs.-wlsmv-ordinal" class="level3">
+<h3 class="anchored" data-anchor-id="vergleich-ml-kontinuierlich-vs.-wlsmv-ordinal">Vergleich: ML (kontinuierlich) vs.&nbsp;WLSMV (ordinal)</h3>
+<div class="cell">
+<div>
+<div id="webr-9" class="exercise-cell">
+
+</div>
+<script type="webr-9-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIndhcm5pbmciOmZhbHNlfSwiY29kZSI6IiMgU3RhbmRhcmRpc2llcnRlIExhZHVuZ2VuIHZlcmdsZWljaGVuXG5zdGQubWwgPC0gc3RhbmRhcmRpemVkU29sdXRpb24oZml0Lm1sKVxuc3RkLm1sb3JkIDwtIHN0YW5kYXJkaXplZFNvbHV0aW9uKGZpdC5tbC5vcmQpXG5zdGQud2xzbXYgPC0gc3RhbmRhcmRpemVkU29sdXRpb24oZml0Lndsc212LjQpXG5cbmxhZCA8LSBzdGQubWwkb3AgPT0gXCI9flwiXG5cbnZlcmdsIDwtIGRhdGEuZnJhbWUoXG4gIEZha3RvciA9IHN0ZC5tbCRsaHNbbGFkXSxcbiAgSXRlbSA9IHN0ZC5tbCRyaHNbbGFkXSxcbiAgTUxfT3JpZ2luYWwgPSByb3VuZChzdGQubWwkZXN0LnN0ZFtsYWRdLCAzKSxcbiAgTUxfT3JkaW5hbCAgPSByb3VuZChzdGQubWxvcmQkZXN0LnN0ZFtsYWRdLCAzKSxcbiAgV0xTTVYgICAgICAgPSByb3VuZChzdGQud2xzbXYkZXN0LnN0ZFtsYWRdLCAzKVxuKVxudmVyZ2wifQ==
+</script>
+</div>
+</div>
+<p><strong>WLSMV</strong> auf den ordinalen Daten liefert Ladungen, die den ML-Schaetzungen auf den <strong>Originaldaten</strong> viel naeher kommen als ML auf den ordinalen Daten. Das zeigt: WLSMV korrigiert die Abschwachung durch die Kategorisierung.</p>
+</section>
+<section id="effekt-der-kategorienzahl" class="level3">
+<h3 class="anchored" data-anchor-id="effekt-der-kategorienzahl">Effekt der Kategorienzahl</h3>
+<p>Was passiert, wenn wir nur 2 statt 4 Kategorien haben? Je weniger Kategorien, desto wichtiger wird WLSMV:</p>
+<div class="cell">
+<div>
+<div id="webr-10" class="exercise-cell">
+
+</div>
+<script type="webr-10-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIndhcm5pbmciOmZhbHNlfSwiY29kZSI6IiMgQmluYWVyZSBWZXJzaW9uIChNZWRpYW5zcGxpdClcbkhTYmluYXJ5IDwtIGFzLmRhdGEuZnJhbWUobGFwcGx5KEhTOSwgZnVuY3Rpb24oeCkge1xuICBmYWN0b3IoaWZlbHNlKHggPD0gbWVkaWFuKHgpLCAwLCAxKSwgbGV2ZWxzID0gYygwLCAxKSwgb3JkZXJlZCA9IFRSVUUpXG59KSlcblxuZml0Lndsc212LjIgPC0gY2ZhKEhTLm1vZGVsLCBkYXRhID0gSFNiaW5hcnksIG9yZGVyZWQgPSBUUlVFKVxuXG5zdGQud2xzbXYuMiA8LSBzdGFuZGFyZGl6ZWRTb2x1dGlvbihmaXQud2xzbXYuMilcbmxhZCA8LSBzdGQud2xzbXYuMiRvcCA9PSBcIj1+XCJcblxudmVyZ2wyIDwtIGRhdGEuZnJhbWUoXG4gIEZha3RvciA9IHN0ZC5tbCRsaHNbbGFkXSxcbiAgSXRlbSA9IHN0ZC5tbCRyaHNbbGFkXSxcbiAgTUxfT3JpZ2luYWwgPSByb3VuZChzdGQubWwkZXN0LnN0ZFtsYWRdLCAzKSxcbiAgV0xTTVZfNEthdCAgPSByb3VuZChzdGQud2xzbXYkZXN0LnN0ZFtsYWRdLCAzKSxcbiAgV0xTTVZfMkthdCAgPSByb3VuZChzdGQud2xzbXYuMiRlc3Quc3RkW2xhZF0sIDMpXG4pXG52ZXJnbDIifQ==
+</script>
+</div>
+</div>
+<p>Selbst mit nur 2 Kategorien approximiert WLSMV die wahren Ladungen oft erstaunlich gut – dank des Schwellenwertmodells und der tetrachorischen/polychorischen Korrelationen (Flora &amp; Curran, 2004).</p>
+</section>
+</section>
+<section id="die-verbindung-zwischen-cfa-und-irt" class="level2">
+<h2 class="anchored" data-anchor-id="die-verbindung-zwischen-cfa-und-irt">Die Verbindung zwischen CFA und IRT</h2>
+<section id="cfa-und-irt-als-zwei-seiten-derselben-medaille" class="level3">
+<h3 class="anchored" data-anchor-id="cfa-und-irt-als-zwei-seiten-derselben-medaille">CFA und IRT als zwei Seiten derselben Medaille</h3>
+<p>Ein CFA-Modell fuer ordinale Daten und ein IRT-Modell (Item Response Theory) beschreiben <strong>denselben statistischen Prozess</strong>, nur mit unterschiedlicher Parametrisierung:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>CFA (Delta-Parametrisierung)</th>
+<th>IRT (Theta-Parametrisierung)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Latente Variable</td>
+<td>Faktor <span class="math inline">\(\eta\)</span></td>
+<td>Trait <span class="math inline">\(\theta\)</span></td>
+</tr>
+<tr class="even">
+<td>Itemparameter</td>
+<td>Faktorladung <span class="math inline">\(\lambda\)</span>, Schwellenwert <span class="math inline">\(\tau\)</span></td>
+<td>Diskrimination <span class="math inline">\(a\)</span>, Schwierigkeit <span class="math inline">\(b\)</span></td>
+</tr>
+<tr class="odd">
+<td>Residualvarianz</td>
+<td>Frei geschaetzt</td>
+<td>Auf 1 fixiert</td>
+</tr>
+<tr class="even">
+<td>Faktorvarianz</td>
+<td>Auf 1 fixiert (std.lv)</td>
+<td>Frei geschaetzt</td>
+</tr>
+</tbody>
+</table>
+<p>Die Umrechnung ist direkt:</p>
+<p><span class="math display">\[a_j = \frac{\lambda_j}{\sqrt{1 - \lambda_j^2}} \qquad b_{jk} = \frac{\tau_{jk}}{\lambda_j}\]</span></p>
+<p>wobei <span class="math inline">\(a_j\)</span> die IRT-Diskrimination, <span class="math inline">\(b_{jk}\)</span> die IRT-Schwierigkeit fuer Kategorie <span class="math inline">\(k\)</span> und <span class="math inline">\(\lambda_j\)</span> die standardisierte Faktorladung ist.</p>
+</section>
+<section id="cfa-in-der-standard-parametrisierung-delta" class="level3">
+<h3 class="anchored" data-anchor-id="cfa-in-der-standard-parametrisierung-delta">CFA in der Standard-Parametrisierung (Delta)</h3>
+<p>In der Standard-Parametrisierung (“delta”) hat lavaan die Residualvarianzen der latenten Antwortvariablen <span class="math inline">\(y^*\)</span> als freie Parameter. Die Gesamtvarianz von <span class="math inline">\(y^*\)</span> ist nicht fixiert:</p>
+<div class="cell">
+<div>
+<div id="webr-11" class="exercise-cell">
+
+</div>
+<script type="webr-11-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIndhcm5pbmciOmZhbHNlfSwiY29kZSI6ImZpdC5kZWx0YSA8LSBjZmEoSFMubW9kZWwsIGRhdGEgPSBIUzRjYXQsIG9yZGVyZWQgPSBUUlVFLFxuICAgICAgICAgICAgICAgICBwYXJhbWV0ZXJpemF0aW9uID0gXCJkZWx0YVwiKVxuXG5jYXQoXCI9PT0gRGVsdGEtUGFyYW1ldHJpc2llcnVuZyAoU3RhbmRhcmQpID09PVxcblxcblwiKVxucGFyZXN0LmQgPC0gcGFyYW1ldGVyRXN0aW1hdGVzKGZpdC5kZWx0YSlcbmxhZC5kIDwtIHBhcmVzdC5kW3BhcmVzdC5kJG9wID09IFwiPX5cIiwgXVxuY2F0KFwiRmFrdG9ybGFkdW5nZW46XFxuXCIpXG5wcmludChsYWQuZFssIGMoXCJsaHNcIiwgXCJyaHNcIiwgXCJlc3RcIiwgXCJzZVwiKV0sIHJvdy5uYW1lcyA9IEZBTFNFKSJ9
+</script>
+</div>
+</div>
+</section>
+<section id="cfa-in-der-irt-parametrisierung-theta" class="level3">
+<h3 class="anchored" data-anchor-id="cfa-in-der-irt-parametrisierung-theta">CFA in der IRT-Parametrisierung (Theta)</h3>
+<p>In der Theta-Parametrisierung werden die Residualvarianzen auf 1 fixiert. Die resultierenden Faktorladungen entsprechen direkt den IRT-Diskriminationsparametern (bis auf eine Transformation):</p>
+<div class="cell">
+<div>
+<div id="webr-12" class="exercise-cell">
+
+</div>
+<script type="webr-12-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIndhcm5pbmciOmZhbHNlfSwiY29kZSI6ImZpdC50aGV0YSA8LSBjZmEoSFMubW9kZWwsIGRhdGEgPSBIUzRjYXQsIG9yZGVyZWQgPSBUUlVFLFxuICAgICAgICAgICAgICAgICBwYXJhbWV0ZXJpemF0aW9uID0gXCJ0aGV0YVwiKVxuXG5jYXQoXCI9PT0gVGhldGEtUGFyYW1ldHJpc2llcnVuZyAoSVJULW5haCkgPT09XFxuXFxuXCIpXG5wYXJlc3QudCA8LSBwYXJhbWV0ZXJFc3RpbWF0ZXMoZml0LnRoZXRhKVxuXG4jIEZha3RvcmxhZHVuZ2VuXG5sYWQudCA8LSBwYXJlc3QudFtwYXJlc3QudCRvcCA9PSBcIj1+XCIsIF1cbmNhdChcIkZha3RvcmxhZHVuZ2VuICg9IElSVCBzbG9wZSAvIERpc2tyaW1pbmF0aW9uKTpcXG5cIilcbnByaW50KGxhZC50WywgYyhcImxoc1wiLCBcInJoc1wiLCBcImVzdFwiLCBcInNlXCIpXSwgcm93Lm5hbWVzID0gRkFMU0UpXG5cbiMgU2Nod2VsbGVud2VydGVcbnRoci50IDwtIHBhcmVzdC50W3BhcmVzdC50JG9wID09IFwifFwiLCBdXG5jYXQoXCJcXG5TY2h3ZWxsZW53ZXJ0ZSAoPSBJUlQgZGlmZmljdWx0eSAvIFNjaHdpZXJpZ2tlaXQpOlxcblwiKVxucHJpbnQodGhyLnRbLCBjKFwibGhzXCIsIFwicmhzXCIsIFwiZXN0XCIsIFwic2VcIildLCByb3cubmFtZXMgPSBGQUxTRSkifQ==
+</script>
+</div>
+</div>
+</section>
+<section id="umrechnung-cfa-ladungen-zu-irt-parametern" class="level3">
+<h3 class="anchored" data-anchor-id="umrechnung-cfa-ladungen-zu-irt-parametern">Umrechnung: CFA-Ladungen zu IRT-Parametern</h3>
+<div class="cell">
+<div>
+<div id="webr-13" class="exercise-cell">
+
+</div>
+<script type="webr-13-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiIyBTdGFuZGFyZGlzaWVydGUgTGFkdW5nZW4gYXVzIGRlciBEZWx0YS1QYXJhbWV0cmlzaWVydW5nXG5zdGQuZGVsdGEgPC0gc3RhbmRhcmRpemVkU29sdXRpb24oZml0LmRlbHRhKVxubGFkLmlkeCA8LSBzdGQuZGVsdGEkb3AgPT0gXCI9flwiXG5sYW1iZGEuc3RkIDwtIHN0ZC5kZWx0YSRlc3Quc3RkW2xhZC5pZHhdXG5pdGVtLm5hbWVzIDwtIHN0ZC5kZWx0YSRyaHNbbGFkLmlkeF1cblxuIyBJUlQtRGlza3JpbWluYXRpb246IGEgPSBsYW1iZGEgLyBzcXJ0KDEgLSBsYW1iZGFeMilcbmEuaXJ0IDwtIGxhbWJkYS5zdGQgLyBzcXJ0KDEgLSBsYW1iZGEuc3RkXjIpXG5cbiMgTGFkdW5nZW4gYXVzIFRoZXRhLVBhcmFtZXRyaXNpZXJ1bmcgKHNvbGx0ZW4gPSBhLmlydCBzZWluKVxubGFkLnRoZXRhIDwtIHBhcmVzdC50W3BhcmVzdC50JG9wID09IFwiPX5cIiwgXCJlc3RcIl1cblxuY2F0KFwiPT09IFVtcmVjaG51bmcgQ0ZBIC0+IElSVCA9PT1cXG5cXG5cIilcbnVtcmVjaG51bmcgPC0gZGF0YS5mcmFtZShcbiAgSXRlbSA9IGl0ZW0ubmFtZXMsXG4gIExhbWJkYV9zdGQgPSByb3VuZChsYW1iZGEuc3RkLCAzKSxcbiAgYV9iZXJlY2huZXQgPSByb3VuZChhLmlydCwgMyksXG4gIGFfdGhldGEgPSByb3VuZChsYWQudGhldGEsIDMpXG4pXG51bXJlY2hudW5nIn0=
+</script>
+</div>
+</div>
+<p>Die berechneten IRT-Diskriminationsparameter (<code>a_berechnet</code>) stimmen mit den Faktorladungen aus der Theta-Parametrisierung (<code>a_theta</code>) ueberein. Das zeigt: <strong>CFA und IRT sind aequivalent</strong> – es ist nur eine Frage der Parametrisierung.</p>
+</section>
+<section id="ein-einfaches-irt-modell-1-faktor-cfa-graded-response-model" class="level3">
+<h3 class="anchored" data-anchor-id="ein-einfaches-irt-modell-1-faktor-cfa-graded-response-model">Ein einfaches IRT-Modell: 1-Faktor-CFA = Graded Response Model</h3>
+<p>Ein Einzel-Faktor-CFA fuer ordinale Items ist aequivalent zum <strong>Graded Response Model</strong> (GRM) aus der IRT:</p>
+<div class="cell">
+<div>
+<div id="webr-14" class="exercise-cell">
+
+</div>
+<script type="webr-14-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIndhcm5pbmciOmZhbHNlfSwiY29kZSI6IiMgMS1GYWt0b3ItTW9kZWxsIGZ1ZXIgZGllIHRleHR1YWwtSXRlbXNcbmdybS5tb2RlbCA8LSAnXG4gIEYgPX4geDQgKyB4NSArIHg2XG4nXG5maXQuZ3JtIDwtIGNmYShncm0ubW9kZWwsXG4gICAgICAgICAgICAgICBkYXRhID0gSFM0Y2F0WywgYyhcIng0XCIsXCJ4NVwiLFwieDZcIildLFxuICAgICAgICAgICAgICAgb3JkZXJlZCA9IFRSVUUsXG4gICAgICAgICAgICAgICBwYXJhbWV0ZXJpemF0aW9uID0gXCJ0aGV0YVwiLFxuICAgICAgICAgICAgICAgc3RkLmx2ID0gVFJVRSlcblxuY2F0KFwiPT09IEdyYWRlZCBSZXNwb25zZSBNb2RlbCAodmlhIENGQSkgPT09XFxuXFxuXCIpXG5wYXJlc3QuZ3JtIDwtIHBhcmFtZXRlckVzdGltYXRlcyhmaXQuZ3JtKVxuXG4jIERpc2tyaW1pbmF0aW9uc3BhcmFtZXRlclxuY2F0KFwiRGlza3JpbWluYXRpb24gKGEpOlxcblwiKVxubGFkLmdybSA8LSBwYXJlc3QuZ3JtW3BhcmVzdC5ncm0kb3AgPT0gXCI9flwiLCBdXG5wcmludChsYWQuZ3JtWywgYyhcInJoc1wiLCBcImVzdFwiKV0sIHJvdy5uYW1lcyA9IEZBTFNFKVxuXG4jIFNjaHdpZXJpZ2tlaXRzcGFyYW1ldGVyXG5jYXQoXCJcXG5TY2h3aWVyaWdrZWl0IChiID0gdGF1IC8gYSk6XFxuXCIpXG50aHIuZ3JtIDwtIHBhcmVzdC5ncm1bcGFyZXN0LmdybSRvcCA9PSBcInxcIiwgXVxuZm9yIChpdGVtIGluIHVuaXF1ZSh0aHIuZ3JtJGxocykpIHtcbiAgYSA8LSBsYWQuZ3JtJGVzdFtsYWQuZ3JtJHJocyA9PSBpdGVtXVxuICB0YXVzIDwtIHRoci5ncm0kZXN0W3Roci5ncm0kbGhzID09IGl0ZW1dXG4gIGJzIDwtIHJvdW5kKHRhdXMgLyBhLCAzKVxuICBjYXQoXCIgIFwiLCBpdGVtLCBcIjogYiA9XCIsIHBhc3RlKGJzLCBjb2xsYXBzZSA9IFwiLCBcIiksIFwiXFxuXCIpXG59In0=
+</script>
+</div>
+</div>
+</section>
+<section id="vergleich-mit-tam-irt-software-bestaetigt-die-aequivalenz" class="level3">
+<h3 class="anchored" data-anchor-id="vergleich-mit-tam-irt-software-bestaetigt-die-aequivalenz">Vergleich mit TAM: IRT-Software bestaetigt die Aequivalenz</h3>
+<p>Um die Aequivalenz von CFA und IRT empirisch zu pruefen, schaetzen wir dasselbe Modell mit dem IRT-Paket <strong>TAM</strong> (Test Analysis Modules). TAM verwendet marginale Maximum-Likelihood-Schaetzung (MML), den Standard-Schaetzer in der IRT.</p>
+<section id="faktor-modell-textual-items-lavaan-vs.-tam" class="level4">
+<h4 class="anchored" data-anchor-id="faktor-modell-textual-items-lavaan-vs.-tam">1-Faktor-Modell (textual-Items): lavaan vs.&nbsp;TAM</h4>
+<div class="cell">
+<div>
+<div id="webr-15" class="exercise-cell">
+
+</div>
+<script type="webr-15-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIndhcm5pbmciOmZhbHNlfSwiY29kZSI6IiMgLS0tIGxhdmFhbjogR1JNIHZpYSBDRkEgKFRoZXRhLVBhcmFtZXRyaXNpZXJ1bmcpIC0tLVxuZ3JtLm1vZGVsIDwtICdcbiAgRiA9fiB4NCArIHg1ICsgeDZcbidcbmZpdC5ncm0gPC0gY2ZhKGdybS5tb2RlbCxcbiAgICAgICAgICAgICAgIGRhdGEgPSBIUzRjYXRbLCBjKFwieDRcIixcIng1XCIsXCJ4NlwiKV0sXG4gICAgICAgICAgICAgICBvcmRlcmVkID0gVFJVRSxcbiAgICAgICAgICAgICAgIHBhcmFtZXRlcml6YXRpb24gPSBcInRoZXRhXCIsXG4gICAgICAgICAgICAgICBzdGQubHYgPSBUUlVFKVxuXG5wYXJlc3QuZ3JtIDwtIHBhcmFtZXRlckVzdGltYXRlcyhmaXQuZ3JtKVxubGFkLmdybSA8LSBwYXJlc3QuZ3JtW3BhcmVzdC5ncm0kb3AgPT0gXCI9flwiLCBdXG50aHIuZ3JtIDwtIHBhcmVzdC5ncm1bcGFyZXN0LmdybSRvcCA9PSBcInxcIiwgXVxuXG5jYXQoXCI9PT0gbGF2YWFuIChDRkEsIFRoZXRhLVBhcmFtZXRyaXNpZXJ1bmcpID09PVxcblxcblwiKVxuY2F0KFwiRGlza3JpbWluYXRpb24gKGEgPSBGYWt0b3JsYWR1bmcpOlxcblwiKVxuZm9yIChpdGVtIGluIGxhZC5ncm0kcmhzKSB7XG4gIGNhdChcIiAgXCIsIGl0ZW0sIFwiOlwiLCByb3VuZChsYWQuZ3JtJGVzdFtsYWQuZ3JtJHJocyA9PSBpdGVtXSwgMyksIFwiXFxuXCIpXG59XG5jYXQoXCJcXG5TY2h3ZWxsZW53ZXJ0ZSAodGF1KTpcXG5cIilcbmZvciAoaXRlbSBpbiB1bmlxdWUodGhyLmdybSRsaHMpKSB7XG4gIHRhdXMgPC0gdGhyLmdybSRlc3RbdGhyLmdybSRsaHMgPT0gaXRlbV1cbiAgY2F0KFwiICBcIiwgaXRlbSwgXCI6XCIsIHBhc3RlKHJvdW5kKHRhdXMsIDMpLCBjb2xsYXBzZSA9IFwiLCBcIiksIFwiXFxuXCIpXG59In0=
+</script>
+</div>
+</div>
+<div class="cell">
+<div>
+<div id="webr-16" class="exercise-cell">
+
+</div>
+<script type="webr-16-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIndhcm5pbmciOmZhbHNlfSwiY29kZSI6IiMgLS0tIFRBTTogR3JhZGVkIFJlc3BvbnNlIE1vZGVsICgyUEwvR1BDTSkgLS0tXG4jIFRBTSBicmF1Y2h0IG51bWVyaXNjaGUsIDAtYmFzaWVydGUgRGF0ZW5cbmRhdC50YW0uMyA8LSBhcy5kYXRhLmZyYW1lKGxhcHBseShIUzRjYXRbLCBjKFwieDRcIixcIng1XCIsXCJ4NlwiKV0sXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGZ1bmN0aW9uKHgpIGFzLm51bWVyaWMoeCkgLSAxKSlcblxudGFtLmdybS4zIDwtIFRBTTo6dGFtLm1tbC4ycGwoZGF0LnRhbS4zLCBpcnRtb2RlbCA9IFwiR1BDTVwiLCB2ZXJib3NlID0gRkFMU0UpXG5cbmNhdChcIj09PSBUQU0gKElSVCwgTU1MLVNjaGFldHp1bmcpID09PVxcblxcblwiKVxuXG4jIFN0cnVrdHVyIGRlciBCLU1hdHJpeCBhbnNjaGF1ZW5cbiMgSW4gVEFNIGlzdCBCIGVpbiAzRC1BcnJheTogSXRlbXMgeCBLYXRlZ29yaWVuIHggRGltZW5zaW9uZW5cbiMgRnVlciBlaW4gMS1GYWt0b3ItTW9kZWxsOiBCW2l0ZW0sIDIsIDFdID0gRGlza3JpbWluYXRpb25cbmNhdChcIkRpc2tyaW1pbmF0aW9uIChhKTpcXG5cIilcbmZvciAoaSBpbiAxOm5jb2woZGF0LnRhbS4zKSkge1xuICBjYXQoXCIgIFwiLCBuYW1lcyhkYXQudGFtLjMpW2ldLCBcIjpcIixcbiAgICAgIHJvdW5kKHRhbS5ncm0uMyRCW2ksIDIsIDFdLCAzKSwgXCJcXG5cIilcbn1cblxuIyBTY2h3aWVyaWdrZWl0c3BhcmFtZXRlciAoeHNpKVxuY2F0KFwiXFxuU2Nod2VsbGVud2VydGUgLyBTY2h3aWVyaWdrZWl0ZW4gKHhzaSk6XFxuXCIpXG5mb3IgKGkgaW4gMTpuY29sKGRhdC50YW0uMykpIHtcbiAgaXRlbS5uYW1lIDwtIG5hbWVzKGRhdC50YW0uMylbaV1cbiAgeHNpLmlkeCA8LSBncmVwKHBhc3RlMChcIl5cIiwgaXRlbS5uYW1lKSwgcm93bmFtZXModGFtLmdybS4zJHhzaSkpXG4gIHhzaXMgPC0gdGFtLmdybS4zJHhzaSR4c2lbeHNpLmlkeF1cbiAgY2F0KFwiICBcIiwgaXRlbS5uYW1lLCBcIjpcIiwgcGFzdGUocm91bmQoeHNpcywgMyksIGNvbGxhcHNlID0gXCIsIFwiKSwgXCJcXG5cIilcbn0ifQ==
+</script>
+</div>
+</div>
+<div class="cell">
+<div>
+<div id="webr-17" class="exercise-cell">
+
+</div>
+<script type="webr-17-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIndhcm5pbmciOmZhbHNlfSwiY29kZSI6IiMgLS0tIERpcmVrdGVyIFZlcmdsZWljaCBkZXIgRGlza3JpbWluYXRpb25zcGFyYW1ldGVyIC0tLVxuY2F0KFwiPT09IFZlcmdsZWljaDogRGlza3JpbWluYXRpb24gKGEpID09PVxcblxcblwiKVxuXG5hLmxhdmFhbiA8LSBsYWQuZ3JtJGVzdFxuYS50YW0gPC0gdGFtLmdybS4zJEJbMTozLCAyLCAxXVxuXG52ZXJnbC5hIDwtIGRhdGEuZnJhbWUoXG4gIEl0ZW0gPSBjKFwieDRcIiwgXCJ4NVwiLCBcIng2XCIpLFxuICBsYXZhYW5fQ0ZBID0gcm91bmQoYS5sYXZhYW4sIDMpLFxuICBUQU1fSVJUID0gcm91bmQoYS50YW0sIDMpLFxuICBEaWZmZXJlbnogPSByb3VuZChhLmxhdmFhbiAtIGEudGFtLCAzKVxuKVxudmVyZ2wuYSJ9
+</script>
+</div>
+</div>
+<p>Die Diskriminationsparameter aus lavaan (CFA) und TAM (IRT) sind vergleichbar. Kleine Unterschiede ergeben sich aus den verschiedenen Schaetzmethoden: lavaan verwendet WLSMV (basierend auf polychorischen Korrelationen), TAM verwendet marginale Maximum Likelihood (MML). Bei grossem <span class="math inline">\(N\)</span> konvergieren beide Ansaetze.</p>
+</section>
+<section id="mehrdimensionale-modelle-q-matrix-lambda-matrix" class="level4">
+<h4 class="anchored" data-anchor-id="mehrdimensionale-modelle-q-matrix-lambda-matrix">Mehrdimensionale Modelle: Q-Matrix = Lambda-Matrix</h4>
+<p>Grundsaetzlich kann TAM auch mehrdimensionale Modelle schaetzen. Dafuer verwendet man eine <strong>Q-Matrix</strong>, die genau der Ladungsstruktur der <span class="math inline">\(\boldsymbol{\Lambda}\)</span>-Matrix im CFA entspricht:</p>
+<div class="cell">
+<div>
+<div id="webr-18" class="exercise-cell">
+
+</div>
+<script type="webr-18-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiIyBRLU1hdHJpeDogWnVvcmRudW5nIEl0ZW1zIC0+IEZha3RvcmVuXG5RLm1hdHJpeCA8LSBtYXRyaXgoMCwgOSwgMyxcbiAgZGltbmFtZXMgPSBsaXN0KHBhc3RlMChcInhcIiwgMTo5KSwgYyhcInZpc3VhbFwiLFwidGV4dHVhbFwiLFwic3BlZWRcIikpKVxuUS5tYXRyaXhbMTozLCAxXSA8LSAxICAjIHgxLXgzIC0+IHZpc3VhbFxuUS5tYXRyaXhbNDo2LCAyXSA8LSAxICAjIHg0LXg2IC0+IHRleHR1YWxcblEubWF0cml4Wzc6OSwgM10gPC0gMSAgIyB4Ny14OSAtPiBzcGVlZFxuXG5jYXQoXCJRLU1hdHJpeCAoPSBMYWR1bmdzc3RydWt0dXIgZGVyIExhbWJkYS1NYXRyaXgpOlxcblwiKVxuUS5tYXRyaXhcblxuIyBJbiBUQU0gd2FlcmUgZGVyIEF1ZnJ1ZjpcbiMgdGFtLjNmIDwtIFRBTTo6dGFtLm1tbC4ycGwoZGF0LCBRID0gUS5tYXRyaXgpXG4jIERhcyBkYXVlcnQgaW4gV2ViUiBqZWRvY2ggenUgbGFuZ2UgKE1NTC1TY2hhZXR6dW5nIGZ1ZXJcbiMgbWVocmRpbWVuc2lvbmFsZSBNb2RlbGxlIGlzdCByZWNoZW5pbnRlbnNpdikuXG4jIEluIGVpbmVyIGxva2FsZW4gUi1JbnN0YWxsYXRpb24gZnVua3Rpb25pZXJ0IGVzIHByb2JsZW1sb3MuIn0=
+</script>
+</div>
+</div>
+<p>Die Q-Matrix in TAM und die <span class="math inline">\(\boldsymbol{\Lambda}\)</span>-Matrix im CFA beschreiben dieselbe Modellstruktur – nur die Terminologie unterscheidet sich. Mehrdimensionale IRT-Modelle sind allerdings deutlich rechenintensiver als WLSMV-basierte CFA, da sie numerische Integration ueber die latenten Dimensionen erfordern (bei TAM: adaptive Gauss-Hermite-Quadratur). Fuer mehrdimensionale ordinale Modelle ist lavaan mit WLSMV daher oft die praktischere Wahl.</p>
+</section>
+</section>
+</section>
+<section id="wann-welchen-schaetzer-verwenden" class="level2">
+<h2 class="anchored" data-anchor-id="wann-welchen-schaetzer-verwenden">Wann welchen Schaetzer verwenden?</h2>
+<p>Basierend auf Rhemtulla et al.&nbsp;(2012) und Flora &amp; Curran (2004):</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Situation</th>
+<th>Empfehlung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Kontinuierliche Variablen</td>
+<td>ML (robust: MLR)</td>
+</tr>
+<tr class="even">
+<td>Ordinale Variablen, <span class="math inline">\(\geq\)</span> 5 Kategorien</td>
+<td>ML oft akzeptabel, WLSMV besser</td>
+</tr>
+<tr class="odd">
+<td>Ordinale Variablen, 2–4 Kategorien</td>
+<td><strong>WLSMV</strong> (oder DWLS) notwendig</td>
+</tr>
+<tr class="even">
+<td>Binaere/dichotome Variablen</td>
+<td><strong>WLSMV</strong> zwingend</td>
+</tr>
+<tr class="odd">
+<td>Kleine Stichprobe (<span class="math inline">\(N &lt; 200\)</span>)</td>
+<td>ML bevorzugen (WLSMV braucht groesseres <span class="math inline">\(N\)</span>)</td>
+</tr>
+<tr class="even">
+<td>IRT-Interpretation gewuenscht</td>
+<td>WLSMV mit <code>parameterization = "theta"</code></td>
+</tr>
+</tbody>
+</table>
+<p>In lavaan ist die Umsetzung denkbar einfach:</p>
+<div class="cell">
+<div>
+<div id="webr-19" class="exercise-cell">
+
+</div>
+<script type="webr-19-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIndhcm5pbmciOmZhbHNlfSwiY29kZSI6IiMgQWxsZXMgd2FzIG1hbiBicmF1Y2h0OiBvcmRlcmVkID0gVFJVRVxuIyBsYXZhYW4gd2FlaGx0IGF1dG9tYXRpc2NoIFdMU01WXG5maXQgPC0gY2ZhKEhTLm1vZGVsLCBkYXRhID0gSFM0Y2F0LCBvcmRlcmVkID0gVFJVRSlcblxuY2F0KFwiU2NoYWV0emVyOlwiLCBsYXZJbnNwZWN0KGZpdCwgXCJvcHRpb25zXCIpJGVzdGltYXRvciwgXCJcXG5cIilcbmNhdChcIlRlc3Q6XCIsIGxhdkluc3BlY3QoZml0LCBcIm9wdGlvbnNcIikkdGVzdCwgXCJcXG5cIikifQ==
+</script>
+</div>
+</div>
+</section>
+<section id="zusammenfassung" class="level2">
+<h2 class="anchored" data-anchor-id="zusammenfassung">Zusammenfassung</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 37%">
+<col style="width: 62%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Konzept</th>
+<th>Schluesselidee</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Schwellenwertmodell</td>
+<td>Ordinalskala entsteht durch Schwellenwerte auf einer latenten kontinuierlichen Variable</td>
+</tr>
+<tr class="even">
+<td>Polychorische Korrelation</td>
+<td>Schaetzt die Korrelation der latenten Antwortvariablen, korrigiert die Abschwachung durch Kategorisierung</td>
+</tr>
+<tr class="odd">
+<td>WLSMV</td>
+<td>Fittet das SEM-Modell an die polychorischen Korrelationen statt an Pearson-Korrelationen</td>
+</tr>
+<tr class="even">
+<td>CFA = IRT</td>
+<td>Ein CFA fuer ordinale Daten und ein IRT-Modell (z.B. GRM) sind statistisch aequivalent, nur unterschiedlich parametrisiert</td>
+</tr>
+<tr class="odd">
+<td>Theta-Parametrisierung</td>
+<td>In lavaan: <code>parameterization = "theta"</code> liefert direkt IRT-Parameter</td>
+</tr>
+</tbody>
+</table>
+
+
+<script type="webr-data">
+eyJvcHRpb25zIjp7ImJhc2VVcmwiOiJodHRwczovL3dlYnIuci13YXNtLm9yZy92MC41LjgvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsiZXZhbHVhdGUiLCJrbml0ciIsImh0bWx0b29scyJdLCJyZXBvcyI6W119LCJyZW5kZXJfZGYiOiJkZWZhdWx0In0=
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0xOSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfMTk7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici0xOSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzE5ID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItMTktY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgd2Vici0xOS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV8xOSA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfMTksIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0xOCIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfMTg7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici0xOCIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzE4ID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItMTgtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgd2Vici0xOC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV8xOCA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfMTgsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0xNyIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfMTc7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici0xNyIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzE3ID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItMTctY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgd2Vici0xNy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV8xNyA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfMTcsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0xNiIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfMTY7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici0xNiIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzE2ID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItMTYtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgd2Vici0xNi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV8xNiA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfMTYsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0xNSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfMTU7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici0xNSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzE1ID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItMTUtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgd2Vici0xNS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV8xNSA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfMTUsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0xNCIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfMTQ7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici0xNCIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzE0ID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItMTQtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgd2Vici0xNC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV8xNCA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfMTQsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0xMyIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfMTM7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici0xMyIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzEzID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItMTMtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgd2Vici0xMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV8xMyA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfMTMsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0xMiIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfMTI7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici0xMiIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzEyID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItMTItY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgd2Vici0xMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV8xMiA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfMTIsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0xMSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfMTE7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici0xMSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzExID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItMTEtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgd2Vici0xMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV8xMSA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfMTEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0xMCIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfMTA7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici0xMCIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzEwID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItMTAtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgd2Vici0xMC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV8xMCA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfMTAsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC05IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICAvLyBXYWl0IGZvciBvdXRwdXQgdG8gYmUgd3JpdHRlbiB0byB0aGUgRE9NLCB0aGVuIHRyaWdnZXIgd2lkZ2V0IHJlbmRlcmluZ1xuICBhd2FpdCBfd2Vicl92YWx1ZV85O1xuICBpZiAod2luZG93LkhUTUxXaWRnZXRzKSB7XG4gICAgd2luZG93LkhUTUxXaWRnZXRzLnN0YXRpY1JlbmRlcigpO1xuICB9XG4gIGlmICh3aW5kb3cuUGFnZWRUYWJsZURvYykge1xuICAgIHdpbmRvdy5QYWdlZFRhYmxlRG9jLmluaXRBbGwoKTtcbiAgfVxufVxuIn0seyJjZWxsTmFtZSI6IndlYnItOSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzkgPSB7XG4gIGNvbnN0IHsgV2ViUkV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici05LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHdlYnItOS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV85ID0gd2ViUk9qcy5wcm9jZXNzKF93ZWJyX2VkaXRvcl85LCB7fSk7XG4ifSx7ImNlbGxOYW1lIjoid2Vici13aWRnZXQtOCIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfODtcbiAgaWYgKHdpbmRvdy5IVE1MV2lkZ2V0cykge1xuICAgIHdpbmRvdy5IVE1MV2lkZ2V0cy5zdGF0aWNSZW5kZXIoKTtcbiAgfVxuICBpZiAod2luZG93LlBhZ2VkVGFibGVEb2MpIHtcbiAgICB3aW5kb3cuUGFnZWRUYWJsZURvYy5pbml0QWxsKCk7XG4gIH1cbn1cbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLTgiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF93ZWJyX2VkaXRvcl84ID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItOC1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGB3ZWJyLTgtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgV2ViUkV4ZXJjaXNlRWRpdG9yKHdlYlJPanMud2ViUlByb21pc2UsIGJsb2NrLmNvZGUsIG9wdGlvbnMpO1xuXG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxuX3dlYnJfdmFsdWVfOCA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfOCwge30pO1xuIn0seyJjZWxsTmFtZSI6IndlYnItd2lkZ2V0LTciLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ7XG4gIC8vIFdhaXQgZm9yIG91dHB1dCB0byBiZSB3cml0dGVuIHRvIHRoZSBET00sIHRoZW4gdHJpZ2dlciB3aWRnZXQgcmVuZGVyaW5nXG4gIGF3YWl0IF93ZWJyX3ZhbHVlXzc7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici03IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfd2Vicl9lZGl0b3JfNyA9IHtcbiAgY29uc3QgeyBXZWJSRXhlcmNpc2VFZGl0b3IsIGI2NERlY29kZSB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ3ZWJyLTctY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgd2Vici03LWNvbnRlbnRzYCB9LCBibG9jay5hdHRyKTtcbiAgY29uc3QgZWRpdG9yID0gbmV3IFdlYlJFeGVyY2lzZUVkaXRvcih3ZWJST2pzLndlYlJQcm9taXNlLCBibG9jay5jb2RlLCBvcHRpb25zKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl93ZWJyX3ZhbHVlXzcgPSB3ZWJST2pzLnByb2Nlc3MoX3dlYnJfZWRpdG9yXzcsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC02IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICAvLyBXYWl0IGZvciBvdXRwdXQgdG8gYmUgd3JpdHRlbiB0byB0aGUgRE9NLCB0aGVuIHRyaWdnZXIgd2lkZ2V0IHJlbmRlcmluZ1xuICBhd2FpdCBfd2Vicl92YWx1ZV82O1xuICBpZiAod2luZG93LkhUTUxXaWRnZXRzKSB7XG4gICAgd2luZG93LkhUTUxXaWRnZXRzLnN0YXRpY1JlbmRlcigpO1xuICB9XG4gIGlmICh3aW5kb3cuUGFnZWRUYWJsZURvYykge1xuICAgIHdpbmRvdy5QYWdlZFRhYmxlRG9jLmluaXRBbGwoKTtcbiAgfVxufVxuIn0seyJjZWxsTmFtZSI6IndlYnItNiIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzYgPSB7XG4gIGNvbnN0IHsgV2ViUkV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici02LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHdlYnItNi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV82ID0gd2ViUk9qcy5wcm9jZXNzKF93ZWJyX2VkaXRvcl82LCB7fSk7XG4ifSx7ImNlbGxOYW1lIjoid2Vici13aWRnZXQtNSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfNTtcbiAgaWYgKHdpbmRvdy5IVE1MV2lkZ2V0cykge1xuICAgIHdpbmRvdy5IVE1MV2lkZ2V0cy5zdGF0aWNSZW5kZXIoKTtcbiAgfVxuICBpZiAod2luZG93LlBhZ2VkVGFibGVEb2MpIHtcbiAgICB3aW5kb3cuUGFnZWRUYWJsZURvYy5pbml0QWxsKCk7XG4gIH1cbn1cbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLTUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF93ZWJyX2VkaXRvcl81ID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItNS1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGB3ZWJyLTUtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgV2ViUkV4ZXJjaXNlRWRpdG9yKHdlYlJPanMud2ViUlByb21pc2UsIGJsb2NrLmNvZGUsIG9wdGlvbnMpO1xuXG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxuX3dlYnJfdmFsdWVfNSA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfNSwge30pO1xuIn0seyJjZWxsTmFtZSI6IndlYnItd2lkZ2V0LTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ7XG4gIC8vIFdhaXQgZm9yIG91dHB1dCB0byBiZSB3cml0dGVuIHRvIHRoZSBET00sIHRoZW4gdHJpZ2dlciB3aWRnZXQgcmVuZGVyaW5nXG4gIGF3YWl0IF93ZWJyX3ZhbHVlXzQ7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici00IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfd2Vicl9lZGl0b3JfNCA9IHtcbiAgY29uc3QgeyBXZWJSRXhlcmNpc2VFZGl0b3IsIGI2NERlY29kZSB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ3ZWJyLTQtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgd2Vici00LWNvbnRlbnRzYCB9LCBibG9jay5hdHRyKTtcbiAgY29uc3QgZWRpdG9yID0gbmV3IFdlYlJFeGVyY2lzZUVkaXRvcih3ZWJST2pzLndlYlJQcm9taXNlLCBibG9jay5jb2RlLCBvcHRpb25zKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl93ZWJyX3ZhbHVlXzQgPSB3ZWJST2pzLnByb2Nlc3MoX3dlYnJfZWRpdG9yXzQsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0zIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICAvLyBXYWl0IGZvciBvdXRwdXQgdG8gYmUgd3JpdHRlbiB0byB0aGUgRE9NLCB0aGVuIHRyaWdnZXIgd2lkZ2V0IHJlbmRlcmluZ1xuICBhd2FpdCBfd2Vicl92YWx1ZV8zO1xuICBpZiAod2luZG93LkhUTUxXaWRnZXRzKSB7XG4gICAgd2luZG93LkhUTUxXaWRnZXRzLnN0YXRpY1JlbmRlcigpO1xuICB9XG4gIGlmICh3aW5kb3cuUGFnZWRUYWJsZURvYykge1xuICAgIHdpbmRvdy5QYWdlZFRhYmxlRG9jLmluaXRBbGwoKTtcbiAgfVxufVxuIn0seyJjZWxsTmFtZSI6IndlYnItMyIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzMgPSB7XG4gIGNvbnN0IHsgV2ViUkV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHdlYnItMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV8zID0gd2ViUk9qcy5wcm9jZXNzKF93ZWJyX2VkaXRvcl8zLCB7fSk7XG4ifSx7ImNlbGxOYW1lIjoid2Vici13aWRnZXQtMiIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfMjtcbiAgaWYgKHdpbmRvdy5IVE1MV2lkZ2V0cykge1xuICAgIHdpbmRvdy5IVE1MV2lkZ2V0cy5zdGF0aWNSZW5kZXIoKTtcbiAgfVxuICBpZiAod2luZG93LlBhZ2VkVGFibGVEb2MpIHtcbiAgICB3aW5kb3cuUGFnZWRUYWJsZURvYy5pbml0QWxsKCk7XG4gIH1cbn1cbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF93ZWJyX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItMi1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGB3ZWJyLTItY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgV2ViUkV4ZXJjaXNlRWRpdG9yKHdlYlJPanMud2ViUlByb21pc2UsIGJsb2NrLmNvZGUsIG9wdGlvbnMpO1xuXG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxuX3dlYnJfdmFsdWVfMiA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfMiwge30pO1xuIn0seyJjZWxsTmFtZSI6IndlYnItd2lkZ2V0LTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ7XG4gIC8vIFdhaXQgZm9yIG91dHB1dCB0byBiZSB3cml0dGVuIHRvIHRoZSBET00sIHRoZW4gdHJpZ2dlciB3aWRnZXQgcmVuZGVyaW5nXG4gIGF3YWl0IF93ZWJyX3ZhbHVlXzE7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici0xIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6Il93ZWJyX3ZhbHVlXzEgPSB7XG4gIGNvbnN0IHsgaGlnaGxpZ2h0UiwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItMS1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIC8vIERlZmF1bHQgZXZhbHVhdGlvbiBjb25maWd1cmF0aW9uXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHtcbiAgICBpZDogXCJ3ZWJyLTEtY29udGVudHNcIixcbiAgICBlY2hvOiB0cnVlLFxuICAgIG91dHB1dDogdHJ1ZVxuICB9LCBibG9jay5hdHRyKTtcblxuICAvLyBFdmFsdWF0ZSB0aGUgcHJvdmlkZWQgUiBjb2RlXG4gIGNvbnN0IHJlc3VsdCA9IHdlYlJPanMucHJvY2Vzcyh7Y29kZTogYmxvY2suY29kZSwgb3B0aW9uc30sIHt9KTtcblxuICAvLyBFYXJseSB5aWVsZCB3aGlsZSB3ZSB3YWl0IGZvciB0aGUgZmlyc3QgZXZhbHVhdGlvbiBhbmQgcmVuZGVyXG4gIGlmIChvcHRpb25zLm91dHB1dCAmJiAhKFwiMVwiIGluIHdlYlJPanMucmVuZGVyZWRPanMpKSB7XG4gICAgY29uc3QgY29udGFpbmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcbiAgICBjb25zdCBzcGlubmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcblxuICAgIGlmIChvcHRpb25zLmVjaG8pIHtcbiAgICAgIC8vIFNob3cgb3V0cHV0IGFzIGhpZ2hsaWdodGVkIHNvdXJjZVxuICAgICAgY29uc3QgcHJlRWxlbSA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJwcmVcIik7XG4gICAgICBjb250YWluZXIuY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlXCI7XG4gICAgICBwcmVFbGVtLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZSByXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKGhpZ2hsaWdodFIoYmxvY2suY29kZSkpO1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItZ3JvdyBzcGlubmVyLWdyb3ctc20gbS0yIHBvc2l0aW9uLWFic29sdXRlIHRvcC0wIGVuZC0wXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHByZUVsZW0pO1xuICAgIH0gZWxzZSB7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ib3JkZXIgc3Bpbm5lci1ib3JkZXItc21cIjtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICB9XG5cbiAgICB5aWVsZCBjb250YWluZXI7XG4gIH1cblxuICB3ZWJST2pzLnJlbmRlcmVkT2pzW1wiMVwiXSA9IHRydWU7XG4gIHlpZWxkIGF3YWl0IHJlc3VsdDtcbn1cbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ3ZWJST2pzID0ge1xuICBjb25zdCB7IFdlYlIsIENoYW5uZWxUeXBlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lLldlYlI7XG4gIGNvbnN0IHtcbiAgICBXZWJSRXZhbHVhdG9yLFxuICAgIFdlYlJFbnZpcm9ubWVudE1hbmFnZXIsXG4gICAgc2V0dXBSLFxuICAgIGI2NERlY29kZSxcbiAgICBjb2xsYXBzZVBhdGhcbiAgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc3RhdHVzQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLXN0YXR1c1wiKTtcbiAgY29uc3QgaW5kaWNhdG9yQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaW5kaWNhdG9yQ29udGFpbmVyLmNsYXNzTGlzdC5yZW1vdmUoXCJkLW5vbmVcIik7XG5cbiAgbGV0IHN0YXR1c1RleHQgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpXG4gIHN0YXR1c1RleHQuY2xhc3NMaXN0ID0gXCJleGVyY2lzZS1sb2FkaW5nLWRldGFpbHNcIjtcbiAgc3RhdHVzVGV4dCA9IHN0YXR1c0NvbnRhaW5lci5hcHBlbmRDaGlsZChzdGF0dXNUZXh0KTtcbiAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBJbml0aWFsaXNlYDtcblxuICAvLyBIb2lzdCBpbmRpY2F0b3Igb3V0IGZyb20gZmluYWwgc2xpZGUgd2hlbiBydW5uaW5nIHVuZGVyIHJldmVhbFxuICBjb25zdCByZXZlYWxTdGF0dXMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCAuZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGlmIChyZXZlYWxTdGF0dXMpIHtcbiAgICByZXZlYWxTdGF0dXMucmVtb3ZlKCk7XG4gICAgZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgPiAuc2xpZGVzXCIpLmFwcGVuZENoaWxkKHJldmVhbFN0YXR1cyk7XG4gIH1cblxuICAvLyBNYWtlIGFueSByZXZlYWwgc2xpZGVzIHdpdGggbGl2ZSBjZWxscyBzY3JvbGxhYmxlXG4gIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoXCIucmV2ZWFsIC5leGVyY2lzZS1jZWxsXCIpLmZvckVhY2goKGVsKSA9PiB7XG4gICAgZWwuY2xvc2VzdCgnc2VjdGlvbi5zbGlkZScpLmNsYXNzTGlzdC5hZGQoXCJzY3JvbGxhYmxlXCIpO1xuICB9KVxuXG4gIC8vIHdlYlIgc3VwcGxlbWVudGFsIGRhdGEgYW5kIG9wdGlvbnNcbiAgY29uc3QgZGF0YUNvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici1kYXRhXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZGF0YSA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGRhdGFDb250ZW50KSk7XG5cbiAgLy8gR3JhYiBsaXN0IG9mIHJlc291cmNlcyB0byBiZSBkb3dubG9hZGVkXG4gIGNvbnN0IGZpbGVzQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ2ZnMtZmlsZVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGZpbGVzID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZmlsZXNDb250ZW50KSk7XG5cbiAgLy8gSW5pdGlhbGlzZSB3ZWJSIGFuZCBzZXR1cCBmb3IgUiBjb2RlIGV2YWx1YXRpb25cbiAgbGV0IHdlYlJQcm9taXNlID0gKGFzeW5jICh3ZWJSKSA9PiB7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyB3ZWJSYDtcbiAgICBhd2FpdCB3ZWJSLmluaXQoKTtcblxuICAgIC8vIEluc3RhbGwgcHJvdmlkZWQgbGlzdCBvZiBwYWNrYWdlc1xuICAgIC8vIEVuc3VyZSB3ZWJSIGRlZmF1bHQgcmVwbyBpcyBpbmNsdWRlZFxuICAgIGRhdGEucGFja2FnZXMucmVwb3MucHVzaChcImh0dHBzOi8vcmVwby5yLXdhc20ub3JnXCIpXG4gICAgYXdhaXQgZGF0YS5wYWNrYWdlcy5wa2dzLm1hcCgocGtnKSA9PiAoKSA9PiB7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6ICR7cGtnfWA7XG4gICAgICByZXR1cm4gd2ViUi5ldmFsUlZvaWQoYFxuICAgICAgICB3ZWJyOjppbnN0YWxsKHBrZywgcmVwb3MgPSByZXBvcylcbiAgICAgICAgbGlicmFyeShwa2csIGNoYXJhY3Rlci5vbmx5ID0gVFJVRSlcbiAgICAgIGAsIHsgZW52OiB7XG4gICAgICAgIHBrZzogcGtnLFxuICAgICAgICByZXBvczogZGF0YS5wYWNrYWdlcy5yZXBvcyxcbiAgICAgIH19KTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcblxuICAgIC8vIERvd25sb2FkIGFuZCBpbnN0YWxsIHJlc291cmNlc1xuICAgIGF3YWl0IGZpbGVzLm1hcCgoZmlsZSkgPT4gYXN5bmMgKCkgPT4ge1xuICAgICAgY29uc3QgbmFtZSA9IGZpbGUuc3Vic3RyaW5nKGZpbGUubGFzdEluZGV4T2YoJy8nKSArIDEpO1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyByZXNvdXJjZTogJHtuYW1lfWA7XG4gICAgICBjb25zdCByZXNwb25zZSA9IGF3YWl0IGZldGNoKGZpbGUpO1xuICAgICAgaWYgKCFyZXNwb25zZS5vaykge1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYENhbid0IGRvd25sb2FkIFxcYCR7ZmlsZX1cXGAuIEVycm9yICR7cmVzcG9uc2Uuc3RhdHVzfTogXCIke3Jlc3BvbnNlLnN0YXR1c1RleHR9XCIuYCk7XG4gICAgICB9XG4gICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuYXJyYXlCdWZmZXIoKTtcblxuICAgICAgLy8gU3RvcmUgVVJMcyBpbiB0aGUgY3dkIHdpdGhvdXQgYW55IHN1YmRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGlmIChmaWxlLmluY2x1ZGVzKFwiOi8vXCIpKSB7XG4gICAgICAgIGZpbGUgPSBuYW1lO1xuICAgICAgfVxuXG4gICAgICAvLyBDb2xsYXBzZSBoaWdoZXIgZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgZmlsZSA9IGNvbGxhcHNlUGF0aChmaWxlKTtcblxuICAgICAgLy8gQ3JlYXRlIGRpcmVjdG9yeSB0cmVlLCBpZ25vcmluZyBcImRpcmVjdG9yeSBleGlzdHNcIiBWRlMgZXJyb3JzXG4gICAgICBjb25zdCBwYXJ0cyA9IGZpbGUuc3BsaXQoJy8nKS5zbGljZSgwLCAtMSk7XG4gICAgICBsZXQgcGF0aCA9ICcnO1xuICAgICAgd2hpbGUgKHBhcnRzLmxlbmd0aCA+IDApIHtcbiAgICAgICAgcGF0aCArPSBwYXJ0cy5zaGlmdCgpICsgJy8nO1xuICAgICAgICBjb25zdCBhbmFseXNpcyA9IGF3YWl0IHdlYlIuRlMuYW5hbHl6ZVBhdGgocGF0aCk7XG4gICAgICAgIGlmICghYW5hbHlzaXMuZXhpc3RzKSB7XG4gICAgICAgICAgdHJ5IHtcbiAgICAgICAgICAgIGF3YWl0IHdlYlIuRlMubWtkaXIocGF0aCk7XG4gICAgICAgICAgfSBjYXRjaCAoZSkge1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yOiBcIiR7ZS5tZXNzYWdlfVwiLmApO1xuICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgICAgfVxuXG4gICAgICAvLyBXcml0ZSB0aGlzIGZpbGUgdG8gdGhlIFZGU1xuICAgICAgcmV0dXJuIGF3YWl0IHdlYlIuRlMud3JpdGVGaWxlKGZpbGUsIG5ldyBVaW50OEFycmF5KGRhdGEpKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgSW5zdGFsbGluZyB3ZWJSIHNoaW1zYDtcbiAgICBhd2FpdCB3ZWJSLmV2YWxSVm9pZChgd2Vicjo6c2hpbV9pbnN0YWxsKClgKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgV2ViUiBlbnZpcm9ubWVudCBzZXR1cGA7XG4gICAgYXdhaXQgc2V0dXBSKHdlYlIsIGRhdGEpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHdlYlI7XG4gIH0pKG5ldyBXZWJSKGRhdGEub3B0aW9ucykpO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCB3ZWJSID0gYXdhaXQgd2ViUlByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFdlYlJFdmFsdWF0b3Iod2ViUiwgY29udGV4dClcbiAgICBhd2FpdCBldmFsdWF0b3IucHJvY2VzcyhpbnB1dHMpO1xuICAgIHJldHVybiBldmFsdWF0b3IuY29udGFpbmVyO1xuICB9XG5cbiAgcmV0dXJuIHtcbiAgICBwcm9jZXNzLFxuICAgIHdlYlJQcm9taXNlLFxuICAgIHJlbmRlcmVkT2pzLFxuICB9O1xufVxuIn1dfQ==
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section>
+
+</main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../..";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kopiert");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kopiert");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
