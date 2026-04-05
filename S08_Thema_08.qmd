@@ -1,0 +1,204 @@
+---
+title: "B | Thema 8"
+format: live-html
+engine: knitr  
+status: "Version 0.1"
+lang: de 
+---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+ 
+## Bifaktor-Modell vs. korrelierte Faktoren
+
+```{webr}
+#| warning: false
+#| echo: false
+
+webr::install("quadprog",  repos = "https://kroehne.github.io/webr-quadprog-repo")
+ 
+suppressPackageStartupMessages(library(mnormt))
+suppressPackageStartupMessages(library(lavaan))
+suppressPackageStartupMessages(library(lavaanPlot))  
+suppressPackageStartupMessages(library(psych))  
+suppressPackageStartupMessages(library(DT))
+
+assignInNamespace("lav_options_checkinterval", function(x, nm, num2int) {
+    if (any(is.na(x))) return(TRUE)
+    if (num2int) x <- as.integer(x)                                                                                              
+    oks <- vapply(x, function(x1) {
+      (x1 > nm$bounds[1] || (x1 == nm$bounds[1] && nm$first.in)) &&                                                              
+      (x1 < nm$bounds[2] || (x1 == nm$bounds[2] && nm$last.in))                                                                  
+    }, TRUE)
+    all(oks)                                                                                                                     
+  }, ns = "lavaan")
+ 
+View <- function(dat){
+  dat_name <- deparse(substitute(dat))
+  df_display <- dat |>
+  dplyr::mutate(
+    dplyr::across(everything(), ~ ifelse(is.na(.x), "❌ (NA)", .x))
+  )
+  
+  DT::datatable(
+    df_display,
+    rownames = FALSE, 
+    options = list(
+      pageLength = 5,
+      scrollX = TRUE,
+      dom = 'tip',   
+      columnDefs = list(list(className = 'dt-center', targets = "_all"))
+    ),
+    caption = htmltools::tags$caption(
+      style = 'caption-side: top; text-align: left;',
+      'data.frame: ', htmltools::strong(dat_name)
+    )
+  )  
+}
+```
+
+### Präsentation
+
+```{webr}
+#| warning: false
+#| echo: true
+library(lavaan)
+library(semTools) 
+library(lavaanPlot)
+
+data(bfi, package = "psych")
+dat <- bfi[complete.cases(bfi[, 1:25]), 1:25]
+
+# Umpolen
+dat$A1 <- 7 - dat$A1
+dat$C4 <- 7 - dat$C4; dat$C5 <- 7 - dat$C5
+dat$E1 <- 7 - dat$E1; dat$E2 <- 7 - dat$E2
+dat$O2 <- 7 - dat$O2; dat$O5 <- 7 - dat$O5
+
+# ---- PRÄSENTATION: Bifaktor-Modell ----
+
+# Modell 1: Korrelierte 5 Faktoren
+model_corr <- '
+  A =~ A1 + A2 + A3 + A4 + A5
+  C =~ C1 + C2 + C3 + C4 + C5
+  E =~ E1 + E2 + E3 + E4 + E5
+  N =~ N1 + N2 + N3 + N4 + N5
+  O =~ O1 + O2 + O3 + O4 + O5
+'
+fit_corr <- cfa(model_corr, data = dat)
+
+# Modell 2: Bifaktor-Modell (g + 5 spezifische Faktoren)
+model_bifac <- '
+  # Allgemeiner Faktor (g)
+  g =~ A1 + A2 + A3 + A4 + A5 +
+       C1 + C2 + C3 + C4 + C5 +
+       E1 + E2 + E3 + E4 + E5 +
+       N1 + N2 + N3 + N4 + N5 +
+       O1 + O2 + O3 + O4 + O5
+
+  # Spezifische Gruppenfaktoren (orthogonal zu g und zueinander)
+  A_s =~ A1 + A2 + A3 + A4 + A5
+  C_s =~ C1 + C2 + C3 + C4 + C5
+  E_s =~ E1 + E2 + E3 + E4 + E5
+  N_s =~ N1 + N2 + N3 + N4 + N5
+  O_s =~ O1 + O2 + O3 + O4 + O5
+'
+fit_bifac <- cfa(model_bifac, data = dat, orthogonal = TRUE)
+
+# Fit-Vergleich
+cat("=== Fit-Vergleich ===\n")
+comp <- data.frame(
+  Modell = c("Korrelierte Faktoren", "Bifaktor"),
+  chisq = c(fitMeasures(fit_corr, "chisq"), fitMeasures(fit_bifac, "chisq")),
+  df = c(fitMeasures(fit_corr, "df"), fitMeasures(fit_bifac, "df")),
+  CFI = c(fitMeasures(fit_corr, "cfi"), fitMeasures(fit_bifac, "cfi")),
+  RMSEA = c(fitMeasures(fit_corr, "rmsea"), fitMeasures(fit_bifac, "rmsea")),
+  AIC = c(fitMeasures(fit_corr, "aic"), fitMeasures(fit_bifac, "aic"))
+)
+comp[, -1] <- round(comp[, -1], 3)
+print(comp)
+
+# Pfaddiagramm Bifaktor
+
+lavaanPlot(model = fit_bifac,   
+     coefs = TRUE, stand = TRUE,covs = TRUE)
+ 
+# Standardisierte Ladungen
+cat("\n=== Ladungen auf g-Faktor ===\n")
+ss <- standardizedSolution(fit_bifac)
+g_loadings <- ss[ss$op == "=~" & ss$lhs == "g", c("rhs", "est.std")]
+g_loadings$est.std <- round(g_loadings$est.std, 3)
+print(g_loadings, row.names = FALSE)
+
+```
+
+## Bericht
+
+```{webr}
+#| warning: false
+#| echo: true
+# ---- BERICHT: ωh, ωs und ECV berechnen ----
+
+# Hierarchisches Omega (ωh): Wie viel reliable Varianz erklärt g?
+# ECV (Explained Common Variance): Anteil g an der gemeinsamen Varianz
+
+# Ladungen extrahieren
+all_loadings <- ss[ss$op == "=~", c("lhs", "rhs", "est.std")]
+g_lam <- all_loadings$est.std[all_loadings$lhs == "g"]
+
+specific_factors <- c("A_s", "C_s", "E_s", "N_s", "O_s")
+s_lam <- list()
+for (sf in specific_factors) {
+  s_lam[[sf]] <- all_loadings$est.std[all_loadings$lhs == sf]
+}
+
+# Fehlervarianzen
+error_vars <- ss[ss$op == "~~" & ss$lhs == ss$rhs &
+                   ss$lhs %in% names(dat), "est.std"]
+
+# ωh = (Σλ_g)² / [(Σλ_g)² + Σ(Σλ_s)² + Σθ]
+sum_g_sq <- sum(g_lam)^2
+sum_s_sq <- sum(sapply(s_lam, function(x) sum(x)^2))
+sum_theta <- sum(error_vars)
+
+omega_h <- sum_g_sq / (sum_g_sq + sum_s_sq + sum_theta)
+cat("\nHierarchisches Omega (ωh):", round(omega_h, 3), "\n")
+
+# ECV = Σ(λ_g²) / [Σ(λ_g²) + Σ(λ_s²)]
+sum_g_lam_sq <- sum(g_lam^2)
+sum_s_lam_sq <- sum(sapply(s_lam, function(x) sum(x^2)))
+ECV <- sum_g_lam_sq / (sum_g_lam_sq + sum_s_lam_sq)
+cat("ECV (Explained Common Variance):", round(ECV, 3), "\n")
+
+# Spezifische ωs für jeden Gruppenfaktor
+cat("\nSpezifische Omega (ωs) pro Faktor:\n")
+for (sf in specific_factors) {
+  items_sf <- all_loadings$rhs[all_loadings$lhs == sf]
+  lam_g_sf <- g_lam[all_loadings$rhs[all_loadings$lhs == "g"] %in% items_sf]
+  lam_s_sf <- s_lam[[sf]]
+  theta_sf <- error_vars[match(items_sf, ss$lhs[ss$op == "~~" & ss$lhs == ss$rhs &
+                                                   ss$lhs %in% names(dat)])]
+
+  omega_s <- sum(lam_s_sf)^2 /
+    (sum(lam_g_sf)^2 + sum(lam_s_sf)^2 + sum(theta_sf))
+  cat(sprintf("  %s: ωs = %.3f\n", sf, omega_s))
+}
+
+# Interpretation (Rodriguez et al., 2016):
+cat("\n=== Interpretationsleitfaden ===\n")
+cat("ECV > .70 und ωh > .80 → g-Faktor dominiert\n")
+cat("ECV < .50 → Gruppenfaktoren sind eigenständig interpretierbar\n")
+cat("ωs > .30 → Gruppenfaktor hat reliable spezifische Varianz\n")
+
+# Alternativ: semTools::bifactorIndices()
+# Bifaktor-Indizes mit BifactorIndicesCalculator
+if (requireNamespace("BifactorIndicesCalculator", quietly = TRUE)) {
+  cat("\n=== BifactorIndicesCalculator::bifactorIndices() ===\n")
+  bi <- BifactorIndicesCalculator::bifactorIndices(fit_bifac)
+  print(bi)
+} else {
+  cat("Paket 'BifactorIndicesCalculator' nicht installiert.\n")
+  cat("Installieren mit: install.packages('BifactorIndicesCalculator')\n")
+  cat("→ Manuelle Berechnung oben verwenden.\n")
+}
+
+```

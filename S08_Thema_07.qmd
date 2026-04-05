@@ -1,0 +1,176 @@
+---
+title: "A | Thema 7"
+format: live-html
+engine: knitr  
+status: "Version 0.1"
+lang: de 
+---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+ 
+## Strukturgleichungsmodell mit Mediation
+
+```{webr}
+#| warning: false
+#| echo: false
+
+webr::install("quadprog",  repos = "https://kroehne.github.io/webr-quadprog-repo")
+ 
+suppressPackageStartupMessages(library(mnormt))
+suppressPackageStartupMessages(library(lavaan))
+suppressPackageStartupMessages(library(lavaanPlot))  
+suppressPackageStartupMessages(library(psych))  
+suppressPackageStartupMessages(library(DT))
+
+assignInNamespace("lav_options_checkinterval", function(x, nm, num2int) {
+    if (any(is.na(x))) return(TRUE)
+    if (num2int) x <- as.integer(x)                                                                                              
+    oks <- vapply(x, function(x1) {
+      (x1 > nm$bounds[1] || (x1 == nm$bounds[1] && nm$first.in)) &&                                                              
+      (x1 < nm$bounds[2] || (x1 == nm$bounds[2] && nm$last.in))                                                                  
+    }, TRUE)
+    all(oks)                                                                                                                     
+  }, ns = "lavaan")
+ 
+View <- function(dat){
+  dat_name <- deparse(substitute(dat))
+  df_display <- dat |>
+  dplyr::mutate(
+    dplyr::across(everything(), ~ ifelse(is.na(.x), "❌ (NA)", .x))
+  )
+  
+  DT::datatable(
+    df_display,
+    rownames = FALSE, 
+    options = list(
+      pageLength = 5,
+      scrollX = TRUE,
+      dom = 'tip',   
+      columnDefs = list(list(className = 'dt-center', targets = "_all"))
+    ),
+    caption = htmltools::tags$caption(
+      style = 'caption-side: top; text-align: left;',
+      'data.frame: ', htmltools::strong(dat_name)
+    )
+  )  
+}
+```
+
+### Präsentation
+
+```{webr}
+#| warning: false
+#| echo: true
+# ============================================================================
+# Thema 07: Latente Regression und Strukturgleichungsmodell
+# Datensatz: PoliticalDemocracy (lavaan, N=75)
+# ============================================================================
+
+library(lavaan)
+library(lavaanPlot)
+
+data(PoliticalDemocracy)
+dat <- PoliticalDemocracy
+
+# ---- PRÄSENTATION: Vollständiges SEM ----
+
+model_full <- '
+  # Messmodelle
+  ind60 =~ x1 + x2 + x3
+  dem60 =~ y1 + y2 + y3 + y4
+  dem65 =~ y5 + y6 + y7 + y8
+
+  # Strukturmodell (Regressionen)
+  dem60 ~ ind60
+  dem65 ~ ind60 + dem60
+
+  # Korrelierte Residuen (gleiche Indikatoren über Zeit)
+  y1 ~~ y5
+  y2 ~~ y4 + y6
+  y3 ~~ y7
+  y4 ~~ y8
+  y6 ~~ y8
+'
+
+fit_full <- sem(model_full, data = dat)
+summary(fit_full, fit.measures = TRUE, standardized = TRUE)
+
+# Pfaddiagramm
+lavaanPlot(model = fit_full,   
+     coefs = TRUE, stand = TRUE,covs = TRUE) 
+
+# Fit-Indizes
+fitMeasures(fit_full, c("chisq", "df", "pvalue", "cfi", "tli",
+                         "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr"))
+
+# Standardisierte Pfadkoeffizienten
+standardizedSolution(fit_full)[standardizedSolution(fit_full)$op == "~", ]
+
+
+```
+
+## Bericht
+
+```{webr}
+#| warning: false
+#| echo: true
+# ---- BERICHT: Modellvergleiche und Mediation ----
+
+# Modell ohne direkten Effekt ind60 → dem65
+model_nodir <- '
+  ind60 =~ x1 + x2 + x3
+  dem60 =~ y1 + y2 + y3 + y4
+  dem65 =~ y5 + y6 + y7 + y8
+  dem60 ~ ind60
+  dem65 ~ dem60    # kein direkter Effekt von ind60!
+  y1 ~~ y5; y2 ~~ y4 + y6; y3 ~~ y7; y4 ~~ y8; y6 ~~ y8
+'
+fit_nodir <- sem(model_nodir, data = dat)
+
+# Modell ohne korrelierte Residuen
+model_nocorr <- '
+  ind60 =~ x1 + x2 + x3
+  dem60 =~ y1 + y2 + y3 + y4
+  dem65 =~ y5 + y6 + y7 + y8
+  dem60 ~ ind60
+  dem65 ~ ind60 + dem60
+'
+fit_nocorr <- sem(model_nocorr, data = dat)
+
+# Vergleichstabelle
+models <- list("Voll (mit dir. Effekt + korr. Residuen)" = fit_full,
+               "Ohne direkten Effekt" = fit_nodir,
+               "Ohne korrelierte Residuen" = fit_nocorr)
+fit_comp <- sapply(models, function(f) {
+  fitMeasures(f, c("chisq", "df", "cfi", "rmsea", "aic", "bic"))
+})
+round(t(fit_comp), 3)
+
+# Chi-Quadrat-Differenztest
+anova(fit_nodir, fit_full)  # ist der direkte Effekt nötig?
+
+# Mediation: Indirekter Effekt mit Bootstrap
+fit_med <- sem(model_full, data = dat, se = "bootstrap", bootstrap = 1000)
+parameterEstimates(fit_med, boot.ci.type = "perc")[
+  parameterEstimates(fit_med)$op == "~", c("lhs", "op", "rhs", "est", "ci.lower", "ci.upper")]
+
+# Indirekter Effekt manuell definieren
+model_indirect <- '
+  ind60 =~ x1 + x2 + x3
+  dem60 =~ y1 + y2 + y3 + y4
+  dem65 =~ y5 + y6 + y7 + y8
+
+  dem60 ~ a*ind60
+  dem65 ~ b*dem60 + c*ind60
+
+  y1 ~~ y5; y2 ~~ y4 + y6; y3 ~~ y7; y4 ~~ y8; y6 ~~ y8
+
+  # Definierte Parameter
+  indirect := a*b
+  total    := c + a*b
+'
+fit_indirect <- sem(model_indirect, data = dat, se = "bootstrap", bootstrap = 1000)
+parameterEstimates(fit_indirect, boot.ci.type = "perc")[
+  parameterEstimates(fit_indirect)$op == ":=", ]
+
+```

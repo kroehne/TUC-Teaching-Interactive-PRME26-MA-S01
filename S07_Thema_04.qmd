@@ -1,0 +1,162 @@
+---
+title: "A | Thema 4"
+format: live-html
+engine: knitr  
+status: "Version 0.1"
+lang: de 
+---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+ 
+## Messinvarianz über Gruppen
+
+```{webr}
+#| warning: false
+#| echo: false
+
+webr::install("quadprog",  repos = "https://kroehne.github.io/webr-quadprog-repo")
+ 
+suppressPackageStartupMessages(library(mnormt))
+suppressPackageStartupMessages(library(lavaan))
+suppressPackageStartupMessages(library(lavaanPlot))  
+suppressPackageStartupMessages(library(psych))  
+suppressPackageStartupMessages(library(DT))
+
+assignInNamespace("lav_options_checkinterval", function(x, nm, num2int) {
+    if (any(is.na(x))) return(TRUE)
+    if (num2int) x <- as.integer(x)                                                                                              
+    oks <- vapply(x, function(x1) {
+      (x1 > nm$bounds[1] || (x1 == nm$bounds[1] && nm$first.in)) &&                                                              
+      (x1 < nm$bounds[2] || (x1 == nm$bounds[2] && nm$last.in))                                                                  
+    }, TRUE)
+    all(oks)                                                                                                                     
+  }, ns = "lavaan")
+ 
+View <- function(dat){
+  dat_name <- deparse(substitute(dat))
+  df_display <- dat |>
+  dplyr::mutate(
+    dplyr::across(everything(), ~ ifelse(is.na(.x), "❌ (NA)", .x))
+  )
+  
+  DT::datatable(
+    df_display,
+    rownames = FALSE, 
+    options = list(
+      pageLength = 5,
+      scrollX = TRUE,
+      dom = 'tip',   
+      columnDefs = list(list(className = 'dt-center', targets = "_all"))
+    ),
+    caption = htmltools::tags$caption(
+      style = 'caption-side: top; text-align: left;',
+      'data.frame: ', htmltools::strong(dat_name)
+    )
+  )  
+}
+```
+
+### Präsentation
+
+```{webr}
+#| warning: false
+#| echo: true
+# ============================================================================
+# Thema 04: Messinvarianz über Gruppen
+# Datensatz: psych::bfi (N=2800, Big Five, Variable gender)
+# ============================================================================
+
+library(lavaan)
+library(semTools) 
+
+data(bfi, package = "psych")
+dat <- bfi[complete.cases(bfi[, c(paste0("E", 1:5), "gender")]), ]
+dat$gender <- factor(dat$gender, labels = c("Männer", "Frauen"))
+
+# Items E1 und E2 sind negativ gepolt → umpolen
+dat$E1r <- 7 - dat$E1
+dat$E2r <- 7 - dat$E2
+
+# ---- PRÄSENTATION: MI für Extraversion (E1r, E2r, E3, E4, E5) ----
+
+model_E <- 'Extraversion =~ E1r + E2r + E3 + E4 + E5'
+
+# Stufe 1: Konfigural
+fit_conf <- cfa(model_E, data = dat, group = "gender")
+
+# Stufe 2: Metrisch (gleiche Ladungen)
+fit_metr <- cfa(model_E, data = dat, group = "gender",
+                group.equal = "loadings")
+
+# Stufe 3: Skalar (gleiche Ladungen + Intercepts)
+fit_scal <- cfa(model_E, data = dat, group = "gender",
+                group.equal = c("loadings", "intercepts"))
+
+# Stufe 4: Strikt (gleiche Ladungen + Intercepts + Residualvarianzen)
+fit_stri <- cfa(model_E, data = dat, group = "gender",
+                group.equal = c("loadings", "intercepts", "residuals"))
+
+# Vergleichstabelle
+mi_fits <- list(Konfigural = fit_conf, Metrisch = fit_metr,
+                Skalar = fit_scal, Strikt = fit_stri)
+
+mi_table <- sapply(mi_fits, function(f) {
+  fitMeasures(f, c("chisq", "df", "pvalue", "cfi", "rmsea", "srmr"))
+})
+round(t(mi_table), 3)
+
+# Delta-CFI und Delta-RMSEA
+cfis <- sapply(mi_fits, function(f) fitMeasures(f, "cfi"))
+rmseas <- sapply(mi_fits, function(f) fitMeasures(f, "rmsea"))
+data.frame(Stufe = names(mi_fits),
+           CFI = round(cfis, 4),
+           Delta_CFI = c(NA, round(diff(cfis), 4)),
+           RMSEA = round(rmseas, 4),
+           Delta_RMSEA = c(NA, round(diff(rmseas), 4)))
+
+# Chi-Quadrat-Differenztests
+anova(fit_conf, fit_metr)
+anova(fit_metr, fit_scal)
+anova(fit_scal, fit_stri)
+```
+
+## Bericht
+
+```{webr}
+#| warning: false
+#| echo: true 
+# ---- BERICHT: MI für alle 5 Big-Five-Faktoren ----
+
+# Umpolen aller nötigen Items
+dat$A1r <- 7 - dat$A1
+dat$C4r <- 7 - dat$C4; dat$C5r <- 7 - dat$C5
+dat$N1r <- dat$N1; dat$N2r <- dat$N2  # N-Items nicht umpolen (sind "richtig" gepolt)
+dat$O2r <- 7 - dat$O2; dat$O5r <- 7 - dat$O5
+
+models <- list(
+  Agreeableness     = 'A =~ A1r + A2 + A3 + A4 + A5',
+  Conscientiousness = 'C =~ C1 + C2 + C3 + C4r + C5r',
+  Extraversion      = 'E =~ E1r + E2r + E3 + E4 + E5',
+  Neuroticism       = 'N =~ N1 + N2 + N3 + N4 + N5',
+  Openness          = 'O =~ O1 + O2r + O3 + O4 + O5r'
+)
+
+mi_results <- list()
+for (trait in names(models)) {
+  cat("\n===", trait, "===\n")
+  dat_trait <- dat[complete.cases(dat[, all.vars(as.formula(paste("~", gsub(".*=~", "", models[[trait]]))))]), ]
+
+  fc <- cfa(models[[trait]], data = dat_trait, group = "gender")
+  fm <- cfa(models[[trait]], data = dat_trait, group = "gender",
+            group.equal = "loadings")
+  fs <- cfa(models[[trait]], data = dat_trait, group = "gender",
+            group.equal = c("loadings", "intercepts"))
+
+  cfis_t <- c(fitMeasures(fc, "cfi"), fitMeasures(fm, "cfi"), fitMeasures(fs, "cfi"))
+  cat("CFI (konf/metr/skal):", round(cfis_t, 4), "\n")
+  cat("Delta-CFI (metr, skal):", round(diff(cfis_t), 4), "\n")
+
+  mi_results[[trait]] <- list(konfigural = fc, metrisch = fm, skalar = fs)
+}
+
+```

@@ -8,7 +8,7 @@ lang: de
 
 {{< include _extensions/r-wasm/live/_knitr.qmd >}}
  
-##  
+##  CFA mit kategoralen Indikatoren (ML vs. WLSMV)
 
 ```{webr}
 #| warning: false
@@ -124,7 +124,6 @@ print(round(lavInspect(fit_wlsmv, "cor.lv"), 3))
 ```{webr}
 #| warning: false
 #| echo: true
-
 # ---- BERICHT: Einfluss der Kategorienanzahl ----
 
 # Dichotomisieren (Median-Split)

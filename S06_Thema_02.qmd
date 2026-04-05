@@ -8,7 +8,7 @@ lang: de
 
 {{< include _extensions/r-wasm/live/_knitr.qmd >}}
  
-##  
+## Reliabilität -- McDonald's ω vs. Cronbach's α
 
 ```{webr}
 #| warning: false
@@ -117,7 +117,6 @@ cat("→ Bei tau-Äquivalenz: α ≈ ω. Sonst: α unterschätzt die Reliabilit�
 ```{webr}
 #| warning: false
 #| echo: true
-
 # ---- BERICHT: α und ω für alle drei HS-Faktoren ----
 
 models_hs <- list(

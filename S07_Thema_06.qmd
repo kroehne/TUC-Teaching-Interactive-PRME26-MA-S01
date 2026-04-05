@@ -1,0 +1,221 @@
+---
+title: "C | Thema 6"
+format: live-html
+engine: knitr  
+status: "Version 0.1"
+lang: de 
+---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+ 
+## MIMIC-Modelle und Differential Item Functioning (DIF)
+
+```{webr}
+#| warning: false
+#| echo: false
+
+webr::install("quadprog",  repos = "https://kroehne.github.io/webr-quadprog-repo")
+ 
+suppressPackageStartupMessages(library(mnormt))
+suppressPackageStartupMessages(library(lavaan))
+suppressPackageStartupMessages(library(lavaanPlot))  
+suppressPackageStartupMessages(library(psych))  
+suppressPackageStartupMessages(library(DT))
+
+assignInNamespace("lav_options_checkinterval", function(x, nm, num2int) {
+    if (any(is.na(x))) return(TRUE)
+    if (num2int) x <- as.integer(x)                                                                                              
+    oks <- vapply(x, function(x1) {
+      (x1 > nm$bounds[1] || (x1 == nm$bounds[1] && nm$first.in)) &&                                                              
+      (x1 < nm$bounds[2] || (x1 == nm$bounds[2] && nm$last.in))                                                                  
+    }, TRUE)
+    all(oks)                                                                                                                     
+  }, ns = "lavaan")
+ 
+View <- function(dat){
+  dat_name <- deparse(substitute(dat))
+  df_display <- dat |>
+  dplyr::mutate(
+    dplyr::across(everything(), ~ ifelse(is.na(.x), "❌ (NA)", .x))
+  )
+  
+  DT::datatable(
+    df_display,
+    rownames = FALSE, 
+    options = list(
+      pageLength = 5,
+      scrollX = TRUE,
+      dom = 'tip',   
+      columnDefs = list(list(className = 'dt-center', targets = "_all"))
+    ),
+    caption = htmltools::tags$caption(
+      style = 'caption-side: top; text-align: left;',
+      'data.frame: ', htmltools::strong(dat_name)
+    )
+  )  
+}
+```
+
+### Präsentation
+
+```{webr}
+#| warning: false
+#| echo: true
+
+# ============================================================================
+# Thema 06: MIMIC-Modelle und Differential Item Functioning (DIF)
+# Datensatz: psych::bfi (N=2800, Big Five + age, education, gender)
+# ============================================================================
+
+library(lavaan) 
+library(lavaanPlot)
+
+data(bfi, package = "psych")
+dat <- bfi[complete.cases(bfi[, c(paste0("E", 1:5), "gender", "age", "education")]), ]
+dat$E1r <- 7 - dat$E1
+dat$E2r <- 7 - dat$E2
+
+# ---- PRÄSENTATION: MIMIC-Modell für Extraversion ----
+
+# Standard-CFA (ohne Kovariaten)
+model_cfa <- 'E =~ E1r + E2r + E3 + E4 + E5'
+fit_cfa <- cfa(model_cfa, data = dat)
+summary(fit_cfa, fit.measures = TRUE, standardized = TRUE)
+
+# MIMIC-Modell: Alter und Geschlecht sagen Extraversion vorher
+model_mimic_base <- '
+  # Messmodell
+  E =~ E1r + E2r + E3 + E4 + E5
+
+  # Strukturmodell: Kovariaten → latenter Faktor
+  E ~ age + gender
+'
+fit_mimic_base <- sem(model_mimic_base, data = dat)
+summary(fit_mimic_base, fit.measures = TRUE, standardized = TRUE)
+
+# Pfaddiagramm
+
+lavaanPlot(model = fit_mimic_base,   
+     coefs = TRUE, stand = TRUE,covs = TRUE) 
+
+# Fit-Vergleich CFA vs. MIMIC
+cat("\n=== Fit-Vergleich ===\n")
+comp <- data.frame(
+  Modell = c("CFA (ohne Kovariaten)", "MIMIC (mit Alter + Geschlecht)"),
+  CFI = c(fitMeasures(fit_cfa, "cfi"), fitMeasures(fit_mimic_base, "cfi")),
+  RMSEA = c(fitMeasures(fit_cfa, "rmsea"), fitMeasures(fit_mimic_base, "rmsea")),
+  AIC = c(fitMeasures(fit_cfa, "aic"), fitMeasures(fit_mimic_base, "aic"))
+)
+comp[, -1] <- round(comp[, -1], 3)
+print(comp)
+
+# Effekte der Kovariaten auf den latenten Faktor
+cat("\n=== Effekte auf latente Extraversion ===\n")
+pe <- parameterEstimates(fit_mimic_base, standardized = TRUE)
+print(pe[pe$op == "~" & pe$lhs == "E", c("lhs", "op", "rhs", "est", "std.all", "pvalue")])
+
+```
+
+## Bericht
+
+```{webr}
+#| warning: false
+#| echo: true
+# ---- BERICHT: DIF-Prüfung mit MIMIC ----
+
+# Schritt 1: MIMIC ohne direkte Effekte auf Items (= kein DIF)
+# (= Basismodell, bereits geschätzt als fit_mimic_base)
+
+# Schritt 2: MIMIC mit direkten Effekten auf jedes Item (= DIF-Modell)
+# Direkte Effekte: Alter/Geschlecht → Item (über den latenten Faktor hinaus)
+
+# DIF für Alter: Jedes Item einzeln testen
+items <- c("E1r", "E2r", "E3", "E4", "E5")
+dif_results_age <- data.frame(Item = character(), chi2_diff = numeric(),
+                               p = numeric(), stringsAsFactors = FALSE)
+
+for (item in items) {
+  # Modell mit direktem Effekt age → item_j
+  model_dif <- paste0('
+    E =~ E1r + E2r + E3 + E4 + E5
+    E ~ age + gender
+    ', item, ' ~ age
+  ')
+  fit_dif <- sem(model_dif, data = dat)
+
+  # Chi-Quadrat-Differenztest
+  diff_test <- anova(fit_mimic_base, fit_dif)
+  chi2_d <- diff_test$`Chisq diff`[2]
+  p_val <- diff_test$`Pr(>Chisq)`[2]
+
+  dif_results_age <- rbind(dif_results_age,
+    data.frame(Item = item, chi2_diff = round(chi2_d, 3),
+               p = round(p_val, 4)))
+}
+
+cat("\n=== DIF-Ergebnisse (Alter) ===\n")
+dif_results_age$DIF <- ifelse(dif_results_age$p < 0.05, "JA", "nein")
+print(dif_results_age)
+
+# DIF für Geschlecht
+dif_results_gender <- data.frame(Item = character(), chi2_diff = numeric(),
+                                  p = numeric(), stringsAsFactors = FALSE)
+
+for (item in items) {
+  model_dif <- paste0('
+    E =~ E1r + E2r + E3 + E4 + E5
+    E ~ age + gender
+    ', item, ' ~ gender
+  ')
+  fit_dif <- sem(model_dif, data = dat)
+  diff_test <- anova(fit_mimic_base, fit_dif)
+
+  dif_results_gender <- rbind(dif_results_gender,
+    data.frame(Item = item,
+               chi2_diff = round(diff_test$`Chisq diff`[2], 3),
+               p = round(diff_test$`Pr(>Chisq)`[2], 4)))
+}
+
+cat("\n=== DIF-Ergebnisse (Geschlecht) ===\n")
+dif_results_gender$DIF <- ifelse(dif_results_gender$p < 0.05, "JA", "nein")
+print(dif_results_gender)
+
+
+# Schritt 3: Finales MIMIC-Modell mit signifikanten DIF-Effekten
+
+# Identifiziere DIF-Items
+dif_items_age <- dif_results_age$Item[dif_results_age$p < 0.05]
+dif_items_gender <- dif_results_gender$Item[dif_results_gender$p < 0.05]
+
+cat("\nItems mit Alters-DIF:", paste(dif_items_age, collapse = ", "), "\n")
+cat("Items mit Geschlechts-DIF:", paste(dif_items_gender, collapse = ", "), "\n")
+
+# Finales Modell: Alle signifikanten DIF-Effekte aufnehmen
+dif_paths <- c()
+for (item in dif_items_age) dif_paths <- c(dif_paths, paste0(item, " ~ age"))
+for (item in dif_items_gender) dif_paths <- c(dif_paths, paste0(item, " ~ gender"))
+
+model_final <- paste0('
+  E =~ E1r + E2r + E3 + E4 + E5
+  E ~ age + gender
+  ', paste(dif_paths, collapse = "\n  "), '
+')
+
+cat("\n=== Finales MIMIC-Modell ===\n")
+cat(model_final, "\n")
+
+fit_final <- sem(model_final, data = dat)
+summary(fit_final, fit.measures = TRUE, standardized = TRUE)
+
+# Fit-Vergleich: Basis vs. Final
+cat("\n=== Fit-Vergleich: Basis vs. DIF-Modell ===\n")
+anova(fit_mimic_base, fit_final)
+
+# Vergleich mit Multi-Gruppen-Ansatz (Thema 2)
+cat("\n=== Vergleich: MIMIC-DIF vs. Multi-Gruppen-MI ===\n")
+cat("MIMIC-Vorteil: Kovariate kann kontinuierlich sein (z.B. Alter)\n")
+cat("Multi-Gruppen-Vorteil: Prüft alle Parameter gleichzeitig\n")
+cat("Beide Methoden testen im Kern dasselbe: Funktioniert das Messinstrument\n")
+cat("gleich gut für verschiedene Personengruppen?\n")
+
+```

@@ -1,0 +1,14 @@
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+name: Build and deploy wasm R package repository
+
+jobs:
+  deploy:
+    uses: r-wasm/actions/.github/workflows/deploy-cran-repo.yml@v2
+    permissions:
+      repository-projects: read
+      pages: write
+      id-token: write

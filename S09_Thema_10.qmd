@@ -1,0 +1,173 @@
+---
+title: "B | Thema 10"
+format: live-html
+engine: knitr  
+status: "Version 0.1"
+lang: de 
+---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+ 
+## Latente Veränderungsmessung (Latent Growth Curve Models)
+
+```{webr}
+#| warning: false
+#| echo: false
+
+webr::install("quadprog",  repos = "https://kroehne.github.io/webr-quadprog-repo")
+ 
+suppressPackageStartupMessages(library(mnormt))
+suppressPackageStartupMessages(library(lavaan))
+suppressPackageStartupMessages(library(lavaanPlot))  
+suppressPackageStartupMessages(library(psych))  
+suppressPackageStartupMessages(library(DT))
+
+assignInNamespace("lav_options_checkinterval", function(x, nm, num2int) {
+    if (any(is.na(x))) return(TRUE)
+    if (num2int) x <- as.integer(x)                                                                                              
+    oks <- vapply(x, function(x1) {
+      (x1 > nm$bounds[1] || (x1 == nm$bounds[1] && nm$first.in)) &&                                                              
+      (x1 < nm$bounds[2] || (x1 == nm$bounds[2] && nm$last.in))                                                                  
+    }, TRUE)
+    all(oks)                                                                                                                     
+  }, ns = "lavaan")
+ 
+View <- function(dat){
+  dat_name <- deparse(substitute(dat))
+  df_display <- dat |>
+  dplyr::mutate(
+    dplyr::across(everything(), ~ ifelse(is.na(.x), "❌ (NA)", .x))
+  )
+  
+  DT::datatable(
+    df_display,
+    rownames = FALSE, 
+    options = list(
+      pageLength = 5,
+      scrollX = TRUE,
+      dom = 'tip',   
+      columnDefs = list(list(className = 'dt-center', targets = "_all"))
+    ),
+    caption = htmltools::tags$caption(
+      style = 'caption-side: top; text-align: left;',
+      'data.frame: ', htmltools::strong(dat_name)
+    )
+  )  
+}
+```
+
+### Präsentation
+
+```{webr}
+#| warning: false
+#| echo: true
+library(lavaan) 
+# ---- PRÄSENTATION: Latent Growth Curve Model ----
+
+data(Demo.growth)
+dat <- Demo.growth
+
+# Lineares Wachstumsmodell (4 Zeitpunkte)
+model_lgc <- '
+  # Intercept und Slope als latente Variablen
+  intercept =~ 1*t1 + 1*t2 + 1*t3 + 1*t4
+  slope     =~ 0*t1 + 1*t2 + 2*t3 + 3*t4
+'
+
+fit_lgc <- growth(model_lgc, data = dat)
+summary(fit_lgc, fit.measures = TRUE, standardized = TRUE)
+
+# Interpretation:
+# - Intercept Mean: Mittlerer Ausgangswert
+# - Slope Mean: Mittlere Veränderung pro Zeiteinheit
+# - Intercept Variance: Individuelle Unterschiede im Ausgangswert
+# - Slope Variance: Individuelle Unterschiede in der Veränderung
+# - Intercept-Slope Kovarianz: Hängt Ausgangswert mit Veränderung zusammen?
+
+# Pfaddiagramm
+library(lavaanPlot)
+lavaanPlot(model = fit_lgc,   
+     coefs = TRUE, stand = TRUE,covs = TRUE)
+ 
+
+# Fit-Indizes
+fitMeasures(fit_lgc, c("chisq", "df", "pvalue", "cfi", "tli",
+                        "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr"))
+
+
+```
+
+## Bericht
+
+```{webr}
+#| warning: false
+#| echo: true
+# ---- BERICHT: Vergleich von drei Veränderungsmodellen ----
+
+# Modell a: Lineares Wachstum (= Präsentationsmodell)
+# fit_lgc bereits geschätzt
+
+# Modell b: Kein Wachstum (Slope-Varianz und -Mittelwert = 0)
+model_no_growth <- '
+  intercept =~ 1*t1 + 1*t2 + 1*t3 + 1*t4
+  slope     =~ 0*t1 + 1*t2 + 2*t3 + 3*t4
+  slope ~ 0*1        # Slope-Mittelwert fixiert auf 0
+  slope ~~ 0*slope   # Slope-Varianz fixiert auf 0
+  slope ~~ 0*intercept
+'
+fit_no_growth <- growth(model_no_growth, data = dat)
+
+# Modell c: Quadratisches Wachstum
+model_quad <- '
+  intercept =~ 1*t1 + 1*t2 + 1*t3 + 1*t4
+  slope     =~ 0*t1 + 1*t2 + 2*t3 + 3*t4
+  quad      =~ 0*t1 + 1*t2 + 4*t3 + 9*t4
+'
+fit_quad <- growth(model_quad, data = dat)
+
+# Modell d: Bedingtes Wachstum (mit Prädiktoren x1 und x2)
+model_cond <- '
+  intercept =~ 1*t1 + 1*t2 + 1*t3 + 1*t4
+  slope     =~ 0*t1 + 1*t2 + 2*t3 + 3*t4
+  intercept ~ x1 + x2
+  slope     ~ x1 + x2
+'
+fit_cond <- growth(model_cond, data = dat)
+
+# Vergleichstabelle
+models <- list("Kein Wachstum" = fit_no_growth,
+               "Lineares Wachstum" = fit_lgc,
+               "Quadratisches Wachstum" = fit_quad,
+               "Bedingtes lin. Wachstum" = fit_cond)
+
+fit_table <- sapply(models, function(f) {
+  fitMeasures(f, c("chisq", "df", "cfi", "rmsea", "aic", "bic"))
+})
+round(t(fit_table), 3)
+
+# Chi-Quadrat-Differenztests
+anova(fit_no_growth, fit_lgc)   # Gibt es Wachstum?
+anova(fit_lgc, fit_quad)        # Ist es nicht-linear?
+
+# Bedingte Effekte interpretieren
+summary(fit_cond, standardized = TRUE)
+# → Welche Prädiktoren sagen Intercept und Slope vorher?
+
+
+# ---- Zusatz: Autoregressive Modell (2 Zeitpunkte) ----
+
+data(PoliticalDemocracy)
+dat_pd <- PoliticalDemocracy
+
+# Autoregressive Modell (Stabilität)
+model_ar <- '
+  dem60 =~ y1 + y2 + y3 + y4
+  dem65 =~ y5 + y6 + y7 + y8
+  dem65 ~ dem60
+  y1 ~~ y5; y2 ~~ y6; y3 ~~ y7; y4 ~~ y8
+'
+fit_ar <- sem(model_ar, data = dat_pd)
+summary(fit_ar, fit.measures = TRUE, standardized = TRUE)
+cat("\nStabilitätskoeffizient (β dem60→dem65):\n")
+standardizedSolution(fit_ar)[standardizedSolution(fit_ar)$op == "~", ]
+```

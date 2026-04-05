@@ -8,7 +8,7 @@ lang: de
 
 {{< include _extensions/r-wasm/live/_knitr.qmd >}}
  
-##  
+##  Konfirmatorische Faktorenanalyse und Modellvergleich
 
 ```{webr}
 #| warning: false

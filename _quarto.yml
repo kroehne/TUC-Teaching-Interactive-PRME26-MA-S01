@@ -59,7 +59,9 @@ website:
       - section: "Tag 1 - IV: Einbettung"
         contents:            
           - href: S04_rosseelTutorialUnderstandingSEM2025_Interactive_03.qmd 
-            text: "A | ℹ Tutorial von Rosseel & Vidal (2025) - 3"                        
+            text: "A | ℹ Tutorial von Rosseel & Vidal (2025) - 3"  
+          - href: S04_SimulationLavaan_01.qmd
+            text: "B | Daten mit `lavaan` erzeugen"  
       - section: "Tag 2 - VI: Messmodelle"
         contents:            
           - href: S06_Thema_01.qmd 
@@ -82,7 +84,7 @@ website:
             text: "A | Thema 7" 
           - href: S08_Thema_08.qmd 
             text: "B | Thema 8"
-      - section: "Tag 2 - IX: Längsschnitt"
+      - section: "Tag 2 - IX: Mehrere Messzeitpunkte"
         contents:                
           - href: S09_Thema_09.qmd 
             text: "A | Thema 9"                            

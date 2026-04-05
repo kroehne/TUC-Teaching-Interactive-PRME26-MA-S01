@@ -1,0 +1,206 @@
+---
+title: "A | Thema 9"
+format: live-html
+engine: knitr  
+status: "Version 0.1"
+lang: de 
+---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+ 
+## Latente State-Trait-Analyse (LST)
+
+```{webr}
+#| warning: false
+#| echo: false
+
+webr::install("quadprog",  repos = "https://kroehne.github.io/webr-quadprog-repo")
+ 
+suppressPackageStartupMessages(library(mnormt))
+suppressPackageStartupMessages(library(lavaan))
+suppressPackageStartupMessages(library(lavaanPlot))  
+suppressPackageStartupMessages(library(psych))  
+suppressPackageStartupMessages(library(DT))
+
+assignInNamespace("lav_options_checkinterval", function(x, nm, num2int) {
+    if (any(is.na(x))) return(TRUE)
+    if (num2int) x <- as.integer(x)                                                                                              
+    oks <- vapply(x, function(x1) {
+      (x1 > nm$bounds[1] || (x1 == nm$bounds[1] && nm$first.in)) &&                                                              
+      (x1 < nm$bounds[2] || (x1 == nm$bounds[2] && nm$last.in))                                                                  
+    }, TRUE)
+    all(oks)                                                                                                                     
+  }, ns = "lavaan")
+ 
+View <- function(dat){
+  dat_name <- deparse(substitute(dat))
+  df_display <- dat |>
+  dplyr::mutate(
+    dplyr::across(everything(), ~ ifelse(is.na(.x), "❌ (NA)", .x))
+  )
+  
+  DT::datatable(
+    df_display,
+    rownames = FALSE, 
+    options = list(
+      pageLength = 5,
+      scrollX = TRUE,
+      dom = 'tip',   
+      columnDefs = list(list(className = 'dt-center', targets = "_all"))
+    ),
+    caption = htmltools::tags$caption(
+      style = 'caption-side: top; text-align: left;',
+      'data.frame: ', htmltools::strong(dat_name)
+    )
+  )  
+}
+
+webr::install("lsttheory", repos = "https://kroehne.github.io/webr-lsttheory-repo")
+
+```
+
+### Präsentation
+
+```{webr}
+#| warning: false
+#| echo: true
+library(lavaan)
+library(lavaanPlot)
+
+# Daten laden
+library(lsttheory)
+data(happy)
+ 
+# Überblick
+str(happy)
+cat("N =", nrow(happy), "\n")
+cat("Variablen:", ncol(happy), "\n")
+head(happy[, 1:10])
+
+# Datenstruktur: happy_1 ... happy_25 (Happiness), satisfaction_1 ... satisfaction_25 (Life Satisfaction)
+# 25 Messzeitpunkte (5 pro Tag, 5 Tage), 2 Indikatoren pro Zeitpunkt
+
+# Für das LST-Modell verwenden wir 4 Zeitpunkte (z.B. die ersten 4 Messungen)
+# mit 2 Indikatoren (hap, sat) pro Zeitpunkt
+dat <- happy[, c("happy_1", "satisfaction_1", "happy_2", "satisfaction_2",
+                  "happy_3", "satisfaction_3", "happy_4", "satisfaction_4")]
+dat <- dat[complete.cases(dat), ]
+cat("N (complete cases, 4 Zeitpunkte):", nrow(dat), "\n")
+
+
+# ---- PRÄSENTATION: LST-Modell (4 Zeitpunkte, 2 Indikatoren) ----
+
+model_lst <- '
+  # Trait-Faktor (Ladungen auf alle Indikatoren gleich)
+  Trait =~ 1*happy_1 + l2*satisfaction_1 + 1*happy_2 + l2*satisfaction_2 +
+           1*happy_3 + l2*satisfaction_3 + 1*happy_4 + l2*satisfaction_4
+
+  # State-Residual-Faktoren (pro Messzeitpunkt)
+  SR1 =~ 1*happy_1 + ls2*satisfaction_1
+  SR2 =~ 1*happy_2 + ls2*satisfaction_2
+  SR3 =~ 1*happy_3 + ls2*satisfaction_3
+  SR4 =~ 1*happy_4 + ls2*satisfaction_4
+
+  # Trait und State-Residuen unkorreliert
+  Trait ~~ 0*SR1 + 0*SR2 + 0*SR3 + 0*SR4
+
+  # State-Residuen untereinander unkorreliert
+  SR1 ~~ 0*SR2 + 0*SR3 + 0*SR4
+  SR2 ~~ 0*SR3 + 0*SR4
+  SR3 ~~ 0*SR4
+
+  # Gleichgesetzte Residualvarianzen über Zeit (Messinvarianz)
+  happy_1 ~~ eh*happy_1; happy_2 ~~ eh*happy_2; happy_3 ~~ eh*happy_3; happy_4 ~~ eh*happy_4
+  satisfaction_1 ~~ es*satisfaction_1; satisfaction_2 ~~ es*satisfaction_2; satisfaction_3 ~~ es*satisfaction_3; satisfaction_4 ~~ es*satisfaction_4
+
+  # Gleichgesetzte State-Residual-Varianzen über Zeit
+  SR1 ~~ vs*SR1; SR2 ~~ vs*SR2; SR3 ~~ vs*SR3; SR4 ~~ vs*SR4
+'
+
+fit_lst <- sem(model_lst, data = dat)
+summary(fit_lst, fit.measures = TRUE, standardized = TRUE)
+
+# Fit-Indizes
+fitMeasures(fit_lst, c("chisq", "df", "pvalue", "cfi", "tli",
+                        "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr"))
+
+lavaanPlot(model = fit_lst,   
+     coefs = TRUE, covs = TRUE)
+ 
+
+# ---- Varianzkomponenten berechnen ----
+
+ss <- standardizedSolution(fit_lst)
+
+# Für den ersten Indikator (happy_1) als Beispiel:
+# Trait-Ladung, State-Ladung, Residualvarianz
+cat("\n=== Varianzzerlegung für happy_1 ===\n")
+lam_trait <- ss$est.std[ss$op == "=~" & ss$lhs == "Trait" & ss$rhs == "happy_1"]
+lam_state <- ss$est.std[ss$op == "=~" & ss$lhs == "SR1" & ss$rhs == "happy_1"]
+theta     <- ss$est.std[ss$op == "~~" & ss$lhs == "happy_1" & ss$rhs == "happy_1"]
+
+cat("Trait-Ladung (std):", round(lam_trait, 3), "\n")
+cat("State-Ladung (std):", round(lam_state, 3), "\n")
+cat("Residualvarianz (std):", round(theta, 3), "\n\n")
+
+# Koeffizienten (bei standardisierten Variablen: Gesamtvarianz = 1)
+konsistenz <- lam_trait^2
+spezifitaet <- lam_state^2
+reliabilitaet <- konsistenz + spezifitaet
+fehler <- theta
+
+cat("Konsistenzkoeffizient (Trait-Anteil):", round(konsistenz, 3), "\n")
+cat("Spezifitätskoeffizient (State-Anteil):", round(spezifitaet, 3), "\n")
+cat("Reliabilität (Trait + State):", round(reliabilitaet, 3), "\n")
+cat("Fehleranteil:", round(fehler, 3), "\n")
+cat("Summe:", round(konsistenz + spezifitaet + fehler, 3), "(sollte ≈ 1 sein)\n")
+
+```
+
+## Bericht
+
+```{webr}
+#| warning: false
+#| echo: true
+# ---- BERICHT: Modellvergleich LST vs. Single-Trait ----
+
+# Einfacheres Modell: Nur Trait, keine State-Residuen
+model_trait_only <- '
+  Trait =~ 1*happy_1 + l2*satisfaction_1 + 1*happy_2 + l2*satisfaction_2 +
+           1*happy_3 + l2*satisfaction_3 + 1*happy_4 + l2*satisfaction_4
+
+  happy_1 ~~ eh*happy_1; happy_2 ~~ eh*happy_2; happy_3 ~~ eh*happy_3; happy_4 ~~ eh*happy_4
+  satisfaction_1 ~~ es*satisfaction_1; satisfaction_2 ~~ es*satisfaction_2; satisfaction_3 ~~ es*satisfaction_3; satisfaction_4 ~~ es*satisfaction_4
+'
+fit_trait_only <- cfa(model_trait_only, data = dat)
+summary(fit_trait_only, fit.measures = TRUE)
+
+# Chi-Quadrat-Differenztest
+anova(fit_trait_only, fit_lst)
+
+# Vergleich der Fit-Indizes
+cat("\n=== Modellvergleich ===\n")
+comp <- data.frame(
+  Modell = c("Single-Trait", "LST (Trait + State)"),
+  CFI = c(fitMeasures(fit_trait_only, "cfi"), fitMeasures(fit_lst, "cfi")),
+  RMSEA = c(fitMeasures(fit_trait_only, "rmsea"), fitMeasures(fit_lst, "rmsea")),
+  AIC = c(fitMeasures(fit_trait_only, "aic"), fitMeasures(fit_lst, "aic"))
+)
+comp[, -1] <- round(comp[, -1], 3)
+print(comp)
+
+cat("\n→ Wenn das LST-Modell signifikant besser passt, gibt es bedeutsame\n",
+    "  situationsspezifische Varianz → das Konstrukt ist nicht rein trait-artig.\n")
+
+
+# ---- Erweiterung: Mehr Zeitpunkte (z.B. 8 oder 12) ----
+# Bei Bedarf: Modell auf mehr Zeitpunkte erweitern.
+# Der happy-Datensatz hat 25 Messzeitpunkte → viel Spielraum.
+# Für den Bericht könnte man z.B. weitere Zeitpunkte verwenden und
+# prüfen, ob die Ergebnisse stabil bleiben.
+
+dat8 <- happy[, c(paste0("happy_", 1:8), paste0("satisfaction_", 1:8))]
+dat8 <- dat8[complete.cases(dat8), ]
+cat("\nN (complete cases, 8 Zeitpunkte):", nrow(dat8), "\n")
+
+```

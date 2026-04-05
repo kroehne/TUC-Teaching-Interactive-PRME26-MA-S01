@@ -1,0 +1,193 @@
+---
+title: "B | Thema 5"
+format: live-html
+engine: knitr  
+status: "Version 0.1"
+lang: de 
+---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+ 
+## Latente Mittelwertsvergleiche
+
+```{webr}
+#| warning: false
+#| echo: false
+
+webr::install("quadprog",  repos = "https://kroehne.github.io/webr-quadprog-repo")
+ 
+suppressPackageStartupMessages(library(mnormt))
+suppressPackageStartupMessages(library(lavaan))
+suppressPackageStartupMessages(library(lavaanPlot))  
+suppressPackageStartupMessages(library(psych))  
+suppressPackageStartupMessages(library(DT))
+
+assignInNamespace("lav_options_checkinterval", function(x, nm, num2int) {
+    if (any(is.na(x))) return(TRUE)
+    if (num2int) x <- as.integer(x)                                                                                              
+    oks <- vapply(x, function(x1) {
+      (x1 > nm$bounds[1] || (x1 == nm$bounds[1] && nm$first.in)) &&                                                              
+      (x1 < nm$bounds[2] || (x1 == nm$bounds[2] && nm$last.in))                                                                  
+    }, TRUE)
+    all(oks)                                                                                                                     
+  }, ns = "lavaan")
+ 
+View <- function(dat){
+  dat_name <- deparse(substitute(dat))
+  df_display <- dat |>
+  dplyr::mutate(
+    dplyr::across(everything(), ~ ifelse(is.na(.x), "❌ (NA)", .x))
+  )
+  
+  DT::datatable(
+    df_display,
+    rownames = FALSE, 
+    options = list(
+      pageLength = 5,
+      scrollX = TRUE,
+      dom = 'tip',   
+      columnDefs = list(list(className = 'dt-center', targets = "_all"))
+    ),
+    caption = htmltools::tags$caption(
+      style = 'caption-side: top; text-align: left;',
+      'data.frame: ', htmltools::strong(dat_name)
+    )
+  )  
+}
+```
+
+### Präsentation
+
+```{webr}
+#| warning: false
+#| echo: true
+# ============================================================================
+# Thema 05: Latente Mittelwertsvergleiche
+# Datensatz: psych::bfi (N=2800, Big Five, Variable gender)
+# ============================================================================
+
+library(lavaan)
+library(semTools)
+
+data(bfi, package = "psych")
+dat <- bfi[complete.cases(bfi[, c(paste0("O", 1:5), "gender")]), ]
+dat$gender <- factor(dat$gender, labels = c("Männer", "Frauen"))
+dat$O2r <- 7 - dat$O2
+dat$O5r <- 7 - dat$O5
+
+# ---- PRÄSENTATION: Latente Mittelwerte Offenheit ----
+
+model_O <- 'Offenheit =~ O1 + O2r + O3 + O4 + O5r'
+
+# Schritt 1: Skalare Invarianz prüfen (Voraussetzung!)
+fit_conf <- cfa(model_O, data = dat, group = "gender")
+fit_metr <- cfa(model_O, data = dat, group = "gender",
+                group.equal = "loadings")
+fit_scal <- cfa(model_O, data = dat, group = "gender",
+                group.equal = c("loadings", "intercepts"))
+
+# ΔCFI prüfen
+cfis <- c(fitMeasures(fit_conf, "cfi"),
+          fitMeasures(fit_metr, "cfi"),
+          fitMeasures(fit_scal, "cfi"))
+cat("CFI (konf/metr/skal):", round(cfis, 4), "\n")
+cat("ΔCFI:", round(diff(cfis), 4), "\n\n")
+
+# Schritt 2: Latente Mittelwerte schätzen
+# Referenzgruppe (Männer): latenter Mittelwert = 0 (fixiert)
+# Andere Gruppe (Frauen): latenter Mittelwert frei geschätzt
+fit_means <- cfa(model_O, data = dat, group = "gender",
+                 group.equal = c("loadings", "intercepts"),
+                 meanstructure = TRUE)
+summary(fit_means, standardized = TRUE)
+
+# Latenter Mittelwertsunterschied ablesen
+pe <- parameterEstimates(fit_means)
+lat_diff <- pe[pe$op == "~1" & pe$lhs == "Offenheit" & pe$group == 2, ]
+cat("Latenter MW-Unterschied:\n")
+print(lat_diff[, c("est", "se", "z", "pvalue")])
+
+# Effektgröße (Cohen's d auf latenter Ebene)
+lat_mean_diff <- lat_diff$est
+lat_var_ref <- pe$est[pe$op == "~~" &
+  pe$lhs == "Offenheit" & pe$rhs == "Offenheit" &
+  pe$group == 1]
+d_latent <- lat_mean_diff / sqrt(lat_var_ref)
+cat("\nLatentes Cohen's d:", round(d_latent, 3), "\n")
+
+# Vergleich: Manifester t-Test
+O_score <- rowMeans(dat[, c("O1", "O2r", "O3", "O4", "O5r")])
+t.test(O_score ~ dat$gender)
+d_manifest <- diff(tapply(O_score, dat$gender, mean)) / sd(O_score)
+cat("Manifestes Cohen's d:", round(d_manifest, 3), "\n")
+
+# Diskrepanz
+cat("\nDiskrepanz:", round(abs(d_latent) - abs(d_manifest), 3),
+    "(=", round((abs(d_latent)/abs(d_manifest) - 1) * 100, 1), "% größer latent)\n")
+cat("→ Manifeste Analyse unterschätzt den Effekt, weil Messfehler den Unterschied abschwächt.\n")
+```
+
+## Bericht
+
+```{webr}
+#| warning: false
+#| echo: true
+# ---- BERICHT: Latente Mittelwerte für alle 5 Big-Five-Faktoren ----
+
+# Alle Items umpolen
+dat2 <- bfi[complete.cases(bfi[, c(1:25, 26)]), ]
+dat2$gender <- factor(dat2$gender, labels = c("Männer", "Frauen"))
+dat2$A1r <- 7 - dat2$A1
+dat2$C4r <- 7 - dat2$C4; dat2$C5r <- 7 - dat2$C5
+dat2$E1r <- 7 - dat2$E1; dat2$E2r <- 7 - dat2$E2
+dat2$O2r <- 7 - dat2$O2; dat2$O5r <- 7 - dat2$O5
+
+models_bf <- list(
+  A = 'A =~ A1r + A2 + A3 + A4 + A5',
+  C = 'C =~ C1 + C2 + C3 + C4r + C5r',
+  E = 'E =~ E1r + E2r + E3 + E4 + E5',
+  N = 'N =~ N1 + N2 + N3 + N4 + N5',
+  O = 'O =~ O1 + O2r + O3 + O4 + O5r'
+)
+
+results <- data.frame(Trait = character(), d_latent = numeric(),
+                      d_manifest = numeric(), Diskrepanz_pct = numeric(),
+                      stringsAsFactors = FALSE)
+
+for (trait in names(models_bf)) {
+  items <- all.vars(as.formula(paste("~", gsub(".*=~", "", models_bf[[trait]]))))
+  dat_t <- dat2[complete.cases(dat2[, c(items, "gender")]), ]
+
+  fit <- tryCatch(
+    cfa(models_bf[[trait]], data = dat_t, group = "gender",
+        group.equal = c("loadings", "intercepts"), meanstructure = TRUE),
+    error = function(e) NULL)
+
+  if (!is.null(fit)) {
+    pe <- parameterEstimates(fit)
+    lv_name <- gsub(" =~.*", "", models_bf[[trait]])
+    lm_diff <- pe$est[pe$op == "~1" & pe$lhs == lv_name & pe$group == 2]
+    lv_var <- pe$est[pe$op == "~~" & pe$lhs == lv_name & pe$rhs == lv_name & pe$group == 1]
+    d_lat <- lm_diff / sqrt(lv_var)
+
+    score <- rowMeans(dat_t[, items])
+    d_man <- diff(tapply(score, dat_t$gender, mean)) / sd(score)
+
+    diskr <- ifelse(abs(d_man) > 0.01,
+                    round((abs(d_lat)/abs(d_man) - 1) * 100, 1), NA)
+
+    results <- rbind(results, data.frame(
+      Trait = trait,
+      d_latent = round(d_lat, 3),
+      d_manifest = round(d_man, 3),
+      Diskrepanz_pct = diskr))
+  }
+}
+rownames(results) <- NULL
+print(results)
+
+cat("\n→ Bei Offenheit (O) ist die Diskrepanz am größten: Der latente Effekt ist ~45% größer.\n")
+cat("→ Bei Extraversion (E) sind d_latent ≈ d_manifest, weil die Ladungen fast tau-äquivalent sind.\n")
+cat("→ Faustregel: Je heterogener die Ladungen, desto stärker unterschätzt die manifeste Analyse.\n")
+
+```

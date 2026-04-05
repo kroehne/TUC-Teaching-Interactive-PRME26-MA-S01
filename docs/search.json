@@ -14,14 +14,344 @@
     "text": "URL: https://kroehne.github.io/TUC-Teaching-Interactive-PRME26-MA-S01"
   },
   {
-    "objectID": "S06_Thema_02.html#bericht",
-    "href": "S06_Thema_02.html#bericht",
-    "title": "B | Thema 2",
+    "objectID": "S09_Thema_09.html#bericht",
+    "href": "S09_Thema_09.html#bericht",
+    "title": "A | Thema 9",
+    "section": "Bericht",
+    "text": "Bericht",
+    "crumbs": [
+      "Tag 2 - IX: Mehrere Messzeitpunkte",
+      "A | Thema 9"
+    ]
+  },
+  {
+    "objectID": "S08_Thema_07.html#bericht",
+    "href": "S08_Thema_07.html#bericht",
+    "title": "A | Thema 7",
+    "section": "Bericht",
+    "text": "Bericht",
+    "crumbs": [
+      "Tag 2 - VIII: Strukturmodelle",
+      "A | Thema 7"
+    ]
+  },
+  {
+    "objectID": "S07_Thema_05.html#bericht",
+    "href": "S07_Thema_05.html#bericht",
+    "title": "B | Thema 5",
+    "section": "Bericht",
+    "text": "Bericht",
+    "crumbs": [
+      "Tag 2 - VII: Gruppenvergleiche",
+      "B | Thema 5"
+    ]
+  },
+  {
+    "objectID": "S06_Thema_03.html#bericht",
+    "href": "S06_Thema_03.html#bericht",
+    "title": "C | Thema 3",
     "section": "Bericht",
     "text": "Bericht",
     "crumbs": [
       "Tag 2 - VI: Messmodelle",
-      "B | Thema 2"
+      "C | Thema 3"
+    ]
+  },
+  {
+    "objectID": "S06_Thema_01.html#bericht",
+    "href": "S06_Thema_01.html#bericht",
+    "title": "A | Thema 1",
+    "section": "Bericht",
+    "text": "Bericht",
+    "crumbs": [
+      "Tag 2 - VI: Messmodelle",
+      "A | Thema 1"
+    ]
+  },
+  {
+    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html#einleitung",
+    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html#einleitung",
+    "title": "E | Interaktives Tutorial von Rosseel & Vidal (2025) - 2",
+    "section": "Einleitung",
+    "text": "Einleitung\nDieses Tutorial baut auf Teil 1 auf und behandelt drei wichtige Erweiterungen des Basis-SEM:\n\nMittelwertstruktur – Intercepts und latente Mittelwerte in das Modell einbeziehen\nMehrgruppenmodelle – dasselbe Modell in verschiedenen Gruppen schaetzen und Messinvarianz testen\nFehlende Werte – Full Information Maximum Likelihood (FIML) als Alternative zum listenweisen Ausschluss\n\nReferenz: Rosseel, Y., & Vidal, M. (2025). A tutorial for understanding SEM using R: Where do all the numbers come from? British Journal of Mathematical and Statistical Psychology. doi:10.1111/bmsp.70003",
+    "crumbs": [
+      "Tag 1 - III: Schätzung",
+      "E | ℹ Tutorial von Rosseel & Vidal (2025) - 2"
+    ]
+  },
+  {
+    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html#mittelwertstruktur",
+    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html#mittelwertstruktur",
+    "title": "E | Interaktives Tutorial von Rosseel & Vidal (2025) - 2",
+    "section": "Mittelwertstruktur",
+    "text": "Mittelwertstruktur\n\nWarum Mittelwerte?\nIm Basis-CFA (Teil 1) haben wir nur die Varianz-Kovarianz-Matrix \\(\\mathbf{S}\\) modelliert. Die Mittelwerte der Variablen wurden ignoriert. Das reicht aus, solange wir nur Zusammenhaenge untersuchen. Aber fuer bestimmte Fragestellungen brauchen wir die Mittelwertstruktur:\n\nMehrgruppenvergleiche: Unterscheiden sich die latenten Mittelwerte zwischen Gruppen?\nLaengsschnittmodelle: Veraendert sich der latente Mittelwert ueber die Zeit?\nGrowth-Curve-Modelle: Wie entwickeln sich individuelle Trajektorien?\n\n\n\nDas erweiterte Modell\nNeben \\(\\boldsymbol{\\Sigma}(\\boldsymbol{\\theta})\\) modellieren wir jetzt auch den modellimplizierten Mittelwertvektor:\n\\[E(\\mathbf{y}) = \\boldsymbol{\\nu} + \\boldsymbol{\\Lambda} \\, E(\\boldsymbol{\\eta})\\]\nwobei:\n\n\\(\\boldsymbol{\\nu}\\) = Vektor der Intercepts (Achsenabschnitte) der beobachteten Variablen\n\\(E(\\boldsymbol{\\eta}) = (\\mathbf{I} - \\mathbf{B})^{-1} \\boldsymbol{\\alpha}\\) = erwartete Werte der latenten Variablen\n\\(\\boldsymbol{\\alpha}\\) = Vektor der latenten Mittelwerte\n\nFuer ein CFA-Modell (ohne Strukturteil, \\(\\mathbf{B} = \\mathbf{0}\\)) vereinfacht sich das zu:\n\\[\\boldsymbol{\\mu}(\\boldsymbol{\\theta}) = \\boldsymbol{\\nu} + \\boldsymbol{\\Lambda} \\, \\boldsymbol{\\alpha}\\]\nZur Identifikation werden die latenten Mittelwerte auf null fixiert (\\(\\boldsymbol{\\alpha} = \\mathbf{0}\\)), sodass die Intercepts \\(\\boldsymbol{\\nu}\\) gleich den beobachteten Mittelwerten entsprechen.\n\n\nDie erweiterte Diskrepanzfunktion\nDie ML-Diskrepanzfunktion bekommt einen zusaetzlichen Term fuer die Mittelwerte:\n\\[F_{\\text{ML}}(\\boldsymbol{\\theta}) = \\text{tr}\\!\\left[\\mathbf{S}\\boldsymbol{\\Sigma}(\\boldsymbol{\\theta})^{-1}\\right] + \\ln|\\boldsymbol{\\Sigma}(\\boldsymbol{\\theta})| - \\ln|\\mathbf{S}| - P + \\left[\\bar{\\mathbf{y}} - \\boldsymbol{\\mu}(\\boldsymbol{\\theta})\\right]' \\boldsymbol{\\Sigma}(\\boldsymbol{\\theta})^{-1} \\left[\\bar{\\mathbf{y}} - \\boldsymbol{\\mu}(\\boldsymbol{\\theta})\\right]\\]\nDer neue letzte Term ist eine quadratische Form, die misst, wie weit der modellimplizierte Mittelwertvektor \\(\\boldsymbol{\\mu}(\\boldsymbol{\\theta})\\) vom beobachteten Mittelwertvektor \\(\\bar{\\mathbf{y}}\\) entfernt ist.\n\n\nDie Funktion x2implied\nStatt nur \\(\\boldsymbol{\\Sigma}\\) zurueckzugeben, liefert die erweiterte Funktion jetzt sowohl \\(\\boldsymbol{\\Sigma}\\) als auch \\(\\boldsymbol{\\mu}\\):\n\n\n\n\n\n\n\n\n\n\nDiskrepanzfunktion und Optimierung\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDie geschaetzten Intercepts entsprechen den beobachteten Mittelwerten – das ist zu erwarten, da die latenten Mittelwerte auf null fixiert sind.\n\n\nVergleich mit lavaan\n\n\n\n\n\n\n\n\nIm summary() erscheinen jetzt zusaetzlich die geschaetzten Intercepts. Die Fit-Indizes sind identisch mit dem Modell ohne Mittelwertstruktur, da die Intercepts in einem Eingruppen-Modell genau identifiziert sind.",
+    "crumbs": [
+      "Tag 1 - III: Schätzung",
+      "E | ℹ Tutorial von Rosseel & Vidal (2025) - 2"
+    ]
+  },
+  {
+    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html#mehrgruppenmodelle",
+    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html#mehrgruppenmodelle",
+    "title": "E | Interaktives Tutorial von Rosseel & Vidal (2025) - 2",
+    "section": "Mehrgruppenmodelle",
+    "text": "Mehrgruppenmodelle\n\nDie Grundidee\nBei Mehrgruppenmodellen wird dasselbe SEM gleichzeitig in mehreren Gruppen geschaetzt. Der zentrale Trick: Die Diskrepanzfunktionen der einzelnen Gruppen werden als gewichtete Summe kombiniert:\n\\[F_{\\text{ML}}^{\\text{gesamt}} = \\frac{1}{N} \\sum_{g=1}^{G} N_g \\cdot F_{\\text{ML}}^{(g)}\\]\nwobei \\(N_g\\) die Stichprobengroesse der Gruppe \\(g\\) ist und \\(F_{\\text{ML}}^{(g)}\\) die ML-Diskrepanzfunktion fuer Gruppe \\(g\\). Jede Gruppe hat ihre eigene beobachtete Kovarianzmatrix \\(\\mathbf{S}_g\\) und ihre eigene modellimplizierte Matrix \\(\\boldsymbol{\\Sigma}_g(\\boldsymbol{\\theta})\\). Die Gesamt-Chi-Quadrat-Statistik ist dann:\n\\[\\chi^2_{\\text{gesamt}} = N \\cdot F_{\\text{ML}}^{\\text{gesamt}} = \\sum_{g=1}^{G} N_g \\cdot F_{\\text{ML}}^{(g)} = \\chi^2_1 + \\chi^2_2 + \\ldots + \\chi^2_G\\]\nDas heisst: Die Chi-Quadrat-Statistiken der einzelnen Gruppen addieren sich. Ebenso addieren sich die Freiheitsgrade. Das ist die Grundlage fuer alle Mehrgruppenvergleiche.\n\n\nDaten pro Gruppe\nDer Holzinger-Swineford-Datensatz enthaelt Daten aus zwei Schulen:\n\n\n\n\n\n\n\n\nWir berechnen die Stichprobenstatistiken separat fuer jede Gruppe:\n\n\n\n\n\n\n\n\n\n\nSeparate Schaetzung pro Gruppe\nZuerst schaetzen wir das CFA-Modell separat in jeder Gruppe. Jede Gruppe hat ihren eigenen Satz von 21 Parametern und ihre eigene Diskrepanzfunktion:\n\n\n\n\n\n\n\n\n\n\nDie Additivitaet der Chi-Quadrat-Statistiken\nJetzt zeigen wir den zentralen Punkt: Die Gesamt-Chi-Quadrat-Statistik ist die Summe der gruppenspezifischen Chi-Quadrat-Werte:\n\n\n\n\n\n\n\n\n\n\nDie gemeinsame Diskrepanzfunktion\nStatt separat zu optimieren, koennen wir auch eine gemeinsame Diskrepanzfunktion aufstellen, die beide Gruppen gleichzeitig beruecksichtigt. Das ist mathematisch aequivalent, aber die Voraussetzung fuer Restriktionen ueber die Gruppen:\n\n\n\n\n\n\n\n\n\n\nVergleich mit lavaan\n\n\n\n\n\n\n\n\n\n\nRestriktionen ueber Gruppen: Der Kern von Mehrgruppenmodellen\nDer eigentliche Mehrwert entsteht, wenn wir Parameter zwischen den Gruppen gleichsetzen. Statt 42 freier Parameter (21 pro Gruppe) koennen wir z.B. die 6 Faktorladungen gleichsetzen. Dann haben wir nur noch \\(42 - 6 = 36\\) freie Parameter:\n\n\n\n\n\n\n\n\nDie Differenz der Chi-Quadrat-Werte zwischen dem freien und dem restringierten Modell testet, ob die Gleichsetzung der Ladungen zu einer signifikanten Verschlechterung fuehrt:\n\n\n\n\n\n\n\n\n\n\nAnwendung: Messinvarianz mit lavaan\nNachdem wir verstanden haben, wie Mehrgruppenmodelle funktionieren, nutzen wir lavaan fuer die systematische Pruefung der Messinvarianz. Jede Stufe fuegt weitere Gleichheitsrestriktionen hinzu:\n\n\n\n\n\n\n\n\n\nStufe\nName\nRestriktion\nBedeutung\n\n\n\n\n1\nKonfigural\nGleiche Modellstruktur\nGleiche Faktoren, gleiche Zuordnung\n\n\n2\nMetrisch\n+ gleiche Faktorladungen\nFaktoren haben dieselbe Bedeutung\n\n\n3\nSkalar\n+ gleiche Intercepts\nLatente Mittelwerte vergleichbar\n\n\n4\nStrikt\n+ gleiche Residualvarianzen\nGleiche Messgenauigkeit\n\n\n\n\n\n\n\n\n\n\n\nAls Faustregel: Ein CFI-Unterschied von weniger als .01 zwischen aufeinanderfolgenden Stufen spricht fuer Messinvarianz (Chen, 2007).\n\n\n\n\n\n\n\n\n\n\nLatente Mittelwertunterschiede\nWenn skalare Invarianz gegeben ist, koennen wir die latenten Mittelwerte zwischen den Gruppen vergleichen. Die erste Gruppe dient als Referenz (latente Mittelwerte = 0):\n\n\n\n\n\n\n\n\nUnter “Intercepts” der zweiten Gruppe (Grant-White) sehen wir die geschaetzten latenten Mittelwertunterschiede relativ zur ersten Gruppe (Pasteur).",
+    "crumbs": [
+      "Tag 1 - III: Schätzung",
+      "E | ℹ Tutorial von Rosseel & Vidal (2025) - 2"
+    ]
+  },
+  {
+    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html#fehlende-werte-und-fiml",
+    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html#fehlende-werte-und-fiml",
+    "title": "E | Interaktives Tutorial von Rosseel & Vidal (2025) - 2",
+    "section": "Fehlende Werte und FIML",
+    "text": "Fehlende Werte und FIML\n\nDas Problem\nIn der Praxis fehlen haeufig einzelne Werte. Der einfachste Umgang ist listenweiser Ausschluss (listwise deletion): Alle Personen mit mindestens einem fehlenden Wert werden komplett entfernt. Das kann zu erheblichem Datenverlust fuehren.\n\n\nDaten mit fehlenden Werten erzeugen\nWir fuegen dem Holzinger-Swineford-Datensatz zufaellig ca. 5% fehlende Werte pro Variable hinzu:\n\n\n\n\n\n\n\n\n\n\nListenweiser Ausschluss vs. FIML\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFIML nutzt alle Beobachtungen – auch die mit fehlenden Werten – und liefert daher effizientere Schaetzungen.\n\n\nWie FIML funktioniert\nBei FIML wird statt einer einzelnen globalen Diskrepanzfunktion die Log-Likelihood fuer jede Person einzeln berechnet, wobei nur die tatsaechlich beobachteten Variablen verwendet werden:\n\\[\\log L(\\boldsymbol{\\theta} | \\mathbf{y}_i) = -\\frac{P_i}{2} \\ln(2\\pi) - \\frac{1}{2} \\ln|\\boldsymbol{\\Sigma}_i(\\boldsymbol{\\theta})| - \\frac{1}{2} [\\mathbf{y}_i - \\boldsymbol{\\mu}_i(\\boldsymbol{\\theta})]' \\boldsymbol{\\Sigma}_i(\\boldsymbol{\\theta})^{-1} [\\mathbf{y}_i - \\boldsymbol{\\mu}_i(\\boldsymbol{\\theta})]\\]\nDabei ist \\(P_i\\) die Anzahl der beobachteten Variablen fuer Person \\(i\\), und \\(\\boldsymbol{\\Sigma}_i\\) und \\(\\boldsymbol{\\mu}_i\\) sind die entsprechenden Teilmatrizen bzw. Teilvektoren (nach Entfernung der Zeilen/Spalten der fehlenden Variablen). Die Gesamt-Log-Likelihood ist die Summe ueber alle Personen:\n\\[\\log L(\\boldsymbol{\\theta} | \\mathcal{Y}) = \\sum_{i=1}^{N} \\log L(\\boldsymbol{\\theta} | \\mathbf{y}_i)\\]\n\n\nFIML-Diskrepanzfunktion in R\nFuer FIML brauchen wir eine vereinfachte x2implied-Funktion, bei der die latenten Mittelwerte direkt in den Intercepts aufgehen (da wir \\(\\boldsymbol{\\alpha} = \\mathbf{0}\\) fixieren):\n\n\n\n\n\n\n\n\nJetzt die eigentliche FIML-Diskrepanzfunktion. Der entscheidende Unterschied zur normalen ML-Funktion: In der Schleife ueber alle Personen werden fuer jede Person nur die beobachteten Variablen verwendet:\n\n\n\n\n\n\n\n\n\n\nVergleich der Parameterschaetzungen\n\n\n\n\n\n\n\n\nDie FIML-Schaetzungen liegen in der Regel naeher an den Schaetzungen aus den vollstaendigen Daten als die Schaetzungen aus dem listenweisen Ausschluss.",
+    "crumbs": [
+      "Tag 1 - III: Schätzung",
+      "E | ℹ Tutorial von Rosseel & Vidal (2025) - 2"
+    ]
+  },
+  {
+    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html#zusammenfassung",
+    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html#zusammenfassung",
+    "title": "E | Interaktives Tutorial von Rosseel & Vidal (2025) - 2",
+    "section": "Zusammenfassung",
+    "text": "Zusammenfassung\n\n\n\n\n\n\n\n\nErweiterung\nSchluesselidee\nlavaan-Argument\n\n\n\n\nMittelwertstruktur\n\\(\\boldsymbol{\\mu} = \\boldsymbol{\\nu} + \\boldsymbol{\\Lambda}\\boldsymbol{\\alpha}\\) modelliert Intercepts und latente Mittelwerte\nmeanstructure = TRUE\n\n\nMehrgruppenmodelle\nGleiches Modell in verschiedenen Gruppen, stufenweise Restriktionen\ngroup = \"var\", group.equal = ...\n\n\nFIML\nLikelihood pro Person, nur ueber beobachtete Variablen\nmissing = \"fiml\"",
+    "crumbs": [
+      "Tag 1 - III: Schätzung",
+      "E | ℹ Tutorial von Rosseel & Vidal (2025) - 2"
+    ]
+  },
+  {
+    "objectID": "S03_CFA_03.html#modell-vergleich",
+    "href": "S03_CFA_03.html#modell-vergleich",
+    "title": "C | Übung 2",
+    "section": "4-Modell-Vergleich",
+    "text": "4-Modell-Vergleich\n\n\n\n\n\n\nWichtigAufgabe\n\n\n\nSchätzen Sie 4 Modelle für die HolzingerSwineford-Daten und erstellen Sie eine Vergleichstabelle:\n\n\n\n\n\n\n\nModell\nlavaan\n\n\n\n\n(a) 1-Faktor\ng =~ x1 + ... + x9\n\n\n(b) 3 Faktoren korreliert\nvisual  =~ x1 + x2 + x3, textual =~ x4 + x5 + x6 und speed =~ x7 + x8 + x9\n\n\n(c) 3 Faktoren orthogonal\ncfa(..., orthogonal = TRUE)\n\n\n(d) Hierarchisch (g 2. Ordnung)\ng =~ visual + textual + speed\n\n\n\n\nFit-Tabelle: χ², df, CFI, RMSEA, AIC\nχ²-Differenztest: (a) vs. (b), (c) vs. (b)\nWarum haben (b) und (d) den gleichen Fit?\n\n\n\n\n\nHilfestellung\n\nWenn die Ausgaben von lavaan in folgenden R-Objekten vorliegen:\n\nfit_1f &lt;- cfa(model_1f, data = HolzingerSwineford1939)\nfit_3f &lt;- cfa(model_3f, data = HolzingerSwineford1939)\nfit_orth &lt;- cfa(model_3f, data = HolzingerSwineford1939, orthogonal = TRUE)\nfit_hier &lt;- cfa(model_hier, data = HolzingerSwineford1939)\n\nVergleichstabelle:\n\nsapply(list(fit_1f, fit_3f, fit_orth, fit_hier), function(f) {\n  fitMeasures(f, c(\"chisq\",\"df\",\"cfi\",\"rmsea\",\"aic\"))\n}) |&gt; t() |&gt; round(3)\n\nχ²-Differenztest:\n\n# (a) vs. (b)\nanova(fit_1f,fit_3f)\n\n#(c) vs. (b):\nanova(fit_orth,fit_3f)",
+    "crumbs": [
+      "Tag 1 - III: Schätzung",
+      "C | Übung 2"
+    ]
+  },
+  {
+    "objectID": "S03_CFA_01.html",
+    "href": "S03_CFA_01.html",
+    "title": "A | CFA Live",
+    "section": "",
+    "text": "Alternativen zur Darstellung\n\n\n\n\n\n\n\n\n\nEmpfohlen, aber funktioniert nur lokal in R:",
+    "crumbs": [
+      "Tag 1 - III: Schätzung",
+      "A | Live"
+    ]
+  },
+  {
+    "objectID": "S03_CFA_01.html#faktor-cfa",
+    "href": "S03_CFA_01.html#faktor-cfa",
+    "title": "A | CFA Live",
+    "section": "",
+    "text": "Alternativen zur Darstellung\n\n\n\n\n\n\n\n\n\nEmpfohlen, aber funktioniert nur lokal in R:",
+    "crumbs": [
+      "Tag 1 - III: Schätzung",
+      "A | Live"
+    ]
+  },
+  {
+    "objectID": "S02_PD_01.html#regressionsgleichungen-manifest",
+    "href": "S02_PD_01.html#regressionsgleichungen-manifest",
+    "title": "A | Übung 1",
+    "section": "Regressionsgleichungen (manifest)",
+    "text": "Regressionsgleichungen (manifest)\n\n\nSPOILER!\n\n\\[\n\\begin{aligned}\nY_1 &= \\lambda_{11}\\eta_1 + \\varepsilon_1 = \\eta_1 + \\varepsilon_1 \\\\\nY_2 &= \\lambda_{21}\\eta_1 + \\varepsilon_2 \\\\\nY_3 &= \\lambda_{32}\\eta_2 + \\varepsilon_3 = \\eta_2 + \\varepsilon_3\n\\end{aligned}\n\\]\nKommentar: Da \\(\\lambda_{11}=1\\) und \\(\\lambda_{32}=1\\), sind \\(Y_1\\) und \\(Y_3\\) direkt als Summe von latenter Variable und Residuum darstellbar.",
+    "crumbs": [
+      "Tag 1 - II: Grundlagen",
+      "A | Übung 1"
+    ]
+  },
+  {
+    "objectID": "S02_PD_01.html#regressionsgleichungen-latent",
+    "href": "S02_PD_01.html#regressionsgleichungen-latent",
+    "title": "A | Übung 1",
+    "section": "Regressionsgleichungen (latent)",
+    "text": "Regressionsgleichungen (latent)\n\n\nSPOILER!\n\n\\[\n\\eta_2 = \\beta_{21}\\eta_1 + \\zeta_2\n\\]\nEinsetzen in \\(Y_3\\):\n\\[\nY_3 = \\eta_2 + \\varepsilon_3 = \\beta_{21}\\eta_1 + \\zeta_2 + \\varepsilon_3\n\\]",
+    "crumbs": [
+      "Tag 1 - II: Grundlagen",
+      "A | Übung 1"
+    ]
+  },
+  {
+    "objectID": "S02_PD_01.html#varianzen",
+    "href": "S02_PD_01.html#varianzen",
+    "title": "A | Übung 1",
+    "section": "Varianzen",
+    "text": "Varianzen\n\n\nSPOILER!\n\n\\[\n\\mathrm{Var}(Y_1) = \\mathrm{Var}(\\eta_1 + \\varepsilon_1) = \\mathrm{Var}(\\eta_1) + \\mathrm{Var}(\\varepsilon_1) + 2\\mathrm{Cov}(\\eta_1,\\varepsilon_1)\n\\]\nKommentar: Nach Annahme \\(\\mathrm{Cov}(\\eta_1,\\varepsilon_1)=0\\) (Residuum unkorreliert mit latenter Variablen) ergibt sich:\n\\[\n\\mathrm{Var}(Y_1) = \\mathrm{Var}(\\eta_1) + \\mathrm{Var}(\\varepsilon_1)\n\\]\n\n\\[\n\\mathrm{Var}(Y_2) = \\mathrm{Var}(\\lambda_{21}\\eta_1 + \\varepsilon_2) = \\lambda_{21}^2 \\,\\mathrm{Var}(\\eta_1) + \\mathrm{Var}(\\varepsilon_2)\n\\]\n\n\\[\n\\mathrm{Var}(Y_3) = \\mathrm{Var}(\\beta_{21}\\eta_1 + \\zeta_2 + \\varepsilon_3)\n\\]\nDa \\(\\mathrm{Var}(\\varepsilon_3)=0\\), bleibt:\n\\[\n\\mathrm{Var}(Y_3) = \\mathrm{Var}(\\beta_{21}\\eta_1 + \\zeta_2) = \\beta_{21}^2\\mathrm{Var}(\\eta_1) + \\mathrm{Var}(\\zeta_2)\n\\]",
+    "crumbs": [
+      "Tag 1 - II: Grundlagen",
+      "A | Übung 1"
+    ]
+  },
+  {
+    "objectID": "S02_PD_01.html#kovarianzen",
+    "href": "S02_PD_01.html#kovarianzen",
+    "title": "A | Übung 1",
+    "section": "Kovarianzen",
+    "text": "Kovarianzen\n\n\nSPOILER!\n\n\\(\\mathrm{Cov}(Y_1,Y_2)\\)\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_1,Y_2) &= \\mathrm{Cov}(\\eta_1 + \\varepsilon_1,\\; \\lambda_{21}\\eta_1 + \\varepsilon_2) \\\\\n&= \\lambda_{21}\\mathrm{Cov}(\\eta_1,\\eta_1) + \\mathrm{Cov}(\\eta_1,\\varepsilon_2) + \\lambda_{21}\\mathrm{Cov}(\\varepsilon_1,\\eta_1) + \\mathrm{Cov}(\\varepsilon_1,\\varepsilon_2)\n\\end{aligned}\n\\]\nNach den Annahmen (\\(\\mathrm{Cov}(\\varepsilon_i,\\varepsilon_j)=0\\) für \\(i\\neq j\\), Residuen unkorreliert mit latenten Variablen):\n\\[\n\\mathrm{Cov}(Y_1,Y_2) = \\lambda_{21}\\mathrm{Var}(\\eta_1)\n\\]\n\n\\(mathrm{Cov}(Y_1,Y_3)\\)\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_1,Y_3) &= \\mathrm{Cov}(\\eta_1+\\varepsilon_1,\\; \\beta_{21}\\eta_1+\\zeta_2+\\varepsilon_3) \\\\\n&= \\beta_{21}\\mathrm{Cov}(\\eta_1,\\eta_1)+\\mathrm{Cov}(\\eta_1,\\zeta_2)+\\mathrm{Cov}(\\eta_1,\\varepsilon_3)+\\beta_{21}\\mathrm{Cov}(\\varepsilon_1,\\eta_1)+\\mathrm{Cov}(\\varepsilon_1,\\zeta_2)+\\mathrm{Cov}(\\varepsilon_1,\\varepsilon_3)\n\\end{aligned}\n\\]\nNach den Annahmen bleiben nur:\n\\[\n\\mathrm{Cov}(Y_1,Y_3) = \\beta_{21}\\mathrm{Var}(\\eta_1)\n\\]\n\n\\(\\mathrm{Cov}(Y_2,Y_3)\\)\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_2,Y_3) &= \\mathrm{Cov}(\\lambda_{21}\\eta_1+\\varepsilon_2,\\; \\beta_{21}\\eta_1+\\zeta_2+\\varepsilon_3) \\\\\n&= \\lambda_{21}\\beta_{21}\\mathrm{Cov}(\\eta_1,\\eta_1)+\\lambda_{21}\\mathrm{Cov}(\\eta_1,\\zeta_2)+\\lambda_{21}\\mathrm{Cov}(\\eta_1,\\varepsilon_3)+\\beta_{21}\\mathrm{Cov}(\\varepsilon_2,\\eta_1)+\\mathrm{Cov}(\\varepsilon_2,\\zeta_2)+\\mathrm{Cov}(\\varepsilon_2,\\varepsilon_3)\n\\end{aligned}\n\\]\nNach den Annahmen:\n\\[\n\\mathrm{Cov}(Y_2,Y_3) = \\lambda_{21}\\beta_{21}\\mathrm{Var}(\\eta_1)\n\\]",
+    "crumbs": [
+      "Tag 1 - II: Grundlagen",
+      "A | Übung 1"
+    ]
+  },
+  {
+    "objectID": "S02_PD_01.html#kompakte-matrizenform",
+    "href": "S02_PD_01.html#kompakte-matrizenform",
+    "title": "A | Übung 1",
+    "section": "Kompakte Matrizenform",
+    "text": "Kompakte Matrizenform\n\n\nSPOILER!\n\n\nMessmodell\n\\[\n\\underset{(3 \\times 1)}{\\mathbf{y}} = \\underset{(3 \\times 2)}{\\boldsymbol{\\Lambda}} \\;\\underset{(2 \\times 1)}{\\boldsymbol{\\eta}} + \\underset{(3 \\times 1)}{\\boldsymbol{\\varepsilon}}\n\\]\nmit\n\\[\n\\begin{pmatrix} Y_1 \\\\ Y_2 \\\\ Y_3 \\end{pmatrix}\n=\n\\begin{pmatrix} 1 & 0 \\\\ \\lambda_{21} & 0 \\\\ 0 & 1 \\end{pmatrix}\n\\begin{pmatrix} \\eta_1 \\\\ \\eta_2 \\end{pmatrix}\n+\n\\begin{pmatrix} \\varepsilon_1 \\\\ \\varepsilon_2 \\\\ \\varepsilon_3 \\end{pmatrix}\n\\]\n\n\nStrukturmodell\n\\[\n\\underset{(2 \\times 1)}{\\boldsymbol{\\eta}} = \\underset{(2 \\times 2)}{\\mathbf{B}}\\;\\underset{(2 \\times 1)}{\\boldsymbol{\\eta}} + \\underset{(2 \\times 1)}{\\boldsymbol{\\zeta}}\n\\]\nmit\n\\[\n\\begin{pmatrix} \\eta_1 \\\\ \\eta_2 \\end{pmatrix}\n=\n\\begin{pmatrix} 0 & 0 \\\\ \\beta_{21} & 0 \\end{pmatrix}\n\\begin{pmatrix} \\eta_1 \\\\ \\eta_2 \\end{pmatrix}\n+\n\\begin{pmatrix} \\zeta_1 \\\\ \\zeta_2 \\end{pmatrix}\n\\]\nKommentar: \\(\\eta_1\\) ist exogen (erste Zeile von \\(\\mathbf{B}\\) ist null), d.h. \\(\\zeta_1 \\equiv \\eta_1\\).\n\n\nParametermatrizen\nKovarianzmatrix der latenten Residuen:\n\\[\n\\boldsymbol{\\Psi} = \\mathrm{Cov}(\\boldsymbol{\\zeta}) =\n\\begin{pmatrix} \\psi_{11} & 0 \\\\ 0 & \\psi_{22} \\end{pmatrix}\n\\]\nmit \\(\\psi_{11} = \\mathrm{Var}(\\eta_1)\\) und \\(\\psi_{22} = \\mathrm{Var}(\\zeta_2)\\).\nKovarianzmatrix der Messresiduen:\n\\[\n\\boldsymbol{\\Theta} = \\mathrm{Cov}(\\boldsymbol{\\varepsilon}) =\n\\begin{pmatrix} \\theta_{1} & 0 & 0 \\\\ 0 & \\theta_{2} & 0 \\\\ 0 & 0 & 0 \\end{pmatrix}\n\\]\nmit der Restriktion \\(\\mathrm{Var}(\\varepsilon_3) = 0\\).\n\n\nModellimplizierte Kovarianzmatrix\n\\[\n\\boldsymbol{\\Sigma} = \\boldsymbol{\\Lambda}\\,(\\mathbf{I}-\\mathbf{B})^{-1}\\,\\boldsymbol{\\Psi}\\,\\left[(\\mathbf{I}-\\mathbf{B})^{-1}\\right]^\\top \\boldsymbol{\\Lambda}^\\top + \\boldsymbol{\\Theta}\n\\]\nHerleitung in einzelnen Schritten:\n\\[\n(\\mathbf{I}-\\mathbf{B})^{-1}\n=\n\\begin{pmatrix} 1 & 0 \\\\ -\\beta_{21} & 1 \\end{pmatrix}^{-1}\n=\n\\begin{pmatrix} 1 & 0 \\\\ \\beta_{21} & 1 \\end{pmatrix}\n\\]\nDaraus ergibt sich die Kovarianzmatrix der latenten Variablen:\n\\[\n(\\mathbf{I}-\\mathbf{B})^{-1}\\,\\boldsymbol{\\Psi}\\,\\left[(\\mathbf{I}-\\mathbf{B})^{-1}\\right]^\\top\n=\n\\begin{pmatrix} \\psi_{11} & \\beta_{21}\\psi_{11} \\\\ \\beta_{21}\\psi_{11} & \\beta_{21}^2\\psi_{11}+\\psi_{22} \\end{pmatrix}\n\\]\nUnd schließlich:\n\\[\n\\boldsymbol{\\Sigma}\n=\n\\begin{pmatrix}\n\\psi_{11} + \\theta_{1}  &  \\lambda_{21}\\psi_{11}  &  \\beta_{21}\\psi_{11} \\\\\n\\lambda_{21}\\psi_{11}  &  \\lambda_{21}^2\\psi_{11} + \\theta_{2}  &  \\lambda_{21}\\beta_{21}\\psi_{11} \\\\\n\\beta_{21}\\psi_{11}  &  \\lambda_{21}\\beta_{21}\\psi_{11}  &  \\beta_{21}^2\\psi_{11} + \\psi_{22}\n\\end{pmatrix}\n\\]\nKommentar:\n\nDas Modell hat 6 freie Parameter (\\(\\lambda_{21}\\), \\(\\beta_{21}\\), \\(\\psi_{11}\\), \\(\\psi_{22}\\), \\(\\theta_1\\), \\(\\theta_2\\)) bei 6 nicht-redundanten Elementen in \\(\\boldsymbol{\\Sigma}\\) (3 Varianzen + 3 Kovarianzen), d.h. das Modell hat \\(df = 6 - 6 = 0\\) Freiheitsgrade und ist gerade identifiziert (just identified).",
+    "crumbs": [
+      "Tag 1 - II: Grundlagen",
+      "A | Übung 1"
+    ]
+  },
+  {
+    "objectID": "S01_SteyerEid2001BoxFandG_01.html",
+    "href": "S01_SteyerEid2001BoxFandG_01.html",
+    "title": "A | Box F und G",
+    "section": "",
+    "text": "Anhang F (S. 339-350) und G (S. 351-366) aus:\n\nSteyer, R., & Eid, M. (2001). Messen und Testen (2., korrigierte Aufl). Springer.\n\n\nBox F.1: Das Wichtigste zu Erwartungswerten, Varianzen und Kovarianzen\n\nA. Definitionen\nErwartungswert \\(E(X)\\): Falls \\(X\\) nur die Werte \\(x_1, \\ldots, x_n\\) annimmt:\n\\[E(X) := \\sum_{i=1}^{n} x_i \\cdot P(X = x_i)\\]\nKovarianz \\(Cov(X, Y)\\):\n\\[Cov(X, Y) := E\\bigl[\\bigl(X - E(X)\\bigr) \\cdot \\bigl(Y - E(Y)\\bigr)\\bigr]\\]\nVarianz \\(Var(X)\\):\n\\[Var(X) := Cov(X, X) = E\\bigl[\\bigl(X - E(X)\\bigr)^2\\bigr]\\]\nStandardabweichung (Streuung) \\(Std(X)\\):\n\\[Std(X) := +\\bigl[Var(X)\\bigr]^{1/2}\\]\nKorrelation \\(Kor(X, Y)\\):\n\\[Kor(X, Y) := \\begin{cases} \\dfrac{Cov(X, Y)}{Std(X) \\cdot Std(Y)}, & \\text{falls } Std(X) &gt; 0 \\text{ und } Std(Y) &gt; 0 \\\\ 0, & \\text{sonst.} \\end{cases}\\]\nUnkorreliertheit:\n\\[Cov(X, Y) = Kor(X, Y) = 0\\]\n\n\nB. Rechenregeln für Erwartungswerte, Varianzen und Kovarianzen\nSind \\(X\\) und \\(Y\\) numerische Zufallsvariablen auf \\((\\Omega, \\mathcal{A}, P)\\) mit endlichen Erwartungswerten sowie \\(\\alpha\\) und \\(\\beta \\in \\mathbb{R}\\), dann gelten:\n(i) \\(\\quad E(\\alpha) = \\alpha\\)\n(ii) \\(\\quad E(\\alpha\\, X + \\beta\\, Y) = \\alpha\\, E(X) + \\beta\\, E(Y)\\)\n(iii) \\(\\quad Var(X) = E(X^2) - \\bigl[E(X)\\bigr]^2\\)\n(iv) \\(\\quad Var(X) = 0, \\text{ falls } X = \\alpha\\)\n(v) \\(\\quad Var(\\alpha\\, X) = \\alpha^2\\, Var(X)\\)\n(vi) \\(\\quad Var(\\alpha + X) = Var(X)\\)\n(vii) \\(\\quad Var(\\alpha\\, X + \\beta\\, Y) = \\alpha^2\\, Var(X) + \\beta^2\\, Var(Y) + 2\\,\\alpha\\,\\beta\\, Cov(X, Y)\\)\n(viii) \\(\\quad Cov(X, Y) = E(X \\cdot Y) - E(X) \\cdot E(Y)\\)\n(ix) \\(\\quad Cov(X, Y) = 0, \\text{ falls } X = \\alpha\\)\n(x) \\(\\quad Cov(\\alpha\\, X,\\; \\beta\\, Y) = \\alpha\\,\\beta\\, Cov(X, Y)\\)\n(xi) \\(\\quad Cov(\\alpha + X,\\; \\beta + Y) = Cov(X, Y)\\)\nSind \\(X_1, X_2, Y_1\\) und \\(Y_2\\) numerische Zufallsvariablen auf \\((\\Omega, \\mathcal{A}, P)\\) mit endlichen Erwartungswerten und \\(\\alpha_1, \\alpha_2, \\beta_1, \\beta_2 \\in \\mathbb{R}\\), dann gelten:\n(xii)\n\\[Cov(\\alpha_1 X_1 + \\alpha_2 X_2,\\; \\beta_1 Y_1 + \\beta_2 Y_2) = \\alpha_1 \\beta_1\\, Cov(X_1, Y_1) + \\alpha_1 \\beta_2\\, Cov(X_1, Y_2) + \\alpha_2 \\beta_1\\, Cov(X_2, Y_1) + \\alpha_2 \\beta_2\\, Cov(X_2, Y_2)\\]\n\n\n\nBox G.1: Das Wichtigste zum bedingten Erwartungswert und zur Regression\n\nA. Definitionen\nBedingter Erwartungswert \\(E(Y \\mid X = x)\\): Bei diskretem \\(Y\\) und \\(P(X = x) &gt; 0\\):\n\\[E(Y \\mid X = x) := \\sum_{i=1}^{n} y_i \\cdot P(Y = y_i \\mid X = x)\\]\nRegression (bedingte Erwartung) \\(E(Y \\mid X)\\) bzw. \\(E(Y \\mid X_1, \\ldots, X_m)\\):\n\\(E(Y \\mid X)\\) ist diejenige Zufallsvariable, deren Werte die bedingten Erwartungswerte \\(E(Y \\mid X = x)\\) sind, d.h. sie ist eine Funktion von \\(X\\). Dabei heißt \\(Y\\) der Regressand und \\(X\\) der Regressor, der auch aus mehreren Zufallsvariablen \\(X_1, \\ldots, X_m\\) bestehen kann.\nResiduum \\(\\varepsilon\\):\n\\[\\varepsilon := Y - E(Y \\mid X)\\]\nist die nicht durch die Regression \\(E(Y \\mid X)\\) determinierte Komponente von \\(Y\\).\nDeterminationskoeffizient \\(R^2_{Y|X}\\) und Multiple Korrelation \\(R_{Y|X}\\):\n\\[R^2_{Y|X} := \\begin{cases} \\dfrac{Var\\bigl[E(Y \\mid X)\\bigr]}{Var(Y)}, & \\text{falls } Var(Y) &gt; 0 \\\\ 0, & \\text{andernfalls.} \\end{cases}\\]\n\\(R^2_{Y|X}\\) ist der durch die Regression \\(E(Y \\mid X)\\) determinierte Varianzanteil von \\(Y\\). Er gibt die Stärke der regressiven Abhängigkeit an, ist invariant unter eineindeutigen Abbildungen von \\(X\\) und unter linearen Transformationen von \\(Y\\).\nRegressive Unabhängigkeit:\n\\[E(Y \\mid X) = E(Y)\\]\n\n\nB. Rechenregeln für Regressionen\n(i) \\(\\quad E(\\alpha \\mid X) = \\alpha, \\quad \\alpha \\in \\mathbb{R}\\)\n(ii) \\(\\quad E(\\alpha\\, Y_1 + \\beta\\, Y_2 \\mid X) = \\alpha\\, E(Y_1 \\mid X) + \\beta\\, E(Y_2 \\mid X), \\quad \\alpha, \\beta \\in \\mathbb{R}\\)\n(iii) \\(\\quad E\\bigl[E(Y \\mid X)\\bigr] = E(Y)\\)\n(iv) \\(\\quad E\\bigl[f(X) \\mid X\\bigr] = f(X), \\quad \\text{falls } f(X) \\text{ numerisch ist.}\\)\n(v) \\(\\quad E\\bigl[E(Y \\mid X) \\mid f(X)\\bigr] = E\\bigl[Y \\mid f(X)\\bigr]\\)\n(vi) \\(\\quad E\\bigl[f(X) \\cdot Y \\mid X\\bigr] = f(X) \\cdot E(Y \\mid X), \\quad \\text{falls } f(X) \\text{ numerisch ist.}\\)\n\n\nC. Eigenschaften des Residuums\n(vii) \\(\\quad E(\\varepsilon) = 0\\)\n(viii) \\(\\quad Cov\\bigl[\\varepsilon,\\; E(Y \\mid X)\\bigr] = 0\\)\n(ix) \\(\\quad Var(Y) = Var\\bigl[E(Y \\mid X)\\bigr] + Var(\\varepsilon)\\)\n(x) \\(\\quad E(\\varepsilon \\mid X) = 0\\)\n(xi) \\(\\quad E\\bigl[\\varepsilon \\mid f(X)\\bigr] = 0\\)\n(xii) \\(\\quad Cov\\bigl[\\varepsilon,\\; f(X)\\bigr] = 0, \\quad \\text{falls } f(X) \\text{ numerisch ist.}\\)",
+    "crumbs": [
+      "I: Vorbesprechung",
+      "A | Grundlage und Rechenregeln"
+    ]
+  },
+  {
+    "objectID": "S01_SteyerEid2001Game_01.html",
+    "href": "S01_SteyerEid2001Game_01.html",
+    "title": "B | MatheQuest: Grundlagen der Strukturgleichungsmodellierung",
+    "section": "",
+    "text": "Für Nebenrechungen in R:\n\n\n\n\n\n\n\n\nNotation nach:\n\nSteyer, R., & Eid, M. (2001). Messen und Testen (2., korrigierte Aufl). Springer.",
+    "crumbs": [
+      "I: Vorbesprechung",
+      "B | MatheQuest: SEM"
+    ]
+  },
+  {
+    "objectID": "S02_PD_02.html#regressionsgleichungen-manifest-und-latent",
+    "href": "S02_PD_02.html#regressionsgleichungen-manifest-und-latent",
+    "title": "B | Übung 2",
+    "section": "Regressionsgleichungen (manifest und latent)",
+    "text": "Regressionsgleichungen (manifest und latent)\n\n\nSPOILER!\n\n\\[\n\\begin{aligned}\nY_1 &= \\lambda_{11}\\eta_1 + \\varepsilon_1 = \\eta_1 + \\varepsilon_1 \\quad (\\lambda_{11}=1)\\\\\nY_2 &= \\lambda_{21}\\eta_1 + \\varepsilon_2\\\\\n\\eta_2 &= \\beta_{21}\\eta_1 + \\zeta_2 = \\eta_1 + \\zeta_2 \\quad (\\beta_{21}=1)\\\\\nY_3 &= \\lambda_{32}\\eta_2 + \\varepsilon_3 = \\eta_2 + \\varepsilon_3 \\quad (\\lambda_{32}=1)\\\\\n     &= \\eta_1 + \\zeta_2 + \\varepsilon_3\\\\\nY_4 &= \\lambda_{42}\\eta_2 + \\varepsilon_4 = \\eta_2 + \\varepsilon_4 \\quad (\\lambda_{42}=1)\\\\\n     &= \\eta_1 + \\zeta_2 + \\varepsilon_4\\\\\n\\eta_3 &= \\beta_{31}\\eta_1 + \\beta_{32}\\eta_2 + \\zeta_3\\\\\n       &= \\beta_{31}\\eta_1 + \\beta_{32}(\\eta_1+\\zeta_2) + \\zeta_3\\\\\n       &= (\\beta_{31}+\\beta_{32})\\eta_1 + \\beta_{32}\\zeta_2 + \\zeta_3\\\\\nY_5 &= \\lambda_{53}\\eta_3 + \\varepsilon_5 = \\eta_3 + \\varepsilon_5 \\quad (\\lambda_{53}=1)\\\\\n     &= (\\beta_{31}+\\beta_{32})\\eta_1 + \\beta_{32}\\zeta_2 + \\zeta_3 + \\varepsilon_5\\\\\nY_6 &= \\lambda_{63}\\eta_3 + \\varepsilon_6\\\\\n    &= \\lambda_{63}\\left[(\\beta_{31}+\\beta_{32})\\eta_1 + \\beta_{32}\\zeta_2 + \\zeta_3\\right]+\\varepsilon_6\\\\\n    &= \\lambda_{63}(\\beta_{31}+\\beta_{32})\\eta_1 + \\lambda_{63}\\beta_{32}\\zeta_2 + \\lambda_{63}\\zeta_3 + \\varepsilon_6\n\\end{aligned}\n\\]",
+    "crumbs": [
+      "Tag 1 - II: Grundlagen",
+      "B | Übung 2"
+    ]
+  },
+  {
+    "objectID": "S02_PD_02.html#varianzen",
+    "href": "S02_PD_02.html#varianzen",
+    "title": "B | Übung 2",
+    "section": "Varianzen",
+    "text": "Varianzen\n\n\nSPOILER!\n\n\\[\n\\mathrm{Var}(Y_1)=\\mathrm{Var}(\\eta_1)+\\mathrm{Var}(\\varepsilon_1)\n\\] \\[\n\\mathrm{Var}(Y_2)=\\lambda_{21}^2\\mathrm{Var}(\\eta_1)+\\mathrm{Var}(\\varepsilon_2)\n\\] \\[\n\\mathrm{Var}(Y_3)=\\mathrm{Var}(\\eta_1+\\zeta_2+\\varepsilon_3)=\\mathrm{Var}(\\eta_1)+\\mathrm{Var}(\\zeta_2)+\\mathrm{Var}(\\varepsilon_3)\n\\] \\[\n\\mathrm{Var}(Y_4)=\\mathrm{Var}(\\eta_1+\\zeta_2+\\varepsilon_4)=\\mathrm{Var}(\\eta_1)+\\mathrm{Var}(\\zeta_2)+\\mathrm{Var}(\\varepsilon_4)\n\\] \\[\n\\begin{aligned}\n\\mathrm{Var}(Y_5) &= \\mathrm{Var}\\bigl((\\beta_{31}+\\beta_{32})\\eta_1+\\beta_{32}\\zeta_2+\\zeta_3+\\varepsilon_5\\bigr)\\\\\n&= (\\beta_{31}+\\beta_{32})^2\\mathrm{Var}(\\eta_1)+\\beta_{32}^2\\mathrm{Var}(\\zeta_2)+\\mathrm{Var}(\\zeta_3)+\\mathrm{Var}(\\varepsilon_5)\n\\end{aligned}\n\\] \\[\n\\begin{aligned}\n\\mathrm{Var}(Y_6) &= \\mathrm{Var}\\bigl(\\lambda_{63}(\\beta_{31}+\\beta_{32})\\eta_1+\\lambda_{63}\\beta_{32}\\zeta_2+\\lambda_{63}\\zeta_3+\\varepsilon_6\\bigr)\\\\\n&= \\lambda_{63}^2(\\beta_{31}+\\beta_{32})^2\\mathrm{Var}(\\eta_1)+\\lambda_{63}^2\\beta_{32}^2\\mathrm{Var}(\\zeta_2)+\\lambda_{63}^2\\mathrm{Var}(\\zeta_3)+\\mathrm{Var}(\\varepsilon_6)\n\\end{aligned}\n\\]",
+    "crumbs": [
+      "Tag 1 - II: Grundlagen",
+      "B | Übung 2"
+    ]
+  },
+  {
+    "objectID": "S02_PD_02.html#kovarianzen",
+    "href": "S02_PD_02.html#kovarianzen",
+    "title": "B | Übung 2",
+    "section": "Kovarianzen",
+    "text": "Kovarianzen\n\n\nSPOILER!\n\n\nZwischen \\(Y_1\\) und anderen Variablen\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_1,Y_2)&=\\mathrm{Cov}(\\eta_1+\\varepsilon_1,\\;\\lambda_{21}\\eta_1+\\varepsilon_2)=\\lambda_{21}\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_1,Y_3)&=\\mathrm{Cov}(\\eta_1+\\varepsilon_1,\\;\\eta_1+\\zeta_2+\\varepsilon_3)=\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_1,Y_4)&=\\mathrm{Cov}(\\eta_1+\\varepsilon_1,\\;\\eta_1+\\zeta_2+\\varepsilon_4)=\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_1,Y_5)&=\\mathrm{Cov}\\bigl(\\eta_1+\\varepsilon_1,\\;(\\beta_{31}+\\beta_{32})\\eta_1+\\beta_{32}\\zeta_2+\\zeta_3+\\varepsilon_5\\bigr)\\\\\n&=(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_1,Y_6)&=\\mathrm{Cov}\\bigl(\\eta_1+\\varepsilon_1,\\;\\lambda_{63}(\\beta_{31}+\\beta_{32})\\eta_1+\\lambda_{63}\\beta_{32}\\zeta_2+\\lambda_{63}\\zeta_3+\\varepsilon_6\\bigr)\\\\\n&=\\lambda_{63}(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)\n\\end{aligned}\n\\]\n\n\nZwischen \\(Y_2\\) und anderen Variablen\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_2,Y_3)&=\\mathrm{Cov}(\\lambda_{21}\\eta_1+\\varepsilon_2,\\;\\eta_1+\\zeta_2+\\varepsilon_3)=\\lambda_{21}\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_2,Y_4)&=\\lambda_{21}\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_2,Y_5)&=\\lambda_{21}(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_2,Y_6)&=\\lambda_{21}\\lambda_{63}(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)\n\\end{aligned}\n\\]\n\n\nZwischen \\(Y_3\\) und anderen Variablen\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_3,Y_4)&=\\mathrm{Cov}(\\eta_1+\\zeta_2+\\varepsilon_3,\\;\\eta_1+\\zeta_2+\\varepsilon_4)=\\mathrm{Var}(\\eta_1)+\\mathrm{Var}(\\zeta_2)\\\\\n\\mathrm{Cov}(Y_3,Y_5)&=\\mathrm{Cov}\\bigl(\\eta_1+\\zeta_2+\\varepsilon_3,\\;(\\beta_{31}+\\beta_{32})\\eta_1+\\beta_{32}\\zeta_2+\\zeta_3+\\varepsilon_5\\bigr)\\\\\n&=(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)+\\beta_{32}\\mathrm{Var}(\\zeta_2)\\\\\n\\mathrm{Cov}(Y_3,Y_6)&=\\lambda_{63}\\bigl[(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)+\\beta_{32}\\mathrm{Var}(\\zeta_2)\\bigr]\n\\end{aligned}\n\\]\n\n\nZwischen \\(Y_4\\) und anderen Variablen\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_4,Y_5)&=(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)+\\beta_{32}\\mathrm{Var}(\\zeta_2)\\\\\n\\mathrm{Cov}(Y_4,Y_6)&=\\lambda_{63}\\bigl[(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)+\\beta_{32}\\mathrm{Var}(\\zeta_2)\\bigr]\n\\end{aligned}\n\\]\n\n\nZwischen \\(Y_5\\) und \\(Y_6\\)\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_5,Y_6)&=\\lambda_{63}\\bigl[(\\beta_{31}+\\beta_{32})^2\\mathrm{Var}(\\eta_1)+\\beta_{32}^2\\mathrm{Var}(\\zeta_2)+\\mathrm{Var}(\\zeta_3)\\bigr]\n\\end{aligned}\n\\]",
+    "crumbs": [
+      "Tag 1 - II: Grundlagen",
+      "B | Übung 2"
+    ]
+  },
+  {
+    "objectID": "S02_PD_02.html#kompakte-matrizenform",
+    "href": "S02_PD_02.html#kompakte-matrizenform",
+    "title": "B | Übung 2",
+    "section": "Kompakte Matrizenform",
+    "text": "Kompakte Matrizenform\n\n\nSPOILER!\n\n\nMessmodell\n\\[\n\\underset{(6 \\times 1)}{\\mathbf{y}} = \\underset{(6 \\times 3)}{\\boldsymbol{\\Lambda}} \\;\\underset{(3 \\times 1)}{\\boldsymbol{\\eta}} + \\underset{(6 \\times 1)}{\\boldsymbol{\\varepsilon}}\n\\]\nmit\n\\[\n\\begin{pmatrix} Y_1 \\\\ Y_2 \\\\ Y_3 \\\\ Y_4 \\\\ Y_5 \\\\ Y_6 \\end{pmatrix}\n=\n\\begin{pmatrix} 1 & 0 & 0 \\\\ \\lambda_{21} & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1 \\\\ 0 & 0 & \\lambda_{63} \\end{pmatrix}\n\\begin{pmatrix} \\eta_1 \\\\ \\eta_2 \\\\ \\eta_3 \\end{pmatrix}\n+\n\\begin{pmatrix} \\varepsilon_1 \\\\ \\varepsilon_2 \\\\ \\varepsilon_3 \\\\ \\varepsilon_4 \\\\ \\varepsilon_5 \\\\ \\varepsilon_6 \\end{pmatrix}\n\\]\n\n\nStrukturmodell\n\\[\n\\underset{(3 \\times 1)}{\\boldsymbol{\\eta}} = \\underset{(3 \\times 3)}{\\mathbf{B}}\\;\\underset{(3 \\times 1)}{\\boldsymbol{\\eta}} + \\underset{(3 \\times 1)}{\\boldsymbol{\\zeta}}\n\\]\nmit\n\\[\n\\begin{pmatrix} \\eta_1 \\\\ \\eta_2 \\\\ \\eta_3 \\end{pmatrix}\n=\n\\begin{pmatrix} 0 & 0 & 0 \\\\ 1 & 0 & 0 \\\\ \\beta_{31} & \\beta_{32} & 0 \\end{pmatrix}\n\\begin{pmatrix} \\eta_1 \\\\ \\eta_2 \\\\ \\eta_3 \\end{pmatrix}\n+\n\\begin{pmatrix} \\zeta_1 \\\\ \\zeta_2 \\\\ \\zeta_3 \\end{pmatrix}\n\\]\nKommentar: \\(\\eta_1\\) ist exogen (erste Zeile von \\(\\mathbf{B}\\) ist null), d.h. \\(\\zeta_1 \\equiv \\eta_1\\). Die Fixierung \\(\\beta_{21}=1\\) ist in \\(\\mathbf{B}\\) bereits eingesetzt.\n\n\nParametermatrizen\nKovarianzmatrix der Störterme (latent):\n\\[\n\\boldsymbol{\\Psi} = \\mathrm{Cov}(\\boldsymbol{\\zeta}) =\n\\begin{pmatrix} \\psi_{11} & 0 & 0 \\\\ 0 & \\psi_{22} & 0 \\\\ 0 & 0 & \\psi_{33} \\end{pmatrix}\n\\]\nmit \\(\\psi_{11} = \\mathrm{Var}(\\eta_1)\\), \\(\\psi_{22} = \\mathrm{Var}(\\zeta_2)\\) und \\(\\psi_{33} = \\mathrm{Var}(\\zeta_3)\\).\nKovarianzmatrix der Messresiduen:\n\\[\n\\boldsymbol{\\Theta} = \\mathrm{Cov}(\\boldsymbol{\\varepsilon}) =\n\\mathrm{diag}(\\theta_{1}, \\theta_{2}, \\theta_{3}, \\theta_{4}, \\theta_{5}, \\theta_{6})\n\\]\n\n\nModellimplizierte Kovarianzmatrix\n\\[\n\\boldsymbol{\\Sigma} = \\boldsymbol{\\Lambda}\\,(\\mathbf{I}-\\mathbf{B})^{-1}\\,\\boldsymbol{\\Psi}\\,\\left[(\\mathbf{I}-\\mathbf{B})^{-1}\\right]^\\top \\boldsymbol{\\Lambda}^\\top + \\boldsymbol{\\Theta}\n\\]\nHerleitung in einzelnen Schritten:\n\\[\n(\\mathbf{I}-\\mathbf{B})\n=\n\\begin{pmatrix} 1 & 0 & 0 \\\\ -1 & 1 & 0 \\\\ -\\beta_{31} & -\\beta_{32} & 1 \\end{pmatrix}\n\\quad\\Longrightarrow\\quad\n(\\mathbf{I}-\\mathbf{B})^{-1}\n=\n\\begin{pmatrix} 1 & 0 & 0 \\\\ 1 & 1 & 0 \\\\ \\beta_{31}+\\beta_{32} & \\beta_{32} & 1 \\end{pmatrix}\n\\]\nKovarianzmatrix der latenten Variablen:\n\\[\n(\\mathbf{I}-\\mathbf{B})^{-1}\\,\\boldsymbol{\\Psi}\\,\\left[(\\mathbf{I}-\\mathbf{B})^{-1}\\right]^\\top\n=\n\\begin{pmatrix}\n\\psi_{11}  &  \\psi_{11}  &  (\\beta_{31}+\\beta_{32})\\psi_{11} \\\\\n\\psi_{11}  &  \\psi_{11}+\\psi_{22}  &  (\\beta_{31}+\\beta_{32})\\psi_{11}+\\beta_{32}\\psi_{22} \\\\\n(\\beta_{31}+\\beta_{32})\\psi_{11}  &  (\\beta_{31}+\\beta_{32})\\psi_{11}+\\beta_{32}\\psi_{22}  &  (\\beta_{31}+\\beta_{32})^2\\psi_{11}+\\beta_{32}^2\\psi_{22}+\\psi_{33}\n\\end{pmatrix}\n\\]\nUnd schließlich \\(\\boldsymbol{\\Sigma} = \\boldsymbol{\\Lambda}\\,\\mathrm{Cov}(\\boldsymbol{\\eta})\\,\\boldsymbol{\\Lambda}^\\top + \\boldsymbol{\\Theta}\\) als \\(6 \\times 6\\)-Matrix.\nKommentar:\n\nDas Modell hat 13 freie Parameter (\\(\\lambda_{21}\\), \\(\\lambda_{63}\\), \\(\\beta_{31}\\), \\(\\beta_{32}\\), \\(\\psi_{11}\\), \\(\\psi_{22}\\), \\(\\psi_{33}\\), \\(\\theta_1\\), \\(\\theta_2\\), \\(\\theta_3\\), \\(\\theta_4\\), \\(\\theta_5\\), \\(\\theta_6\\)) bei 21 nicht-redundanten Elementen in \\(\\boldsymbol{\\Sigma}\\) (6 Varianzen + 15 Kovarianzen), d.h. \\(df = 21 - 13 = 8\\) Freiheitsgrade.",
+    "crumbs": [
+      "Tag 1 - II: Grundlagen",
+      "B | Übung 2"
+    ]
+  },
+  {
+    "objectID": "S03_CFA_02.html#faktor-vs.-3-faktor",
+    "href": "S03_CFA_02.html#faktor-vs.-3-faktor",
+    "title": "B | Übung 1",
+    "section": "1-Faktor vs. 3-Faktor",
+    "text": "1-Faktor vs. 3-Faktor\n\n\n\n\n\n\nWichtigAufgabe\n\n\n\n\nSpezifizieren Sie ein 1-Faktor-Modell (alle 9 Items auf einen Faktor g)\nSchätzen Sie es mit cfa()\nVergleichen Sie den Fit mit dem 3-Faktor-Modell (Tabelle)\nFühren Sie einen χ²-Differenztest durch: anova(fit_1f, fit_3f)\nDiskutieren Sie: Ist der 3-Faktor-Fit signifikant besser? Wie groß ist die Verbesserung in CFI?\n\n\n\n\n\nDaten\n\n\n\n\n\n\n\n\n\n\n\n\nHilfestellung\n\n\nmodel_1f &lt;- '\n  g =~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9\n'\nfit_1f &lt;- cfa(model_1f, data = HolzingerSwineford1939)\n\n# Fit vergleichen\nfitMeasures(fit_1f, c(\"chisq\", \"df\", \"cfi\", \"rmsea\", \"srmr\"))\nfitMeasures(fit_3f, c(\"chisq\", \"df\", \"cfi\", \"rmsea\", \"srmr\"))\n\n# Chi-Quadrat-Differenztest\nanova(fit_1f, fit_3f)",
+    "crumbs": [
+      "Tag 1 - III: Schätzung",
+      "B | Übung 1"
+    ]
+  },
+  {
+    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#einleitung",
+    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#einleitung",
+    "title": "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1",
+    "section": "Einleitung",
+    "text": "Einleitung\nDieses interaktive Tutorial folgt dem Paper von Rosseel & Vidal (2025) und zeigt Schritt für Schritt, wie die Zahlen in der SEM-Ausgabe tatsächlich berechnet werden. Der Fokus liegt auf Klarheit und Nachvollziehbarkeit – nicht auf Effizienz. Alle Code-Blöcke können direkt im Browser ausgeführt werden.\nReferenz: Rosseel, Y., & Vidal, M. (2025). A tutorial for understanding SEM using R: Where do all the numbers come from? British Journal of Mathematical and Statistical Psychology. doi:10.1111/bmsp.70003",
+    "crumbs": [
+      "Tag 1 - III: Schätzung",
+      "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1"
+    ]
+  },
+  {
+    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#das-statistische-modell-hinter-sem",
+    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#das-statistische-modell-hinter-sem",
+    "title": "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1",
+    "section": "Das statistische Modell hinter SEM",
+    "text": "Das statistische Modell hinter SEM\nEin Strukturgleichungsmodell (SEM) besteht aus zwei Teilen:\nMessmodell – verknüpft latente Variablen mit beobachteten Indikatoren:\n\\[\\mathbf{y} = \\boldsymbol{\\Lambda} \\, \\boldsymbol{\\eta} + \\boldsymbol{\\epsilon}\\]\nwobei \\(\\boldsymbol{\\Lambda}\\) die Faktorladungsmatrix ist, \\(\\boldsymbol{\\eta}\\) der Vektor der latenten Variablen, und \\(\\boldsymbol{\\epsilon}\\) die Residuen (Messfehler).\nStrukturmodell – beschreibt die Beziehungen zwischen den latenten Variablen:\n\\[\\boldsymbol{\\eta} = \\mathbf{B} \\, \\boldsymbol{\\eta} + \\boldsymbol{\\zeta}\\]\nAus diesen beiden Gleichungen ergibt sich die modellimplizierte Varianz-Kovarianz-Matrix:\n\\[\\boldsymbol{\\Sigma} = \\boldsymbol{\\Lambda} \\, \\text{Var}(\\boldsymbol{\\eta}) \\, \\boldsymbol{\\Lambda}' + \\boldsymbol{\\Theta}\\]\nwobei \\(\\text{Var}(\\boldsymbol{\\eta}) = (\\mathbf{I} - \\mathbf{B})^{-1} \\boldsymbol{\\Psi} \\, (\\mathbf{I} - \\mathbf{B}')^{-1}\\).\nJedes SEM wird also durch vier Modellmatrizen bestimmt:\n\n\\(\\boldsymbol{\\Lambda}\\) – Faktorladungen (Messmodell)\n\\(\\boldsymbol{\\Theta}\\) – Residualvarianzen der Indikatoren (Messmodell)\n\\(\\mathbf{B}\\) – Regressionskoeffizienten zwischen latenten Variablen (Strukturmodell)\n\\(\\boldsymbol{\\Psi}\\) – Varianzen/Kovarianzen der latenten Variablen bzw. Störterme (Strukturmodell)",
+    "crumbs": [
+      "Tag 1 - III: Schätzung",
+      "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1"
+    ]
+  },
+  {
+    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#punktschätzung-ein-cfa-modell-schritt-für-schritt",
+    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#punktschätzung-ein-cfa-modell-schritt-für-schritt",
+    "title": "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1",
+    "section": "Punktschätzung: Ein CFA-Modell Schritt für Schritt",
+    "text": "Punktschätzung: Ein CFA-Modell Schritt für Schritt\n\nDaten vorbereiten\nWir verwenden den klassischen Holzinger-Swineford-Datensatz (1939) mit 9 Testvariablen (x1–x9) und 301 Beobachtungen. Zuerst laden wir die Daten und berechnen die Stichproben-Varianz-Kovarianz-Matrix S:\n\n\n\n\n\n\n\n\n\n\nDas CFA-Modell in Matrixform\nUnser Drei-Faktor-Modell postuliert drei latente Variablen: visual (gemessen durch x1–x3), textual (x4–x6) und speed (x7–x9). Zuerst schauen wir uns das Modell als Pfaddiagramm an:\n\n\n\n\n\n\n\n\nUm dieses Modell mathematisch zu beschreiben, brauchen wir drei Modellmatrizen. Die \\(\\boldsymbol{\\Lambda}\\)-Matrix (Faktorladungen) hat 9 Zeilen (beobachtete Variablen) und 3 Spalten (latente Variablen). Die Einsen fixieren die Metrik der latenten Variablen (unit loading identification), die Sterne (\\(*\\)) markieren die frei zu schaetzenden Parameter:\n\\[\n\\boldsymbol{\\Lambda} = \\begin{bmatrix}\n1 & 0 & 0 \\\\\n* & 0 & 0 \\\\\n* & 0 & 0 \\\\\n0 & 1 & 0 \\\\\n0 & * & 0 \\\\\n0 & * & 0 \\\\\n0 & 0 & 1 \\\\\n0 & 0 & * \\\\\n0 & 0 & *\n\\end{bmatrix}\n\\quad\n\\begin{matrix}\n\\text{x1} \\\\ \\text{x2} \\\\ \\text{x3} \\\\ \\text{x4} \\\\ \\text{x5} \\\\ \\text{x6} \\\\ \\text{x7} \\\\ \\text{x8} \\\\ \\text{x9}\n\\end{matrix}\n\\]\nDie Nullen zeigen, dass jeder Indikator nur auf einen Faktor laedt (einfache Struktur). Die \\(\\boldsymbol{\\Lambda}\\)-Matrix enthaelt also 6 freie Parameter.\nDie \\(\\boldsymbol{\\Psi}\\)-Matrix (Faktorvarianzen und -kovarianzen) ist eine symmetrische \\(3 \\times 3\\)-Matrix. Bei einem CFA-Modell (ohne Strukturteil) gilt \\(\\text{Var}(\\boldsymbol{\\eta}) = \\boldsymbol{\\Psi}\\):\n\\[\n\\boldsymbol{\\Psi} = \\begin{bmatrix}\n* & & \\\\\n* & * & \\\\\n* & * & *\n\\end{bmatrix}\n\\quad\n\\begin{matrix}\n\\text{visual} \\\\ \\text{textual} \\\\ \\text{speed}\n\\end{matrix}\n\\]\nDiese Matrix enthaelt 6 freie Parameter: 3 Faktorvarianzen (Diagonale) und 3 Faktorkovarianzen (unter der Diagonale). Die Matrix ist symmetrisch, d.h. die Werte ueber der Diagonale sind identisch mit denen darunter.\nDie \\(\\boldsymbol{\\Theta}\\)-Matrix (Residualvarianzen) ist eine \\(9 \\times 9\\)-Diagonalmatrix. In unserem Modell gibt es keine Residualkovarianzen, daher sind alle Nicht-Diagonal-Elemente null:\n\\[\n\\boldsymbol{\\Theta} = \\begin{bmatrix}\n* & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\\n0 & * & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\\n0 & 0 & * & 0 & 0 & 0 & 0 & 0 & 0 \\\\\n0 & 0 & 0 & * & 0 & 0 & 0 & 0 & 0 \\\\\n0 & 0 & 0 & 0 & * & 0 & 0 & 0 & 0 \\\\\n0 & 0 & 0 & 0 & 0 & * & 0 & 0 & 0 \\\\\n0 & 0 & 0 & 0 & 0 & 0 & * & 0 & 0 \\\\\n0 & 0 & 0 & 0 & 0 & 0 & 0 & * & 0 \\\\\n0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & *\n\\end{bmatrix}\n\\]\nDiese Matrix enthaelt 9 freie Parameter (die Residualvarianzen der 9 Indikatoren).\nInsgesamt hat das CFA-Modell also \\(6 + 6 + 9 =\\) 21 freie Parameter. Die modellimplizierte Kovarianzmatrix berechnet sich fuer ein CFA-Modell vereinfacht als:\n\\[\\boldsymbol{\\Sigma}(\\boldsymbol{\\theta}) = \\boldsymbol{\\Lambda} \\, \\boldsymbol{\\Psi} \\, \\boldsymbol{\\Lambda}' + \\boldsymbol{\\Theta}\\]\n\n\nDie Funktion x2Sigma: Vom Parametervektor zur Modellmatrix\nDer Kern von SEM: Wir packen alle 21 freien Parameter in einen einzigen Vektor \\(\\boldsymbol{\\theta}\\) und schreiben eine Funktion, die daraus die modellimplizierte \\(\\boldsymbol{\\Sigma}(\\boldsymbol{\\theta})\\) berechnet:\n\n\n\n\n\n\n\n\n\n\nStartwerte ausprobieren\nBevor wir optimieren, setzen wir einfache Startwerte ein und schauen, wie weit die resultierende \\(\\boldsymbol{\\Sigma}\\) von der beobachteten S entfernt ist:\n\n\n\n\n\n\n\n\nDiese Matrix sieht noch sehr anders aus als S – unsere Startwerte sind eben nur grobe Schaetzungen.\n\n\nDie ML-Diskrepanzfunktion\nUm zu messen, wie weit \\(\\boldsymbol{\\Sigma}(\\boldsymbol{\\theta})\\) von S entfernt ist, verwenden wir die Maximum-Likelihood-Diskrepanzfunktion:\n\\[F_{\\text{ML}}(\\boldsymbol{\\theta}) = \\text{tr}\\!\\left[\\mathbf{S}\\boldsymbol{\\Sigma}(\\boldsymbol{\\theta})^{-1}\\right] + \\ln|\\boldsymbol{\\Sigma}(\\boldsymbol{\\theta})| - \\ln|\\mathbf{S}| - P\\]\nDiese Funktion ist genau dann null, wenn \\(\\boldsymbol{\\Sigma} = \\mathbf{S}\\). Andernfalls ist sie positiv – je groesser, desto schlechter die Passung.\n\n\n\n\n\n\n\n\n\n\nOptimierung: Die besten Parameterwerte finden\nJetzt verwenden wir nlminb() (denselben Optimierer, den auch lavaan nutzt), um die Parameterwerte zu finden, die \\(F_{\\text{ML}}\\) minimieren:\n\n\n\n\n\n\n\n\n\n\nVergleich mit lavaan\nStimmen unsere Ergebnisse? Pruefen wir mit lavaan:\n\n\n\n\n\n\n\n\nDie Werte stimmen (bis auf minimale Abweichungen, da lavaan bessere Startwerte und analytische Gradienten verwendet).",
+    "crumbs": [
+      "Tag 1 - III: Schätzung",
+      "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1"
+    ]
+  },
+  {
+    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#standardfehler",
+    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#standardfehler",
+    "title": "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1",
+    "section": "Standardfehler",
+    "text": "Standardfehler\nStandardfehler geben an, wie stark die Parameterschaetzungen schwanken wuerden, wenn wir das Modell an verschiedenen Stichproben derselben Population schaetzen wuerden.\n\nAnalytische Standardfehler\nFuer die analytischen Standardfehler benoetigen wir zwei Zutaten:\n1. Die Informationsmatrix des saturierten Modells:\n\\[\\mathcal{J}_{\\text{un}} = \\frac{1}{2} \\left(\\boldsymbol{\\Sigma}^{-1} \\otimes \\boldsymbol{\\Sigma}^{-1}\\right)\\]\n\n\n\n\n\n\n\n\n2. Die Delta-Matrix (Jacobi-Matrix) – sie beschreibt, wie sich die Elemente von \\(\\boldsymbol{\\Sigma}\\) aendern, wenn wir die freien Parameter leicht veraendern:\n\n\n\n\n\n\n\n\n3. Zusammensetzen: Die erwartete Informationsmatrix der freien Parameter und daraus die Standardfehler:\n\n\n\n\n\n\n\n\n\n\nWald-Statistik und p-Werte\nDie Wald-Statistik (z-Wert) ist einfach der Quotient aus Schaetzung und Standardfehler. Damit koennen wir p-Werte berechnen:",
+    "crumbs": [
+      "Tag 1 - III: Schätzung",
+      "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1"
+    ]
+  },
+  {
+    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#fit-indizes",
+    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#fit-indizes",
+    "title": "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1",
+    "section": "Fit-Indizes",
+    "text": "Fit-Indizes\n\nChi-Quadrat-Teststatistik\nDie Chi-Quadrat-Statistik ergibt sich direkt aus dem minimalen \\(F_{\\text{ML}}\\)-Wert:\n\\[\\chi^2 = N \\times F_{\\text{ML}}\\]\n\n\n\n\n\n\n\n\nEin signifikanter Chi-Quadrat-Test (p &lt; .05) deutet darauf hin, dass das Modell die Daten nicht perfekt erklaert – bei grossem N ist dies fast immer der Fall.\n\n\nComparative Fit Index (CFI)\nDer CFI vergleicht unser Modell mit einem Unabhaengigkeitsmodell (alle Kovarianzen = 0). Die Formel:\n\\[\\text{CFI} = 1 - \\frac{T}{T_b}\\]\nwobei \\(T = \\max(\\chi^2 - \\text{df}, 0)\\) und \\(T_b = \\max(\\chi^2_b - \\text{df}_b, 0)\\).\n\n\n\n\n\n\n\n\nWerte ueber .95 gelten als guter Fit. Unser CFI von ca. .931 ist akzeptabel, aber nicht ideal.\n\n\nRMSEA (Root Mean Square Error of Approximation)\n\\[\\text{RMSEA} = \\sqrt{\\frac{F_{\\text{ML}}}{\\text{df}} - \\frac{1}{N}}\\]\n\n\n\n\n\n\n\n\nWerte unter .05 gelten als guter Fit, unter .08 als akzeptabel.\n\n\nSRMR (Standardized Root Mean Square Residual)\nDer SRMR basiert auf den standardisierten Residuen – den Unterschieden zwischen S und \\(\\boldsymbol{\\Sigma}(\\hat{\\boldsymbol{\\theta}})\\), nachdem beide mit den Standardabweichungen skaliert wurden:\n\n\n\n\n\n\n\n\nWerte unter .08 gelten als akzeptabel.\n\n\nVergleich mit lavaan",
+    "crumbs": [
+      "Tag 1 - III: Schätzung",
+      "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1"
+    ]
+  },
+  {
+    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#zusammenfassung",
+    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#zusammenfassung",
+    "title": "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1",
+    "section": "Zusammenfassung",
+    "text": "Zusammenfassung\nIn diesem Tutorial haben wir die zentralen Berechnungen hinter SEM manuell nachvollzogen:\n\nModellmatrizen definieren (\\(\\boldsymbol{\\Lambda}\\), \\(\\boldsymbol{\\Psi}\\), \\(\\boldsymbol{\\Theta}\\)) und daraus \\(\\boldsymbol{\\Sigma}(\\boldsymbol{\\theta})\\) berechnen\nML-Diskrepanzfunktion \\(F_{\\text{ML}}\\) aufstellen – misst den Abstand zwischen \\(\\boldsymbol{\\Sigma}\\) und S\nOptimierung mit nlminb() – findet die Parameterwerte, die \\(F_{\\text{ML}}\\) minimieren\nStandardfehler ueber die erwartete Informationsmatrix berechnen\nFit-Indizes (\\(\\chi^2\\), CFI, RMSEA, SRMR) ableiten\n\nDer gesamte Prozess brauchte nur ca. 30 Zeilen R-Code fuer die Kernberechnung. lavaan macht im Wesentlichen dasselbe – nur mit besseren Startwerten, analytischen Gradienten und vielen zusaetzlichen Optionen.",
+    "crumbs": [
+      "Tag 1 - III: Schätzung",
+      "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1"
     ]
   },
   {
@@ -113,311 +443,102 @@
     ]
   },
   {
-    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#einleitung",
-    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#einleitung",
-    "title": "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1",
-    "section": "Einleitung",
-    "text": "Einleitung\nDieses interaktive Tutorial folgt dem Paper von Rosseel & Vidal (2025) und zeigt Schritt für Schritt, wie die Zahlen in der SEM-Ausgabe tatsächlich berechnet werden. Der Fokus liegt auf Klarheit und Nachvollziehbarkeit – nicht auf Effizienz. Alle Code-Blöcke können direkt im Browser ausgeführt werden.\nReferenz: Rosseel, Y., & Vidal, M. (2025). A tutorial for understanding SEM using R: Where do all the numbers come from? British Journal of Mathematical and Statistical Psychology. doi:10.1111/bmsp.70003",
-    "crumbs": [
-      "Tag 1 - III: Schätzung",
-      "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1"
-    ]
-  },
-  {
-    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#das-statistische-modell-hinter-sem",
-    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#das-statistische-modell-hinter-sem",
-    "title": "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1",
-    "section": "Das statistische Modell hinter SEM",
-    "text": "Das statistische Modell hinter SEM\nEin Strukturgleichungsmodell (SEM) besteht aus zwei Teilen:\nMessmodell – verknüpft latente Variablen mit beobachteten Indikatoren:\n\\[\\mathbf{y} = \\boldsymbol{\\Lambda} \\, \\boldsymbol{\\eta} + \\boldsymbol{\\epsilon}\\]\nwobei \\(\\boldsymbol{\\Lambda}\\) die Faktorladungsmatrix ist, \\(\\boldsymbol{\\eta}\\) der Vektor der latenten Variablen, und \\(\\boldsymbol{\\epsilon}\\) die Residuen (Messfehler).\nStrukturmodell – beschreibt die Beziehungen zwischen den latenten Variablen:\n\\[\\boldsymbol{\\eta} = \\mathbf{B} \\, \\boldsymbol{\\eta} + \\boldsymbol{\\zeta}\\]\nAus diesen beiden Gleichungen ergibt sich die modellimplizierte Varianz-Kovarianz-Matrix:\n\\[\\boldsymbol{\\Sigma} = \\boldsymbol{\\Lambda} \\, \\text{Var}(\\boldsymbol{\\eta}) \\, \\boldsymbol{\\Lambda}' + \\boldsymbol{\\Theta}\\]\nwobei \\(\\text{Var}(\\boldsymbol{\\eta}) = (\\mathbf{I} - \\mathbf{B})^{-1} \\boldsymbol{\\Psi} \\, (\\mathbf{I} - \\mathbf{B}')^{-1}\\).\nJedes SEM wird also durch vier Modellmatrizen bestimmt:\n\n\\(\\boldsymbol{\\Lambda}\\) – Faktorladungen (Messmodell)\n\\(\\boldsymbol{\\Theta}\\) – Residualvarianzen der Indikatoren (Messmodell)\n\\(\\mathbf{B}\\) – Regressionskoeffizienten zwischen latenten Variablen (Strukturmodell)\n\\(\\boldsymbol{\\Psi}\\) – Varianzen/Kovarianzen der latenten Variablen bzw. Störterme (Strukturmodell)",
-    "crumbs": [
-      "Tag 1 - III: Schätzung",
-      "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1"
-    ]
-  },
-  {
-    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#punktschätzung-ein-cfa-modell-schritt-für-schritt",
-    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#punktschätzung-ein-cfa-modell-schritt-für-schritt",
-    "title": "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1",
-    "section": "Punktschätzung: Ein CFA-Modell Schritt für Schritt",
-    "text": "Punktschätzung: Ein CFA-Modell Schritt für Schritt\n\nDaten vorbereiten\nWir verwenden den klassischen Holzinger-Swineford-Datensatz (1939) mit 9 Testvariablen (x1–x9) und 301 Beobachtungen. Zuerst laden wir die Daten und berechnen die Stichproben-Varianz-Kovarianz-Matrix S:\n\n\n\n\n\n\n\n\n\n\nDas CFA-Modell in Matrixform\nUnser Drei-Faktor-Modell postuliert drei latente Variablen: visual (gemessen durch x1–x3), textual (x4–x6) und speed (x7–x9). Zuerst schauen wir uns das Modell als Pfaddiagramm an:\n\n\n\n\n\n\n\n\nUm dieses Modell mathematisch zu beschreiben, brauchen wir drei Modellmatrizen. Die \\(\\boldsymbol{\\Lambda}\\)-Matrix (Faktorladungen) hat 9 Zeilen (beobachtete Variablen) und 3 Spalten (latente Variablen). Die Einsen fixieren die Metrik der latenten Variablen (unit loading identification), die Sterne (\\(*\\)) markieren die frei zu schaetzenden Parameter:\n\\[\n\\boldsymbol{\\Lambda} = \\begin{bmatrix}\n1 & 0 & 0 \\\\\n* & 0 & 0 \\\\\n* & 0 & 0 \\\\\n0 & 1 & 0 \\\\\n0 & * & 0 \\\\\n0 & * & 0 \\\\\n0 & 0 & 1 \\\\\n0 & 0 & * \\\\\n0 & 0 & *\n\\end{bmatrix}\n\\quad\n\\begin{matrix}\n\\text{x1} \\\\ \\text{x2} \\\\ \\text{x3} \\\\ \\text{x4} \\\\ \\text{x5} \\\\ \\text{x6} \\\\ \\text{x7} \\\\ \\text{x8} \\\\ \\text{x9}\n\\end{matrix}\n\\]\nDie Nullen zeigen, dass jeder Indikator nur auf einen Faktor laedt (einfache Struktur). Die \\(\\boldsymbol{\\Lambda}\\)-Matrix enthaelt also 6 freie Parameter.\nDie \\(\\boldsymbol{\\Psi}\\)-Matrix (Faktorvarianzen und -kovarianzen) ist eine symmetrische \\(3 \\times 3\\)-Matrix. Bei einem CFA-Modell (ohne Strukturteil) gilt \\(\\text{Var}(\\boldsymbol{\\eta}) = \\boldsymbol{\\Psi}\\):\n\\[\n\\boldsymbol{\\Psi} = \\begin{bmatrix}\n* & & \\\\\n* & * & \\\\\n* & * & *\n\\end{bmatrix}\n\\quad\n\\begin{matrix}\n\\text{visual} \\\\ \\text{textual} \\\\ \\text{speed}\n\\end{matrix}\n\\]\nDiese Matrix enthaelt 6 freie Parameter: 3 Faktorvarianzen (Diagonale) und 3 Faktorkovarianzen (unter der Diagonale). Die Matrix ist symmetrisch, d.h. die Werte ueber der Diagonale sind identisch mit denen darunter.\nDie \\(\\boldsymbol{\\Theta}\\)-Matrix (Residualvarianzen) ist eine \\(9 \\times 9\\)-Diagonalmatrix. In unserem Modell gibt es keine Residualkovarianzen, daher sind alle Nicht-Diagonal-Elemente null:\n\\[\n\\boldsymbol{\\Theta} = \\begin{bmatrix}\n* & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\\n0 & * & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\\n0 & 0 & * & 0 & 0 & 0 & 0 & 0 & 0 \\\\\n0 & 0 & 0 & * & 0 & 0 & 0 & 0 & 0 \\\\\n0 & 0 & 0 & 0 & * & 0 & 0 & 0 & 0 \\\\\n0 & 0 & 0 & 0 & 0 & * & 0 & 0 & 0 \\\\\n0 & 0 & 0 & 0 & 0 & 0 & * & 0 & 0 \\\\\n0 & 0 & 0 & 0 & 0 & 0 & 0 & * & 0 \\\\\n0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & *\n\\end{bmatrix}\n\\]\nDiese Matrix enthaelt 9 freie Parameter (die Residualvarianzen der 9 Indikatoren).\nInsgesamt hat das CFA-Modell also \\(6 + 6 + 9 =\\) 21 freie Parameter. Die modellimplizierte Kovarianzmatrix berechnet sich fuer ein CFA-Modell vereinfacht als:\n\\[\\boldsymbol{\\Sigma}(\\boldsymbol{\\theta}) = \\boldsymbol{\\Lambda} \\, \\boldsymbol{\\Psi} \\, \\boldsymbol{\\Lambda}' + \\boldsymbol{\\Theta}\\]\n\n\nDie Funktion x2Sigma: Vom Parametervektor zur Modellmatrix\nDer Kern von SEM: Wir packen alle 21 freien Parameter in einen einzigen Vektor \\(\\boldsymbol{\\theta}\\) und schreiben eine Funktion, die daraus die modellimplizierte \\(\\boldsymbol{\\Sigma}(\\boldsymbol{\\theta})\\) berechnet:\n\n\n\n\n\n\n\n\n\n\nStartwerte ausprobieren\nBevor wir optimieren, setzen wir einfache Startwerte ein und schauen, wie weit die resultierende \\(\\boldsymbol{\\Sigma}\\) von der beobachteten S entfernt ist:\n\n\n\n\n\n\n\n\nDiese Matrix sieht noch sehr anders aus als S – unsere Startwerte sind eben nur grobe Schaetzungen.\n\n\nDie ML-Diskrepanzfunktion\nUm zu messen, wie weit \\(\\boldsymbol{\\Sigma}(\\boldsymbol{\\theta})\\) von S entfernt ist, verwenden wir die Maximum-Likelihood-Diskrepanzfunktion:\n\\[F_{\\text{ML}}(\\boldsymbol{\\theta}) = \\text{tr}\\!\\left[\\mathbf{S}\\boldsymbol{\\Sigma}(\\boldsymbol{\\theta})^{-1}\\right] + \\ln|\\boldsymbol{\\Sigma}(\\boldsymbol{\\theta})| - \\ln|\\mathbf{S}| - P\\]\nDiese Funktion ist genau dann null, wenn \\(\\boldsymbol{\\Sigma} = \\mathbf{S}\\). Andernfalls ist sie positiv – je groesser, desto schlechter die Passung.\n\n\n\n\n\n\n\n\n\n\nOptimierung: Die besten Parameterwerte finden\nJetzt verwenden wir nlminb() (denselben Optimierer, den auch lavaan nutzt), um die Parameterwerte zu finden, die \\(F_{\\text{ML}}\\) minimieren:\n\n\n\n\n\n\n\n\n\n\nVergleich mit lavaan\nStimmen unsere Ergebnisse? Pruefen wir mit lavaan:\n\n\n\n\n\n\n\n\nDie Werte stimmen (bis auf minimale Abweichungen, da lavaan bessere Startwerte und analytische Gradienten verwendet).",
-    "crumbs": [
-      "Tag 1 - III: Schätzung",
-      "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1"
-    ]
-  },
-  {
-    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#standardfehler",
-    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#standardfehler",
-    "title": "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1",
-    "section": "Standardfehler",
-    "text": "Standardfehler\nStandardfehler geben an, wie stark die Parameterschaetzungen schwanken wuerden, wenn wir das Modell an verschiedenen Stichproben derselben Population schaetzen wuerden.\n\nAnalytische Standardfehler\nFuer die analytischen Standardfehler benoetigen wir zwei Zutaten:\n1. Die Informationsmatrix des saturierten Modells:\n\\[\\mathcal{J}_{\\text{un}} = \\frac{1}{2} \\left(\\boldsymbol{\\Sigma}^{-1} \\otimes \\boldsymbol{\\Sigma}^{-1}\\right)\\]\n\n\n\n\n\n\n\n\n2. Die Delta-Matrix (Jacobi-Matrix) – sie beschreibt, wie sich die Elemente von \\(\\boldsymbol{\\Sigma}\\) aendern, wenn wir die freien Parameter leicht veraendern:\n\n\n\n\n\n\n\n\n3. Zusammensetzen: Die erwartete Informationsmatrix der freien Parameter und daraus die Standardfehler:\n\n\n\n\n\n\n\n\n\n\nWald-Statistik und p-Werte\nDie Wald-Statistik (z-Wert) ist einfach der Quotient aus Schaetzung und Standardfehler. Damit koennen wir p-Werte berechnen:",
-    "crumbs": [
-      "Tag 1 - III: Schätzung",
-      "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1"
-    ]
-  },
-  {
-    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#fit-indizes",
-    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#fit-indizes",
-    "title": "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1",
-    "section": "Fit-Indizes",
-    "text": "Fit-Indizes\n\nChi-Quadrat-Teststatistik\nDie Chi-Quadrat-Statistik ergibt sich direkt aus dem minimalen \\(F_{\\text{ML}}\\)-Wert:\n\\[\\chi^2 = N \\times F_{\\text{ML}}\\]\n\n\n\n\n\n\n\n\nEin signifikanter Chi-Quadrat-Test (p &lt; .05) deutet darauf hin, dass das Modell die Daten nicht perfekt erklaert – bei grossem N ist dies fast immer der Fall.\n\n\nComparative Fit Index (CFI)\nDer CFI vergleicht unser Modell mit einem Unabhaengigkeitsmodell (alle Kovarianzen = 0). Die Formel:\n\\[\\text{CFI} = 1 - \\frac{T}{T_b}\\]\nwobei \\(T = \\max(\\chi^2 - \\text{df}, 0)\\) und \\(T_b = \\max(\\chi^2_b - \\text{df}_b, 0)\\).\n\n\n\n\n\n\n\n\nWerte ueber .95 gelten als guter Fit. Unser CFI von ca. .931 ist akzeptabel, aber nicht ideal.\n\n\nRMSEA (Root Mean Square Error of Approximation)\n\\[\\text{RMSEA} = \\sqrt{\\frac{F_{\\text{ML}}}{\\text{df}} - \\frac{1}{N}}\\]\n\n\n\n\n\n\n\n\nWerte unter .05 gelten als guter Fit, unter .08 als akzeptabel.\n\n\nSRMR (Standardized Root Mean Square Residual)\nDer SRMR basiert auf den standardisierten Residuen – den Unterschieden zwischen S und \\(\\boldsymbol{\\Sigma}(\\hat{\\boldsymbol{\\theta}})\\), nachdem beide mit den Standardabweichungen skaliert wurden:\n\n\n\n\n\n\n\n\nWerte unter .08 gelten als akzeptabel.\n\n\nVergleich mit lavaan",
-    "crumbs": [
-      "Tag 1 - III: Schätzung",
-      "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1"
-    ]
-  },
-  {
-    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#zusammenfassung",
-    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html#zusammenfassung",
-    "title": "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1",
-    "section": "Zusammenfassung",
-    "text": "Zusammenfassung\nIn diesem Tutorial haben wir die zentralen Berechnungen hinter SEM manuell nachvollzogen:\n\nModellmatrizen definieren (\\(\\boldsymbol{\\Lambda}\\), \\(\\boldsymbol{\\Psi}\\), \\(\\boldsymbol{\\Theta}\\)) und daraus \\(\\boldsymbol{\\Sigma}(\\boldsymbol{\\theta})\\) berechnen\nML-Diskrepanzfunktion \\(F_{\\text{ML}}\\) aufstellen – misst den Abstand zwischen \\(\\boldsymbol{\\Sigma}\\) und S\nOptimierung mit nlminb() – findet die Parameterwerte, die \\(F_{\\text{ML}}\\) minimieren\nStandardfehler ueber die erwartete Informationsmatrix berechnen\nFit-Indizes (\\(\\chi^2\\), CFI, RMSEA, SRMR) ableiten\n\nDer gesamte Prozess brauchte nur ca. 30 Zeilen R-Code fuer die Kernberechnung. lavaan macht im Wesentlichen dasselbe – nur mit besseren Startwerten, analytischen Gradienten und vielen zusaetzlichen Optionen.",
-    "crumbs": [
-      "Tag 1 - III: Schätzung",
-      "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1"
-    ]
-  },
-  {
-    "objectID": "S03_CFA_02.html#faktor-vs.-3-faktor",
-    "href": "S03_CFA_02.html#faktor-vs.-3-faktor",
-    "title": "B | Übung 1",
-    "section": "1-Faktor vs. 3-Faktor",
-    "text": "1-Faktor vs. 3-Faktor\n\n\n\n\n\n\nWichtigAufgabe\n\n\n\n\nSpezifizieren Sie ein 1-Faktor-Modell (alle 9 Items auf einen Faktor g)\nSchätzen Sie es mit cfa()\nVergleichen Sie den Fit mit dem 3-Faktor-Modell (Tabelle)\nFühren Sie einen χ²-Differenztest durch: anova(fit_1f, fit_3f)\nDiskutieren Sie: Ist der 3-Faktor-Fit signifikant besser? Wie groß ist die Verbesserung in CFI?\n\n\n\n\n\nDaten\n\n\n\n\n\n\n\n\n\n\n\n\nHilfestellung\n\n\nmodel_1f &lt;- '\n  g =~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9\n'\nfit_1f &lt;- cfa(model_1f, data = HolzingerSwineford1939)\n\n# Fit vergleichen\nfitMeasures(fit_1f, c(\"chisq\", \"df\", \"cfi\", \"rmsea\", \"srmr\"))\nfitMeasures(fit_3f, c(\"chisq\", \"df\", \"cfi\", \"rmsea\", \"srmr\"))\n\n# Chi-Quadrat-Differenztest\nanova(fit_1f, fit_3f)",
-    "crumbs": [
-      "Tag 1 - III: Schätzung",
-      "B | Übung 1"
-    ]
-  },
-  {
-    "objectID": "S02_PD_02.html#regressionsgleichungen-manifest-und-latent",
-    "href": "S02_PD_02.html#regressionsgleichungen-manifest-und-latent",
-    "title": "B | Übung 2",
-    "section": "Regressionsgleichungen (manifest und latent)",
-    "text": "Regressionsgleichungen (manifest und latent)\n\n\nSPOILER!\n\n\\[\n\\begin{aligned}\nY_1 &= \\lambda_{11}\\eta_1 + \\varepsilon_1 = \\eta_1 + \\varepsilon_1 \\quad (\\lambda_{11}=1)\\\\\nY_2 &= \\lambda_{21}\\eta_1 + \\varepsilon_2\\\\\n\\eta_2 &= \\beta_{21}\\eta_1 + \\zeta_2 = \\eta_1 + \\zeta_2 \\quad (\\beta_{21}=1)\\\\\nY_3 &= \\lambda_{32}\\eta_2 + \\varepsilon_3 = \\eta_2 + \\varepsilon_3 \\quad (\\lambda_{32}=1)\\\\\n     &= \\eta_1 + \\zeta_2 + \\varepsilon_3\\\\\nY_4 &= \\lambda_{42}\\eta_2 + \\varepsilon_4 = \\eta_2 + \\varepsilon_4 \\quad (\\lambda_{42}=1)\\\\\n     &= \\eta_1 + \\zeta_2 + \\varepsilon_4\\\\\n\\eta_3 &= \\beta_{31}\\eta_1 + \\beta_{32}\\eta_2 + \\zeta_3\\\\\n       &= \\beta_{31}\\eta_1 + \\beta_{32}(\\eta_1+\\zeta_2) + \\zeta_3\\\\\n       &= (\\beta_{31}+\\beta_{32})\\eta_1 + \\beta_{32}\\zeta_2 + \\zeta_3\\\\\nY_5 &= \\lambda_{53}\\eta_3 + \\varepsilon_5 = \\eta_3 + \\varepsilon_5 \\quad (\\lambda_{53}=1)\\\\\n     &= (\\beta_{31}+\\beta_{32})\\eta_1 + \\beta_{32}\\zeta_2 + \\zeta_3 + \\varepsilon_5\\\\\nY_6 &= \\lambda_{63}\\eta_3 + \\varepsilon_6\\\\\n    &= \\lambda_{63}\\left[(\\beta_{31}+\\beta_{32})\\eta_1 + \\beta_{32}\\zeta_2 + \\zeta_3\\right]+\\varepsilon_6\\\\\n    &= \\lambda_{63}(\\beta_{31}+\\beta_{32})\\eta_1 + \\lambda_{63}\\beta_{32}\\zeta_2 + \\lambda_{63}\\zeta_3 + \\varepsilon_6\n\\end{aligned}\n\\]",
-    "crumbs": [
-      "Tag 1 - II: Grundlagen",
-      "B | Übung 2"
-    ]
-  },
-  {
-    "objectID": "S02_PD_02.html#varianzen",
-    "href": "S02_PD_02.html#varianzen",
-    "title": "B | Übung 2",
-    "section": "Varianzen",
-    "text": "Varianzen\n\n\nSPOILER!\n\n\\[\n\\mathrm{Var}(Y_1)=\\mathrm{Var}(\\eta_1)+\\mathrm{Var}(\\varepsilon_1)\n\\] \\[\n\\mathrm{Var}(Y_2)=\\lambda_{21}^2\\mathrm{Var}(\\eta_1)+\\mathrm{Var}(\\varepsilon_2)\n\\] \\[\n\\mathrm{Var}(Y_3)=\\mathrm{Var}(\\eta_1+\\zeta_2+\\varepsilon_3)=\\mathrm{Var}(\\eta_1)+\\mathrm{Var}(\\zeta_2)+\\mathrm{Var}(\\varepsilon_3)\n\\] \\[\n\\mathrm{Var}(Y_4)=\\mathrm{Var}(\\eta_1+\\zeta_2+\\varepsilon_4)=\\mathrm{Var}(\\eta_1)+\\mathrm{Var}(\\zeta_2)+\\mathrm{Var}(\\varepsilon_4)\n\\] \\[\n\\begin{aligned}\n\\mathrm{Var}(Y_5) &= \\mathrm{Var}\\bigl((\\beta_{31}+\\beta_{32})\\eta_1+\\beta_{32}\\zeta_2+\\zeta_3+\\varepsilon_5\\bigr)\\\\\n&= (\\beta_{31}+\\beta_{32})^2\\mathrm{Var}(\\eta_1)+\\beta_{32}^2\\mathrm{Var}(\\zeta_2)+\\mathrm{Var}(\\zeta_3)+\\mathrm{Var}(\\varepsilon_5)\n\\end{aligned}\n\\] \\[\n\\begin{aligned}\n\\mathrm{Var}(Y_6) &= \\mathrm{Var}\\bigl(\\lambda_{63}(\\beta_{31}+\\beta_{32})\\eta_1+\\lambda_{63}\\beta_{32}\\zeta_2+\\lambda_{63}\\zeta_3+\\varepsilon_6\\bigr)\\\\\n&= \\lambda_{63}^2(\\beta_{31}+\\beta_{32})^2\\mathrm{Var}(\\eta_1)+\\lambda_{63}^2\\beta_{32}^2\\mathrm{Var}(\\zeta_2)+\\lambda_{63}^2\\mathrm{Var}(\\zeta_3)+\\mathrm{Var}(\\varepsilon_6)\n\\end{aligned}\n\\]",
-    "crumbs": [
-      "Tag 1 - II: Grundlagen",
-      "B | Übung 2"
-    ]
-  },
-  {
-    "objectID": "S02_PD_02.html#kovarianzen",
-    "href": "S02_PD_02.html#kovarianzen",
-    "title": "B | Übung 2",
-    "section": "Kovarianzen",
-    "text": "Kovarianzen\n\n\nSPOILER!\n\n\nZwischen \\(Y_1\\) und anderen Variablen\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_1,Y_2)&=\\mathrm{Cov}(\\eta_1+\\varepsilon_1,\\;\\lambda_{21}\\eta_1+\\varepsilon_2)=\\lambda_{21}\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_1,Y_3)&=\\mathrm{Cov}(\\eta_1+\\varepsilon_1,\\;\\eta_1+\\zeta_2+\\varepsilon_3)=\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_1,Y_4)&=\\mathrm{Cov}(\\eta_1+\\varepsilon_1,\\;\\eta_1+\\zeta_2+\\varepsilon_4)=\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_1,Y_5)&=\\mathrm{Cov}\\bigl(\\eta_1+\\varepsilon_1,\\;(\\beta_{31}+\\beta_{32})\\eta_1+\\beta_{32}\\zeta_2+\\zeta_3+\\varepsilon_5\\bigr)\\\\\n&=(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_1,Y_6)&=\\mathrm{Cov}\\bigl(\\eta_1+\\varepsilon_1,\\;\\lambda_{63}(\\beta_{31}+\\beta_{32})\\eta_1+\\lambda_{63}\\beta_{32}\\zeta_2+\\lambda_{63}\\zeta_3+\\varepsilon_6\\bigr)\\\\\n&=\\lambda_{63}(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)\n\\end{aligned}\n\\]\n\n\nZwischen \\(Y_2\\) und anderen Variablen\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_2,Y_3)&=\\mathrm{Cov}(\\lambda_{21}\\eta_1+\\varepsilon_2,\\;\\eta_1+\\zeta_2+\\varepsilon_3)=\\lambda_{21}\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_2,Y_4)&=\\lambda_{21}\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_2,Y_5)&=\\lambda_{21}(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)\\\\\n\\mathrm{Cov}(Y_2,Y_6)&=\\lambda_{21}\\lambda_{63}(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)\n\\end{aligned}\n\\]\n\n\nZwischen \\(Y_3\\) und anderen Variablen\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_3,Y_4)&=\\mathrm{Cov}(\\eta_1+\\zeta_2+\\varepsilon_3,\\;\\eta_1+\\zeta_2+\\varepsilon_4)=\\mathrm{Var}(\\eta_1)+\\mathrm{Var}(\\zeta_2)\\\\\n\\mathrm{Cov}(Y_3,Y_5)&=\\mathrm{Cov}\\bigl(\\eta_1+\\zeta_2+\\varepsilon_3,\\;(\\beta_{31}+\\beta_{32})\\eta_1+\\beta_{32}\\zeta_2+\\zeta_3+\\varepsilon_5\\bigr)\\\\\n&=(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)+\\beta_{32}\\mathrm{Var}(\\zeta_2)\\\\\n\\mathrm{Cov}(Y_3,Y_6)&=\\lambda_{63}\\bigl[(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)+\\beta_{32}\\mathrm{Var}(\\zeta_2)\\bigr]\n\\end{aligned}\n\\]\n\n\nZwischen \\(Y_4\\) und anderen Variablen\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_4,Y_5)&=(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)+\\beta_{32}\\mathrm{Var}(\\zeta_2)\\\\\n\\mathrm{Cov}(Y_4,Y_6)&=\\lambda_{63}\\bigl[(\\beta_{31}+\\beta_{32})\\mathrm{Var}(\\eta_1)+\\beta_{32}\\mathrm{Var}(\\zeta_2)\\bigr]\n\\end{aligned}\n\\]\n\n\nZwischen \\(Y_5\\) und \\(Y_6\\)\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_5,Y_6)&=\\lambda_{63}\\bigl[(\\beta_{31}+\\beta_{32})^2\\mathrm{Var}(\\eta_1)+\\beta_{32}^2\\mathrm{Var}(\\zeta_2)+\\mathrm{Var}(\\zeta_3)\\bigr]\n\\end{aligned}\n\\]",
-    "crumbs": [
-      "Tag 1 - II: Grundlagen",
-      "B | Übung 2"
-    ]
-  },
-  {
-    "objectID": "S02_PD_02.html#kompakte-matrizenform",
-    "href": "S02_PD_02.html#kompakte-matrizenform",
-    "title": "B | Übung 2",
-    "section": "Kompakte Matrizenform",
-    "text": "Kompakte Matrizenform\n\n\nSPOILER!\n\n\nMessmodell\n\\[\n\\underset{(6 \\times 1)}{\\mathbf{y}} = \\underset{(6 \\times 3)}{\\boldsymbol{\\Lambda}} \\;\\underset{(3 \\times 1)}{\\boldsymbol{\\eta}} + \\underset{(6 \\times 1)}{\\boldsymbol{\\varepsilon}}\n\\]\nmit\n\\[\n\\begin{pmatrix} Y_1 \\\\ Y_2 \\\\ Y_3 \\\\ Y_4 \\\\ Y_5 \\\\ Y_6 \\end{pmatrix}\n=\n\\begin{pmatrix} 1 & 0 & 0 \\\\ \\lambda_{21} & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1 \\\\ 0 & 0 & \\lambda_{63} \\end{pmatrix}\n\\begin{pmatrix} \\eta_1 \\\\ \\eta_2 \\\\ \\eta_3 \\end{pmatrix}\n+\n\\begin{pmatrix} \\varepsilon_1 \\\\ \\varepsilon_2 \\\\ \\varepsilon_3 \\\\ \\varepsilon_4 \\\\ \\varepsilon_5 \\\\ \\varepsilon_6 \\end{pmatrix}\n\\]\n\n\nStrukturmodell\n\\[\n\\underset{(3 \\times 1)}{\\boldsymbol{\\eta}} = \\underset{(3 \\times 3)}{\\mathbf{B}}\\;\\underset{(3 \\times 1)}{\\boldsymbol{\\eta}} + \\underset{(3 \\times 1)}{\\boldsymbol{\\zeta}}\n\\]\nmit\n\\[\n\\begin{pmatrix} \\eta_1 \\\\ \\eta_2 \\\\ \\eta_3 \\end{pmatrix}\n=\n\\begin{pmatrix} 0 & 0 & 0 \\\\ 1 & 0 & 0 \\\\ \\beta_{31} & \\beta_{32} & 0 \\end{pmatrix}\n\\begin{pmatrix} \\eta_1 \\\\ \\eta_2 \\\\ \\eta_3 \\end{pmatrix}\n+\n\\begin{pmatrix} \\zeta_1 \\\\ \\zeta_2 \\\\ \\zeta_3 \\end{pmatrix}\n\\]\nKommentar: \\(\\eta_1\\) ist exogen (erste Zeile von \\(\\mathbf{B}\\) ist null), d.h. \\(\\zeta_1 \\equiv \\eta_1\\). Die Fixierung \\(\\beta_{21}=1\\) ist in \\(\\mathbf{B}\\) bereits eingesetzt.\n\n\nParametermatrizen\nKovarianzmatrix der Störterme (latent):\n\\[\n\\boldsymbol{\\Psi} = \\mathrm{Cov}(\\boldsymbol{\\zeta}) =\n\\begin{pmatrix} \\psi_{11} & 0 & 0 \\\\ 0 & \\psi_{22} & 0 \\\\ 0 & 0 & \\psi_{33} \\end{pmatrix}\n\\]\nmit \\(\\psi_{11} = \\mathrm{Var}(\\eta_1)\\), \\(\\psi_{22} = \\mathrm{Var}(\\zeta_2)\\) und \\(\\psi_{33} = \\mathrm{Var}(\\zeta_3)\\).\nKovarianzmatrix der Messresiduen:\n\\[\n\\boldsymbol{\\Theta} = \\mathrm{Cov}(\\boldsymbol{\\varepsilon}) =\n\\mathrm{diag}(\\theta_{1}, \\theta_{2}, \\theta_{3}, \\theta_{4}, \\theta_{5}, \\theta_{6})\n\\]\n\n\nModellimplizierte Kovarianzmatrix\n\\[\n\\boldsymbol{\\Sigma} = \\boldsymbol{\\Lambda}\\,(\\mathbf{I}-\\mathbf{B})^{-1}\\,\\boldsymbol{\\Psi}\\,\\left[(\\mathbf{I}-\\mathbf{B})^{-1}\\right]^\\top \\boldsymbol{\\Lambda}^\\top + \\boldsymbol{\\Theta}\n\\]\nHerleitung in einzelnen Schritten:\n\\[\n(\\mathbf{I}-\\mathbf{B})\n=\n\\begin{pmatrix} 1 & 0 & 0 \\\\ -1 & 1 & 0 \\\\ -\\beta_{31} & -\\beta_{32} & 1 \\end{pmatrix}\n\\quad\\Longrightarrow\\quad\n(\\mathbf{I}-\\mathbf{B})^{-1}\n=\n\\begin{pmatrix} 1 & 0 & 0 \\\\ 1 & 1 & 0 \\\\ \\beta_{31}+\\beta_{32} & \\beta_{32} & 1 \\end{pmatrix}\n\\]\nKovarianzmatrix der latenten Variablen:\n\\[\n(\\mathbf{I}-\\mathbf{B})^{-1}\\,\\boldsymbol{\\Psi}\\,\\left[(\\mathbf{I}-\\mathbf{B})^{-1}\\right]^\\top\n=\n\\begin{pmatrix}\n\\psi_{11}  &  \\psi_{11}  &  (\\beta_{31}+\\beta_{32})\\psi_{11} \\\\\n\\psi_{11}  &  \\psi_{11}+\\psi_{22}  &  (\\beta_{31}+\\beta_{32})\\psi_{11}+\\beta_{32}\\psi_{22} \\\\\n(\\beta_{31}+\\beta_{32})\\psi_{11}  &  (\\beta_{31}+\\beta_{32})\\psi_{11}+\\beta_{32}\\psi_{22}  &  (\\beta_{31}+\\beta_{32})^2\\psi_{11}+\\beta_{32}^2\\psi_{22}+\\psi_{33}\n\\end{pmatrix}\n\\]\nUnd schließlich \\(\\boldsymbol{\\Sigma} = \\boldsymbol{\\Lambda}\\,\\mathrm{Cov}(\\boldsymbol{\\eta})\\,\\boldsymbol{\\Lambda}^\\top + \\boldsymbol{\\Theta}\\) als \\(6 \\times 6\\)-Matrix.\nKommentar:\n\nDas Modell hat 13 freie Parameter (\\(\\lambda_{21}\\), \\(\\lambda_{63}\\), \\(\\beta_{31}\\), \\(\\beta_{32}\\), \\(\\psi_{11}\\), \\(\\psi_{22}\\), \\(\\psi_{33}\\), \\(\\theta_1\\), \\(\\theta_2\\), \\(\\theta_3\\), \\(\\theta_4\\), \\(\\theta_5\\), \\(\\theta_6\\)) bei 21 nicht-redundanten Elementen in \\(\\boldsymbol{\\Sigma}\\) (6 Varianzen + 15 Kovarianzen), d.h. \\(df = 21 - 13 = 8\\) Freiheitsgrade.",
-    "crumbs": [
-      "Tag 1 - II: Grundlagen",
-      "B | Übung 2"
-    ]
-  },
-  {
-    "objectID": "S01_SteyerEid2001Game_01.html",
-    "href": "S01_SteyerEid2001Game_01.html",
-    "title": "B | MatheQuest: Grundlagen der Strukturgleichungsmodellierung",
-    "section": "",
-    "text": "Für Nebenrechungen in R:\n\n\n\n\n\n\n\n\nNotation nach:\n\nSteyer, R., & Eid, M. (2001). Messen und Testen (2., korrigierte Aufl). Springer.",
-    "crumbs": [
-      "I: Vorbesprechung",
-      "B | MatheQuest: SEM"
-    ]
-  },
-  {
-    "objectID": "S01_SteyerEid2001BoxFandG_01.html",
-    "href": "S01_SteyerEid2001BoxFandG_01.html",
-    "title": "A | Box F und G",
-    "section": "",
-    "text": "Anhang F (S. 339-350) und G (S. 351-366) aus:\n\nSteyer, R., & Eid, M. (2001). Messen und Testen (2., korrigierte Aufl). Springer.\n\n\nBox F.1: Das Wichtigste zu Erwartungswerten, Varianzen und Kovarianzen\n\nA. Definitionen\nErwartungswert \\(E(X)\\): Falls \\(X\\) nur die Werte \\(x_1, \\ldots, x_n\\) annimmt:\n\\[E(X) := \\sum_{i=1}^{n} x_i \\cdot P(X = x_i)\\]\nKovarianz \\(Cov(X, Y)\\):\n\\[Cov(X, Y) := E\\bigl[\\bigl(X - E(X)\\bigr) \\cdot \\bigl(Y - E(Y)\\bigr)\\bigr]\\]\nVarianz \\(Var(X)\\):\n\\[Var(X) := Cov(X, X) = E\\bigl[\\bigl(X - E(X)\\bigr)^2\\bigr]\\]\nStandardabweichung (Streuung) \\(Std(X)\\):\n\\[Std(X) := +\\bigl[Var(X)\\bigr]^{1/2}\\]\nKorrelation \\(Kor(X, Y)\\):\n\\[Kor(X, Y) := \\begin{cases} \\dfrac{Cov(X, Y)}{Std(X) \\cdot Std(Y)}, & \\text{falls } Std(X) &gt; 0 \\text{ und } Std(Y) &gt; 0 \\\\ 0, & \\text{sonst.} \\end{cases}\\]\nUnkorreliertheit:\n\\[Cov(X, Y) = Kor(X, Y) = 0\\]\n\n\nB. Rechenregeln für Erwartungswerte, Varianzen und Kovarianzen\nSind \\(X\\) und \\(Y\\) numerische Zufallsvariablen auf \\((\\Omega, \\mathcal{A}, P)\\) mit endlichen Erwartungswerten sowie \\(\\alpha\\) und \\(\\beta \\in \\mathbb{R}\\), dann gelten:\n(i) \\(\\quad E(\\alpha) = \\alpha\\)\n(ii) \\(\\quad E(\\alpha\\, X + \\beta\\, Y) = \\alpha\\, E(X) + \\beta\\, E(Y)\\)\n(iii) \\(\\quad Var(X) = E(X^2) - \\bigl[E(X)\\bigr]^2\\)\n(iv) \\(\\quad Var(X) = 0, \\text{ falls } X = \\alpha\\)\n(v) \\(\\quad Var(\\alpha\\, X) = \\alpha^2\\, Var(X)\\)\n(vi) \\(\\quad Var(\\alpha + X) = Var(X)\\)\n(vii) \\(\\quad Var(\\alpha\\, X + \\beta\\, Y) = \\alpha^2\\, Var(X) + \\beta^2\\, Var(Y) + 2\\,\\alpha\\,\\beta\\, Cov(X, Y)\\)\n(viii) \\(\\quad Cov(X, Y) = E(X \\cdot Y) - E(X) \\cdot E(Y)\\)\n(ix) \\(\\quad Cov(X, Y) = 0, \\text{ falls } X = \\alpha\\)\n(x) \\(\\quad Cov(\\alpha\\, X,\\; \\beta\\, Y) = \\alpha\\,\\beta\\, Cov(X, Y)\\)\n(xi) \\(\\quad Cov(\\alpha + X,\\; \\beta + Y) = Cov(X, Y)\\)\nSind \\(X_1, X_2, Y_1\\) und \\(Y_2\\) numerische Zufallsvariablen auf \\((\\Omega, \\mathcal{A}, P)\\) mit endlichen Erwartungswerten und \\(\\alpha_1, \\alpha_2, \\beta_1, \\beta_2 \\in \\mathbb{R}\\), dann gelten:\n(xii)\n\\[Cov(\\alpha_1 X_1 + \\alpha_2 X_2,\\; \\beta_1 Y_1 + \\beta_2 Y_2) = \\alpha_1 \\beta_1\\, Cov(X_1, Y_1) + \\alpha_1 \\beta_2\\, Cov(X_1, Y_2) + \\alpha_2 \\beta_1\\, Cov(X_2, Y_1) + \\alpha_2 \\beta_2\\, Cov(X_2, Y_2)\\]\n\n\n\nBox G.1: Das Wichtigste zum bedingten Erwartungswert und zur Regression\n\nA. Definitionen\nBedingter Erwartungswert \\(E(Y \\mid X = x)\\): Bei diskretem \\(Y\\) und \\(P(X = x) &gt; 0\\):\n\\[E(Y \\mid X = x) := \\sum_{i=1}^{n} y_i \\cdot P(Y = y_i \\mid X = x)\\]\nRegression (bedingte Erwartung) \\(E(Y \\mid X)\\) bzw. \\(E(Y \\mid X_1, \\ldots, X_m)\\):\n\\(E(Y \\mid X)\\) ist diejenige Zufallsvariable, deren Werte die bedingten Erwartungswerte \\(E(Y \\mid X = x)\\) sind, d.h. sie ist eine Funktion von \\(X\\). Dabei heißt \\(Y\\) der Regressand und \\(X\\) der Regressor, der auch aus mehreren Zufallsvariablen \\(X_1, \\ldots, X_m\\) bestehen kann.\nResiduum \\(\\varepsilon\\):\n\\[\\varepsilon := Y - E(Y \\mid X)\\]\nist die nicht durch die Regression \\(E(Y \\mid X)\\) determinierte Komponente von \\(Y\\).\nDeterminationskoeffizient \\(R^2_{Y|X}\\) und Multiple Korrelation \\(R_{Y|X}\\):\n\\[R^2_{Y|X} := \\begin{cases} \\dfrac{Var\\bigl[E(Y \\mid X)\\bigr]}{Var(Y)}, & \\text{falls } Var(Y) &gt; 0 \\\\ 0, & \\text{andernfalls.} \\end{cases}\\]\n\\(R^2_{Y|X}\\) ist der durch die Regression \\(E(Y \\mid X)\\) determinierte Varianzanteil von \\(Y\\). Er gibt die Stärke der regressiven Abhängigkeit an, ist invariant unter eineindeutigen Abbildungen von \\(X\\) und unter linearen Transformationen von \\(Y\\).\nRegressive Unabhängigkeit:\n\\[E(Y \\mid X) = E(Y)\\]\n\n\nB. Rechenregeln für Regressionen\n(i) \\(\\quad E(\\alpha \\mid X) = \\alpha, \\quad \\alpha \\in \\mathbb{R}\\)\n(ii) \\(\\quad E(\\alpha\\, Y_1 + \\beta\\, Y_2 \\mid X) = \\alpha\\, E(Y_1 \\mid X) + \\beta\\, E(Y_2 \\mid X), \\quad \\alpha, \\beta \\in \\mathbb{R}\\)\n(iii) \\(\\quad E\\bigl[E(Y \\mid X)\\bigr] = E(Y)\\)\n(iv) \\(\\quad E\\bigl[f(X) \\mid X\\bigr] = f(X), \\quad \\text{falls } f(X) \\text{ numerisch ist.}\\)\n(v) \\(\\quad E\\bigl[E(Y \\mid X) \\mid f(X)\\bigr] = E\\bigl[Y \\mid f(X)\\bigr]\\)\n(vi) \\(\\quad E\\bigl[f(X) \\cdot Y \\mid X\\bigr] = f(X) \\cdot E(Y \\mid X), \\quad \\text{falls } f(X) \\text{ numerisch ist.}\\)\n\n\nC. Eigenschaften des Residuums\n(vii) \\(\\quad E(\\varepsilon) = 0\\)\n(viii) \\(\\quad Cov\\bigl[\\varepsilon,\\; E(Y \\mid X)\\bigr] = 0\\)\n(ix) \\(\\quad Var(Y) = Var\\bigl[E(Y \\mid X)\\bigr] + Var(\\varepsilon)\\)\n(x) \\(\\quad E(\\varepsilon \\mid X) = 0\\)\n(xi) \\(\\quad E\\bigl[\\varepsilon \\mid f(X)\\bigr] = 0\\)\n(xii) \\(\\quad Cov\\bigl[\\varepsilon,\\; f(X)\\bigr] = 0, \\quad \\text{falls } f(X) \\text{ numerisch ist.}\\)",
-    "crumbs": [
-      "I: Vorbesprechung",
-      "A | Grundlage und Rechenregeln"
-    ]
-  },
-  {
-    "objectID": "S02_PD_01.html#regressionsgleichungen-manifest",
-    "href": "S02_PD_01.html#regressionsgleichungen-manifest",
-    "title": "A | Übung 1",
-    "section": "Regressionsgleichungen (manifest)",
-    "text": "Regressionsgleichungen (manifest)\n\n\nSPOILER!\n\n\\[\n\\begin{aligned}\nY_1 &= \\lambda_{11}\\eta_1 + \\varepsilon_1 = \\eta_1 + \\varepsilon_1 \\\\\nY_2 &= \\lambda_{21}\\eta_1 + \\varepsilon_2 \\\\\nY_3 &= \\lambda_{32}\\eta_2 + \\varepsilon_3 = \\eta_2 + \\varepsilon_3\n\\end{aligned}\n\\]\nKommentar: Da \\(\\lambda_{11}=1\\) und \\(\\lambda_{32}=1\\), sind \\(Y_1\\) und \\(Y_3\\) direkt als Summe von latenter Variable und Residuum darstellbar.",
-    "crumbs": [
-      "Tag 1 - II: Grundlagen",
-      "A | Übung 1"
-    ]
-  },
-  {
-    "objectID": "S02_PD_01.html#regressionsgleichungen-latent",
-    "href": "S02_PD_01.html#regressionsgleichungen-latent",
-    "title": "A | Übung 1",
-    "section": "Regressionsgleichungen (latent)",
-    "text": "Regressionsgleichungen (latent)\n\n\nSPOILER!\n\n\\[\n\\eta_2 = \\beta_{21}\\eta_1 + \\zeta_2\n\\]\nEinsetzen in \\(Y_3\\):\n\\[\nY_3 = \\eta_2 + \\varepsilon_3 = \\beta_{21}\\eta_1 + \\zeta_2 + \\varepsilon_3\n\\]",
-    "crumbs": [
-      "Tag 1 - II: Grundlagen",
-      "A | Übung 1"
-    ]
-  },
-  {
-    "objectID": "S02_PD_01.html#varianzen",
-    "href": "S02_PD_01.html#varianzen",
-    "title": "A | Übung 1",
-    "section": "Varianzen",
-    "text": "Varianzen\n\n\nSPOILER!\n\n\\[\n\\mathrm{Var}(Y_1) = \\mathrm{Var}(\\eta_1 + \\varepsilon_1) = \\mathrm{Var}(\\eta_1) + \\mathrm{Var}(\\varepsilon_1) + 2\\mathrm{Cov}(\\eta_1,\\varepsilon_1)\n\\]\nKommentar: Nach Annahme \\(\\mathrm{Cov}(\\eta_1,\\varepsilon_1)=0\\) (Residuum unkorreliert mit latenter Variablen) ergibt sich:\n\\[\n\\mathrm{Var}(Y_1) = \\mathrm{Var}(\\eta_1) + \\mathrm{Var}(\\varepsilon_1)\n\\]\n\n\\[\n\\mathrm{Var}(Y_2) = \\mathrm{Var}(\\lambda_{21}\\eta_1 + \\varepsilon_2) = \\lambda_{21}^2 \\,\\mathrm{Var}(\\eta_1) + \\mathrm{Var}(\\varepsilon_2)\n\\]\n\n\\[\n\\mathrm{Var}(Y_3) = \\mathrm{Var}(\\beta_{21}\\eta_1 + \\zeta_2 + \\varepsilon_3)\n\\]\nDa \\(\\mathrm{Var}(\\varepsilon_3)=0\\), bleibt:\n\\[\n\\mathrm{Var}(Y_3) = \\mathrm{Var}(\\beta_{21}\\eta_1 + \\zeta_2) = \\beta_{21}^2\\mathrm{Var}(\\eta_1) + \\mathrm{Var}(\\zeta_2)\n\\]",
-    "crumbs": [
-      "Tag 1 - II: Grundlagen",
-      "A | Übung 1"
-    ]
-  },
-  {
-    "objectID": "S02_PD_01.html#kovarianzen",
-    "href": "S02_PD_01.html#kovarianzen",
-    "title": "A | Übung 1",
-    "section": "Kovarianzen",
-    "text": "Kovarianzen\n\n\nSPOILER!\n\n\\(\\mathrm{Cov}(Y_1,Y_2)\\)\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_1,Y_2) &= \\mathrm{Cov}(\\eta_1 + \\varepsilon_1,\\; \\lambda_{21}\\eta_1 + \\varepsilon_2) \\\\\n&= \\lambda_{21}\\mathrm{Cov}(\\eta_1,\\eta_1) + \\mathrm{Cov}(\\eta_1,\\varepsilon_2) + \\lambda_{21}\\mathrm{Cov}(\\varepsilon_1,\\eta_1) + \\mathrm{Cov}(\\varepsilon_1,\\varepsilon_2)\n\\end{aligned}\n\\]\nNach den Annahmen (\\(\\mathrm{Cov}(\\varepsilon_i,\\varepsilon_j)=0\\) für \\(i\\neq j\\), Residuen unkorreliert mit latenten Variablen):\n\\[\n\\mathrm{Cov}(Y_1,Y_2) = \\lambda_{21}\\mathrm{Var}(\\eta_1)\n\\]\n\n\\(mathrm{Cov}(Y_1,Y_3)\\)\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_1,Y_3) &= \\mathrm{Cov}(\\eta_1+\\varepsilon_1,\\; \\beta_{21}\\eta_1+\\zeta_2+\\varepsilon_3) \\\\\n&= \\beta_{21}\\mathrm{Cov}(\\eta_1,\\eta_1)+\\mathrm{Cov}(\\eta_1,\\zeta_2)+\\mathrm{Cov}(\\eta_1,\\varepsilon_3)+\\beta_{21}\\mathrm{Cov}(\\varepsilon_1,\\eta_1)+\\mathrm{Cov}(\\varepsilon_1,\\zeta_2)+\\mathrm{Cov}(\\varepsilon_1,\\varepsilon_3)\n\\end{aligned}\n\\]\nNach den Annahmen bleiben nur:\n\\[\n\\mathrm{Cov}(Y_1,Y_3) = \\beta_{21}\\mathrm{Var}(\\eta_1)\n\\]\n\n\\(\\mathrm{Cov}(Y_2,Y_3)\\)\n\\[\n\\begin{aligned}\n\\mathrm{Cov}(Y_2,Y_3) &= \\mathrm{Cov}(\\lambda_{21}\\eta_1+\\varepsilon_2,\\; \\beta_{21}\\eta_1+\\zeta_2+\\varepsilon_3) \\\\\n&= \\lambda_{21}\\beta_{21}\\mathrm{Cov}(\\eta_1,\\eta_1)+\\lambda_{21}\\mathrm{Cov}(\\eta_1,\\zeta_2)+\\lambda_{21}\\mathrm{Cov}(\\eta_1,\\varepsilon_3)+\\beta_{21}\\mathrm{Cov}(\\varepsilon_2,\\eta_1)+\\mathrm{Cov}(\\varepsilon_2,\\zeta_2)+\\mathrm{Cov}(\\varepsilon_2,\\varepsilon_3)\n\\end{aligned}\n\\]\nNach den Annahmen:\n\\[\n\\mathrm{Cov}(Y_2,Y_3) = \\lambda_{21}\\beta_{21}\\mathrm{Var}(\\eta_1)\n\\]",
-    "crumbs": [
-      "Tag 1 - II: Grundlagen",
-      "A | Übung 1"
-    ]
-  },
-  {
-    "objectID": "S02_PD_01.html#kompakte-matrizenform",
-    "href": "S02_PD_01.html#kompakte-matrizenform",
-    "title": "A | Übung 1",
-    "section": "Kompakte Matrizenform",
-    "text": "Kompakte Matrizenform\n\n\nSPOILER!\n\n\nMessmodell\n\\[\n\\underset{(3 \\times 1)}{\\mathbf{y}} = \\underset{(3 \\times 2)}{\\boldsymbol{\\Lambda}} \\;\\underset{(2 \\times 1)}{\\boldsymbol{\\eta}} + \\underset{(3 \\times 1)}{\\boldsymbol{\\varepsilon}}\n\\]\nmit\n\\[\n\\begin{pmatrix} Y_1 \\\\ Y_2 \\\\ Y_3 \\end{pmatrix}\n=\n\\begin{pmatrix} 1 & 0 \\\\ \\lambda_{21} & 0 \\\\ 0 & 1 \\end{pmatrix}\n\\begin{pmatrix} \\eta_1 \\\\ \\eta_2 \\end{pmatrix}\n+\n\\begin{pmatrix} \\varepsilon_1 \\\\ \\varepsilon_2 \\\\ \\varepsilon_3 \\end{pmatrix}\n\\]\n\n\nStrukturmodell\n\\[\n\\underset{(2 \\times 1)}{\\boldsymbol{\\eta}} = \\underset{(2 \\times 2)}{\\mathbf{B}}\\;\\underset{(2 \\times 1)}{\\boldsymbol{\\eta}} + \\underset{(2 \\times 1)}{\\boldsymbol{\\zeta}}\n\\]\nmit\n\\[\n\\begin{pmatrix} \\eta_1 \\\\ \\eta_2 \\end{pmatrix}\n=\n\\begin{pmatrix} 0 & 0 \\\\ \\beta_{21} & 0 \\end{pmatrix}\n\\begin{pmatrix} \\eta_1 \\\\ \\eta_2 \\end{pmatrix}\n+\n\\begin{pmatrix} \\zeta_1 \\\\ \\zeta_2 \\end{pmatrix}\n\\]\nKommentar: \\(\\eta_1\\) ist exogen (erste Zeile von \\(\\mathbf{B}\\) ist null), d.h. \\(\\zeta_1 \\equiv \\eta_1\\).\n\n\nParametermatrizen\nKovarianzmatrix der latenten Residuen:\n\\[\n\\boldsymbol{\\Psi} = \\mathrm{Cov}(\\boldsymbol{\\zeta}) =\n\\begin{pmatrix} \\psi_{11} & 0 \\\\ 0 & \\psi_{22} \\end{pmatrix}\n\\]\nmit \\(\\psi_{11} = \\mathrm{Var}(\\eta_1)\\) und \\(\\psi_{22} = \\mathrm{Var}(\\zeta_2)\\).\nKovarianzmatrix der Messresiduen:\n\\[\n\\boldsymbol{\\Theta} = \\mathrm{Cov}(\\boldsymbol{\\varepsilon}) =\n\\begin{pmatrix} \\theta_{1} & 0 & 0 \\\\ 0 & \\theta_{2} & 0 \\\\ 0 & 0 & 0 \\end{pmatrix}\n\\]\nmit der Restriktion \\(\\mathrm{Var}(\\varepsilon_3) = 0\\).\n\n\nModellimplizierte Kovarianzmatrix\n\\[\n\\boldsymbol{\\Sigma} = \\boldsymbol{\\Lambda}\\,(\\mathbf{I}-\\mathbf{B})^{-1}\\,\\boldsymbol{\\Psi}\\,\\left[(\\mathbf{I}-\\mathbf{B})^{-1}\\right]^\\top \\boldsymbol{\\Lambda}^\\top + \\boldsymbol{\\Theta}\n\\]\nHerleitung in einzelnen Schritten:\n\\[\n(\\mathbf{I}-\\mathbf{B})^{-1}\n=\n\\begin{pmatrix} 1 & 0 \\\\ -\\beta_{21} & 1 \\end{pmatrix}^{-1}\n=\n\\begin{pmatrix} 1 & 0 \\\\ \\beta_{21} & 1 \\end{pmatrix}\n\\]\nDaraus ergibt sich die Kovarianzmatrix der latenten Variablen:\n\\[\n(\\mathbf{I}-\\mathbf{B})^{-1}\\,\\boldsymbol{\\Psi}\\,\\left[(\\mathbf{I}-\\mathbf{B})^{-1}\\right]^\\top\n=\n\\begin{pmatrix} \\psi_{11} & \\beta_{21}\\psi_{11} \\\\ \\beta_{21}\\psi_{11} & \\beta_{21}^2\\psi_{11}+\\psi_{22} \\end{pmatrix}\n\\]\nUnd schließlich:\n\\[\n\\boldsymbol{\\Sigma}\n=\n\\begin{pmatrix}\n\\psi_{11} + \\theta_{1}  &  \\lambda_{21}\\psi_{11}  &  \\beta_{21}\\psi_{11} \\\\\n\\lambda_{21}\\psi_{11}  &  \\lambda_{21}^2\\psi_{11} + \\theta_{2}  &  \\lambda_{21}\\beta_{21}\\psi_{11} \\\\\n\\beta_{21}\\psi_{11}  &  \\lambda_{21}\\beta_{21}\\psi_{11}  &  \\beta_{21}^2\\psi_{11} + \\psi_{22}\n\\end{pmatrix}\n\\]\nKommentar:\n\nDas Modell hat 6 freie Parameter (\\(\\lambda_{21}\\), \\(\\beta_{21}\\), \\(\\psi_{11}\\), \\(\\psi_{22}\\), \\(\\theta_1\\), \\(\\theta_2\\)) bei 6 nicht-redundanten Elementen in \\(\\boldsymbol{\\Sigma}\\) (3 Varianzen + 3 Kovarianzen), d.h. das Modell hat \\(df = 6 - 6 = 0\\) Freiheitsgrade und ist gerade identifiziert (just identified).",
-    "crumbs": [
-      "Tag 1 - II: Grundlagen",
-      "A | Übung 1"
-    ]
-  },
-  {
-    "objectID": "S03_CFA_01.html",
-    "href": "S03_CFA_01.html",
-    "title": "A | CFA Live",
-    "section": "",
-    "text": "Alternativen zur Darstellung\n\n\n\n\n\n\n\n\n\nEmpfohlen, aber funktioniert nur lokal in R:",
-    "crumbs": [
-      "Tag 1 - III: Schätzung",
-      "A | Live"
-    ]
-  },
-  {
-    "objectID": "S03_CFA_01.html#faktor-cfa",
-    "href": "S03_CFA_01.html#faktor-cfa",
-    "title": "A | CFA Live",
-    "section": "",
-    "text": "Alternativen zur Darstellung\n\n\n\n\n\n\n\n\n\nEmpfohlen, aber funktioniert nur lokal in R:",
-    "crumbs": [
-      "Tag 1 - III: Schätzung",
-      "A | Live"
-    ]
-  },
-  {
-    "objectID": "S03_CFA_03.html#modell-vergleich",
-    "href": "S03_CFA_03.html#modell-vergleich",
-    "title": "C | Übung 2",
-    "section": "4-Modell-Vergleich",
-    "text": "4-Modell-Vergleich\n\n\n\n\n\n\nWichtigAufgabe\n\n\n\nSchätzen Sie 4 Modelle für die HolzingerSwineford-Daten und erstellen Sie eine Vergleichstabelle:\n\n\n\n\n\n\n\nModell\nlavaan\n\n\n\n\n(a) 1-Faktor\ng =~ x1 + ... + x9\n\n\n(b) 3 Faktoren korreliert\nvisual  =~ x1 + x2 + x3, textual =~ x4 + x5 + x6 und speed =~ x7 + x8 + x9\n\n\n(c) 3 Faktoren orthogonal\ncfa(..., orthogonal = TRUE)\n\n\n(d) Hierarchisch (g 2. Ordnung)\ng =~ visual + textual + speed\n\n\n\n\nFit-Tabelle: χ², df, CFI, RMSEA, AIC\nχ²-Differenztest: (a) vs. (b), (c) vs. (b)\nWarum haben (b) und (d) den gleichen Fit?\n\n\n\n\n\nHilfestellung\n\nWenn die Ausgaben von lavaan in folgenden R-Objekten vorliegen:\n\nfit_1f &lt;- cfa(model_1f, data = HolzingerSwineford1939)\nfit_3f &lt;- cfa(model_3f, data = HolzingerSwineford1939)\nfit_orth &lt;- cfa(model_3f, data = HolzingerSwineford1939, orthogonal = TRUE)\nfit_hier &lt;- cfa(model_hier, data = HolzingerSwineford1939)\n\nVergleichstabelle:\n\nsapply(list(fit_1f, fit_3f, fit_orth, fit_hier), function(f) {\n  fitMeasures(f, c(\"chisq\",\"df\",\"cfi\",\"rmsea\",\"aic\"))\n}) |&gt; t() |&gt; round(3)\n\nχ²-Differenztest:\n\n# (a) vs. (b)\nanova(fit_1f,fit_3f)\n\n#(c) vs. (b):\nanova(fit_orth,fit_3f)",
-    "crumbs": [
-      "Tag 1 - III: Schätzung",
-      "C | Übung 2"
-    ]
-  },
-  {
-    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html#einleitung",
-    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html#einleitung",
-    "title": "E | Interaktives Tutorial von Rosseel & Vidal (2025) - 2",
-    "section": "Einleitung",
-    "text": "Einleitung\nDieses Tutorial baut auf Teil 1 auf und behandelt drei wichtige Erweiterungen des Basis-SEM:\n\nMittelwertstruktur – Intercepts und latente Mittelwerte in das Modell einbeziehen\nMehrgruppenmodelle – dasselbe Modell in verschiedenen Gruppen schaetzen und Messinvarianz testen\nFehlende Werte – Full Information Maximum Likelihood (FIML) als Alternative zum listenweisen Ausschluss\n\nReferenz: Rosseel, Y., & Vidal, M. (2025). A tutorial for understanding SEM using R: Where do all the numbers come from? British Journal of Mathematical and Statistical Psychology. doi:10.1111/bmsp.70003",
-    "crumbs": [
-      "Tag 1 - III: Schätzung",
-      "E | ℹ Tutorial von Rosseel & Vidal (2025) - 2"
-    ]
-  },
-  {
-    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html#mittelwertstruktur",
-    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html#mittelwertstruktur",
-    "title": "E | Interaktives Tutorial von Rosseel & Vidal (2025) - 2",
-    "section": "Mittelwertstruktur",
-    "text": "Mittelwertstruktur\n\nWarum Mittelwerte?\nIm Basis-CFA (Teil 1) haben wir nur die Varianz-Kovarianz-Matrix \\(\\mathbf{S}\\) modelliert. Die Mittelwerte der Variablen wurden ignoriert. Das reicht aus, solange wir nur Zusammenhaenge untersuchen. Aber fuer bestimmte Fragestellungen brauchen wir die Mittelwertstruktur:\n\nMehrgruppenvergleiche: Unterscheiden sich die latenten Mittelwerte zwischen Gruppen?\nLaengsschnittmodelle: Veraendert sich der latente Mittelwert ueber die Zeit?\nGrowth-Curve-Modelle: Wie entwickeln sich individuelle Trajektorien?\n\n\n\nDas erweiterte Modell\nNeben \\(\\boldsymbol{\\Sigma}(\\boldsymbol{\\theta})\\) modellieren wir jetzt auch den modellimplizierten Mittelwertvektor:\n\\[E(\\mathbf{y}) = \\boldsymbol{\\nu} + \\boldsymbol{\\Lambda} \\, E(\\boldsymbol{\\eta})\\]\nwobei:\n\n\\(\\boldsymbol{\\nu}\\) = Vektor der Intercepts (Achsenabschnitte) der beobachteten Variablen\n\\(E(\\boldsymbol{\\eta}) = (\\mathbf{I} - \\mathbf{B})^{-1} \\boldsymbol{\\alpha}\\) = erwartete Werte der latenten Variablen\n\\(\\boldsymbol{\\alpha}\\) = Vektor der latenten Mittelwerte\n\nFuer ein CFA-Modell (ohne Strukturteil, \\(\\mathbf{B} = \\mathbf{0}\\)) vereinfacht sich das zu:\n\\[\\boldsymbol{\\mu}(\\boldsymbol{\\theta}) = \\boldsymbol{\\nu} + \\boldsymbol{\\Lambda} \\, \\boldsymbol{\\alpha}\\]\nZur Identifikation werden die latenten Mittelwerte auf null fixiert (\\(\\boldsymbol{\\alpha} = \\mathbf{0}\\)), sodass die Intercepts \\(\\boldsymbol{\\nu}\\) gleich den beobachteten Mittelwerten entsprechen.\n\n\nDie erweiterte Diskrepanzfunktion\nDie ML-Diskrepanzfunktion bekommt einen zusaetzlichen Term fuer die Mittelwerte:\n\\[F_{\\text{ML}}(\\boldsymbol{\\theta}) = \\text{tr}\\!\\left[\\mathbf{S}\\boldsymbol{\\Sigma}(\\boldsymbol{\\theta})^{-1}\\right] + \\ln|\\boldsymbol{\\Sigma}(\\boldsymbol{\\theta})| - \\ln|\\mathbf{S}| - P + \\left[\\bar{\\mathbf{y}} - \\boldsymbol{\\mu}(\\boldsymbol{\\theta})\\right]' \\boldsymbol{\\Sigma}(\\boldsymbol{\\theta})^{-1} \\left[\\bar{\\mathbf{y}} - \\boldsymbol{\\mu}(\\boldsymbol{\\theta})\\right]\\]\nDer neue letzte Term ist eine quadratische Form, die misst, wie weit der modellimplizierte Mittelwertvektor \\(\\boldsymbol{\\mu}(\\boldsymbol{\\theta})\\) vom beobachteten Mittelwertvektor \\(\\bar{\\mathbf{y}}\\) entfernt ist.\n\n\nDie Funktion x2implied\nStatt nur \\(\\boldsymbol{\\Sigma}\\) zurueckzugeben, liefert die erweiterte Funktion jetzt sowohl \\(\\boldsymbol{\\Sigma}\\) als auch \\(\\boldsymbol{\\mu}\\):\n\n\n\n\n\n\n\n\n\n\nDiskrepanzfunktion und Optimierung\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDie geschaetzten Intercepts entsprechen den beobachteten Mittelwerten – das ist zu erwarten, da die latenten Mittelwerte auf null fixiert sind.\n\n\nVergleich mit lavaan\n\n\n\n\n\n\n\n\nIm summary() erscheinen jetzt zusaetzlich die geschaetzten Intercepts. Die Fit-Indizes sind identisch mit dem Modell ohne Mittelwertstruktur, da die Intercepts in einem Eingruppen-Modell genau identifiziert sind.",
-    "crumbs": [
-      "Tag 1 - III: Schätzung",
-      "E | ℹ Tutorial von Rosseel & Vidal (2025) - 2"
-    ]
-  },
-  {
-    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html#mehrgruppenmodelle",
-    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html#mehrgruppenmodelle",
-    "title": "E | Interaktives Tutorial von Rosseel & Vidal (2025) - 2",
-    "section": "Mehrgruppenmodelle",
-    "text": "Mehrgruppenmodelle\n\nDie Grundidee\nBei Mehrgruppenmodellen wird dasselbe SEM gleichzeitig in mehreren Gruppen geschaetzt. Der zentrale Trick: Die Diskrepanzfunktionen der einzelnen Gruppen werden als gewichtete Summe kombiniert:\n\\[F_{\\text{ML}}^{\\text{gesamt}} = \\frac{1}{N} \\sum_{g=1}^{G} N_g \\cdot F_{\\text{ML}}^{(g)}\\]\nwobei \\(N_g\\) die Stichprobengroesse der Gruppe \\(g\\) ist und \\(F_{\\text{ML}}^{(g)}\\) die ML-Diskrepanzfunktion fuer Gruppe \\(g\\). Jede Gruppe hat ihre eigene beobachtete Kovarianzmatrix \\(\\mathbf{S}_g\\) und ihre eigene modellimplizierte Matrix \\(\\boldsymbol{\\Sigma}_g(\\boldsymbol{\\theta})\\). Die Gesamt-Chi-Quadrat-Statistik ist dann:\n\\[\\chi^2_{\\text{gesamt}} = N \\cdot F_{\\text{ML}}^{\\text{gesamt}} = \\sum_{g=1}^{G} N_g \\cdot F_{\\text{ML}}^{(g)} = \\chi^2_1 + \\chi^2_2 + \\ldots + \\chi^2_G\\]\nDas heisst: Die Chi-Quadrat-Statistiken der einzelnen Gruppen addieren sich. Ebenso addieren sich die Freiheitsgrade. Das ist die Grundlage fuer alle Mehrgruppenvergleiche.\n\n\nDaten pro Gruppe\nDer Holzinger-Swineford-Datensatz enthaelt Daten aus zwei Schulen:\n\n\n\n\n\n\n\n\nWir berechnen die Stichprobenstatistiken separat fuer jede Gruppe:\n\n\n\n\n\n\n\n\n\n\nSeparate Schaetzung pro Gruppe\nZuerst schaetzen wir das CFA-Modell separat in jeder Gruppe. Jede Gruppe hat ihren eigenen Satz von 21 Parametern und ihre eigene Diskrepanzfunktion:\n\n\n\n\n\n\n\n\n\n\nDie Additivitaet der Chi-Quadrat-Statistiken\nJetzt zeigen wir den zentralen Punkt: Die Gesamt-Chi-Quadrat-Statistik ist die Summe der gruppenspezifischen Chi-Quadrat-Werte:\n\n\n\n\n\n\n\n\n\n\nDie gemeinsame Diskrepanzfunktion\nStatt separat zu optimieren, koennen wir auch eine gemeinsame Diskrepanzfunktion aufstellen, die beide Gruppen gleichzeitig beruecksichtigt. Das ist mathematisch aequivalent, aber die Voraussetzung fuer Restriktionen ueber die Gruppen:\n\n\n\n\n\n\n\n\n\n\nVergleich mit lavaan\n\n\n\n\n\n\n\n\n\n\nRestriktionen ueber Gruppen: Der Kern von Mehrgruppenmodellen\nDer eigentliche Mehrwert entsteht, wenn wir Parameter zwischen den Gruppen gleichsetzen. Statt 42 freier Parameter (21 pro Gruppe) koennen wir z.B. die 6 Faktorladungen gleichsetzen. Dann haben wir nur noch \\(42 - 6 = 36\\) freie Parameter:\n\n\n\n\n\n\n\n\nDie Differenz der Chi-Quadrat-Werte zwischen dem freien und dem restringierten Modell testet, ob die Gleichsetzung der Ladungen zu einer signifikanten Verschlechterung fuehrt:\n\n\n\n\n\n\n\n\n\n\nAnwendung: Messinvarianz mit lavaan\nNachdem wir verstanden haben, wie Mehrgruppenmodelle funktionieren, nutzen wir lavaan fuer die systematische Pruefung der Messinvarianz. Jede Stufe fuegt weitere Gleichheitsrestriktionen hinzu:\n\n\n\n\n\n\n\n\n\nStufe\nName\nRestriktion\nBedeutung\n\n\n\n\n1\nKonfigural\nGleiche Modellstruktur\nGleiche Faktoren, gleiche Zuordnung\n\n\n2\nMetrisch\n+ gleiche Faktorladungen\nFaktoren haben dieselbe Bedeutung\n\n\n3\nSkalar\n+ gleiche Intercepts\nLatente Mittelwerte vergleichbar\n\n\n4\nStrikt\n+ gleiche Residualvarianzen\nGleiche Messgenauigkeit\n\n\n\n\n\n\n\n\n\n\n\nAls Faustregel: Ein CFI-Unterschied von weniger als .01 zwischen aufeinanderfolgenden Stufen spricht fuer Messinvarianz (Chen, 2007).\n\n\n\n\n\n\n\n\n\n\nLatente Mittelwertunterschiede\nWenn skalare Invarianz gegeben ist, koennen wir die latenten Mittelwerte zwischen den Gruppen vergleichen. Die erste Gruppe dient als Referenz (latente Mittelwerte = 0):\n\n\n\n\n\n\n\n\nUnter “Intercepts” der zweiten Gruppe (Grant-White) sehen wir die geschaetzten latenten Mittelwertunterschiede relativ zur ersten Gruppe (Pasteur).",
-    "crumbs": [
-      "Tag 1 - III: Schätzung",
-      "E | ℹ Tutorial von Rosseel & Vidal (2025) - 2"
-    ]
-  },
-  {
-    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html#fehlende-werte-und-fiml",
-    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html#fehlende-werte-und-fiml",
-    "title": "E | Interaktives Tutorial von Rosseel & Vidal (2025) - 2",
-    "section": "Fehlende Werte und FIML",
-    "text": "Fehlende Werte und FIML\n\nDas Problem\nIn der Praxis fehlen haeufig einzelne Werte. Der einfachste Umgang ist listenweiser Ausschluss (listwise deletion): Alle Personen mit mindestens einem fehlenden Wert werden komplett entfernt. Das kann zu erheblichem Datenverlust fuehren.\n\n\nDaten mit fehlenden Werten erzeugen\nWir fuegen dem Holzinger-Swineford-Datensatz zufaellig ca. 5% fehlende Werte pro Variable hinzu:\n\n\n\n\n\n\n\n\n\n\nListenweiser Ausschluss vs. FIML\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFIML nutzt alle Beobachtungen – auch die mit fehlenden Werten – und liefert daher effizientere Schaetzungen.\n\n\nWie FIML funktioniert\nBei FIML wird statt einer einzelnen globalen Diskrepanzfunktion die Log-Likelihood fuer jede Person einzeln berechnet, wobei nur die tatsaechlich beobachteten Variablen verwendet werden:\n\\[\\log L(\\boldsymbol{\\theta} | \\mathbf{y}_i) = -\\frac{P_i}{2} \\ln(2\\pi) - \\frac{1}{2} \\ln|\\boldsymbol{\\Sigma}_i(\\boldsymbol{\\theta})| - \\frac{1}{2} [\\mathbf{y}_i - \\boldsymbol{\\mu}_i(\\boldsymbol{\\theta})]' \\boldsymbol{\\Sigma}_i(\\boldsymbol{\\theta})^{-1} [\\mathbf{y}_i - \\boldsymbol{\\mu}_i(\\boldsymbol{\\theta})]\\]\nDabei ist \\(P_i\\) die Anzahl der beobachteten Variablen fuer Person \\(i\\), und \\(\\boldsymbol{\\Sigma}_i\\) und \\(\\boldsymbol{\\mu}_i\\) sind die entsprechenden Teilmatrizen bzw. Teilvektoren (nach Entfernung der Zeilen/Spalten der fehlenden Variablen). Die Gesamt-Log-Likelihood ist die Summe ueber alle Personen:\n\\[\\log L(\\boldsymbol{\\theta} | \\mathcal{Y}) = \\sum_{i=1}^{N} \\log L(\\boldsymbol{\\theta} | \\mathbf{y}_i)\\]\n\n\nFIML-Diskrepanzfunktion in R\nFuer FIML brauchen wir eine vereinfachte x2implied-Funktion, bei der die latenten Mittelwerte direkt in den Intercepts aufgehen (da wir \\(\\boldsymbol{\\alpha} = \\mathbf{0}\\) fixieren):\n\n\n\n\n\n\n\n\nJetzt die eigentliche FIML-Diskrepanzfunktion. Der entscheidende Unterschied zur normalen ML-Funktion: In der Schleife ueber alle Personen werden fuer jede Person nur die beobachteten Variablen verwendet:\n\n\n\n\n\n\n\n\n\n\nVergleich der Parameterschaetzungen\n\n\n\n\n\n\n\n\nDie FIML-Schaetzungen liegen in der Regel naeher an den Schaetzungen aus den vollstaendigen Daten als die Schaetzungen aus dem listenweisen Ausschluss.",
-    "crumbs": [
-      "Tag 1 - III: Schätzung",
-      "E | ℹ Tutorial von Rosseel & Vidal (2025) - 2"
-    ]
-  },
-  {
-    "objectID": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html#zusammenfassung",
-    "href": "S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html#zusammenfassung",
-    "title": "E | Interaktives Tutorial von Rosseel & Vidal (2025) - 2",
-    "section": "Zusammenfassung",
-    "text": "Zusammenfassung\n\n\n\n\n\n\n\n\nErweiterung\nSchluesselidee\nlavaan-Argument\n\n\n\n\nMittelwertstruktur\n\\(\\boldsymbol{\\mu} = \\boldsymbol{\\nu} + \\boldsymbol{\\Lambda}\\boldsymbol{\\alpha}\\) modelliert Intercepts und latente Mittelwerte\nmeanstructure = TRUE\n\n\nMehrgruppenmodelle\nGleiches Modell in verschiedenen Gruppen, stufenweise Restriktionen\ngroup = \"var\", group.equal = ...\n\n\nFIML\nLikelihood pro Person, nur ueber beobachtete Variablen\nmissing = \"fiml\"",
-    "crumbs": [
-      "Tag 1 - III: Schätzung",
-      "E | ℹ Tutorial von Rosseel & Vidal (2025) - 2"
-    ]
-  },
-  {
-    "objectID": "S06_Thema_01.html#bericht",
-    "href": "S06_Thema_01.html#bericht",
-    "title": "A | Thema 1",
+    "objectID": "S06_Thema_02.html#bericht",
+    "href": "S06_Thema_02.html#bericht",
+    "title": "B | Thema 2",
     "section": "Bericht",
     "text": "Bericht",
     "crumbs": [
       "Tag 2 - VI: Messmodelle",
-      "A | Thema 1"
+      "B | Thema 2"
     ]
   },
   {
-    "objectID": "S06_Thema_03.html#bericht",
-    "href": "S06_Thema_03.html#bericht",
-    "title": "C | Thema 3",
+    "objectID": "S07_Thema_04.html#bericht",
+    "href": "S07_Thema_04.html#bericht",
+    "title": "A | Thema 4",
     "section": "Bericht",
     "text": "Bericht",
     "crumbs": [
-      "Tag 2 - VI: Messmodelle",
-      "C | Thema 3"
+      "Tag 2 - VII: Gruppenvergleiche",
+      "A | Thema 4"
+    ]
+  },
+  {
+    "objectID": "S07_Thema_06.html#bericht",
+    "href": "S07_Thema_06.html#bericht",
+    "title": "C | Thema 6",
+    "section": "Bericht",
+    "text": "Bericht",
+    "crumbs": [
+      "Tag 2 - VII: Gruppenvergleiche",
+      "C | Thema 6"
+    ]
+  },
+  {
+    "objectID": "S08_Thema_08.html#bericht",
+    "href": "S08_Thema_08.html#bericht",
+    "title": "B | Thema 8",
+    "section": "Bericht",
+    "text": "Bericht",
+    "crumbs": [
+      "Tag 2 - VIII: Strukturmodelle",
+      "B | Thema 8"
+    ]
+  },
+  {
+    "objectID": "S09_Thema_10.html#bericht",
+    "href": "S09_Thema_10.html#bericht",
+    "title": "B | Thema 10",
+    "section": "Bericht",
+    "text": "Bericht",
+    "crumbs": [
+      "Tag 2 - IX: Mehrere Messzeitpunkte",
+      "B | Thema 10"
+    ]
+  },
+  {
+    "objectID": "S04_SimulationLavaan_01.html#daten-aus-einem-sem-modell-erzeugen",
+    "href": "S04_SimulationLavaan_01.html#daten-aus-einem-sem-modell-erzeugen",
+    "title": "B | Daten mit lavaan erzeugen",
+    "section": "Daten aus einem SEM-Modell erzeugen",
+    "text": "Daten aus einem SEM-Modell erzeugen",
+    "crumbs": [
+      "Tag 1 - IV: Einbettung",
+      "B | Daten mit `lavaan` erzeugen"
+    ]
+  },
+  {
+    "objectID": "S04_SimulationLavaan_01.html#analyse",
+    "href": "S04_SimulationLavaan_01.html#analyse",
+    "title": "B | Daten mit lavaan erzeugen",
+    "section": "Analyse",
+    "text": "Analyse",
+    "crumbs": [
+      "Tag 1 - IV: Einbettung",
+      "B | Daten mit `lavaan` erzeugen"
+    ]
+  },
+  {
+    "objectID": "S04_SimulationLavaan_01.html#beispiel",
+    "href": "S04_SimulationLavaan_01.html#beispiel",
+    "title": "B | Daten mit lavaan erzeugen",
+    "section": "Beispiel",
+    "text": "Beispiel\n\nDaten aus einem SEM-Modell erzeugen\n\n\n\n\n\n\n\n\n\n\nAnalyse",
+    "crumbs": [
+      "Tag 1 - IV: Einbettung",
+      "B | Daten mit `lavaan` erzeugen"
+    ]
+  },
+  {
+    "objectID": "S04_SimulationLavaan_01.html#poweranalyse",
+    "href": "S04_SimulationLavaan_01.html#poweranalyse",
+    "title": "B | Daten mit lavaan erzeugen",
+    "section": "Poweranalyse",
+    "text": "Poweranalyse\n\n\n\n\n\n\nVorsicht\n\n\n\nAchtung! Das läuft im Browser sehr lange. Am besten in R lokal ausführen!",
+    "crumbs": [
+      "Tag 1 - IV: Einbettung",
+      "B | Daten mit `lavaan` erzeugen"
     ]
   }
 ]
