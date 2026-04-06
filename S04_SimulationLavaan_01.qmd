@@ -1,5 +1,5 @@
 ---
-title: "B | Daten mit `lavaan` erzeugen"
+title: "B | Daten mit `lavaan` erzeugen" 
 format: live-html
 engine: knitr  
 status: "Version 0.1"
@@ -101,7 +101,7 @@ cat("Geschätzt:",
   round(lavInspect(fit_sim, "cor.lv")[1,2], 3))
 ```
 
-## Poweranalyse
+## Poweranalyse (am Beispiel einer latenten Korrelation)
 
 ::: {.callout-caution}
 Achtung! Das läuft im Browser sehr lange. Am besten in R lokal ausführen!
@@ -114,7 +114,7 @@ Achtung! Das läuft im Browser sehr lange. Am besten in R lokal ausführen!
 set.seed(2026)
 
 # --- Einstellungen ---
-n_rep   <- 250          # Anzahl Replikationen (sollte > 1000 sein)
+n_rep   <- 100          # Anzahl Replikationen (Beispiel, sollte dann > 1000 sein)
 N       <- 200          # Stichprobengröße
 alpha   <- 0.05         # Signifikanzniveau
 true_cor <- 0.3         # Wahre latente Korrelation

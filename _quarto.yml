@@ -2,22 +2,7 @@ project:
   type: website
   output-dir: docs/
   render:
-    - "*.qmd"
-    - "S01_*.qmd"
-    - "S02_*.qmd"
-    - "S03_*.qmd"
-    - "S04_*.qmd"
-    - "S05_*.qmd"
-    - "S06_*.qmd"
-    - "S07_*.qmd"
-    - "S08_*.qmd"
-    - "S09_*.qmd"
-    - "S10_*.qmd"
-    - "S11_*.qmd"
-    - "S12_*.qmd"
-    - "S13_*.qmd"
-    - "S14_*.qmd"
-    - "MISC_*.qmd"
+    - "*.qmd"   
   resources:
     - static/**     
     
@@ -25,9 +10,9 @@ website:
   search: false    
   sidebar:
     header: |
-      <a href="./"><div style="margin-left:-50px;margin-top:-50px;">![](/static/logo.png)</div></a>
+      <a href="./"><div style="margin-left:-50px;margin-top:-50px;">![](/static/logo.png){width=275}</div></a>
       <div style="margin-top:-40px;margin-bottom:-25px;">
-      **TUC-PRME-26 | <br/>MA-S01**
+      **TUC-PRME-26 | MA-S01**
       </div>
     collapse-level: 1
     style: floating
@@ -38,13 +23,13 @@ website:
             text: "A | Grundlage und Rechenregeln"
           - href: S01_SteyerEid2001Game_01.qmd
             text: "B | MatheQuest: SEM"
-      - section: "Tag 1 - II: Grundlagen"
+      - section: "II: Grundlagen"
         contents:
           - href: S02_PD_01.qmd
             text: "A | Übung 1"
           - href: S02_PD_02.qmd
             text: "B | Übung 2"
-      - section: "Tag 1 - III: Schätzung"
+      - section: " III: Schätzung"
         contents:
           - href: S03_CFA_01.qmd
             text: "A | Live"
@@ -56,40 +41,44 @@ website:
             text: "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1"
           - href: S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.qmd
             text: "E | ℹ Tutorial von Rosseel & Vidal (2025) - 2"            
-      - section: "Tag 1 - IV: Einbettung"
+      - section: "IV: Einbettung"
         contents:            
           - href: S04_rosseelTutorialUnderstandingSEM2025_Interactive_03.qmd 
             text: "A | ℹ Tutorial von Rosseel & Vidal (2025) - 3"  
           - href: S04_SimulationLavaan_01.qmd
             text: "B | Daten mit `lavaan` erzeugen"  
-      - section: "Tag 2 - VI: Messmodelle"
-        contents:            
-          - href: S06_Thema_01.qmd 
-            text: "A | Thema 1" 
-          - href: S06_Thema_02.qmd 
-            text: "B | Thema 2"
-          - href: S06_Thema_03.qmd 
-            text: "C | Thema 3"
-      - section: "Tag 2 - VII: Gruppenvergleiche"
-        contents:            
-          - href: S07_Thema_04.qmd 
-            text: "A | Thema 4" 
-          - href: S07_Thema_05.qmd 
-            text: "B | Thema 5"
-          - href: S07_Thema_06.qmd 
-            text: "C | Thema 6"
-      - section: "Tag 2 - VIII: Strukturmodelle"
-        contents:            
-          - href: S08_Thema_07.qmd 
-            text: "A | Thema 7" 
-          - href: S08_Thema_08.qmd 
-            text: "B | Thema 8"
-      - section: "Tag 2 - IX: Mehrere Messzeitpunkte"
-        contents:                
-          - href: S09_Thema_09.qmd 
-            text: "A | Thema 9"                            
-          - href: S09_Thema_10.qmd 
-            text: "B | Thema 10"
+          - href: S04_SimulationLavaan_02.qmd
+            text: "C | ℹ Strukturierung nach Wang & Rhemtulla (2021)"
+      - section: "(Beispiel-Code)"
+        contents:
+          - section: "Messmodelle (Thema 1-3)"
+            contents:            
+              - href: S06_Thema_01.qmd 
+                text: "A | Thema 1" 
+              - href: S06_Thema_02.qmd 
+                text: "B | Thema 2"
+              - href: S06_Thema_03.qmd 
+                text: "C | Thema 3"
+          - section: "Gruppenvergleiche (Thema 4-6)"
+            contents:            
+              - href: S07_Thema_04.qmd 
+                text: "A | Thema 4" 
+              - href: S07_Thema_05.qmd 
+                text: "B | Thema 5"
+              - href: S07_Thema_06.qmd 
+                text: "C | Thema 6"
+          - section: "Strukturmodelle (Thema 7-8)"
+            contents:            
+              - href: S08_Thema_07.qmd 
+                text: "A | Thema 7" 
+              - href: S08_Thema_08.qmd 
+                text: "B | Thema 8"
+          - section: "Mehrere Messzeitpunkte (Thema 9-10)"
+            contents:                
+              - href: S09_Thema_09.qmd 
+                text: "A | Thema 9"                            
+              - href: S09_Thema_10.qmd 
+                text: "B | Thema 10"
             
 theme:
   light: 
