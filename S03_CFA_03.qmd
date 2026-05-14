@@ -159,3 +159,57 @@ model_hier <-  "visual  =~ x1 + x2 + x3
 # ...
 
 ```
+
+
+<details>
+<summary>SPOILER</summary>
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: false 
+
+model_1f <- "
+  g =~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9
+"
+fit_1f <- cfa(model_1f, data = HolzingerSwineford1939)
+
+model_3f <-  "
+  visual  =~ x1 + x2 + x3
+  textual =~ x4 + x5 + x6
+  speed   =~ x7 + x8 + x9
+"
+fit_3f <- cfa(model_3f, data = HolzingerSwineford1939)
+
+fit_orth <- cfa(model_3f, data = HolzingerSwineford1939, 
+                orthogonal = TRUE)
+
+model_hier <-  "visual  =~ x1 + x2 + x3
+              textual =~ x4 + x5 + x6
+              speed   =~ x7 + x8 + x9
+              g =~ visual + textual + speed"
+fit_hier <- cfa(model_hier, data = HolzingerSwineford1939)
+ 
+ 
+# Fit-Tabelle: χ², df, CFI, RMSEA, AIC
+
+sapply(list(fit_1f, fit_3f, fit_orth, fit_hier), function(f) {
+  fitMeasures(f, c("chisq","df","cfi","rmsea","aic"))
+}) |> t() |> round(3)
+
+# χ²-Differenztest: (a) vs. (b), (c) vs. (b)
+
+# (a) vs. (b)
+anova(fit_1f,fit_3f)
+
+#(c) vs. (b):
+anova(fit_orth,fit_3f)
+
+# Antwort zu: "Warum haben (b) und (d) den gleichen Fit?"
+# 
+# Weil sie die gleiche vom Modell implizierte Varianz-Kovarianz-
+# Matrix haben. Aber wie kann man das erkennen? 
+# i) Rechenregeln
+# ii) Matrix-Repräsentation des Modells kennenlernen :-)
+```
+
+</details>

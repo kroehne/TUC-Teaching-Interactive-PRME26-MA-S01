@@ -40,9 +40,13 @@ website:
           - href: S03_CFA_02.qmd
             text: "B | Übung 1"
           - href: S03_CFA_03.qmd
-            text: "C | Übung 2"       
+            text: "C | Übung 2"     
+          - href: S03_Estimation_01.qmd
+            text: "D | `parTable()` und `lavTech()`"
+          - href: S03_Estimation_02.qmd
+            text: "E | Illustration von Modelltests"            
           - href: S03_Multigroup_01.qmd
-            text: "x | Übung X (Mehgruppenmodelle verstehen)"
+            text: "F | Mehgruppenmodelle verstehen"
           - href: S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.qmd
             text: "ℹ Tutorial von Rosseel & Vidal (2025) - 1"
           - href: S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.qmd

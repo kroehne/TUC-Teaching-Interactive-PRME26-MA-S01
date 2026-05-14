@@ -1,0 +1,297 @@
+---
+title: "E | Illustration von Modelltests"
+format: live-html
+engine: knitr
+status: "Version 0.1"
+lang: de
+---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+
+## Illustration von Modelltests
+
+**Frage:** Sind `visual` und `textual` im 2-Faktor-Modell zu HolzingerSwineford1939
+(`x1`–`x6`) inhaltlich unterscheidbar? — d.h. ist die latente Korrelation
+$\rho_{\text{visual},\text{textual}}$ signifikant *kleiner als 1*?
+
+Vier Wege, diese Frage inferenzstatistisch zu beantworten:
+
+1. **Neuer (abgeleiteter) Parameter** $\rho-1$ mit $z$-Test
+2. **Wald-Test** über Parameter-Constraint (`lavTestWald()`)
+3. **$\chi^2$-Differenztest** (liberales 2-Faktor- vs. restriktives Modell mit $\rho=1$)
+4. **Modifikationsindex** im restriktiven Modell ($\rho=1$ fixiert)
+
+```{webr}
+#| warning: false
+#| echo: false
+
+webr::install("quadprog",  repos = "https://kroehne.github.io/webr-quadprog-repo")
+
+suppressPackageStartupMessages(library(mnormt))
+suppressPackageStartupMessages(library(lavaan))
+suppressPackageStartupMessages(library(lavaanPlot))
+suppressPackageStartupMessages(library(DT))
+
+assignInNamespace("lav_options_checkinterval", function(x, nm, num2int) {
+    if (any(is.na(x))) return(TRUE)
+    if (num2int) x <- as.integer(x)
+    oks <- vapply(x, function(x1) {
+      (x1 > nm$bounds[1] || (x1 == nm$bounds[1] && nm$first.in)) &&
+      (x1 < nm$bounds[2] || (x1 == nm$bounds[2] && nm$last.in))
+    }, TRUE)
+    all(oks)
+  }, ns = "lavaan")
+
+
+View <- function(dat){
+  dat_name <- deparse(substitute(dat))
+  df_display <- dat |>
+  dplyr::mutate(
+    dplyr::across(everything(), ~ ifelse(is.na(.x), "❌ (NA)", .x))
+  )
+
+  DT::datatable(
+    df_display,
+    rownames = FALSE,
+    options = list(
+      pageLength = 5,
+      scrollX = TRUE,
+      dom = 'tip',
+      columnDefs = list(list(className = 'dt-center', targets = "_all"))
+    ),
+    caption = htmltools::tags$caption(
+      style = 'caption-side: top; text-align: left;',
+      'data.frame: ', htmltools::strong(dat_name)
+    )
+  )
+}
+
+HS <- HolzingerSwineford1939[,paste0("x",1:6)]
+
+# Liberales 2-Faktor-Modell, Skalierung über Faktorvarianzen (=1),
+# damit die Kovarianz eta1~~eta2 direkt der Korrelation rho entspricht.
+model_liberal <- '
+  visual  =~ NA*x1 + x2 + x3
+  textual =~ NA*x4 + x5 + x6
+  visual  ~~ 1*visual
+  textual ~~ 1*textual
+  visual  ~~ rho*textual
+  rho_minus_1 := rho - 1
+'
+fit_liberal <- sem(model_liberal, data = HS)
+
+# Restriktives Modell: rho = 1 (Korrelation auf 1 fixiert)
+model_restriktiv <- '
+  visual  =~ NA*x1 + x2 + x3
+  textual =~ NA*x4 + x5 + x6
+  visual  ~~ 1*visual
+  textual ~~ 1*textual
+  visual  ~~ 1*textual
+'
+fit_restriktiv <- sem(model_restriktiv, data = HS)
+
+```
+
+<details>
+<summary>Datenaufbereitung</summary>
+
+Wir betrachten nur die ersten zwei Fatkoren um das Beispiel einfach zu halten:
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: true
+# Erstellung eines Teildatensatzes
+
+HS <- HolzingerSwineford1939[,paste0("x",1:6)]
+```
+</details>
+
+### Liberales Modell (d.h. 2-Faktor-Modell)
+
+#### Option 1 — Abgeleiteter Parameter ($\rho - 1$) mit $z$-Test
+
+Wir benennen die latente Korrelation `rho` und definieren den abgeleiteten
+Parameter `rho_minus_1 := rho - 1`. Der $z$-Test für diesen *Defined Parameter*
+prüft direkt $H_0:\rho=1$.
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: false
+
+model_liberal <- '
+  visual  =~ NA*x1 + x2 + x3
+  textual =~ NA*x4 + x5 + x6
+  visual  ~~ 1*visual
+  textual ~~ 1*textual
+  visual  ~~ rho*textual
+  rho_minus_1 := rho - 1
+'
+fit_liberal <- sem(model_liberal, data = HS)
+
+# Defined Parameter ansehen: Estimate, S.E., z, p
+parameterEstimates(fit_liberal)[
+  parameterEstimates(fit_liberal)$op == ":=", ]
+```
+
+#### Option 2 — Wald-Test über Parameter-Constraint
+
+`lavTestWald()` testet einen beliebigen Constraint $c(\hat\theta)-q=0$
+direkt am liberalen Modell — basiert auf der Delta-Methode bzw. der
+asymptotischen Kovarianzmatrix `vcov(fit)`. Bei einem einzelnen Constraint
+gilt $W_{\text{Wald}} \approx z^2$ (vgl. Option 1).
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: false
+
+lavTestWald(fit_liberal, constraints = 'rho == 1')
+```
+
+<details>
+<summary>**Option 2 (alternativ)** — Skalierung über erste Ladung (Cov ≠ Cor)</summary>
+
+Wenn die Skalierung über die erste Ladung erfolgt (`visual =~ x1 + ...`
+statt `NA*x1 + ...` mit fixierter Faktorvarianz), ist der geschätzte
+`visual ~~ textual`-Parameter eine **Kovarianz**, *nicht* die Korrelation.
+Die Korrelation muss als Funktion der Varianzen rekonstruiert werden:
+$\rho = \dfrac{\widehat{\text{Cov}}}{\sqrt{\widehat{\text{Var}}(\eta_1)\cdot\widehat{\text{Var}}(\eta_2)}}$.
+
+Sowohl als *Defined Parameter* nutzbar (z-Test mit Delta-Methode) als
+auch direkt im Wald-Test über die Basis-Parameter:
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: false
+
+model_liberal_alt <- '
+  visual  =~ x1 + x2 + x3
+  textual =~ x4 + x5 + x6
+
+  visual  ~~ var_v  * visual
+  textual ~~ var_t  * textual
+  visual  ~~ cov_vt * textual
+
+  rho         := cov_vt / (sqrt(var_v) * sqrt(var_t))
+  rho_minus_1 := rho - 1
+'
+fit_liberal_alt <- sem(model_liberal_alt, data = HS)
+
+# Defined Parameters: rho und rho_minus_1 (z-Test gegen 0 ⇒ rho gegen 1)
+parameterEstimates(fit_liberal_alt)[
+  parameterEstimates(fit_liberal_alt)$op == ":=", ]
+
+# Äquivalenter Wald-Test direkt über die Basis-Parameter:
+lavTestWald(fit_liberal_alt,
+  constraints = 'cov_vt / (sqrt(var_v) * sqrt(var_t)) == 1')
+```
+
+Beide Varianten (Option 2 und Option 2 alternativ) führen zu numerisch
+nahezu identischen Ergebnissen — die Skalierungswahl ist eine reine
+Parametrisierungs-Frage.
+
+</details>
+
+### Liberales (2-Faktor) und Restriktives (1-Faktor) Modell
+
+#### Option 3 — $\chi^2$-Differenztest (genestete Modelle)
+
+Das restriktive Modell fixiert die Korrelation auf 1
+(`visual ~~ 1*textual`). Es ist im liberalen Modell genestet. Der
+LR-Test über `anova()` (bzw. `lavTestLRT()`) prüft, ob die zusätzliche
+Restriktion den Fit signifikant verschlechtert.
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: false
+
+model_restriktiv <- '
+  visual  =~ NA*x1 + x2 + x3
+  textual =~ NA*x4 + x5 + x6
+  visual  ~~ 1*visual
+  textual ~~ 1*textual
+  visual  ~~ 1*textual
+'
+fit_restriktiv <- sem(model_restriktiv, data = HS)
+
+# Variante A: anova()
+anova(fit_liberal, fit_restriktiv)
+
+# Variante B: lavTestLRT() — explizite, lavaan-eigene Funktion
+# (identisches Ergebnis wie anova(), unterstützt zusätzlich
+#  Skalierungs-Korrekturen für robuste Schätzer wie MLR)
+lavTestLRT(fit_liberal, fit_restriktiv)
+```
+
+
+#### Außerdem:  Informationskriterien (AIC / BIC) als ergänzender Vergleich
+
+`AIC`/`BIC` sind *relative* Maße: kleinerer Wert = besser. Sie sind primär für *nicht-genestete* Modellvergleiche gedacht, lassen sich aber auch hier ergänzend zum LRT (Option 3) berichten. `anova()` gibt sie für beide Modelle direkt mit aus.
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: false
+
+# Direkt aus dem anova()-Output (Spalten AIC, BIC pro Modell)
+anova(fit_liberal, fit_restriktiv)
+
+# Differenzen explizit
+fm <- fitMeasures(fit_liberal,    c("aic","bic"))
+fm_r <- fitMeasures(fit_restriktiv, c("aic","bic"))
+data.frame(
+  liberal    = fm,
+  restriktiv = fm_r,
+  delta      = fm_r - fm   # >0 ⇒ liberal besser
+)
+```
+
+Faustregel: $\Delta\text{BIC} > 10$ gilt als „starker" Hinweis auf das
+Modell mit kleinerem BIC. Bei genesteten Modellen sollte das LRT-Ergebnis
+führend sein — `AIC`/`BIC` als zweite Perspektive.
+
+### (Nur) Restriktives (1-Faktor) Modell
+
+#### Option 4 — Modifikationsindex (Lagrange-Multiplier-Test)
+
+Spiegelbild zum Wald-Test: Wir gehen vom *restriktiven* Modell
+($\rho=1$ fixiert) aus und fragen mit `modificationIndices()`, wie stark
+sich der $\chi^2$-Wert verbesserte, wenn wir die Korrelation
+freisetzten (Spalte `mi`; `epc` = erwarteter Parameterwert).
+
+Der `mi`-Wert ist approximativ $\chi^2$-verteilt mit $df=1$ — vgl.
+$\chi^2$-Differenz aus Option 3.
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: false
+
+mi <- modificationIndices(fit_restriktiv, free.remove = FALSE)
+mi <- mi[order(-mi$mi), ]
+head(mi, 5)
+
+# p-Wert aus dem MI für die Korrelation visual ~~ textual
+mi_vt <- mi$mi[mi$lhs == "visual" & mi$op == "~~" & mi$rhs == "textual"]
+cat("MI(visual ~~ textual) =", round(mi_vt, 3),
+    "  p =", signif(1 - pchisq(mi_vt, df = 1), 3), "\n")
+```
+
+### Synopse
+
+| Verfahren | Ausgangsmodell | lavaan-Funktion | Prüfgröße |
+|---|---|---|---|
+| Defined Parameter | liberal | `parameterEstimates()` | $z = \hat\rho_{-1}/\text{S.E.}$ |
+| Wald-Test | liberal | `lavTestWald()` | $W \sim \chi^2_{df=1}$ |
+| $\chi^2$-Differenz | beide | `anova()` / `lavTestLRT()` | $\Delta\chi^2 \sim \chi^2_{\Delta df}$ |
+| Modifikationsindex | restriktiv | `modificationIndices()` | $\text{MI} \sim \chi^2_{df=1}$ |
+| AIC / BIC | beide | `fitMeasures()` / `anova()` | relativ: kleiner = besser |
+
+Alle vier Tests adressieren dieselbe $H_0:\rho=1$; sie unterscheiden sich
+nur darin, *aus welchem Modell* (liberal vs. restriktiv) und *mit welcher
+Approximation* (Delta-Methode vs. Likelihood-Ratio vs. Score) sie diese
+Hypothese prüfen. Bei großem $N$ konvergieren sie asymptotisch.

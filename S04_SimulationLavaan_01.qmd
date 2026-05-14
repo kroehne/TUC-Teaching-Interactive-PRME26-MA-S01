@@ -1,5 +1,5 @@
 ---
-title: "B | Daten mit `lavaan` erzeugen" 
+title: "C | Daten mit `lavaan` erzeugen" 
 format: live-html
 engine: knitr  
 status: "Version 0.1"

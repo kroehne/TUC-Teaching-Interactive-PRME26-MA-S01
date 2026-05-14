@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>B | Übung 2</title>
+<title>C | Übung 3</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -377,8 +377,20 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./S03_Estimation_01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">D | <code>parTable()</code> und <code>lavTech()</code></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S03_Estimation_02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">E | Illustration von Modelltests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./S03_Multigroup_01.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">x | Übung X (Mehgruppenmodelle verstehen)</span></a>
+ <span class="menu-text">F | Mehgruppenmodelle verstehen</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -563,7 +575,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./S02_EFA_01.html">II: Grundlagen</a></li><li class="breadcrumb-item"><a href="./S02_PD_02.html">C | Übung 3</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">B | Übung 2</h1>
+<h1 class="title">C | Übung 3</h1>
 </div>
 
 
@@ -700,16 +712,11 @@ SPOILER!
 \]</span></p>
 </section></details>
 <hr>
-</section>
-
-<section id="kompakte-matrizenform" class="level2">
-<h2 class="anchored" data-anchor-id="kompakte-matrizenform">Kompakte Matrizenform</h2>
 <details>
 <summary>
-SPOILER!
+(Nachvollziehen der Matrizenform auf der Folie)
 </summary>
-<section id="messmodell" class="level3">
-<h3 class="anchored" data-anchor-id="messmodell">Messmodell</h3>
+<p><strong>Messmodell</strong></p>
 <p><span class="math display">\[
 \underset{(6 \times 1)}{\mathbf{y}} = \underset{(6 \times 3)}{\boldsymbol{\Lambda}} \;\underset{(3 \times 1)}{\boldsymbol{\eta}} + \underset{(6 \times 1)}{\boldsymbol{\varepsilon}}
 \]</span></p>
@@ -722,9 +729,7 @@ SPOILER!
 +
 \begin{pmatrix} \varepsilon_1 \\ \varepsilon_2 \\ \varepsilon_3 \\ \varepsilon_4 \\ \varepsilon_5 \\ \varepsilon_6 \end{pmatrix}
 \]</span></p>
-</section>
-<section id="strukturmodell" class="level3">
-<h3 class="anchored" data-anchor-id="strukturmodell">Strukturmodell</h3>
+<p><strong>Strukturmodell</strong></p>
 <p><span class="math display">\[
 \underset{(3 \times 1)}{\boldsymbol{\eta}} = \underset{(3 \times 3)}{\mathbf{B}}\;\underset{(3 \times 1)}{\boldsymbol{\eta}} + \underset{(3 \times 1)}{\boldsymbol{\zeta}}
 \]</span></p>
@@ -738,23 +743,19 @@ SPOILER!
 \begin{pmatrix} \zeta_1 \\ \zeta_2 \\ \zeta_3 \end{pmatrix}
 \]</span></p>
 <p>Kommentar: <span class="math inline">\(\eta_1\)</span> ist exogen (erste Zeile von <span class="math inline">\(\mathbf{B}\)</span> ist null), d.h. <span class="math inline">\(\zeta_1 \equiv \eta_1\)</span>. Die Fixierung <span class="math inline">\(\beta_{21}=1\)</span> ist in <span class="math inline">\(\mathbf{B}\)</span> bereits eingesetzt.</p>
-</section>
-<section id="parametermatrizen" class="level3">
-<h3 class="anchored" data-anchor-id="parametermatrizen">Parametermatrizen</h3>
-<p>Kovarianzmatrix der Störterme (latent):</p>
+<p><strong>Parametermatrizen</strong></p>
+<p>Kovarianzmatrix der latenten Residuen:</p>
 <p><span class="math display">\[
 \boldsymbol{\Psi} = \mathrm{Cov}(\boldsymbol{\zeta}) =
 \begin{pmatrix} \psi_{11} &amp; 0 &amp; 0 \\ 0 &amp; \psi_{22} &amp; 0 \\ 0 &amp; 0 &amp; \psi_{33} \end{pmatrix}
 \]</span></p>
 <p>mit <span class="math inline">\(\psi_{11} = \mathrm{Var}(\eta_1)\)</span>, <span class="math inline">\(\psi_{22} = \mathrm{Var}(\zeta_2)\)</span> und <span class="math inline">\(\psi_{33} = \mathrm{Var}(\zeta_3)\)</span>.</p>
-<p>Kovarianzmatrix der Messresiduen:</p>
+<p>Kovarianzmatrix der Messmodell-Residuen:</p>
 <p><span class="math display">\[
 \boldsymbol{\Theta} = \mathrm{Cov}(\boldsymbol{\varepsilon}) =
 \mathrm{diag}(\theta_{1}, \theta_{2}, \theta_{3}, \theta_{4}, \theta_{5}, \theta_{6})
 \]</span></p>
-</section>
-<section id="modellimplizierte-kovarianzmatrix" class="level3">
-<h3 class="anchored" data-anchor-id="modellimplizierte-kovarianzmatrix">Modellimplizierte Kovarianzmatrix</h3>
+<p><strong>Modellimplizierte Kovarianzmatrix</strong></p>
 <p><span class="math display">\[
 \boldsymbol{\Sigma} = \boldsymbol{\Lambda}\,(\mathbf{I}-\mathbf{B})^{-1}\,\boldsymbol{\Psi}\,\left[(\mathbf{I}-\mathbf{B})^{-1}\right]^\top \boldsymbol{\Lambda}^\top + \boldsymbol{\Theta}
 \]</span></p>
@@ -781,9 +782,9 @@ SPOILER!
 <p>Und schließlich <span class="math inline">\(\boldsymbol{\Sigma} = \boldsymbol{\Lambda}\,\mathrm{Cov}(\boldsymbol{\eta})\,\boldsymbol{\Lambda}^\top + \boldsymbol{\Theta}\)</span> als <span class="math inline">\(6 \times 6\)</span>-Matrix.</p>
 <p>Kommentar:</p>
 <ul>
-<li>Das Modell hat <strong>13 freie Parameter</strong> (<span class="math inline">\(\lambda_{21}\)</span>, <span class="math inline">\(\lambda_{63}\)</span>, <span class="math inline">\(\beta_{31}\)</span>, <span class="math inline">\(\beta_{32}\)</span>, <span class="math inline">\(\psi_{11}\)</span>, <span class="math inline">\(\psi_{22}\)</span>, <span class="math inline">\(\psi_{33}\)</span>, <span class="math inline">\(\theta_1\)</span>, <span class="math inline">\(\theta_2\)</span>, <span class="math inline">\(\theta_3\)</span>, <span class="math inline">\(\theta_4\)</span>, <span class="math inline">\(\theta_5\)</span>, <span class="math inline">\(\theta_6\)</span>) bei 21 nicht-redundanten Elementen in <span class="math inline">\(\boldsymbol{\Sigma}\)</span> (6 Varianzen + 15 Kovarianzen), d.h. <span class="math inline">\(df = 21 - 13 = 8\)</span> Freiheitsgrade.</li>
+<li>Das Modell hat <strong>13 freie Parameter</strong> (<span class="math inline">\(\lambda_{21}\)</span>, <span class="math inline">\(\lambda_{63}\)</span>, <span class="math inline">\(\beta_{31}\)</span>, <span class="math inline">\(\beta_{32}\)</span>, <span class="math inline">\(\psi_{11}\)</span>, <span class="math inline">\(\psi_{22}\)</span>, <span class="math inline">\(\psi_{33}\)</span>, <span class="math inline">\(\theta_1\)</span>, <span class="math inline">\(\theta_2\)</span>, <span class="math inline">\(\theta_3\)</span>, <span class="math inline">\(\theta_4\)</span>, <span class="math inline">\(\theta_5\)</span>, <span class="math inline">\(\theta_6\)</span>) bei 21 nicht-redundanten Elementen in <span class="math inline">\(\boldsymbol{\Sigma}\)</span> (6 Varianzen + 15 Kovarianzen = 21 = 6 * 7 / 2, d.h. <span class="math inline">\(df = 21 - 13 = 8\)</span> Freiheitsgrade.</li>
 </ul>
-</section></details>
+</details>
 
 
 <script type="ojs-module-contents">

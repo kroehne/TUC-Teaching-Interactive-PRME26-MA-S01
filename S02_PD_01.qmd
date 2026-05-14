@@ -1,5 +1,5 @@
 ---
-title: "A | Übung 1"
+title: "B | Übung 2"
 format: live-html
 engine: knitr 
 topic: "Beispiel-Pfaddiagramm 1"
@@ -145,11 +145,10 @@ $$
 </details>
 
 
-## Kompakte Matrizenform
 <details>
-<summary>SPOILER!</summary>
- 
-### Messmodell
+<summary>(Nachvollziehen der Matrizenform auf der Folie)</summary>
+
+**Messmodell**
  
 $$
 \underset{(3 \times 1)}{\mathbf{y}} = \underset{(3 \times 2)}{\boldsymbol{\Lambda}} \;\underset{(2 \times 1)}{\boldsymbol{\eta}} + \underset{(3 \times 1)}{\boldsymbol{\varepsilon}}
@@ -166,7 +165,7 @@ $$
 \begin{pmatrix} \varepsilon_1 \\ \varepsilon_2 \\ \varepsilon_3 \end{pmatrix}
 $$
  
-### Strukturmodell
+**Strukturmodell**
  
 $$
 \underset{(2 \times 1)}{\boldsymbol{\eta}} = \underset{(2 \times 2)}{\mathbf{B}}\;\underset{(2 \times 1)}{\boldsymbol{\eta}} + \underset{(2 \times 1)}{\boldsymbol{\zeta}}
@@ -185,10 +184,10 @@ $$
  
 Kommentar: $\eta_1$ ist exogen (erste Zeile von $\mathbf{B}$ ist null), d.h. $\zeta_1 \equiv \eta_1$.
  
-### Parametermatrizen
+**Parametermatrizen**
  
 Kovarianzmatrix der latenten Residuen:
- 
+
 $$
 \boldsymbol{\Psi} = \mathrm{Cov}(\boldsymbol{\zeta}) =
 \begin{pmatrix} \psi_{11} & 0 \\ 0 & \psi_{22} \end{pmatrix}
@@ -196,7 +195,7 @@ $$
  
 mit $\psi_{11} = \mathrm{Var}(\eta_1)$ und $\psi_{22} = \mathrm{Var}(\zeta_2)$.
  
-Kovarianzmatrix der Messresiduen:
+Kovarianzmatrix der Messmodell-Residuen:
  
 $$
 \boldsymbol{\Theta} = \mathrm{Cov}(\boldsymbol{\varepsilon}) =
@@ -205,7 +204,7 @@ $$
  
 mit der Restriktion $\mathrm{Var}(\varepsilon_3) = 0$.
  
-### Modellimplizierte Kovarianzmatrix
+**Modellimplizierte Kovarianzmatrix**
  
 $$
 \boldsymbol{\Sigma} = \boldsymbol{\Lambda}\,(\mathbf{I}-\mathbf{B})^{-1}\,\boldsymbol{\Psi}\,\left[(\mathbf{I}-\mathbf{B})^{-1}\right]^\top \boldsymbol{\Lambda}^\top + \boldsymbol{\Theta}
@@ -243,6 +242,6 @@ $$
  
 Kommentar: 
 
-* Das Modell hat **6 freie Parameter** ($\lambda_{21}$, $\beta_{21}$, $\psi_{11}$, $\psi_{22}$, $\theta_1$, $\theta_2$) bei 6 nicht-redundanten Elementen in $\boldsymbol{\Sigma}$ (3 Varianzen + 3 Kovarianzen), d.h. das Modell hat $df = 6 - 6 = 0$ Freiheitsgrade und ist **gerade identifiziert** (*just identified*).
+* Das Modell hat **6 freie Parameter** ($\lambda_{21}$, $\beta_{21}$, $\psi_{11}$, $\psi_{22}$, $\theta_1$, $\theta_2$) bei 6 nicht-redundanten Elementen in $\boldsymbol{\Sigma}$ (3 Varianzen + 3 Kovarianzen = 6 = 3 * 4 / 2), d.h. das Modell hat $df = 6 - 6 = 0$ Freiheitsgrade und ist **gerade identifiziert** (*just identified*).
  
 </details>

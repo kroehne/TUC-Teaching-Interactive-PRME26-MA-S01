@@ -86,20 +86,54 @@ View(HolzingerSwineford1939)
 
 <details>
 <summary>Hilfestellung</summary>
+
+Die Items heißen `x1`, `x2`, ... , `x9` im Datensatz. Kopervorlagen für das Modell finden Sie in folgendem R-Block, der nicht läuft:
+
 ```{r}
 #| echo: true
 #| eval: false
-model_1f <- '
-  g =~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9
-'
-fit_1f <- cfa(model_1f, data = HolzingerSwineford1939)
+# Item-Namen für 1-Faktor Modell:
+# x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9
 
-# Fit vergleichen
+# Item-Namen für 3-Faktor Modell (jede Zeile ein Faktor)
+# x1 + x2 + x3 
+# x4 + x5 + x6 
+# x7 + x8 + x9
+```
+
+Weitere Hilfestellung:
+
+```{r}
+#| echo: true
+#| eval: false
+# Der Aufruf von lavaan erfolgt über 
+
+VAR_NAME <- cfa(model, daten)
+
+# Die Daten sind in folgendem R-data.frame:
+
+head(HolzingerSwineford1939)
+
+# Um den Fit zu vergleichen nutzen Sie die Funktion
+
 fitMeasures(fit_1f, c("chisq", "df", "cfi", "rmsea", "srmr"))
 fitMeasures(fit_3f, c("chisq", "df", "cfi", "rmsea", "srmr"))
 
-# Chi-Quadrat-Differenztest
+# fit_1f ist dabei die Variable, in der das Ergebnis
+#        des Einfaktor-Modells erwartet wird
+# fit_3f ist dabei die Variable, in der das Ergebnis
+#        des Dreifaktor-Modells erwartet wird
+
+# Für den Modellvergleich nutzen Sie die Funktion 
+
 anova(fit_1f, fit_3f)
+
+# Wenn Sie sich ein Pfaddiagramm ausgeben 
+# lassen wollen, geht das mit folgenden R-Befehlen:
+
+library(lavaanPlot)
+lavaanPlot(model = fit_3f,   
+     coefs = TRUE, stand = TRUE,covs = TRUE)
 ```
 
 </details>
@@ -114,3 +148,41 @@ model_1f <-  ""
 
 # ...
 ```
+
+
+
+<details>
+<summary>SPOILER</summary>
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: false 
+
+model_3f <-  "
+  visual  =~ x1 + x2 + x3
+  textual =~ x4 + x5 + x6
+  speed   =~ x7 + x8 + x9
+"
+fit_3f <- cfa(model_3f, data = HolzingerSwineford1939)
+
+model_1f <- "
+  g =~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9
+"
+fit_1f <- cfa(model_1f, data = HolzingerSwineford1939)
+
+# Fit vergleichen
+fitMeasures(fit_1f, c("chisq", "df", "cfi", "rmsea", "srmr"))
+fitMeasures(fit_3f, c("chisq", "df", "cfi", "rmsea", "srmr"))
+
+# Chi-Quadrat-Differenztest
+anova(fit_1f, fit_3f)
+
+library(lavaanPlot)
+lavaanPlot(model = fit_1f,   
+     coefs = TRUE, stand = TRUE,covs = TRUE)
+lavaanPlot(model = fit_3f,   
+     coefs = TRUE, stand = TRUE,covs = TRUE)
+
+```
+
+</details>

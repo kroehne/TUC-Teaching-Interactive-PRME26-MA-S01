@@ -1,5 +1,5 @@
 ---
-title: "x | Übung X"
+title: "F | Mehgruppenmodelle verstehen"
 format: live-html
 engine: knitr  
 status: "Version 0.1"

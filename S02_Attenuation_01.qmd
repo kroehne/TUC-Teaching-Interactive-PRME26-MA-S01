@@ -1,11 +1,12 @@
 ---
-title: "Hands-on: Latente Korrelation in R"
+title: "A: Übung 1"
 format: live-html
 engine: knitr
 ---
   
 {{< include _extensions/r-wasm/live/_knitr.qmd >}}
 
+## Latente Korrelation in R
 
 $$
 \boxed{\,r_{\tau_1, \tau_2} = \dfrac{r_{Y_1, Y_2}}{\sqrt{\text{Rel}(Y_1)\cdot\text{Rel}(Y_2)}}\,}

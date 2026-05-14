@@ -1,5 +1,5 @@
 ---
-title: "A | CFA Live"
+title: "D | `parTable()` und `lavTech()`"
 format: live-html
 engine: knitr  
 status: "Version 0.1"
@@ -8,7 +8,7 @@ lang: de
 
 {{< include _extensions/r-wasm/live/_knitr.qmd >}}
  
-## 3-Faktor-CFA 
+## Lesen der `parTable` und Motivation für `lavTech()`
 
 ```{webr}
 #| warning: false
@@ -31,13 +31,7 @@ assignInNamespace("lav_options_checkinterval", function(x, nm, num2int) {
     all(oks)                                                                                                                     
   }, ns = "lavaan")
 
-model_3f <-  "visual  =~ x1 + x2 + x3
-              textual =~ x4 + x5 + x6
-              speed   =~ x7 + x8 + x9"
-
-fit_3f <- cfa(model_3f, data = HolzingerSwineford1939)
-
-
+ 
 View <- function(dat){
   dat_name <- deparse(substitute(dat))
   df_display <- dat |>
@@ -60,147 +54,98 @@ View <- function(dat){
     )
   )  
 }
+
+ model <- 'eta1 =~ 1*Y1 + 1*Y2 + 1*Y3 + 1*Y4
+  Y1 ~~ epsilon11 * Y1
+  Y2 ~~ epsilon22 * Y2
+  Y3 ~~ epsilon33 * Y3
+  Y4 ~~ epsilon44 * Y4
+  epsilon22==epsilon11
+  epsilon33==epsilon11
+  epsilon44==epsilon11'
+sim <- simulateData(model, sample.nobs=50)
+fit <- sem(model, data=sim)
 ```
 
 
-### Daten
+### Parameter (`partable`) aus Syntax
 
 ```{webr}
 #| warning: false
 #| echo: true
 #| autorun: false
-library(lavaan)
-View(HolzingerSwineford1939)
+ model <- 'eta1 =~ 1*Y1 + 1*Y2 + 1*Y3 + 1*Y4
+  Y1 ~~ epsilon11 * Y1
+  Y2 ~~ epsilon22 * Y2
+  Y3 ~~ epsilon33 * Y3
+  Y4 ~~ epsilon44 * Y4
+  epsilon22==epsilon11
+  epsilon33==epsilon11
+  epsilon44==epsilon11'
 
+partable <- lavaan::lavaanify(model = model)
+partable
 ```
 
-### Modell-Syntax
+### Parameter mit `parTable()` aus geschätztem Modell
 
 ```{webr}
 #| warning: false
 #| echo: true
 #| autorun: false
-model_3f <-  "visual  =~ x1 + x2 + x3
-              textual =~ x4 + x5 + x6
-              speed   =~ x7 + x8 + x9"
-model_3f
-```
+# Hier ein Trick, den wir später besprechen: Simulieren
+# von Daten zu einer Modellsyntax
+sim <- simulateData(model, sample.nobs=50)
+fit <- sem(model, data=sim)
 
-### Modell-Schätzung
+partable <- parTable(fit)
+partable[,c("id","lhs","op","rhs","user","block","free",
+            "ustart","exo","label","plabel")]
+```
+ 
+
+### Matrixschreibweise des Modells analog zur `parTable()`
 
 ```{webr}
 #| warning: false
 #| echo: true
 #| autorun: false
-library(lavaan)
-model_3f <-  "visual  =~ x1 + x2 + x3
-              textual =~ x4 + x5 + x6
-              speed   =~ x7 + x8 + x9"
-fit_3f <- cfa(model_3f, data = HolzingerSwineford1939)
-summary(fit_3f, fit.measures = TRUE, standardized = TRUE)
+lavMatrixRepresentation(partable)[,
+  c("lhs","op","rhs","free","label",
+    "mat","row","col")]
 ```
 
-### Parameterschätzer (unstandardisierte Lösung)
+
+
+### Matrixschreibweise des Modells über `lavTech()`
 
 ```{webr}
 #| warning: false
 #| echo: true
 #| autorun: false
-parameterEstimates(fit_3f)[1:9, 
-   c("lhs","op","rhs","est")]
+lavTech(fit)
 ```
-   
-### Standardisierte Lösung
+
 
 ```{webr}
 #| warning: false
 #| echo: true
 #| autorun: false
-standardizedSolution(fit_3f)[1:9, 
-            c("lhs","op","rhs","est.std")]
+lavTech(fit, what="start")
 ```
 
-### Pfaddiagramm
-
-Standardisierte Lösung
 
 ```{webr}
 #| warning: false
 #| echo: true
-library(lavaanPlot)
-lavaanPlot(model = fit_3f,   
-     coefs = TRUE, stand = TRUE,covs = TRUE)
+#| autorun: false
+lavTech(fit, what="est")
 ```
-
-Unstandardisierte Lösung
+Weitere Optionen:
 
 ```{webr}
 #| warning: false
 #| echo: true
-library(lavaanPlot)
-lavaanPlot(model = fit_3f,   
-     coefs = TRUE, stand = FALSE,covs = TRUE)
+#| autorun: false
+?lavTech
 ```
-
-<details>
-<summary>Alternativen zur Darstellung</summary>
-
-```{webr}
-#| warning: false
-#| echo: true
-library(tidySEM)
-graph_sem(fit_3f)
-```
-
-Empfohlen, aber funktioniert nur lokal in R:
-
-```{webr}
-#| warning: false
-#| echo: true
-library(semPlot)
-
-semPaths(
-  fit_3f,
-  what = "std",
-  layout = "tree",  
-  rotation = 2 
-)
-```
-
-</details>
-
-
-### Modellfit
-
-```{webr}
-#| warning: false
-#| echo: true
-fitMeasures(fit_3f, c("chisq", "df", "pvalue",
-                       "cfi", "tli",
-                       "rmsea", "rmsea.ci.lower",
-                       "rmsea.ci.upper", "srmr"))
-```
-
-
-
-### Faktorkorrelationen
-
-```{webr}
-#| warning: false
-#| echo: true
-lavInspect(fit_3f, "cor.lv")
-```
-
-
-
-
-### Residualkorrelationen
-
-```{webr}
-#| warning: false
-#| echo: true
-resid(fit_3f, type = "standardized")$cov
-```
-
-
-

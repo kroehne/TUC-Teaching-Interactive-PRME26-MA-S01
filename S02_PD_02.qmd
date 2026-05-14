@@ -1,8 +1,8 @@
 ---
-title: "B | Übung 2"
+title: "C | Übung 3"
 format: live-html
 engine: knitr 
-topic: "Beispiel-Pfaddiagramm 1"
+topic: "Beispiel-Pfaddiagramm 2"
 status: "Version 0.1"
 lang: de 
 ---
@@ -136,12 +136,10 @@ $$
  
 ---
 
-## Kompakte Matrizenform
-
 <details>
-<summary>SPOILER!</summary>
- 
-### Messmodell
+<summary>(Nachvollziehen der Matrizenform auf der Folie)</summary>
+
+**Messmodell**
  
 $$
 \underset{(6 \times 1)}{\mathbf{y}} = \underset{(6 \times 3)}{\boldsymbol{\Lambda}} \;\underset{(3 \times 1)}{\boldsymbol{\eta}} + \underset{(6 \times 1)}{\boldsymbol{\varepsilon}}
@@ -158,7 +156,7 @@ $$
 \begin{pmatrix} \varepsilon_1 \\ \varepsilon_2 \\ \varepsilon_3 \\ \varepsilon_4 \\ \varepsilon_5 \\ \varepsilon_6 \end{pmatrix}
 $$
  
-### Strukturmodell
+**Strukturmodell**
  
 $$
 \underset{(3 \times 1)}{\boldsymbol{\eta}} = \underset{(3 \times 3)}{\mathbf{B}}\;\underset{(3 \times 1)}{\boldsymbol{\eta}} + \underset{(3 \times 1)}{\boldsymbol{\zeta}}
@@ -177,9 +175,9 @@ $$
  
 Kommentar: $\eta_1$ ist exogen (erste Zeile von $\mathbf{B}$ ist null), d.h. $\zeta_1 \equiv \eta_1$. Die Fixierung $\beta_{21}=1$ ist in $\mathbf{B}$ bereits eingesetzt.
  
-### Parametermatrizen
+**Parametermatrizen**
  
-Kovarianzmatrix der Störterme (latent):
+Kovarianzmatrix der latenten Residuen:
  
 $$
 \boldsymbol{\Psi} = \mathrm{Cov}(\boldsymbol{\zeta}) =
@@ -188,14 +186,14 @@ $$
  
 mit $\psi_{11} = \mathrm{Var}(\eta_1)$, $\psi_{22} = \mathrm{Var}(\zeta_2)$ und $\psi_{33} = \mathrm{Var}(\zeta_3)$.
  
-Kovarianzmatrix der Messresiduen:
+Kovarianzmatrix der Messmodell-Residuen:
  
 $$
 \boldsymbol{\Theta} = \mathrm{Cov}(\boldsymbol{\varepsilon}) =
 \mathrm{diag}(\theta_{1}, \theta_{2}, \theta_{3}, \theta_{4}, \theta_{5}, \theta_{6})
 $$
 
-### Modellimplizierte Kovarianzmatrix
+**Modellimplizierte Kovarianzmatrix**
  
 $$
 \boldsymbol{\Sigma} = \boldsymbol{\Lambda}\,(\mathbf{I}-\mathbf{B})^{-1}\,\boldsymbol{\Psi}\,\left[(\mathbf{I}-\mathbf{B})^{-1}\right]^\top \boldsymbol{\Lambda}^\top + \boldsymbol{\Theta}
@@ -230,7 +228,7 @@ Und schließlich $\boldsymbol{\Sigma} = \boldsymbol{\Lambda}\,\mathrm{Cov}(\bold
  
 Kommentar: 
 
-* Das Modell hat **13 freie Parameter** ($\lambda_{21}$, $\lambda_{63}$, $\beta_{31}$, $\beta_{32}$, $\psi_{11}$, $\psi_{22}$, $\psi_{33}$, $\theta_1$, $\theta_2$, $\theta_3$, $\theta_4$, $\theta_5$, $\theta_6$) bei 21 nicht-redundanten Elementen in $\boldsymbol{\Sigma}$ (6 Varianzen + 15 Kovarianzen), d.h. $df = 21 - 13 = 8$ Freiheitsgrade.
+* Das Modell hat **13 freie Parameter** ($\lambda_{21}$, $\lambda_{63}$, $\beta_{31}$, $\beta_{32}$, $\psi_{11}$, $\psi_{22}$, $\psi_{33}$, $\theta_1$, $\theta_2$, $\theta_3$, $\theta_4$, $\theta_5$, $\theta_6$) bei 21 nicht-redundanten Elementen in $\boldsymbol{\Sigma}$ (6 Varianzen + 15 Kovarianzen = 21 = 6 * 7 / 2, d.h. $df = 21 - 13 = 8$ Freiheitsgrade.
  
 </details>
  
