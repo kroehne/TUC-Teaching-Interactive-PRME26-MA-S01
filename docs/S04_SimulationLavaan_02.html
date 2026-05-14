@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.9.36">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>C | ℹ Strukturierung nach Wang &amp; Rhemtulla (2021)</title>
+<title>D | ℹ Strukturierung nach Wang &amp; Rhemtulla (2021)</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -28,19 +31,18 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-707d8167ce6003fca903bfe2be84ab7f.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-67566881ab4f3b133faea9d0fc5e8f68.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-e1513da737e43ca990c7d02ef8bc546c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-67566881ab4f3b133faea9d0fc5e8f68.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-49e6f23304100a556d32b06c3526139c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-162a7a20ec51b8611abd82597ec93b3a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-49e6f23304100a556d32b06c3526139c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -62,7 +64,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -264,7 +266,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./S04_rosseelTutorialUnderstandingSEM2025_Interactive_03.html">IV: Einbettung</a></li><li class="breadcrumb-item"><a href="./S04_SimulationLavaan_02.html">C | ℹ Strukturierung nach Wang &amp; Rhemtulla (2021)</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./S04_OrdinalSEM_01.html">IV: Einbettung</a></li><li class="breadcrumb-item"><a href="./S04_SimulationLavaan_02.html">D | ℹ Strukturierung nach Wang &amp; Rhemtulla (2021)</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -283,13 +285,9 @@ window.Quarto = {
 <p><strong>TUC-PRME-26 | MA-S01</strong></p>
 </div>
 </div></div>
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-      <a href="./index.html" class="sidebar-logo-link">
-      </a>
-      <div class="sidebar-tools-main">
+        <div class="sidebar-tools-main">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Dunkelmodus umschalten"><i class="bi"></i></a>
 </div>
-      </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
@@ -326,14 +324,26 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./S02_PD_01.html" class="sidebar-item-text sidebar-link">
+  <a href="./S02_EFA_01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Rückblick: Explorative Faktorenanalyse</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S02_Attenuation_01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">A | Übung 1</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./S02_PD_02.html" class="sidebar-item-text sidebar-link">
+  <a href="./S02_PD_01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">B | Übung 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S02_PD_02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">C | Übung 3</span></a>
   </div>
 </li>
       </ul>
@@ -367,14 +377,20 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./S03_Multigroup_01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">x | Übung X (Mehgruppenmodelle verstehen)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">D | ℹ Tutorial von Rosseel &amp; Vidal (2025) - 1</span></a>
+ <span class="menu-text">ℹ Tutorial von Rosseel &amp; Vidal (2025) - 1</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">E | ℹ Tutorial von Rosseel &amp; Vidal (2025) - 2</span></a>
+ <span class="menu-text">ℹ Tutorial von Rosseel &amp; Vidal (2025) - 2</span></a>
   </div>
 </li>
       </ul>
@@ -390,20 +406,32 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./S04_rosseelTutorialUnderstandingSEM2025_Interactive_03.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">A | ℹ Tutorial von Rosseel &amp; Vidal (2025) - 3</span></a>
+  <a href="./S04_OrdinalSEM_01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A | Live Ordinal SEM</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S04_OrdinalIRT_01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">B | Übung Ordinal vs.&nbsp;IRT</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./S04_SimulationLavaan_01.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">B | Daten mit <code>lavaan</code> erzeugen</span></a>
+ <span class="menu-text">C | Daten mit <code>lavaan</code> erzeugen</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./S04_SimulationLavaan_02.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">C | ℹ Strukturierung nach Wang &amp; Rhemtulla (2021)</span></a>
+ <span class="menu-text">D | ℹ Strukturierung nach Wang &amp; Rhemtulla (2021)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./S04_rosseelTutorialUnderstandingSEM2025_Interactive_03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ℹ Tutorial von Rosseel &amp; Vidal (2025) - 3</span></a>
   </div>
 </li>
       </ul>
@@ -533,9 +561,9 @@ window.Quarto = {
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./S04_rosseelTutorialUnderstandingSEM2025_Interactive_03.html">IV: Einbettung</a></li><li class="breadcrumb-item"><a href="./S04_SimulationLavaan_02.html">C | ℹ Strukturierung nach Wang &amp; Rhemtulla (2021)</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./S04_OrdinalSEM_01.html">IV: Einbettung</a></li><li class="breadcrumb-item"><a href="./S04_SimulationLavaan_02.html">D | ℹ Strukturierung nach Wang &amp; Rhemtulla (2021)</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">C | ℹ Strukturierung nach Wang &amp; Rhemtulla (2021)</h1>
+<h1 class="title">D | ℹ Strukturierung nach Wang &amp; Rhemtulla (2021)</h1>
 </div>
 
 
@@ -595,7 +623,7 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwidGltZWxpbWl0Ijoi
 
 </div>
 <script type="webr-2-contents">
-eyJhdHRyIjp7ImF1dG9ydW4iOmZhbHNlLCJlY2hvIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJ0aW1lbGltaXQiOiI2MDAiLCJ3YXJuaW5nIjpmYWxzZX0sImNvZGUiOiJsaWJyYXJ5KGxhdmFhbilcblxuIyBQb3B1bGF0aW9uc21vZGVsbCB2b2xsc3TDpG5kaWcgc3BlemlmaXppZXJlblxuIyBBbGxlIFBhcmFtZXRlciBlcmhhbHRlbiBmZXN0ZSBXZXJ0ZSAobWl0ICopXG5wb3AubW9kZWwgPC0gJ1xuICAjIE1lc3Ntb2RlbGw6IEZha3RvcmxhZHVuZ2VuXG4gIEYxID1+IDAuNyp4MSArIDAuNyp4MiArIDAuNyp4M1xuICBGMiA9fiAwLjgqeTEgKyAwLjgqeTIgKyAwLjgqeTNcblxuICAjIFN0cnVrdHVybW9kZWxsOiBLb3JyZWxhdGlvbiB6d2lzY2hlbiBGYWt0b3JlblxuICBGMSB+fiAwLjMqRjJcblxuICAjIEZha3RvcnZhcmlhbnplbiAoYXVmIDEgZml4aWVydCBmdWVyIFN0YW5kYXJkaXNpZXJ1bmcpXG4gIEYxIH5+IDEqRjFcbiAgRjIgfn4gMSpGMlxuXG4gICMgUmVzaWR1YWx2YXJpYW56ZW4gZGVyIEluZGlrYXRvcmVuXG4gICMgQmVpIExhZHVuZyA9IDAuNyB1bmQgRmFrdG9ydmFyaWFueiA9IDE6IFJlc2lkdWFsID0gMSAtIDAuN14yID0gMC41MVxuICB4MSB+fiAwLjUxKngxXG4gIHgyIH5+IDAuNTEqeDJcbiAgeDMgfn4gMC41MSp4M1xuICAjIEJlaSBMYWR1bmcgPSAwLjg6IFJlc2lkdWFsID0gMSAtIDAuOF4yID0gMC4zNlxuICB5MSB+fiAwLjM2KnkxXG4gIHkyIH5+IDAuMzYqeTJcbiAgeTMgfn4gMC4zNip5M1xuJ1xuXG4jIERhdGVuIGZ1ZXIgTiA9IDMwMCBzaW11bGllcmVuXG5zZXQuc2VlZCg0MilcbnNpbS5kYXRhIDwtIHNpbXVsYXRlRGF0YShwb3AubW9kZWwsIHNhbXBsZS5ub2JzID0gMzAwKVxuXG4jIFN0cnVrdHVyIGRlciBzaW11bGllcnRlbiBEYXRlbiBwcnVlZmVuXG5oZWFkKHNpbS5kYXRhKVxuc3RyKHNpbS5kYXRhKSJ9
+eyJhdHRyIjp7ImF1dG9ydW4iOmZhbHNlLCJlY2hvIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJ0aW1lbGltaXQiOiI2MDAiLCJ3YXJuaW5nIjpmYWxzZX0sImNvZGUiOiJsaWJyYXJ5KGxhdmFhbilcblxuIyBQb3B1bGF0aW9uc21vZGVsbCB2b2xsc3TDpG5kaWcgc3BlemlmaXppZXJlblxuIyBBbGxlIFBhcmFtZXRlciBlcmhhbHRlbiBmZXN0ZSBXZXJ0ZSAobWl0ICopXG5wb3AubW9kZWwgPC0gJ1xuICAjIE1lc3Ntb2RlbGw6IEZha3RvcmxhZHVuZ2VuXG4gIEYxID1+IDAuNyp4MSArIDAuNyp4MiArIDAuNyp4M1xuICBGMiA9fiAwLjgqeTEgKyAwLjgqeTIgKyAwLjgqeTNcblxuICAjIFN0cnVrdHVybW9kZWxsOiBLb3JyZWxhdGlvbiB6d2lzY2hlbiBGYWt0b3JlblxuICBGMSB+fiAwLjMqRjJcblxuICAjIEZha3RvcnZhcmlhbnplbiAoYXVmIDEgZml4aWVydCBmdWVyIFN0YW5kYXJkaXNpZXJ1bmcpXG4gIEYxIH5+IDEqRjFcbiAgRjIgfn4gMSpGMlxuXG4gICMgUmVzaWR1YWx2YXJpYW56ZW4gZGVyIEluZGlrYXRvcmVuXG4gICMgQmVpIExhZHVuZyA9IDAuNyB1bmQgRmFrdG9ydmFyaWFueiA9IDE6IFxuICAjICAgICBSZXNpZHVhbCA9IDEgLSAwLjdeMiA9IDAuNTFcbiAgeDEgfn4gMC41MSp4MVxuICB4MiB+fiAwLjUxKngyXG4gIHgzIH5+IDAuNTEqeDNcbiAgIyBCZWkgTGFkdW5nID0gMC44OiBcbiAgIyAgICAgUmVzaWR1YWwgPSAxIC0gMC44XjIgPSAwLjM2XG4gIHkxIH5+IDAuMzYqeTFcbiAgeTIgfn4gMC4zNip5MlxuICB5MyB+fiAwLjM2KnkzXG4nXG5cbiMgRGF0ZW4gZnVlciBOID0gMzAwIHNpbXVsaWVyZW5cbnNldC5zZWVkKDQyKVxuc2ltLmRhdGEgPC0gc2ltdWxhdGVEYXRhKHBvcC5tb2RlbCwgc2FtcGxlLm5vYnMgPSAzMDApXG5cbiMgU3RydWt0dXIgZGVyIHNpbXVsaWVydGVuIERhdGVuIHBydWVmZW5cbmhlYWQoc2ltLmRhdGEpXG5zdHIoc2ltLmRhdGEpIn0=
 </script>
 </div>
 </div>
@@ -649,7 +677,7 @@ eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImVjaG8iOnRydWUsImVkaXQiOnRydWUsImV2YWwiOnRydWUs
 
 </div>
 <script type="webr-5-contents">
-eyJhdHRyIjp7ImF1dG9ydW4iOmZhbHNlLCJlY2hvIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJ0aW1lbGltaXQiOiI2MDAiLCJ3YXJuaW5nIjpmYWxzZX0sImNvZGUiOiIjIC0tLSBTaW11bGF0aW9uc3BhcmFtZXRlciAtLS1cbm4uc2ltICAgPC0gMTAwICAgICAgICMgQW56YWhsIFJlcGxpa2F0aW9uZW4gKHNvbGx0ZSBkYW5uID4gNTAwIHNlaW4pXG5uLm9icyAgIDwtIDEwMCAgICAgICAjIFN0aWNocHJvYmVuZ3JvZXNzZVxudGFyZ2V0ICA8LSBcIll+WFwiICAgICAjIFppZWxwYXJhbWV0ZXIgKHdhaHJlciBXZXJ0OiAwLjMpXG5cbiMgLS0tIE1vbnRlLUNhcmxvLVNjaGxlaWZlIC0tLVxuc2V0LnNlZWQoMTIzKVxuZXN0aW1hdGVzIDwtIG51bWVyaWMobi5zaW0pXG5jb252ZXJnZWQgPC0gbG9naWNhbChuLnNpbSlcblxuZm9yIChpIGluIDE6bi5zaW0pIHtcbiAgIyBEYXRlbiBzaW11bGllcmVuXG4gIGQgPC0gc2ltdWxhdGVEYXRhKHBvcC5tb2RlbCwgc2FtcGxlLm5vYnMgPSBuLm9icylcblxuICAjIE1vZGVsbCBzY2hhZXR6ZW5cbiAgZml0IDwtIHNlbShhbmFseXNpcy5tb2RlbCwgZGF0YSA9IGQsXG4gICAgICAgICAgICAgd2FybiA9IEZBTFNFLCBzZSA9IFwic3RhbmRhcmRcIilcblxuICAjIEtvbnZlcmdlbnogcHJ1ZWZlblxuICBjb252ZXJnZWRbaV0gPC0gbGF2SW5zcGVjdChmaXQsIFwiY29udmVyZ2VkXCIpXG5cbiAgaWYgKGNvbnZlcmdlZFtpXSkge1xuICAgICMgUGFyYW1ldGVyc2NoYWV0enVuZyBleHRyYWhpZXJlblxuICAgIGVzdCA8LSBwYXJhbWV0ZXJFc3RpbWF0ZXMoZml0KVxuICAgIGVzdGltYXRlc1tpXSA8LSBlc3QkZXN0W2VzdCRsaHMgPT0gXCJZXCIgJiBlc3Qkb3AgPT0gXCJ+XCIgJiBlc3QkcmhzID09IFwiWFwiXVxuICB9IGVsc2Uge1xuICAgIGVzdGltYXRlc1tpXSA8LSBOQVxuICB9XG59XG5cbiMgLS0tIEVyZ2VibmlzOiBQYXJhbWV0ZXIgRXN0aW1hdGUgQmlhcyAtLS1cbnRydWUudmFsdWUgPC0gMC4zXG5lc3QudmFsaWQgIDwtIGVzdGltYXRlc1tjb252ZXJnZWRdXG5cbmNhdChcIktvbnZlcmdlbnpyYXRlOlwiLCBtZWFuKGNvbnZlcmdlZCksIFwiXFxuXCIpXG5jYXQoXCJNaXR0bGVyZSBTY2hhZXR6dW5nOlwiLCBtZWFuKGVzdC52YWxpZCksIFwiXFxuXCIpXG5jYXQoXCJXYWhyZXIgV2VydDpcIiwgdHJ1ZS52YWx1ZSwgXCJcXG5cIilcbmNhdChcIkFic29sdXRlciBCaWFzOlwiLCBtZWFuKGVzdC52YWxpZCkgLSB0cnVlLnZhbHVlLCBcIlxcblwiKVxuY2F0KFwiUmVsYXRpdmVyIEJpYXM6XCIsIChtZWFuKGVzdC52YWxpZCkgLSB0cnVlLnZhbHVlKSAvIHRydWUudmFsdWUsIFwiXFxuXCIpIn0=
+eyJhdHRyIjp7ImF1dG9ydW4iOmZhbHNlLCJlY2hvIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJ0aW1lbGltaXQiOiI2MDAiLCJ3YXJuaW5nIjpmYWxzZX0sImNvZGUiOiIjIC0tLSBTaW11bGF0aW9uc3BhcmFtZXRlciAtLS1cbm4uc2ltICAgPC0gMTAwICAgICAgICMgQW56YWhsIFJlcGxpa2F0aW9uZW4gXG4gICAgICAgICAgICAgICAgICAgICAjIChpbiBlY2h0ZXIgQW53ZW5kdW5nID4gNTAwISlcbm4ub2JzICAgPC0gMTAwICAgICAgICMgU3RpY2hwcm9iZW5ncm9lc3NlXG50YXJnZXQgIDwtIFwiWX5YXCIgICAgICMgWmllbHBhcmFtZXRlciAod2FocmVyIFdlcnQ6IDAuMylcblxuIyAtLS0gTW9udGUtQ2FybG8tU2NobGVpZmUgLS0tXG5zZXQuc2VlZCgxMjMpXG5lc3RpbWF0ZXMgPC0gbnVtZXJpYyhuLnNpbSlcbmNvbnZlcmdlZCA8LSBsb2dpY2FsKG4uc2ltKVxuXG5mb3IgKGkgaW4gMTpuLnNpbSkge1xuICAjIERhdGVuIHNpbXVsaWVyZW5cbiAgZCA8LSBzaW11bGF0ZURhdGEocG9wLm1vZGVsLCBzYW1wbGUubm9icyA9IG4ub2JzKVxuXG4gICMgTW9kZWxsIHNjaGFldHplblxuICBmaXQgPC0gc2VtKGFuYWx5c2lzLm1vZGVsLCBkYXRhID0gZCxcbiAgICAgICAgICAgICB3YXJuID0gRkFMU0UsIHNlID0gXCJzdGFuZGFyZFwiKVxuXG4gICMgS29udmVyZ2VueiBwcnVlZmVuXG4gIGNvbnZlcmdlZFtpXSA8LSBsYXZJbnNwZWN0KGZpdCwgXCJjb252ZXJnZWRcIilcblxuICBpZiAoY29udmVyZ2VkW2ldKSB7XG4gICAgIyBQYXJhbWV0ZXJzY2hhZXR6dW5nIGV4dHJhaGllcmVuXG4gICAgZXN0IDwtIHBhcmFtZXRlckVzdGltYXRlcyhmaXQpXG4gICAgZXN0aW1hdGVzW2ldIDwtIGVzdCRlc3RbZXN0JGxocyA9PSBcIllcIiAmIFxuICAgICAgICAgICAgICAgZXN0JG9wID09IFwiflwiICYgZXN0JHJocyA9PSBcIlhcIl1cbiAgfSBlbHNlIHtcbiAgICBlc3RpbWF0ZXNbaV0gPC0gTkFcbiAgfVxufVxuXG4jIC0tLSBFcmdlYm5pczogUGFyYW1ldGVyIEVzdGltYXRlIEJpYXMgLS0tXG50cnVlLnZhbHVlIDwtIDAuM1xuZXN0LnZhbGlkICA8LSBlc3RpbWF0ZXNbY29udmVyZ2VkXVxuXG5jYXQoXCJLb252ZXJnZW56cmF0ZTpcIiwgbWVhbihjb252ZXJnZWQpLCBcIlxcblwiKVxuY2F0KFwiTWl0dGxlcmUgU2NoYWV0enVuZzpcIiwgbWVhbihlc3QudmFsaWQpLCBcIlxcblwiKVxuY2F0KFwiV2FocmVyIFdlcnQ6XCIsIHRydWUudmFsdWUsIFwiXFxuXCIpXG5jYXQoXCJBYnNvbHV0ZXIgQmlhczpcIiwgbWVhbihlc3QudmFsaWQpIC0gdHJ1ZS52YWx1ZSwgXCJcXG5cIilcbmNhdChcIlJlbGF0aXZlciBCaWFzOlwiLCAobWVhbihlc3QudmFsaWQpIC0gdHJ1ZS52YWx1ZSkgL1xuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdHJ1ZS52YWx1ZSwgXCJcXG5cIikifQ==
 </script>
 </div>
 </div>
@@ -682,7 +710,7 @@ eyJhdHRyIjp7ImF1dG9ydW4iOmZhbHNlLCJlY2hvIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVl
 
 </div>
 <script type="webr-6-contents">
-eyJhdHRyIjp7ImF1dG9ydW4iOmZhbHNlLCJlY2hvIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJ0aW1lbGltaXQiOiI2MDAiLCJ3YXJuaW5nIjpmYWxzZX0sImNvZGUiOiJcbiMgV2lyIHZlcndlbmRlbiBkYXNzZWxiZSBQb3B1bGF0aW9ucy0gdW5kIEFuYWx5c2Vtb2RlbGwgd2llIG9iZW4uXG5cbiMgRGllc21hbCBzcGVpY2hlcm4gd2lyIHp1c2FldHpsaWNoIGRpZSBTdGFuZGFyZGZlaGxlci5cblxuc2V0LnNlZWQoNDU2KVxubi5zaW0gICA8LSAxMDAgICAgICAgIyBBbnphaGwgUmVwbGlrYXRpb25lbiAoc29sbHRlIGRhbm4gPiA1MDAgc2Vpbilcbm4ub2JzICAgPC0gMTAwICAgICAgICMgU3RpY2hwcm9iZW5ncm9lc3NlXG5cbnJlc3VsdHMgPC0gZGF0YS5mcmFtZShcbiAgZXN0aW1hdGUgPSBudW1lcmljKG4uc2ltKSxcbiAgc2UgICAgICAgPSBudW1lcmljKG4uc2ltKSxcbiAgY2kubG93ZXIgPSBudW1lcmljKG4uc2ltKSxcbiAgY2kudXBwZXIgPSBudW1lcmljKG4uc2ltKSxcbiAgcHZhbHVlICAgPSBudW1lcmljKG4uc2ltKSxcbiAgY29udmVyZ2VkID0gbG9naWNhbChuLnNpbSlcbilcblxuZm9yIChpIGluIDE6bi5zaW0pIHtcbiAgZCA8LSBzaW11bGF0ZURhdGEocG9wLm1vZGVsLCBzYW1wbGUubm9icyA9IG4ub2JzKVxuICBmaXQgPC0gc2VtKGFuYWx5c2lzLm1vZGVsLCBkYXRhID0gZCwgd2FybiA9IEZBTFNFKVxuXG4gIHJlc3VsdHMkY29udmVyZ2VkW2ldIDwtIGxhdkluc3BlY3QoZml0LCBcImNvbnZlcmdlZFwiKVxuXG4gIGlmIChyZXN1bHRzJGNvbnZlcmdlZFtpXSkge1xuICAgIGVzdCA8LSBwYXJhbWV0ZXJFc3RpbWF0ZXMoZml0LCBjaSA9IFRSVUUsIGxldmVsID0gMC45NSlcbiAgICByb3cgPC0gZXN0JGxocyA9PSBcIllcIiAmIGVzdCRvcCA9PSBcIn5cIiAmIGVzdCRyaHMgPT0gXCJYXCJcblxuICAgIHJlc3VsdHMkZXN0aW1hdGVbaV0gPC0gZXN0JGVzdFtyb3ddXG4gICAgcmVzdWx0cyRzZVtpXSAgICAgICA8LSBlc3Qkc2Vbcm93XVxuICAgIHJlc3VsdHMkY2kubG93ZXJbaV0gPC0gZXN0JGNpLmxvd2VyW3Jvd11cbiAgICByZXN1bHRzJGNpLnVwcGVyW2ldIDwtIGVzdCRjaS51cHBlcltyb3ddXG4gICAgcmVzdWx0cyRwdmFsdWVbaV0gICA8LSBlc3QkcHZhbHVlW3Jvd11cbiAgfVxufVxuXG4jIE51ciBrb252ZXJnaWVydGUgUmVwbGlrYXRpb25lblxucmVzIDwtIHJlc3VsdHNbcmVzdWx0cyRjb252ZXJnZWQsIF1cbnRydWUudmFsdWUgPC0gMC4zXG5cbiMgLS0tIFNFIEJpYXMgLS0tXG5lbXBpcmljYWwuc2QgPC0gc2QocmVzJGVzdGltYXRlKVxubWVhbi5zZSAgICAgIDwtIG1lYW4ocmVzJHNlKVxuc2UuYmlhcyAgICAgIDwtIChtZWFuLnNlIC0gZW1waXJpY2FsLnNkKSAvIGVtcGlyaWNhbC5zZFxuXG5jYXQoXCJFbXBpcmlzY2hlciBTRCBkZXIgU2NoYWV0enVuZ2VuOlwiLCByb3VuZChlbXBpcmljYWwuc2QsIDQpLCBcIlxcblwiKVxuY2F0KFwiTWl0dGxlcmVyIGdlc2NoYWV0enRlciBTRTpcIiwgcm91bmQobWVhbi5zZSwgNCksIFwiXFxuXCIpXG5jYXQoXCJSZWxhdGl2ZXIgU0UgQmlhczpcIiwgcm91bmQoc2UuYmlhcywgNCksIFwiXFxuXCIpXG5cbiMgLS0tIENvdmVyYWdlIC0tLVxuY292ZXJhZ2UgPC0gbWVhbihyZXMkY2kubG93ZXIgPD0gdHJ1ZS52YWx1ZSAmIHJlcyRjaS51cHBlciA+PSB0cnVlLnZhbHVlKVxuY2F0KFwiQ292ZXJhZ2UgKDk1JS1LSSk6XCIsIHJvdW5kKGNvdmVyYWdlLCAzKSwgXCJcXG5cIikifQ==
+eyJhdHRyIjp7ImF1dG9ydW4iOmZhbHNlLCJlY2hvIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJ0aW1lbGltaXQiOiI2MDAiLCJ3YXJuaW5nIjpmYWxzZX0sImNvZGUiOiJcbiMgV2lyIHZlcndlbmRlbiBkYXNzZWxiZSBQb3B1bGF0aW9ucy0gdW5kIEFuYWx5c2Vtb2RlbGwgd2llIG9iZW4uXG5cbiMgRGllc21hbCBzcGVpY2hlcm4gd2lyIHp1c2FldHpsaWNoIGRpZSBTdGFuZGFyZGZlaGxlci5cblxuc2V0LnNlZWQoNDU2KVxubi5zaW0gICA8LSAxMDAgICAgICAgIyBBbnphaGwgUmVwbGlrYXRpb25lbiAgXG4gICAgICAgICAgICAgICAgICAgICAjIChpbiBlY2h0ZXIgQW53ZW5kdW5nID4gNTAwISlcbm4ub2JzICAgPC0gMTAwICAgICAgICMgU3RpY2hwcm9iZW5ncm9lc3NlXG5cbnJlc3VsdHMgPC0gZGF0YS5mcmFtZShcbiAgZXN0aW1hdGUgPSBudW1lcmljKG4uc2ltKSxcbiAgc2UgICAgICAgPSBudW1lcmljKG4uc2ltKSxcbiAgY2kubG93ZXIgPSBudW1lcmljKG4uc2ltKSxcbiAgY2kudXBwZXIgPSBudW1lcmljKG4uc2ltKSxcbiAgcHZhbHVlICAgPSBudW1lcmljKG4uc2ltKSxcbiAgY29udmVyZ2VkID0gbG9naWNhbChuLnNpbSlcbilcblxuZm9yIChpIGluIDE6bi5zaW0pIHtcbiAgZCA8LSBzaW11bGF0ZURhdGEocG9wLm1vZGVsLCBzYW1wbGUubm9icyA9IG4ub2JzKVxuICBmaXQgPC0gc2VtKGFuYWx5c2lzLm1vZGVsLCBkYXRhID0gZCwgd2FybiA9IEZBTFNFKVxuXG4gIHJlc3VsdHMkY29udmVyZ2VkW2ldIDwtIGxhdkluc3BlY3QoZml0LCBcImNvbnZlcmdlZFwiKVxuXG4gIGlmIChyZXN1bHRzJGNvbnZlcmdlZFtpXSkge1xuICAgIGVzdCA8LSBwYXJhbWV0ZXJFc3RpbWF0ZXMoZml0LCBjaSA9IFRSVUUsIGxldmVsID0gMC45NSlcbiAgICByb3cgPC0gZXN0JGxocyA9PSBcIllcIiAmIGVzdCRvcCA9PSBcIn5cIiAmIGVzdCRyaHMgPT0gXCJYXCJcblxuICAgIHJlc3VsdHMkZXN0aW1hdGVbaV0gPC0gZXN0JGVzdFtyb3ddXG4gICAgcmVzdWx0cyRzZVtpXSAgICAgICA8LSBlc3Qkc2Vbcm93XVxuICAgIHJlc3VsdHMkY2kubG93ZXJbaV0gPC0gZXN0JGNpLmxvd2VyW3Jvd11cbiAgICByZXN1bHRzJGNpLnVwcGVyW2ldIDwtIGVzdCRjaS51cHBlcltyb3ddXG4gICAgcmVzdWx0cyRwdmFsdWVbaV0gICA8LSBlc3QkcHZhbHVlW3Jvd11cbiAgfVxufVxuXG4jIE51ciBrb252ZXJnaWVydGUgUmVwbGlrYXRpb25lblxucmVzIDwtIHJlc3VsdHNbcmVzdWx0cyRjb252ZXJnZWQsIF1cbnRydWUudmFsdWUgPC0gMC4zXG5cbiMgLS0tIFNFIEJpYXMgLS0tXG5lbXBpcmljYWwuc2QgPC0gc2QocmVzJGVzdGltYXRlKVxubWVhbi5zZSAgICAgIDwtIG1lYW4ocmVzJHNlKVxuc2UuYmlhcyAgICAgIDwtIChtZWFuLnNlIC0gZW1waXJpY2FsLnNkKSAvIGVtcGlyaWNhbC5zZFxuXG5jYXQoXCJFbXBpcmlzY2hlciBTRCBkZXIgU2NoYWV0enVuZ2VuOlwiLCByb3VuZChlbXBpcmljYWwuc2QsIDQpLCBcIlxcblwiKVxuY2F0KFwiTWl0dGxlcmVyIGdlc2NoYWV0enRlciBTRTpcIiwgcm91bmQobWVhbi5zZSwgNCksIFwiXFxuXCIpXG5jYXQoXCJSZWxhdGl2ZXIgU0UgQmlhczpcIiwgcm91bmQoc2UuYmlhcywgNCksIFwiXFxuXCIpXG5cbiMgLS0tIENvdmVyYWdlIC0tLVxuY292ZXJhZ2UgPC0gbWVhbihyZXMkY2kubG93ZXIgPD0gdHJ1ZS52YWx1ZSAmIHJlcyRjaS51cHBlciA+PSB0cnVlLnZhbHVlKVxuY2F0KFwiQ292ZXJhZ2UgKDk1JS1LSSk6XCIsIHJvdW5kKGNvdmVyYWdlLCAzKSwgXCJcXG5cIikifQ==
 </script>
 </div>
 </div>
@@ -710,7 +738,7 @@ eyJhdHRyIjp7ImF1dG9ydW4iOmZhbHNlLCJlY2hvIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVl
 
 </div>
 <script type="webr-7-contents">
-eyJhdHRyIjp7ImF1dG9ydW4iOmZhbHNlLCJlY2hvIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJ0aW1lbGltaXQiOiI2MDAiLCJ3YXJuaW5nIjpmYWxzZX0sImNvZGUiOiJcbiMgRGllIEVyZ2Vibmlzc2UgYXVzIGRlciB2b3JoZXJpZ2VuIFNpbXVsYXRpb24gXG4jIGvDtm5uZW4gZGlyZWt0IGdlbnV0enQgd2VyZGVuIFxuIyAoQW53ZW5kdW5nc2ZhbGwgMiB2b3JoZXIgYXVzZsO8aHJlbiEpOlxuXG5wb3dlciA8LSBtZWFuKHJlcyRwdmFsdWUgPCAwLjA1KVxuY2F0KFwiR2VzY2hhZXR6dGUgUG93ZXIgZnVlciBZIH4gWCAoYmV0YSA9IDAuMywgTiA9XCIsIG4ub2JzLCBcIik6XCIsIHJvdW5kKHBvd2VyLCAzKSwgXCJcXG5cIikifQ==
+eyJhdHRyIjp7ImF1dG9ydW4iOmZhbHNlLCJlY2hvIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJ0aW1lbGltaXQiOiI2MDAiLCJ3YXJuaW5nIjpmYWxzZX0sImNvZGUiOiJcbiMgRGllIEVyZ2Vibmlzc2UgYXVzIGRlciB2b3JoZXJpZ2VuIFNpbXVsYXRpb24gXG4jIGvDtm5uZW4gZGlyZWt0IGdlbnV0enQgd2VyZGVuIFxuIyAoQW53ZW5kdW5nc2ZhbGwgMiB2b3JoZXIgYXVzZsO8aHJlbiEpOlxuXG5wb3dlciA8LSBtZWFuKHJlcyRwdmFsdWUgPCAwLjA1KVxuY2F0KFwiR2VzY2hhZXR6dGUgUG93ZXIgZnVlciBZIH4gWCAoYmV0YSA9IDAuMywgTiA9XCIsIFxuICAgIG4ub2JzLCBcIik6XCIsIHJvdW5kKHBvd2VyLCAzKSwgXCJcXG5cIikifQ==
 </script>
 </div>
 </div>
@@ -723,7 +751,7 @@ eyJhdHRyIjp7ImF1dG9ydW4iOmZhbHNlLCJlY2hvIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVl
 
 </div>
 <script type="webr-8-contents">
-eyJhdHRyIjp7ImF1dG9ydW4iOmZhbHNlLCJlY2hvIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJ0aW1lbGltaXQiOiI2MDAiLCJ3YXJuaW5nIjpmYWxzZX0sImNvZGUiOiIjIC0tLSBQb3dlci1LdXJ2ZSB1ZWJlciB2ZXJzY2hpZWRlbmUgU3RpY2hwcm9iZW5ncm9lc3NlbiAtLS1cbnNhbXBsZS5zaXplcyA8LSBzZXEoNTAsIDIwMCwgYnkgPSA1MCkgICAgICAgICMgKHNvbGx0ZW4gbWVociBBYnN0dWZ1bmdlbiBzZWluKVxubi5zaW0gPC0gNTAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAjIChzb2xsdGUgPiA1MDAgc2VpbilcbnBvd2VyLnJlc3VsdHMgPC0gbnVtZXJpYyhsZW5ndGgoc2FtcGxlLnNpemVzKSlcbiBcbnNldC5zZWVkKDc4OSlcbiBcbmZvciAocyBpbiBzZXFfYWxvbmcoc2FtcGxlLnNpemVzKSkge1xuICBzaWcuY291bnQgPC0gMFxuICBjb252LmNvdW50IDwtIDBcbiBcbiAgZm9yIChpIGluIDE6bi5zaW0pIHtcbiAgICBkIDwtIHNpbXVsYXRlRGF0YShwb3AubW9kZWwsIHNhbXBsZS5ub2JzID0gc2FtcGxlLnNpemVzW3NdKVxuICAgIGZpdCA8LSBzZW0oYW5hbHlzaXMubW9kZWwsIGRhdGEgPSBkLCB3YXJuID0gRkFMU0UpXG4gXG4gICAgaWYgKGxhdkluc3BlY3QoZml0LCBcImNvbnZlcmdlZFwiKSkge1xuICAgICAgY29udi5jb3VudCA8LSBjb252LmNvdW50ICsgMVxuICAgICAgZXN0IDwtIHBhcmFtZXRlckVzdGltYXRlcyhmaXQpXG4gICAgICByb3cgPC0gZXN0JGxocyA9PSBcIllcIiAmIGVzdCRvcCA9PSBcIn5cIiAmIGVzdCRyaHMgPT0gXCJYXCJcbiAgICAgIGlmIChlc3QkcHZhbHVlW3Jvd10gPCAwLjA1KSBzaWcuY291bnQgPC0gc2lnLmNvdW50ICsgMVxuICAgIH1cbiAgfVxuICBwb3dlci5yZXN1bHRzW3NdIDwtIHNpZy5jb3VudCAvIGNvbnYuY291bnRcbn1cbiBcbiMgLS0tIFZpc3VhbGlzaWVydW5nIC0tLVxucGxvdChzYW1wbGUuc2l6ZXMsIHBvd2VyLnJlc3VsdHMsIHR5cGUgPSBcImJcIiwgcGNoID0gMTksXG4gICAgIHhsYWIgPSBcIlN0aWNocHJvYmVuZ3JvZXNzZSAoTilcIiwgeWxhYiA9IFwiUG93ZXJcIixcbiAgICAgbWFpbiA9IFwiUG93ZXItS3VydmUgZnVlciBZIH4gWCAoYmV0YSA9IDAuMylcIixcbiAgICAgeWxpbSA9IGMoMCwgMSkpXG5hYmxpbmUoaCA9IDAuODAsIGx0eSA9IDIsIGNvbCA9IFwicmVkXCIpXG50ZXh0KG1heChzYW1wbGUuc2l6ZXMpLCAwLjgyLCBcIlBvd2VyID0gLjgwXCIsIHBvcyA9IDIsIGNvbCA9IFwicmVkXCIpIn0=
+eyJhdHRyIjp7ImF1dG9ydW4iOmZhbHNlLCJlY2hvIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJ0aW1lbGltaXQiOiI2MDAiLCJ3YXJuaW5nIjpmYWxzZX0sImNvZGUiOiIjIC0tLSBQb3dlci1LdXJ2ZSB1ZWJlciB2ZXJzY2hpZWRlbmUgU3RpY2hwcm9iZW5ncm9lc3NlbiAtLS1cbnNhbXBsZS5zaXplcyA8LSBzZXEoNTAsIDIwMCwgYnkgPSA1MCkgICAgICAgXG4gICAjIChmw7xyIGVjaHRlIEFud2VuZHVuZyBkYW5uIG1laHIgQWJzdHVmdW5nZW4pXG5uLnNpbSA8LSA1MCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICAgIyAoaW4gZWNodGVyIEFud2VuZHVuZyA+IDUwMCEpXG5wb3dlci5yZXN1bHRzIDwtIG51bWVyaWMobGVuZ3RoKHNhbXBsZS5zaXplcykpXG4gXG5zZXQuc2VlZCg3ODkpXG4gXG5mb3IgKHMgaW4gc2VxX2Fsb25nKHNhbXBsZS5zaXplcykpIHtcbiAgc2lnLmNvdW50IDwtIDBcbiAgY29udi5jb3VudCA8LSAwXG4gXG4gIGZvciAoaSBpbiAxOm4uc2ltKSB7XG4gICAgZCA8LSBzaW11bGF0ZURhdGEocG9wLm1vZGVsLCBzYW1wbGUubm9icyA9IHNhbXBsZS5zaXplc1tzXSlcbiAgICBmaXQgPC0gc2VtKGFuYWx5c2lzLm1vZGVsLCBkYXRhID0gZCwgd2FybiA9IEZBTFNFKVxuIFxuICAgIGlmIChsYXZJbnNwZWN0KGZpdCwgXCJjb252ZXJnZWRcIikpIHtcbiAgICAgIGNvbnYuY291bnQgPC0gY29udi5jb3VudCArIDFcbiAgICAgIGVzdCA8LSBwYXJhbWV0ZXJFc3RpbWF0ZXMoZml0KVxuICAgICAgcm93IDwtIGVzdCRsaHMgPT0gXCJZXCIgJiBlc3Qkb3AgPT0gXCJ+XCIgJiBlc3QkcmhzID09IFwiWFwiXG4gICAgICBpZiAoZXN0JHB2YWx1ZVtyb3ddIDwgMC4wNSkgc2lnLmNvdW50IDwtIHNpZy5jb3VudCArIDFcbiAgICB9XG4gIH1cbiAgcG93ZXIucmVzdWx0c1tzXSA8LSBzaWcuY291bnQgLyBjb252LmNvdW50XG59XG4gXG4jIC0tLSBWaXN1YWxpc2llcnVuZyAtLS1cbnBsb3Qoc2FtcGxlLnNpemVzLCBwb3dlci5yZXN1bHRzLCB0eXBlID0gXCJiXCIsIHBjaCA9IDE5LFxuICAgICB4bGFiID0gXCJTdGljaHByb2Jlbmdyb2Vzc2UgKE4pXCIsIHlsYWIgPSBcIlBvd2VyXCIsXG4gICAgIG1haW4gPSBcIlBvd2VyLUt1cnZlIGZ1ZXIgWSB+IFggKGJldGEgPSAwLjMpXCIsXG4gICAgIHlsaW0gPSBjKDAsIDEpKVxuYWJsaW5lKGggPSAwLjgwLCBsdHkgPSAyLCBjb2wgPSBcInJlZFwiKVxudGV4dChtYXgoc2FtcGxlLnNpemVzKSwgMC44MiwgXCJQb3dlciA9IC44MFwiLCBwb3MgPSAyLCBjb2wgPSBcInJlZFwiKSJ9
 </script>
 </div>
 </div>

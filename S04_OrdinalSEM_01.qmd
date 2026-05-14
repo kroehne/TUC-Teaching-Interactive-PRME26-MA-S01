@@ -1,5 +1,5 @@
 ---
-title: "A | CFA Live"
+title: "A | Live Ordinal SEM"
 format: live-html
 engine: knitr  
 status: "Version 0.1"
@@ -7,8 +7,7 @@ lang: de
 ---
 
 {{< include _extensions/r-wasm/live/_knitr.qmd >}}
- 
-## 3-Faktor-CFA 
+
 
 ```{webr}
 #| warning: false
@@ -30,13 +29,7 @@ assignInNamespace("lav_options_checkinterval", function(x, nm, num2int) {
     }, TRUE)
     all(oks)                                                                                                                     
   }, ns = "lavaan")
-
-model_3f <-  "visual  =~ x1 + x2 + x3
-              textual =~ x4 + x5 + x6
-              speed   =~ x7 + x8 + x9"
-
-fit_3f <- cfa(model_3f, data = HolzingerSwineford1939)
-
+ 
 
 View <- function(dat){
   dat_name <- deparse(substitute(dat))
@@ -60,147 +53,105 @@ View <- function(dat){
     )
   )  
 }
+ 
+# Dichotomisierung der 9 HS-Items am Median  
+hs <- HolzingerSwineford1939
+items <- paste0("x", 1:9)
+hs_d <- as.data.frame(lapply(
+  hs[, items],
+  function(v) as.integer(v > median(v))))
+names(hs_d) <- paste0(items, "d")
+
+model_3f <- '
+  visual  =~ x1d + x2d + x3d
+  textual =~ x4d + x5d + x6d
+  speed   =~ x7d + x8d + x9d
+' 
+fit_cat <- cfa(
+  model_3f,
+  data = hs_d,
+  ordered = paste0("x", 1:9, "d"))
 ```
 
+## Live-Beispiel: Holzinger-Swineford dichotomisiert
 
-### Daten
+<details open>
+<summary>Daten</summary>
 
 ```{webr}
 #| warning: false
 #| echo: true
 #| autorun: false
-library(lavaan)
 View(HolzingerSwineford1939)
-
-```
-
-### Modell-Syntax
-
-```{webr}
-#| warning: false
-#| echo: true
-#| autorun: false
-model_3f <-  "visual  =~ x1 + x2 + x3
-              textual =~ x4 + x5 + x6
-              speed   =~ x7 + x8 + x9"
-model_3f
-```
-
-### Modell-Schätzung
-
-```{webr}
-#| warning: false
-#| echo: true
-#| autorun: false
-library(lavaan)
-model_3f <-  "visual  =~ x1 + x2 + x3
-              textual =~ x4 + x5 + x6
-              speed   =~ x7 + x8 + x9"
-fit_3f <- cfa(model_3f, data = HolzingerSwineford1939)
-summary(fit_3f)
-```
-
-### Parameterschätzer (unstandardisierte Lösung)
-
-```{webr}
-#| warning: false
-#| echo: true
-#| autorun: false
-parameterEstimates(fit_3f)[1:9, 
-   c("lhs","op","rhs","est")]
-```
-   
-### Standardisierte Lösung
-
-```{webr}
-#| warning: false
-#| echo: true
-#| autorun: false
-standardizedSolution(fit_3f)[1:9, 
-            c("lhs","op","rhs","est.std")]
-```
-
-### Pfaddiagramm
-
-Standardisierte Lösung
-
-```{webr}
-#| warning: false
-#| echo: true
-library(lavaanPlot)
-lavaanPlot(model = fit_3f,   
-     coefs = TRUE, stand = TRUE,covs = TRUE)
-```
-
-Unstandardisierte Lösung
-
-```{webr}
-#| warning: false
-#| echo: true
-library(lavaanPlot)
-lavaanPlot(model = fit_3f,   
-     coefs = TRUE, stand = FALSE,covs = TRUE)
-```
-
-<details>
-<summary>Alternativen zur Darstellung</summary>
-
-```{webr}
-#| warning: false
-#| echo: true
-library(tidySEM)
-graph_sem(fit_3f)
-```
-
-Empfohlen, aber funktioniert nur lokal in R:
-
-```{webr}
-#| warning: false
-#| echo: true
-library(semPlot)
-
-semPaths(
-  fit_3f,
-  what = "std",
-  layout = "tree",  
-  rotation = 2 
-)
 ```
 
 </details>
 
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: false
+library(lavaan) 
+data(HolzingerSwineford1939)
 
-### Modellfit
+# Dichotomisierung der 9 HS-Items am Median  
+hs <- HolzingerSwineford1939
+items <- paste0("x", 1:9)
+hs_d <- as.data.frame(lapply(
+  hs[, items],
+  function(v) as.integer(v > median(v))))
+names(hs_d) <- paste0(items, "d")
+
+# Stichprobe der ersten 6 Zeilen
+head(hs_d)
+```
 
 ```{webr}
 #| warning: false
 #| echo: true
-fitMeasures(fit_3f, c("chisq", "df", "pvalue",
-                       "cfi", "tli",
-                       "rmsea", "rmsea.ci.lower",
-                       "rmsea.ci.upper", "srmr"))
+#| autorun: false
+View(hs_d)
 ```
 
-
-
-### Faktorkorrelationen
+###  Verteilung der dichotomen Items
+ 
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: false
+# sapply(hs_d, mean) identisch zu:
+colMeans(hs_d)
+```
 
 ```{webr}
 #| warning: false
 #| echo: true
-lavInspect(fit_3f, "cor.lv")
+#| autorun: false
+model_3f <- '
+  visual  =~ x1d + x2d + x3d
+  textual =~ x4d + x5d + x6d
+  speed   =~ x7d + x8d + x9d
+' 
+fit_cat <- cfa(
+  model_3f,
+  data = hs_d,
+  ordered = paste0("x", 1:9, "d"))
+
+summary(fit_cat, standardized=T)
 ```
-
-
-
-
-### Residualkorrelationen
 
 ```{webr}
 #| warning: false
 #| echo: true
-resid(fit_3f, type = "standardized")$cov
+#| autorun: false
+fitMeasures(fit_cat)
 ```
 
 
-
+```{webr}
+#| warning: false
+#| echo: true
+library(lavaanPlot)
+lavaanPlot(model = fit_cat,   
+     coefs = TRUE, stand = TRUE,covs = TRUE)
+```

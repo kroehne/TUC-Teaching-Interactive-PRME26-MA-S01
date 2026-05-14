@@ -1,0 +1,206 @@
+---
+title: "x | Übung X"
+format: live-html
+engine: knitr  
+status: "Version 0.1"
+lang: de 
+---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+
+
+```{webr}
+#| warning: false
+#| echo: false
+
+webr::install("quadprog",  repos = "https://kroehne.github.io/webr-quadprog-repo")
+ 
+suppressPackageStartupMessages(library(mnormt))
+suppressPackageStartupMessages(library(lavaan))
+suppressPackageStartupMessages(library(lavaanPlot))
+suppressPackageStartupMessages(library(DT))
+
+assignInNamespace("lav_options_checkinterval", function(x, nm, num2int) {
+    if (any(is.na(x))) return(TRUE)
+    if (num2int) x <- as.integer(x)                                                                                              
+    oks <- vapply(x, function(x1) {
+      (x1 > nm$bounds[1] || (x1 == nm$bounds[1] && nm$first.in)) &&                                                              
+      (x1 < nm$bounds[2] || (x1 == nm$bounds[2] && nm$last.in))                                                                  
+    }, TRUE)
+    all(oks)                                                                                                                     
+  }, ns = "lavaan")
+ 
+
+View <- function(dat){
+  dat_name <- deparse(substitute(dat))
+  df_display <- dat |>
+  dplyr::mutate(
+    dplyr::across(everything(), ~ ifelse(is.na(.x), "❌ (NA)", .x))
+  )
+  
+  DT::datatable(
+    df_display,
+    rownames = FALSE, 
+    options = list(
+      pageLength = 5,
+      scrollX = TRUE,
+      dom = 'tip',   
+      columnDefs = list(list(className = 'dt-center', targets = "_all"))
+    ),
+    caption = htmltools::tags$caption(
+      style = 'caption-side: top; text-align: left;',
+      'data.frame: ', htmltools::strong(dat_name)
+    )
+  )  
+}
+
+model_3f <-  "visual  =~ x1 + x2 + x3
+              textual =~ x4 + x5 + x6
+              speed   =~ x7 + x8 + x9"
+fit_3f <- cfa(model_3f, data = HolzingerSwineford1939)
+
+```
+
+## Mehrgruppenanalysen verstehen!
+
+<details open>
+<summary>Daten</summary>
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: false
+View(HolzingerSwineford1939)
+```
+
+</details>
+
+### Gruppenvariable
+
+In den Daten gibt es eine *Gruppenvariable*, die wir bisher ignoriert haben:
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: true
+library(lavaan)
+table(HolzingerSwineford1939$school)
+```
+
+### Mehrgruppenmodell mit `group = "school"`
+
+Durch Hinzufügen von `group="{Variablenname}"` in der `cfa()`-Funktion wird ein Mehrgruppenmodell geschätzt: 
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: true
+model <- 'visual  =~ x1 + x2 + x3
+          textual =~ x4 + x5 + x6
+          speed   =~ x7 + x8 + x9 '
+fit <- cfa(model, 
+           data = HolzingerSwineford1939, 
+           group = "school")
+
+fitMeasures(fit,"chisq")
+```
+
+Für diese Aufgabe interessiert uns nur dieser $\chi^2$-Wert.
+
+### Modelle je Gruppe
+
+#### Datenvorbereitung
+
+Mit einer einfachen Index-Variablen (`ind`) können Sie die Daten auf alle Schüler einer Gruppe einschränken:
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: false
+ind <- HolzingerSwineford1939$school=="Pasteur"
+View(HolzingerSwineford1939[ind,])
+```
+
+
+<details>
+<summary>Hilfestellung</summary>
+
+In dieser Übung ist das Ziel zu sehen, dass sich die $\chi^2$-Werte über die Gruppen hinweg aufaddieren. 
+
+Um die Modelle je Gruppe zu schätzen können Sie einfach folgenden Trick verwenden:
+
+```{r}
+#| echo: true
+#| eval: false
+
+# Modell schätzen für alle Daten
+
+fit <- cfa(model, 
+           data = HolzingerSwineford1939)
+
+# Modell schätzen für Daten, die mit "ind <-" ausgewählt sind
+
+ind <- HolzingerSwineford1939$school=="Grant-White"
+fit2 <- cfa(model, 
+           data = HolzingerSwineford1939[ind,] )
+
+```
+
+</details>
+
+::: {.callout-important title="Aufgabe"}
+
+Schätzen Sie zwei SEM-Modelle unter Verwendung der Daten für jeweils eine Gruppe (`HolzingerSwineford1939[ind,]`) für die Gruppe `Pasteur` und die Gruppe `Grant-White`. Speichern Sie die $\chi^2$-Werte, d.h. die Ausgabe von `fitMeasures(fit,"chisq")` pro Gruppe und addieren Sie die Werte.
+
+Was kommt raus?
+
+:::
+
+Arbeiten Sie direkt hier in dem folgenden Code-Block:
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: false
+model <- 'visual  =~ x1 + x2 + x3
+          textual =~ x4 + x5 + x6
+          speed   =~ x7 + x8 + x9 '
+fit1 <- cfa(model, 
+           data = ... )
+
+fitMeasures(fit1,"chisq")
+
+fit2 <- cfa(model, 
+           data = ... )
+
+fitMeasures(fit2,"chisq")
+```
+
+
+<details>
+<summary>SPOILER!</summary>
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: true
+model <- 'visual  =~ x1 + x2 + x3
+          textual =~ x4 + x5 + x6
+          speed   =~ x7 + x8 + x9 '
+
+ind <- HolzingerSwineford1939$school=="Pasteur"
+fit1 <- cfa(model, 
+           data = HolzingerSwineford1939[ind,] )
+
+chi1 <- fitMeasures(fit1,"chisq")
+
+ind <- HolzingerSwineford1939$school=="Grant-White"
+fit2 <- cfa(model, 
+           data = HolzingerSwineford1939[ind,] )
+
+chi2 <- fitMeasures(fit2,"chisq")
+
+chi1+chi2
+```
+
+</details>

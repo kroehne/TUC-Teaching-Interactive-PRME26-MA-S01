@@ -1,5 +1,5 @@
 ---
-title: "C | ℹ Strukturierung nach Wang & Rhemtulla (2021)"
+title: "D | ℹ Strukturierung nach Wang & Rhemtulla (2021)"
 format: live-html
 engine: knitr  
 status: "Version 0.1"
@@ -103,11 +103,13 @@ pop.model <- '
   F2 ~~ 1*F2
 
   # Residualvarianzen der Indikatoren
-  # Bei Ladung = 0.7 und Faktorvarianz = 1: Residual = 1 - 0.7^2 = 0.51
+  # Bei Ladung = 0.7 und Faktorvarianz = 1: 
+  #     Residual = 1 - 0.7^2 = 0.51
   x1 ~~ 0.51*x1
   x2 ~~ 0.51*x2
   x3 ~~ 0.51*x3
-  # Bei Ladung = 0.8: Residual = 1 - 0.8^2 = 0.36
+  # Bei Ladung = 0.8: 
+  #     Residual = 1 - 0.8^2 = 0.36
   y1 ~~ 0.36*y1
   y2 ~~ 0.36*y2
   y3 ~~ 0.36*y3
@@ -214,7 +216,8 @@ analysis.model <- '
 #| echo: true
 #| autorun: false
 # --- Simulationsparameter ---
-n.sim   <- 100       # Anzahl Replikationen (sollte dann > 500 sein)
+n.sim   <- 100       # Anzahl Replikationen 
+                     # (in echter Anwendung > 500!)
 n.obs   <- 100       # Stichprobengroesse
 target  <- "Y~X"     # Zielparameter (wahrer Wert: 0.3)
 
@@ -237,7 +240,8 @@ for (i in 1:n.sim) {
   if (converged[i]) {
     # Parameterschaetzung extrahieren
     est <- parameterEstimates(fit)
-    estimates[i] <- est$est[est$lhs == "Y" & est$op == "~" & est$rhs == "X"]
+    estimates[i] <- est$est[est$lhs == "Y" & 
+               est$op == "~" & est$rhs == "X"]
   } else {
     estimates[i] <- NA
   }
@@ -251,7 +255,8 @@ cat("Konvergenzrate:", mean(converged), "\n")
 cat("Mittlere Schaetzung:", mean(est.valid), "\n")
 cat("Wahrer Wert:", true.value, "\n")
 cat("Absoluter Bias:", mean(est.valid) - true.value, "\n")
-cat("Relativer Bias:", (mean(est.valid) - true.value) / true.value, "\n")
+cat("Relativer Bias:", (mean(est.valid) - true.value) /
+                                          true.value, "\n")
 ```
 
 ::: {.callout-important}
@@ -284,7 +289,8 @@ $$\text{SE Bias} = \frac{\overline{SE} - SD(\hat{\theta})}{SD(\hat{\theta})}$$
 # Diesmal speichern wir zusaetzlich die Standardfehler.
 
 set.seed(456)
-n.sim   <- 100       # Anzahl Replikationen (sollte dann > 500 sein)
+n.sim   <- 100       # Anzahl Replikationen  
+                     # (in echter Anwendung > 500!)
 n.obs   <- 100       # Stichprobengroesse
 
 results <- data.frame(
@@ -344,8 +350,7 @@ Wenn der SE Bias negativ ist, sind die KIs zu eng und die Coverage fällt unter 
  
 **Fragestellung:** Wie groß ist die Wahrscheinlichkeit, dass ein bestimmter Modellparameter bei gegebener Stichprobengröße als signifikant erkannt wird?
  
-Dies ist das zentrale Thema bei Wang und Rhemtulla (2021). Power wird definiert als der
-Anteil der Replikationen, in denen der $p$-Wert unter $\alpha = .05$ fällt.
+Dies ist das zentrale Thema bei Wang und Rhemtulla (2021). Power wird definiert als der Anteil der Replikationen, in denen der $p$-Wert unter $\alpha = .05$ fällt.
 
 ```{webr}
 #| warning: false
@@ -357,7 +362,8 @@ Anteil der Replikationen, in denen der $p$-Wert unter $\alpha = .05$ fällt.
 # (Anwendungsfall 2 vorher ausführen!):
 
 power <- mean(res$pvalue < 0.05)
-cat("Geschaetzte Power fuer Y ~ X (beta = 0.3, N =", n.obs, "):", round(power, 3), "\n")
+cat("Geschaetzte Power fuer Y ~ X (beta = 0.3, N =", 
+    n.obs, "):", round(power, 3), "\n")
 ```
  
 ## Power als Funktion der Stichprobengröße (Power-Kurve)
@@ -369,8 +375,10 @@ In der Praxis will man typischerweise die benötigte Stichprobengröße bestimme
 #| echo: true
 #| autorun: false 
 # --- Power-Kurve ueber verschiedene Stichprobengroessen ---
-sample.sizes <- seq(50, 200, by = 50)        # (sollten mehr Abstufungen sein)
-n.sim <- 50                                 # (sollte > 500 sein)
+sample.sizes <- seq(50, 200, by = 50)       
+   # (für echte Anwendung dann mehr Abstufungen)
+n.sim <- 50                                 
+   # (in echter Anwendung > 500!)
 power.results <- numeric(length(sample.sizes))
  
 set.seed(789)

@@ -25,10 +25,14 @@ website:
             text: "B | MatheQuest: SEM"
       - section: "II: Grundlagen"
         contents:
-          - href: S02_PD_01.qmd
+          - href: S02_EFA_01.qmd
+            text: "Rückblick: Explorative Faktorenanalyse"
+          - href: S02_Attenuation_01.qmd
             text: "A | Übung 1"
-          - href: S02_PD_02.qmd
+          - href: S02_PD_01.qmd
             text: "B | Übung 2"
+          - href: S02_PD_02.qmd
+            text: "C | Übung 3"
       - section: " III: Schätzung"
         contents:
           - href: S03_CFA_01.qmd
@@ -36,19 +40,25 @@ website:
           - href: S03_CFA_02.qmd
             text: "B | Übung 1"
           - href: S03_CFA_03.qmd
-            text: "C | Übung 2"            
+            text: "C | Übung 2"       
+          - href: S03_Multigroup_01.qmd
+            text: "x | Übung X (Mehgruppenmodelle verstehen)"
           - href: S03_rosseelTutorialUnderstandingSEM2025_Interactive_01.qmd
-            text: "D | ℹ Tutorial von Rosseel & Vidal (2025) - 1"
+            text: "ℹ Tutorial von Rosseel & Vidal (2025) - 1"
           - href: S03_rosseelTutorialUnderstandingSEM2025_Interactive_02.qmd
-            text: "E | ℹ Tutorial von Rosseel & Vidal (2025) - 2"            
+            text: "ℹ Tutorial von Rosseel & Vidal (2025) - 2"               
       - section: "IV: Einbettung"
         contents:            
-          - href: S04_rosseelTutorialUnderstandingSEM2025_Interactive_03.qmd 
-            text: "A | ℹ Tutorial von Rosseel & Vidal (2025) - 3"  
+          - href: S04_OrdinalSEM_01.qmd
+            text: "A | Live Ordinal SEM"        
+          - href: S04_OrdinalIRT_01.qmd
+            text: "B | Übung Ordinal vs. IRT"
           - href: S04_SimulationLavaan_01.qmd
-            text: "B | Daten mit `lavaan` erzeugen"  
+            text: "C | Daten mit `lavaan` erzeugen"        
           - href: S04_SimulationLavaan_02.qmd
-            text: "C | ℹ Strukturierung nach Wang & Rhemtulla (2021)"
+            text: "D | ℹ Strukturierung nach Wang & Rhemtulla (2021)"            
+          - href: S04_rosseelTutorialUnderstandingSEM2025_Interactive_03.qmd 
+            text: "ℹ Tutorial von Rosseel & Vidal (2025) - 3" 
       - section: "(Beispiel-Code)"
         contents:
           - section: "Messmodelle (Thema 1-3)"

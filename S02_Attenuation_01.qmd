@@ -1,0 +1,54 @@
+---
+title: "Hands-on: Latente Korrelation in R"
+format: live-html
+engine: knitr
+---
+  
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+
+
+$$
+\boxed{\,r_{\tau_1, \tau_2} = \dfrac{r_{Y_1, Y_2}}{\sqrt{\text{Rel}(Y_1)\cdot\text{Rel}(Y_2)}}\,}
+$$
+
+::: {.callout-important title="Übung (5 Minuten)"}
+Berechnen Sie die latente Korrelation für:
+
+* $r_{Y_1, Y_2} = .35$, $\text{Rel}(Y_1) = .85$, $\text{Rel}(Y_2) = .75$
+
+Was passiert, wenn eine der Reliabilitäten nur $.50$ beträgt?
+:::
+
+
+```{webr}
+#| warning: false
+#| echo: true
+
+
+
+
+
+# (Formel in R-Code übertragen)
+```
+
+
+<details>
+<summary>SPOILER!</summary>
+
+
+```{webr}
+#| warning: false
+#| echo: true
+#| autorun: true
+r_manifest <- 0.35
+rel_1 <- 0.75
+rel_2 <- 0.75
+r_manifest / sqrt(rel_1 * rel_2)
+
+rel_1 <- 0.5
+rel_2 <- 0.5
+r_manifest / sqrt(rel_1 * rel_2)
+```
+
+
+</details> 
