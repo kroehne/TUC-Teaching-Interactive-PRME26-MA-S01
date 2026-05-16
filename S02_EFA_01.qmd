@@ -106,6 +106,7 @@ View(HolzingerSwineford1939[,var.names])
 #| warning: false
 #| echo: true
 #| autorun: true
+#| timelimit: 240
 fit <- efa(data = HolzingerSwineford1939[,var.names], 
            nfactors = 1:4)
 summary(fit)
